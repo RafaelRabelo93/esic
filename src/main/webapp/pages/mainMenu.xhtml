@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
+	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<title>header</title>	
+</h:head>
+
+<h:body>
+
+<h:form class="form">
+
+<div class="container" style="">
+			<h1 class="title" > Sistema Integrado de <br></br> Comunicação com o Cidadão </h1>
+			<div class="menu">
+			<div class="botao">
+			<h:commandLink href="#solicita">
+				<p:graphicImage value="#{resource['img/icon/hand.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Solicitação</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+			<div class="botao">
+			<h:commandLink href="#consulta">
+				<p:graphicImage value="#{resource['img/icon/loupe.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Consulta</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+			<div class="botao">
+			<h:commandLink href="#faq">
+				<p:graphicImage value="#{resource['img/icon/faq.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Perguntas Frequentes</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+
+			<div class="botao">
+			<h:commandLink href="#cadastro">
+				<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Cadastro</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+
+			</div>
+		</div>
+
+</h:form>
+
+
+</h:body>
+</html>

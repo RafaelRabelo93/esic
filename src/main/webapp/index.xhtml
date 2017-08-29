@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
+	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<title>SICC</title>	
+</h:head>
+
+<h:body>
+
+	<h:form class="form">
+	
+	<div class="container-fluid menu-top hidden-print">
+	
+	<!-- Cabecalho -->
+		<div id="header">				
+				<div id="menuTopSM" class="divMenuTopSM">
+					<ul>					
+						<li><h:commandLink action="index.xhtml?faces-redirect=true">Ir para o conteúdo</h:commandLink></li>
+						<li><p:commandLink action="#{cabecalhoBean.redirect('/Informacoes/Mapa')}" value="Mapa do Site"/></li>
+						<li><p:commandLink action="#{cabecalhoBean.redirect('/Informacoes/Acessibilidade')}" value="Acessibilidade"/></li>						
+						<li><p:commandLink onclick="aumentaTamanho();" value="A+"/></li>
+						<li><p:commandLink onclick="normalTamanho();" value="A"/></li>
+						<li><p:commandLink onclick="diminuiTamanho();" value="A-"/></li>
+						<li><p:commandLink onclick="mudarContraste();" value="Contraste"/></li>
+					</ul>
+				</div>						
+				
+						
+				<div id="navigation-menuSM">
+
+					<div id="menuDownSM" class="divMenuDownSM">				
+						
+						<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5% 1%" width="7%" height="7%"/>	
+						
+						<ul id="menuSM">
+							<li><h:commandLink action="#{cabecalhoBean.redirect('index')}">Navegação</h:commandLink></li>
+							<li><h:commandLink action="#{cabecalhoBean.redirect('Sobre')}"> Sobre</h:commandLink></li>
+							
+<!-- 							  <h:commandLink id="imageBtn" value="Login" /> -->
+<!-- 							    <p:overlayPanel id="imagePanel" for="imageBtn" hideEffect="fade"> -->
+						
+<!-- 								        <p:inputText placeholder="E-mail" /> -->
+<!-- 								        <p:password placeholder="Senha"/> -->
+<!-- 								        <p:commandButton value="Login"/> -->
+<!-- 							   	</p:overlayPanel> -->
+							
+							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Login</a>
+								<div class="dropdown-menu" style="padding: 15px; padding-bottom: 10px;">
+								<form class="form-horizontal"  method="post" accept-charset="UTF-8">
+								  <input id="sp_uname" class="form-control login" type="text" name="sp_uname" placeholder="E-mail" />
+								  <input id="sp_pass" class="form-control login" type="password" name="sp_pass" placeholder="Senha"/>
+								  <input class="btn btn-primary" type="submit" name="submit" value="Login" />
+								</form>
+								</div>
+							</li>
+						</ul>
+						
+					</div>				
+				</div>
+				
+			</div>
+		
+	<!-- Menu Principal -->
+		<div class="container" style="">
+			<h1 class="title" > Sistema Integrado de <br></br> Comunicação com o Cidadão </h1>
+			<div class="menu">
+			<div class="botao">
+			<h:commandLink href="#solicita">
+				<p:graphicImage value="#{resource['img/icon/hand.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Solicitação</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+			<div class="botao">
+			<h:commandLink href="#consulta">
+				<p:graphicImage value="#{resource['img/icon/loupe.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Consulta</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+			<div class="botao">
+			<h:commandLink href="#faq">
+				<p:graphicImage value="#{resource['img/icon/faq.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Perguntas Frequentes</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+
+			<div class="botao">
+			<h:commandLink href="#cadastro">
+				<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="80%" height="80%"/>
+			</h:commandLink>
+			
+			<h:commandLink href="#solicita">Cadastro</h:commandLink>
+						
+			<h:commandLink href="#solicita" style="font-size:17px; color:#333">Requerimento de adoção de providência por parte da Administração;</h:commandLink>
+			</div>
+			
+
+			</div>
+		</div>
+		
+	</div>
+	
+	<!-- Rodapé -->
+	
+<!-- 		<div class="seta" style="position: absolute"> -->
+<!-- 			<span class="fa-stack fa-lg"> -->
+<!-- 				<i class="fa fa-circle fa-2x" style="color:#c0c0c0"/> -->
+<!-- 				<i class="fa fa-arrow-down fa-stack-1x" style="color:#2d4e8a;" /> -->
+<!-- 			</span> -->
+<!-- 		</div> -->
+	
+	<div class="footer" align="center">
+	
+<!-- 			Album Manual de Uso -->
+ 	<div class="col-sm-12" style="background:white;width:100%">
+		 <div id="carousel-example-captions" class="carousel slide" data-ride="carousel">
+	      <div class="carousel-inner" role="listbox" style="position:center">
+	        <div class="item active">
+	          <div>
+	            <div class="container" style="padding: 3% 0">
+		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
+		            <div class="col-sm-5">
+		            	<h2>Tutorial 1</h2>
+		            	<p>Texto é um conjunto de palavras e frases encadeadas que permitem interpretação e transmitem uma mensagem. É qualquer obra escrita em versão original e que constitui um livro ou um documento escrito. Um texto é uma unidade linguística de extensão superior à frase.</p>
+		            </div>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="item">
+	          <div>
+	            <div class="container" style="padding: 3% 0">
+		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
+		            <div class="col-sm-5">
+		            	<h2>Tutorial 2</h2>
+		            	<p>
+		            	BLA BLA BLA BLA BLA BLA BLA
+		            	</p>
+		            </div>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="item">
+	          <div>
+	            <div class="container" style="padding: 3% 0">
+		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
+		            <div class="col-sm-5">
+		            	<h2>Tutorial 3</h2>
+		            	<p>
+		            	BLA BLA BLA BLA BLA BLA BLA
+		            	</p>
+		            </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	      <a class="left carousel-control" href="#carousel-example-captions" style="height:100%;background:none;align-items:center;display: flex" role="button" data-slide="prev">
+	        <i class="fa fa-arrow-left fa-lg" aria-hidden="true" style="color:gray"/>
+	        <span class="sr-only">Anterior</span>
+	      </a>
+	      <a class="right carousel-control" href="#carousel-example-captions" style="height:100%;background:none;align-items:center;justify-content:flex-end;display:flex" role="button" data-slide="next">
+	        <i class="fa fa-arrow-right fa-lg" aria-hidden="true" style="color:gray"/>
+	        <span class="sr-only">Próximo</span>
+	      </a>
+	    </div>
+ 	</div>
+
+	<div class="rodape">
+			<div class="botaoFoot">
+			<h:commandLink href="#manual">
+				<div id="titulo" style="padding-bottom: 5%;">
+					<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
+					<h:commandLink>  Manual</h:commandLink>
+				</div>
+				<p style="font-size:17px; color:#333">Visualizar manual do usuário</p>
+			</h:commandLink>
+			
+			</div>
+			
+			<h:commandLink href="#lai">
+			<div class="botaoFoot">
+				<div id="titulo" style="padding-bottom: 5%;">
+					<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
+					<h:commandLink>  LAI</h:commandLink>
+				</div>
+					<p style="font-size:17px; color:#333">Acesso ao LAI</p>
+			</div>
+			</h:commandLink>
+			
+			
+			<div class="botaoFoot">
+			<h:commandLink href="#relatorio">
+				<div id="titulo" style="padding-bottom: 5%;">
+					<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="20%" height="20%"/>
+					<h:commandLink style="padding-left=1%">  Estatísticas</h:commandLink>
+				</div>
+					<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
+			</h:commandLink>
+			
+			</div>
+	</div>
+	</div>
+
+	</h:form>
+
+</h:body>
+</html>
