@@ -20,7 +20,6 @@ body{
 
 .menu-top {
     position: relative;
-    height: 103% !important;
     width: 100% !important;
     padding: 0 !important;
 }
@@ -259,7 +258,7 @@ body{
   -webkit-align-items: center;
   align-items: center;
   
-  padding: 7% 0 7% 0;
+  padding: 5% 0;
 }
 
 .title{
@@ -281,11 +280,10 @@ body{
   	font-size: 60px;
   	font-family: "lato", Sans-serif;
   	font-weight: 100;
-  	padding: 0 0 5% 0
 }
 
 .menu {
-	padding: 2%;
+	padding: 3% 20%;
 	list-style: none;
 	  
 	display: -ms-flexbox;
@@ -327,8 +325,6 @@ body{
 	width: 20%;
 	
 	align-items: baseline;
-	
-	color: red;
 }
 
 .botao a{
@@ -464,4 +460,29 @@ body{
 	border-radius: 0px !important;
 	padding-right: 0 !important;
 	margin-bottom: 5px;
+}
+
+.ui-carousel-header{
+	border: none;
+	background: none;
+}
+
+#titulo{
+	display: flex;
+  
+	-moz-flex-flow: row nowrap;
+	-ms-flex-flow: row nowrap;
+	-o-flex-flow: row nowrap;
+	-webkit-flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	
+  	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	align-items: center;
+	
+	padding-bottom: 5%;
 }

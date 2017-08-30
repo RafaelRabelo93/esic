@@ -43,25 +43,17 @@
 						
 						<ul id="menuSM">
 							<li><h:commandLink action="#{cabecalhoBean.redirect('index')}">Navegação</h:commandLink></li>
-							<li><h:commandLink action="#{cabecalhoBean.redirect('Sobre')}"> Sobre</h:commandLink></li>
+							<li><h:commandLink action="#{cabecalhoBean.redirect('Sobre')}">Sobre</h:commandLink></li>
 							
-<!-- 							  <h:commandLink id="imageBtn" value="Login" /> -->
-<!-- 							    <p:overlayPanel id="imagePanel" for="imageBtn" hideEffect="fade"> -->
-						
-<!-- 								        <p:inputText placeholder="E-mail" /> -->
-<!-- 								        <p:password placeholder="Senha"/> -->
-<!-- 								        <p:commandButton value="Login"/> -->
-<!-- 							   	</p:overlayPanel> -->
-							
-							<li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Login</a>
-								<div class="dropdown-menu" style="padding: 15px; padding-bottom: 10px;">
-								<form class="form-horizontal"  method="post" accept-charset="UTF-8">
-								  <input id="sp_uname" class="form-control login" type="text" name="sp_uname" placeholder="E-mail" />
-								  <input id="sp_pass" class="form-control login" type="password" name="sp_pass" placeholder="Senha"/>
-								  <input class="btn btn-primary" type="submit" name="submit" value="Login" />
-								</form>
-								</div>
-							</li>
+							<li><p:commandButton id="Login" value="Login" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"/></li>
+								<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
+								<h:panelGrid columns="1" cellpadding="5">
+								<p:inputText placeholder="E-mail" />
+									<p:password placeholder="Senha"/>
+									<p:commandButton value="Login"/>
+								</h:panelGrid>
+								</p:overlayPanel>
+						 
 						</ul>
 						
 					</div>				
@@ -130,91 +122,69 @@
 	
 	<div class="footer" align="center">
 	
-<!-- 			Album Manual de Uso -->
- 	<div class="col-sm-12" style="background:white;width:100%">
-		 <div id="carousel-example-captions" class="carousel slide" data-ride="carousel">
-	      <div class="carousel-inner" role="listbox" style="position:center">
-	        <div class="item active">
-	          <div>
-	            <div class="container" style="padding: 3% 0">
-		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
-		            <div class="col-sm-5">
-		            	<h2>Tutorial 1</h2>
-		            	<p>Texto é um conjunto de palavras e frases encadeadas que permitem interpretação e transmitem uma mensagem. É qualquer obra escrita em versão original e que constitui um livro ou um documento escrito. Um texto é uma unidade linguística de extensão superior à frase.</p>
-		            </div>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item">
-	          <div>
-	            <div class="container" style="padding: 3% 0">
-		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
-		            <div class="col-sm-5">
-		            	<h2>Tutorial 2</h2>
-		            	<p>
-		            	BLA BLA BLA BLA BLA BLA BLA
-		            	</p>
-		            </div>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item">
-	          <div>
-	            <div class="container" style="padding: 3% 0">
-		            	<p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="50%" height="50%"/>
-		            <div class="col-sm-5">
-		            	<h2>Tutorial 3</h2>
-		            	<p>
-		            	BLA BLA BLA BLA BLA BLA BLA
-		            	</p>
-		            </div>
-	            </div>
-	          </div>
-	        </div>
-	      </div>
-	      <a class="left carousel-control" href="#carousel-example-captions" style="height:100%;background:none;align-items:center;display: flex" role="button" data-slide="prev">
-	        <i class="fa fa-arrow-left fa-lg" aria-hidden="true" style="color:gray"/>
-	        <span class="sr-only">Anterior</span>
-	      </a>
-	      <a class="right carousel-control" href="#carousel-example-captions" style="height:100%;background:none;align-items:center;justify-content:flex-end;display:flex" role="button" data-slide="next">
-	        <i class="fa fa-arrow-right fa-lg" aria-hidden="true" style="color:gray"/>
-	        <span class="sr-only">Próximo</span>
-	      </a>
-	    </div>
- 	</div>
+	<!-- Album Manual de Uso -->
 
+<p:carousel numVisible="1" autoPlayInterval="30000" style="margin-bottom:0; width:98%; border:none; background-color:white">
+        <p:tab title="Godfather Part I">
+            <h:panelGrid columns="2" cellpadding="10">
+             	<h:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/>
+                <h:outputText
+                    value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. 
+                    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
+                    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, 
+                    but given to ruthless violence whenever anything stands against the good of the family." />
+			</h:panelGrid>
+        </p:tab>
+        <p:tab title="Godfather Part II">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/>
+                <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. 
+                In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, 
+                killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows." />
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Godfather Part III">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/>
+                <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. 
+                    Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate." />
+            </h:panelGrid>
+        </p:tab>
+    </p:carousel>
+
+ 	
+	<!-- Botões Fim -->
+	
 	<div class="rodape">
 			<div class="botaoFoot">
-			<h:commandLink href="#manual">
-				<div id="titulo" style="padding-bottom: 5%;">
-					<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
-					<h:commandLink>  Manual</h:commandLink>
-				</div>
-				<p style="font-size:17px; color:#333">Visualizar manual do usuário</p>
-			</h:commandLink>
-			
+				<h:commandLink href="#manual">
+					<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
+						<h:outputText value="Manual" style="padding-left:5%"/>
+					</div>
+					<p style="font-size:17px; color:#333">Visualizar manual do usuário</p>
+				</h:commandLink>
 			</div>
 			
-			<h:commandLink href="#lai">
 			<div class="botaoFoot">
-				<div id="titulo" style="padding-bottom: 5%;">
-					<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
-					<h:commandLink>  LAI</h:commandLink>
-				</div>
-					<p style="font-size:17px; color:#333">Acesso ao LAI</p>
+				<h:commandLink href="#lai">
+						<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
+						<h:outputText value="LAI" style="padding-left:5%"/>
+					</div>
+						<p style="font-size:17px; color:#333">Acesso ao LAI</p>
+				</h:commandLink>
 			</div>
-			</h:commandLink>
 			
 			
 			<div class="botaoFoot">
-			<h:commandLink href="#relatorio">
-				<div id="titulo" style="padding-bottom: 5%;">
-					<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="20%" height="20%"/>
-					<h:commandLink style="padding-left=1%">  Estatísticas</h:commandLink>
-				</div>
-					<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
-			</h:commandLink>
-			
+				<h:commandLink href="#relatorio">
+					<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="20%" height="20%"/>
+						<h:outputText value="Estatística" style="padding-left:5%"/>
+					</div>
+						<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
+				</h:commandLink>
 			</div>
 	</div>
 	</div>
@@ -223,3 +193,4 @@
 
 </h:body>
 </html>
+
