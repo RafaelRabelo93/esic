@@ -1,4 +1,4 @@
-package br.gov.se.lai.entity;
+package br.gov.se.lai.Entity;
 // Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;

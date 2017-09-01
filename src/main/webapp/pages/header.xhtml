@@ -6,80 +6,53 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
-	<h:outputStylesheet name="index.css" library="css" />
-	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
-	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
-	<title>header</title>	
-</h:head>
-
 <h:body>
 
-<h:form class="form">
-
+	<ui:composition>
+	
+	<h:form class="form">
 		<div id="header">				
-				<div id="menuTopSM" class="divMenuTopSM">
-					<ul>					
-						<!-- <li><h:commandLink action="index.xhtml?faces-redirect=true">Ir para o conteúdo</h:commandLink></li> -->
-						<li><p:commandLink action="#{cabecalhoBean.redirect('/Informacoes/Mapa')}" value="Mapa do Site"/></li>
+				
+				<div id="menuAcess" class="menuAcess">
+					<ul style="padding:0px;	margin:0px;	list-style:none;">					
 						<li><p:commandLink action="#{cabecalhoBean.redirect('/Informacoes/Acessibilidade')}" value="Acessibilidade"/></li>						
 						<li><p:commandLink onclick="aumentaTamanho();" value="A+"/></li>
 						<li><p:commandLink onclick="normalTamanho();" value="A"/></li>
 						<li><p:commandLink onclick="diminuiTamanho();" value="A-"/></li>
 						<li><p:commandLink onclick="mudarContraste();" value="Contraste"/></li>
 					</ul>
-				</div>						
-				
-				<div id="logo">
-				
-				<h:commandLink styleClass="divLogo">
-					<h:graphicImage value="#{resource['img/ESIC.png']}" style="padding-right: 1%" width="5%" height="5%"/>
-						<h1>e-SIC</h1>
-				</h:commandLink>	
-				
 				</div>
-						
-				<div id="navigation-menuSM">
-					<label for="navigation-button" id="navigation-labelSM">
-					  	<p:commandButton id="dynaButton" type="button" icon="fa fa-bars" style="background: none; border: none;"> </p:commandButton>
-					  	<p:slideMenu id="menuSM" overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px; height: 155px;">				    	
-					        <p:menuitem actionListener="#{cabecalhoBean.redirect('index')}" styleClass="icons-menu"> Início</p:menuitem>
-					        <p:menuitem actionListener="#{cabecalhoBean.redirect('Cadastro')}" styleClass="icons-menu"> Cadastre-se</p:menuitem>
-					        <p:menuitem actionListener="#{cabecalhoBean.redirect('PerguntasFrequentes')}" styleClass="icons-menu">  Perguntas Frequentes </p:menuitem>
-					        <p:menuitem actionListener="#{cabecalhoBean.redirect('Sobre')}" styleClass="icons-menu">  Sobre </p:menuitem>					    
-					    </p:slideMenu>
-					</label>
-					<input type="checkbox" id="navigation-buttonSM" />
-					<div id="menuDownSM" class="divMenuDownSM">				
-						<ul id="menuSM">
-							<li><h:commandLink action="#{cabecalhoBean.redirect('index')}">Início</h:commandLink></li>
-								<li><h:commandLink action="#{cabecalhoBean.redirect('Cadastro')}"> Cadastre-se</h:commandLink></li>
-								<li><h:commandLink action="#{cabecalhoBean.redirect('Perguntas Frequentes')}"> Perguntas Frequentes</h:commandLink></li>										
-								<li><h:commandLink action="#{cabecalhoBean.redirect('Sobre')}"> Sobre</h:commandLink></li>
-						</ul>
-						
-						<div class="login">
-							<form class="navbar-form navbar-right">
-			                    <div class="form-group has-feedback">
-			                        <p:inputText type="text" class="form-control" name="email" placeholder="E-mail" required="true"/>
-			                        <span class="fa fa-envelope form-control-feedback"></span>
-			                    </div>
-			                    <div class="form-group has-feedback">
-			                        <p:password type="text" class="form-control" name="senha" placeholder="Senha" required="true"/>
-			                        <span class="fa fa-lock form-control-feedback"></span>
-			                    </div>
-			                    <div>
-          							<h:commandLink> <i class="fa fa-arrow-circle-right fa-2x" style="color:white; padding:5%"/> </h:commandLink>
-          							     
-       							</div>
-			                </form>
-		            	</div>
-					</div>				
+
+
+				<div id="barraNav" class="barraNav">
+
+					<h:graphicImage value="#{resource['img/logoGovSerg.png']}"
+						style="padding: 0.5%" width="141" height="50" />
+
+					<ul id="menuSM">
+						<li><h:commandLink
+								action="#{cabecalhoBean.redirect('index')}">Navegação</h:commandLink></li>
+						<li><h:commandLink
+								action="#{cabecalhoBean.redirect('Sobre')}">Sobre</h:commandLink></li>
+
+						<li><p:commandButton id="Login" value="Login"
+								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>
+						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
+							<h:panelGrid columns="1" cellpadding="5">
+								<p:inputText placeholder="E-mail" />
+								<p:password placeholder="Senha" />
+								<p:commandButton value="Login" />
+							</h:panelGrid>
+						</p:overlayPanel>
+					</ul>
+
 				</div>
+
 			</div>
-			
-			</h:form>
+		
+	</h:form>
+		
+	</ui:composition>
 
 </h:body>
 </html>

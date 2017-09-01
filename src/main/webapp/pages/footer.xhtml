@@ -6,52 +6,18 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
-	<h:outputStylesheet name="index.css" library="css" />
-	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
-	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
-	<title>header</title>	
-</h:head>
-
 <h:body>
 
+	<ui:composition>
+	
+	<div id="footer">
+	
+		<p style="display:flex; color:white; align-items:center; justify-content: center;">Conteúdo do rodapé padrão</p>
+	
+	</div>
+	
+	</ui:composition>
 
-<div class="footer" align="center">
-			
-			<div class="botaoFoot">
-			<h:commandLink href="#manual">
-				<div id="titulo">
-					<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
-					<h:commandLink>Manual</h:commandLink>
-				</div>
-				<p style="font-size:17px; color:#333">Acesso ao manual do usuário</p>
-			</h:commandLink>
-			
-			</div>
-			
-			<div class="botaoFoot">
-			<h:commandLink href="#lai">
-				<div id="titulo">
-					<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
-					<h:commandLink>LAI</h:commandLink>
-				</div>
-					<p style="font-size:17px; color:#333">Acesso ao LAI</p>
-			</h:commandLink>
-			</div>
-			
-			<div class="botaoFoot">
-			<h:commandLink href="#relatorio">
-				<div id="titulo">
-					<p:graphicImage value="#{resource['img/icon/clipboard.png']}" width="20%" height="20%"/>
-					<h:commandLink style="padding-left=1%">Estatísticas</h:commandLink>
-				</div>
-					<p style="font-size:17px; color:#333">Acesso aos relatórios estatísticos</p>
-			</h:commandLink>
-			
-			</div>
-			
-		</div>
 
 
 </h:body>

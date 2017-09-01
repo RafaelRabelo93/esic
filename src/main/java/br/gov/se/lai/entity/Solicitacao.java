@@ -1,4 +1,4 @@
-package br.gov.se.lai.entity;
+package br.gov.se.lai.Entity;
 // Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
@@ -137,7 +137,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacao")
-	public Set<?> getMensagems() {
+	public Set<Mensagem> getMensagems() {
 		return this.mensagems;
 	}
 

@@ -1,4 +1,4 @@
-package br.gov.se.lai.entity;
+package br.gov.se.lai.Entity;
 // Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
@@ -103,7 +103,7 @@ public class Entidades implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
-	public Set<?> getSolicitacaos() {
+	public Set<Solicitacao> getSolicitacaos() {
 		return this.solicitacaos;
 	}
 
@@ -112,7 +112,7 @@ public class Entidades implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
-	public Set<?> getResponsavels() {
+	public Set<Responsavel> getResponsavels() {
 		return this.responsavels;
 	}
 
@@ -121,7 +121,7 @@ public class Entidades implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "entidadeses")
-	public Set<?> getAcoeses() {
+	public Set<Acoes> getAcoeses() {
 		return this.acoeses;
 	}
 

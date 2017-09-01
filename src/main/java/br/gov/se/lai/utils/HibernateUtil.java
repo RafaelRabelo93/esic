@@ -6,11 +6,11 @@ import javax.persistence.Persistence;
 
 public class HibernateUtil {
 
-	//static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Projettus");	  
+	//static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("esic");	  
     private static final EntityManagerFactory entityManagerFactory;   
     static {
                 try {
-                     entityManagerFactory = Persistence.createEntityManagerFactory("Projettus");
+                     entityManagerFactory = Persistence.createEntityManagerFactory("esic");
                      System.out.println("Entity Menager Test.............."+ entityManagerFactory);
                 } catch (Throwable ex) {
 
