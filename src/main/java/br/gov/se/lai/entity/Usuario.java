@@ -1,11 +1,13 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,45 +22,46 @@ public class Usuario implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7705124637675566030L;
-	private int idUsuario;
+	private static final long serialVersionUID = -5299525150214128347L;
+	private Integer idUsuario;
 	private String nome;
 	private String nick;
 	private String senha;
 	private short perfil;
 	private Set<Representante> representantes = new HashSet<Representante>(0);
+	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private Set<Cidadao> cidadaos = new HashSet<Cidadao>(0);
 
 	public Usuario() {
 	}
 
-	public Usuario(int idUsuario, String nome, String nick, String senha, short perfil) {
-		this.idUsuario = idUsuario;
+	public Usuario(String nome, String nick, String senha, short perfil) {
 		this.nome = nome;
 		this.nick = nick;
 		this.senha = senha;
 		this.perfil = perfil;
 	}
 
-	public Usuario(int idUsuario, String nome, String nick, String senha, short perfil, Set<Representante> representantes,
-			Set<Cidadao> cidadaos) {
-		this.idUsuario = idUsuario;
+	public Usuario(String nome, String nick, String senha, short perfil, Set<Representante> representantes,
+			Set<Mensagem> mensagems, Set<Cidadao> cidadaos) {
 		this.nome = nome;
 		this.nick = nick;
 		this.senha = senha;
 		this.perfil = perfil;
 		this.representantes = representantes;
+		this.mensagems = mensagems;
 		this.cidadaos = cidadaos;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idUsuario", unique = true, nullable = false)
-	public int getIdUsuario() {
+	public Integer getIdUsuario() {
 		return this.idUsuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
@@ -80,7 +83,7 @@ public class Usuario implements java.io.Serializable {
 		this.nick = nick;
 	}
 
-	@Column(name = "senha", nullable = false, length = 64)
+	@Column(name = "senha", nullable = false, length = 45)
 	public String getSenha() {
 		return this.senha;
 	}
@@ -105,6 +108,15 @@ public class Usuario implements java.io.Serializable {
 
 	public void setRepresentantes(Set<Representante> representantes) {
 		this.representantes = representantes;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	public Set<Mensagem> getMensagems() {
+		return this.mensagems;
+	}
+
+	public void setMensagems(Set<Mensagem> mensagems) {
+		this.mensagems = mensagems;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")

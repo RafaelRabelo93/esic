@@ -1,5 +1,5 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +27,8 @@ public class Solicitacao implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 182603986971587517L;
-	private int idSolicitacao;
+	private static final long serialVersionUID = 3080838965683189217L;
+	private Integer idSolicitacao;
 	private Cidadao cidadao;
 	private Entidades entidades;
 	private Date dataIni;
@@ -34,20 +36,18 @@ public class Solicitacao implements java.io.Serializable {
 	private Date datafim;
 	private String titulo;
 	private Short assunto;
-	private Set< Mensagem> mensagems = new HashSet<Mensagem>(0);
+	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 
 	public Solicitacao() {
 	}
 
-	public Solicitacao(int idSolicitacao, Cidadao cidadao, Entidades entidades) {
-		this.idSolicitacao = idSolicitacao;
+	public Solicitacao(Cidadao cidadao, Entidades entidades) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 	}
 
-	public Solicitacao(int idSolicitacao, Cidadao cidadao, Entidades entidades, Date dataIni, String status,
-			Date datafim, String titulo, Short assunto, Set< Mensagem> mensagems) {
-		this.idSolicitacao = idSolicitacao;
+	public Solicitacao(Cidadao cidadao, Entidades entidades, Date dataIni, String status, Date datafim, String titulo,
+			Short assunto, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.dataIni = dataIni;
@@ -59,13 +59,14 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idSolicitacao", unique = true, nullable = false)
-	public int getIdSolicitacao() {
+	public Integer getIdSolicitacao() {
 		return this.idSolicitacao;
 	}
 
-	public void setIdSolicitacao(int idSolicitacao) {
+	public void setIdSolicitacao(Integer idSolicitacao) {
 		this.idSolicitacao = idSolicitacao;
 	}
 
@@ -141,7 +142,7 @@ public class Solicitacao implements java.io.Serializable {
 		return this.mensagems;
 	}
 
-	public void setMensagems(Set< Mensagem> mensagems) {
+	public void setMensagems(Set<Mensagem> mensagems) {
 		this.mensagems = mensagems;
 	}
 

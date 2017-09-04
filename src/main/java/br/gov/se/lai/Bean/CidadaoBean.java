@@ -6,8 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.gov.se.lai.Entity.Cidadao;
-import br.gov.se.lai.Entity.Usuario;
+import br.gov.se.lai.DAO.CidadaoDAO;
+import br.gov.se.lai.entity.Cidadao;
+import br.gov.se.lai.entity.Usuario;
 
 @ManagedBean(name = "cidadao")
 @SessionScoped
@@ -26,8 +27,8 @@ public class CidadaoBean implements Serializable{
 	
 	public String save(Usuario usuario) {
 		cidadao.setUsuario(usuario);
-		
-		return "usuario";
+		CidadaoDAO.saveOrUpdate(cidadao);
+		return "../index.xhtml";
 	}
 	
 	public String delete() {

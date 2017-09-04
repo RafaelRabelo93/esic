@@ -1,5 +1,5 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,8 +29,8 @@ public class Cidadao implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3355007196381213740L;
-	private int idCidadao;
+	private static final long serialVersionUID = -7063672246584518287L;
+	private Integer idCidadao;
 	private Usuario usuario;
 	private String email;
 	private String cpf;
@@ -49,16 +51,14 @@ public class Cidadao implements java.io.Serializable {
 	public Cidadao() {
 	}
 
-	public Cidadao(int idCidadao, Usuario usuario, String email) {
-		this.idCidadao = idCidadao;
+	public Cidadao(Usuario usuario, String email) {
 		this.usuario = usuario;
 		this.email = email;
 	}
 
-	public Cidadao(int idCidadao, Usuario usuario, String email, String cpf, Boolean tipo, String rg, String orgaexp,
-			Date datanasc, String sexo, Short escolaridade, String profissao, String endereco, String estado,
-			String cidade, String cep, String tel, Set<Solicitacao> solicitacaos) {
-		this.idCidadao = idCidadao;
+	public Cidadao(Usuario usuario, String email, String cpf, Boolean tipo, String rg, String orgaexp, Date datanasc,
+			String sexo, Short escolaridade, String profissao, String endereco, String estado, String cidade,
+			String cep, String tel, Set<Solicitacao> solicitacaos) {
 		this.usuario = usuario;
 		this.email = email;
 		this.cpf = cpf;
@@ -78,13 +78,14 @@ public class Cidadao implements java.io.Serializable {
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idCidadao", unique = true, nullable = false)
-	public int getIdCidadao() {
+	public Integer getIdCidadao() {
 		return this.idCidadao;
 	}
 
-	public void setIdCidadao(int idCidadao) {
+	public void setIdCidadao(Integer idCidadao) {
 		this.idCidadao = idCidadao;
 	}
 

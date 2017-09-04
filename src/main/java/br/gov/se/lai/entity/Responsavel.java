@@ -1,12 +1,12 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,8 +21,8 @@ public class Responsavel implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5382999195316919265L;
-	private ResponsavelId id;
+	private static final long serialVersionUID = -7705311247766841073L;
+	private Integer idResponsavel;
 	private Entidades entidades;
 	private Representante representante;
 	private Short nivel;
@@ -31,36 +31,33 @@ public class Responsavel implements java.io.Serializable {
 	public Responsavel() {
 	}
 
-	public Responsavel(ResponsavelId id, Entidades entidades, Representante representante, String email) {
-		this.id = id;
+	public Responsavel(Entidades entidades, Representante representante, String email) {
 		this.entidades = entidades;
 		this.representante = representante;
 		this.email = email;
 	}
 
-	public Responsavel(ResponsavelId id, Entidades entidades, Representante representante, Short nivel, String email) {
-		this.id = id;
+	public Responsavel(Entidades entidades, Representante representante, Short nivel, String email) {
 		this.entidades = entidades;
 		this.representante = representante;
 		this.nivel = nivel;
 		this.email = email;
 	}
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "idRepresentante", column = @Column(name = "idRepresentante", nullable = false)),
-			@AttributeOverride(name = "idEntidades", column = @Column(name = "idEntidades", nullable = false)) })
-	public ResponsavelId getId() {
-		return this.id;
+	@Column(name = "idResponsavel", unique = true, nullable = false)
+	public Integer getIdResponsavel() {
+		return this.idResponsavel;
 	}
 
-	public void setId(ResponsavelId id) {
-		this.id = id;
+	public void setIdResponsavel(Integer idResponsavel) {
+		this.idResponsavel = idResponsavel;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idEntidades", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "idEntidades", nullable = false)
 	public Entidades getEntidades() {
 		return this.entidades;
 	}
@@ -70,7 +67,7 @@ public class Responsavel implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idRepresentante", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "idRepresentante", nullable = false)
 	public Representante getRepresentante() {
 		return this.representante;
 	}

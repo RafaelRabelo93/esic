@@ -1,14 +1,15 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,45 +24,44 @@ public class Entidades implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1650340458189757832L;
-	private int idEntidades;
+	private static final long serialVersionUID = -1597754383085083739L;
+	private Integer idEntidades;
 	private Orgaos orgaos;
 	private String nome;
 	private String setor;
 	private String contatoEntid;
-	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
 	private Set<Responsavel> responsavels = new HashSet<Responsavel>(0);
-	private Set<Acoes> acoeses = new HashSet<Acoes>(0);
+	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
+	private Set<Competencias> competenciases = new HashSet<Competencias>(0);
 
 	public Entidades() {
 	}
 
-	public Entidades(int idEntidades, Orgaos orgaos, String nome) {
-		this.idEntidades = idEntidades;
+	public Entidades(Orgaos orgaos, String nome) {
 		this.orgaos = orgaos;
 		this.nome = nome;
 	}
 
-	public Entidades(int idEntidades, Orgaos orgaos, String nome, String setor, String contatoEntid, Set<Solicitacao> solicitacaos,
-			Set<Responsavel> responsavels, Set<Acoes> acoeses) {
-		this.idEntidades = idEntidades;
+	public Entidades(Orgaos orgaos, String nome, String setor, String contatoEntid, Set<Responsavel> responsavels,
+			Set<Solicitacao> solicitacaos, Set<Competencias> competenciases) {
 		this.orgaos = orgaos;
 		this.nome = nome;
 		this.setor = setor;
 		this.contatoEntid = contatoEntid;
-		this.solicitacaos = solicitacaos;
 		this.responsavels = responsavels;
-		this.acoeses = acoeses;
+		this.solicitacaos = solicitacaos;
+		this.competenciases = competenciases;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idEntidades", unique = true, nullable = false)
-	public int getIdEntidades() {
+	public Integer getIdEntidades() {
 		return this.idEntidades;
 	}
 
-	public void setIdEntidades(int idEntidades) {
+	public void setIdEntidades(Integer idEntidades) {
 		this.idEntidades = idEntidades;
 	}
 
@@ -103,6 +103,15 @@ public class Entidades implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
+	public Set<Responsavel> getResponsavels() {
+		return this.responsavels;
+	}
+
+	public void setResponsavels(Set<Responsavel> responsavels) {
+		this.responsavels = responsavels;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
 	public Set<Solicitacao> getSolicitacaos() {
 		return this.solicitacaos;
 	}
@@ -112,21 +121,12 @@ public class Entidades implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
-	public Set<Responsavel> getResponsavels() {
-		return this.responsavels;
+	public Set<Competencias> getCompetenciases() {
+		return this.competenciases;
 	}
 
-	public void setResponsavels(Set<Responsavel> responsavels) {
-		this.responsavels = responsavels;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "entidadeses")
-	public Set<Acoes> getAcoeses() {
-		return this.acoeses;
-	}
-
-	public void setAcoeses(Set<Acoes> acoeses) {
-		this.acoeses = acoeses;
+	public void setCompetenciases(Set<Competencias> competenciases) {
+		this.competenciases = competenciases;
 	}
 
 }

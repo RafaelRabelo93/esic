@@ -1,11 +1,13 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,33 +24,32 @@ public class Representante implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7515131843270843507L;
-	private int idRepresentante;
+	private static final long serialVersionUID = 1860085728262047737L;
+	private Integer idRepresentante;
 	private Usuario usuario;
 	private Set<Responsavel> responsavels = new HashSet<Responsavel>(0);
 
 	public Representante() {
 	}
 
-	public Representante(int idRepresentante, Usuario usuario) {
-		this.idRepresentante = idRepresentante;
+	public Representante(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-	public Representante(int idRepresentante, Usuario usuario, Set<Responsavel> responsavels) {
-		this.idRepresentante = idRepresentante;
+	public Representante(Usuario usuario, Set<Responsavel> responsavels) {
 		this.usuario = usuario;
 		this.responsavels = responsavels;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idRepresentante", unique = true, nullable = false)
-	public int getIdRepresentante() {
+	public Integer getIdRepresentante() {
 		return this.idRepresentante;
 	}
 
-	public void setIdRepresentante(int idRepresentante) {
+	public void setIdRepresentante(Integer idRepresentante) {
 		this.idRepresentante = idRepresentante;
 	}
 

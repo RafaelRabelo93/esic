@@ -7,7 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.gov.se.lai.DAO.UsuarioDAO;
-import br.gov.se.lai.Entity.Usuario;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Criptografia;
 
 @ManagedBean(name = "usuario")

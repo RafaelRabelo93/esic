@@ -1,15 +1,15 @@
-package br.gov.se.lai.Entity;
-// Generated 30/08/2017 11:22:29 by Hibernate Tools 5.2.5.Final
+package br.gov.se.lai.entity;
+// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -22,34 +22,30 @@ public class Acoes implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1132866265333506938L;
-	private int idAcoes;
+	private static final long serialVersionUID = 8345153301601548063L;
+	private Integer idAcoes;
 	private String titulo;
 	private String descricao;
-	private Set<Entidades> entidades = new HashSet<Entidades>(0);
+	private Set<Competencias> competenciases = new HashSet<Competencias>(0);
 
 	public Acoes() {
 	}
 
-	public Acoes(int idAcoes) {
-		this.idAcoes = idAcoes;
-	}
-
-	public Acoes(int idAcoes, String titulo, String descricao, Set<Entidades> entidades) {
-		this.idAcoes = idAcoes;
+	public Acoes(String titulo, String descricao, Set<Competencias> competenciases) {
 		this.titulo = titulo;
 		this.descricao = descricao;
-		this.entidades = entidades;
+		this.competenciases = competenciases;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idAcoes", unique = true, nullable = false)
-	public int getIdAcoes() {
+	public Integer getIdAcoes() {
 		return this.idAcoes;
 	}
 
-	public void setIdAcoes(int idAcoes) {
+	public void setIdAcoes(Integer idAcoes) {
 		this.idAcoes = idAcoes;
 	}
 
@@ -71,16 +67,13 @@ public class Acoes implements java.io.Serializable {
 		this.descricao = descricao;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "acoes_das_entidades", catalog = "esic", joinColumns = {
-			@JoinColumn(name = "idAcoes", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "idEntidades", nullable = false, updatable = false) })
-	public Set<Entidades> getEntidadeses() {
-		return this.entidades;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "acoes")
+	public Set<Competencias> getCompetenciases() {
+		return this.competenciases;
 	}
 
-	public void setEntidadeses(Set<Entidades> entidades) {
-		this.entidades = entidades;
+	public void setCompetenciases(Set<Competencias> competenciases) {
+		this.competenciases = competenciases;
 	}
 
 }

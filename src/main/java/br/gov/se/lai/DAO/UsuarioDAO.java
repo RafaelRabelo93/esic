@@ -5,7 +5,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
-import br.gov.se.lai.Entity.Usuario;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class UsuarioDAO {
