@@ -16,105 +16,217 @@
 
 <h:body>
 
-	<h:form id="cad_usuario" >
-	
-		<h:panelGrid columns="2" >
-	
-			<h:outputLabel value="Email: " for="email" />
-			<p:inputText id="email" required="true" value="#{cidadao.cidadao.email}" maxlength="100" />		
-			
-			<h:outputLabel value="Tipo Pessoa: " for="tipo" />			
-			<p:selectOneMenu id="console" value="#{cidadao.cidadao.tipo}" style="width:125px">
-	            <f:selectItem itemLabel="Física" itemValue="true" />
-	            <f:selectItem itemLabel="Jurídica" itemValue="false" />
-       		</p:selectOneMenu>
-		
-			<h:outputLabel value="CPF/CNPJ: " for="cpf" />
-			<p:inputText id="cpf" value="#{cidadao.cidadao.cpf}" maxlength="15" />
-			
-       
-			<h:outputLabel value="RG: " for="rg" />
-			<p:inputMask id="rg" value="#{cidadao.cidadao.rg}" mask="?9999999999999999"/>	
-		
-			<h:outputLabel value="Orgao Expedidor: " for="orgao" />
-			<p:selectOneMenu id="orgao" value="#{cidadao.cidadao.orgaexp}" style="width:125px">
-	            <f:selectItem itemLabel="Selecionar" itemValue="" />
-	            <f:selectItem itemLabel="SSP" itemValue="SSP" />
-	            <f:selectItem itemLabel="Alguma" itemValue="Alguma" />
-	            <f:selectItem itemLabel="Coisa" itemValue="Coisa" />
-	        </p:selectOneMenu>
-			
-			<h:outputLabel value="Data de Nascimento: " for="datanasc" />
-        	<p:inputMask id="datanasc" value="#{cidadao.cidadao.datanasc}" mask="99/99/9999"/>
-			
-			<h:outputLabel value="Sexo: " for="sexo" />
-			<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}" >
-	            <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
-	            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
-	            <f:selectItem itemLabel="Outro" itemValue="Outro" />
-	        </p:selectOneRadio>	
-		
-			<h:outputLabel value="Escolaridade: " for="escolaridade" />
-			<p:selectOneMenu id="escolaridade" value="#{cidadao.cidadao.escolaridade}"  style="width:125px">
-	            <f:selectItem itemLabel="Selecionar" itemValue="" />
-	            <f:selectItem itemLabel="Fundamental" itemValue="fundamental" />
-	            <f:selectItem itemLabel="Medio" itemValue="medio" />
-	            <f:selectItem itemLabel="Superior" itemValue="superior" />
-	        </p:selectOneMenu>
-			
-			<h:outputLabel value="Profissao: " for="profissao" />
-			<p:inputText id="profissao" value="#{cidadao.cidadao.profissao}" maxlength="45"/>
-	        
-	        <h:outputLabel value="Endereço: " for="endereco" />
-			<p:inputText id="endereco" value="#{cidadao.cidadao.endereco}"  />
-			
+	<ui:composition template="/templates/template.xhtml">
 
-			<h:outputLabel  value="Estado: " for="estado"/>		
-			<p:selectOneMenu id="estado" value="#{cidadao.cidadao.estado}"  style="width:125px">
-	            <f:selectItem itemLabel="Selecionar" itemValue="" />
-	            <f:selectItem itemLabel="Acre" itemValue="AC" />
-	            <f:selectItem itemLabel="Alagoas" itemValue="AL" />
-	            <f:selectItem itemLabel="Amapá" itemValue="AP" />
-	            <f:selectItem itemLabel="Amazonas" itemValue="AM" />
-	            <f:selectItem itemLabel="Bahia" itemValue="BA" />
-	            <f:selectItem itemLabel="Ceará" itemValue="CE" />
-	            <f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
-	            <f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
-	            <f:selectItem itemLabel="Goiás" itemValue="GO" />
-	            <f:selectItem itemLabel="Maranhão" itemValue="MA" />
-	            <f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
-	            <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
-	            <f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
-	            <f:selectItem itemLabel="Pará" itemValue="PA" />
-	            <f:selectItem itemLabel="Paraíba" itemValue="PB" />
-	            <f:selectItem itemLabel="Paraná" itemValue="PR" />
-	            <f:selectItem itemLabel="Piauí" itemValue="PI" />
-	            <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
-	            <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
-	            <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
-	            <f:selectItem itemLabel="Rondônia" itemValue="RO" />
-	            <f:selectItem itemLabel="Roraima" itemValue="RR" />
-	            <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
-	            <f:selectItem itemLabel="São Paulo" itemValue="SP" />
-	            <f:selectItem itemLabel="Sergipe" itemValue="SE" />
-	            <f:selectItem itemLabel="Tocantins" itemValue="TO" />	            
-	        </p:selectOneMenu>
-	        
-	        <h:outputLabel  value="Cidade: " for="cidade"/>
-			<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
-		
-			<h:outputLabel value="CEP: " for="cep" />
-			<p:inputText id="cep" value="#{cidadao.cidadao.cep}" maxlength="10" />
-			
-			<h:outputLabel value="Telefone: " for="telefone" />
-			<p:inputText id="telefone" value="#{cidadao.cidadao.tel}" mask="(999) 999-9999"/>
-	        
-	        
-	        <h:commandButton value="Salvar" action="#{cidadao.save()}" />			
-			
-		</h:panelGrid>
-	
-	</h:form>
+		<ui:define name="content">
 
+			<h:form id="cad_usuario">
+			
+			<!--		Mensagens de Erro		-->
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+					
+				<p:steps activeIndex="1" styleClass="custom" readonly="true">
+					<p:menuitem value="Dados do Usuário" url="#" />
+					<p:menuitem value="Dados Pessoais" url="#" />
+				</p:steps>
+
+				<div class="container">
+
+					<h:outputText
+						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
+						style="color:gray" />
+
+					<div class="ficha">
+
+						<h:outputText value="Dados pessoais"
+							style="color:#1a568c; font-size:25px;" />
+
+						<p:panelGrid>
+							
+							<p:row>
+								<p:column ><h:outputLabel value="Data de Nascimento: " for="datanasc" /></p:column>
+								<p:column><h:outputLabel value="Tipo Pessoa: " for="tipo" /></p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>
+									<p:inputMask id="datanasc" value="#{cidadao.cidadao.datanasc}"
+										mask="99/99/9999" />
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="console" value="#{cidadao.cidadao.tipo}"
+										style="width:125px">
+										<f:selectItem itemLabel="Física" itemValue="true" />
+										<f:selectItem itemLabel="Jurídica" itemValue="false" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+
+							<p:row>
+								<p:column ><h:outputLabel value="Gênero: " for="sexo" /></p:column>
+								<p:column><h:outputLabel value="Telefone: " for="telefone" /></p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>
+									<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}" layout="pageDirection">
+										<f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+										<f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+									</p:selectOneRadio>
+								</p:column>
+								
+								<p:column><p:inputMask id="telefone" value="#{cidadao.cidadao.tel}" mask="(999) 999-9999" /></p:column>
+							</p:row>
+
+							<p:row>
+								<p:column><h:outputLabel value="RG: " for="rg" /></p:column>
+								<p:column><h:outputLabel value="CPF/CNPJ: " for="cpf" /></p:column>
+							</p:row>
+							
+							<p:row>
+								<p:column><p:inputText id="cpf" value="#{cidadao.cidadao.cpf}" maxlength="15" /></p:column>
+								<p:column><p:inputMask id="rg" value="#{cidadao.cidadao.rg}" mask="?9999999999999999" /></p:column>
+							</p:row>
+							
+							<p:row>
+								<p:column><h:outputLabel value="Orgao Expedidor: " for="orgao" /></p:column>
+								<p:column><h:outputLabel value="Escolaridade: " for="escolaridade" /></p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>
+									<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}" style="width:125px"/>									
+								</p:column>
+
+								<p:column>
+									<p:selectOneMenu id="escolaridade"
+										value="#{cidadao.cidadao.escolaridade}" style="width:125px">
+										<f:selectItem itemLabel="Selecionar" itemValue="" />
+										<f:selectItem itemLabel="Analfabeto" itemValue="Analfabeto" />
+										<f:selectItem itemLabel="Semi-Analfabeto" itemValue="Semi-Analfabeto" />
+										<f:selectItem itemLabel="Fundamental" itemValue="fundamental" />
+										<f:selectItem itemLabel="Medio" itemValue="medio" />
+										<f:selectItem itemLabel="Superior" itemValue="superior" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+
+							<p:panelGrid>
+
+								<p:row>
+									<p:column>
+										<h:outputLabel value="CEP: " for="cep" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<p:inputText id="cep" value="#{cidadao.cidadao.cep}"
+											maxlength="10" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Estado: " for="estado" />
+									</p:column>
+									<p:column>
+										<h:outputLabel value="Cidade: " for="cidade" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<p:selectOneMenu id="estado" value="#{cidadao.cidadao.estado}"
+											style="width:125px">
+											<f:selectItem itemLabel="Selecionar" itemValue="" />
+											<f:selectItem itemLabel="Acre" itemValue="AC" />
+											<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+											<f:selectItem itemLabel="Amapá" itemValue="AP" />
+											<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+											<f:selectItem itemLabel="Bahia" itemValue="BA" />
+											<f:selectItem itemLabel="Ceará" itemValue="CE" />
+											<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+											<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+											<f:selectItem itemLabel="Goiás" itemValue="GO" />
+											<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+											<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+											<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+											<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+											<f:selectItem itemLabel="Pará" itemValue="PA" />
+											<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+											<f:selectItem itemLabel="Paraná" itemValue="PR" />
+											<f:selectItem itemLabel="Piauí" itemValue="PI" />
+											<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+											<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+											<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+											<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+											<f:selectItem itemLabel="Roraima" itemValue="RR" />
+											<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+											<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+											<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+											<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column>
+										<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Logradouro: " for="logradouro" />
+									</p:column>
+									<p:column>
+										<h:outputLabel value="Numero: " for="numero" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<p:inputText id="logradouro" value="" />
+									</p:column>
+									<p:column>
+										<p:inputText id="numero" value="" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Bairro: " for="bairro" />
+									</p:column>
+									<p:column>
+										<h:outputLabel value="Complemento: " for="complemento" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column>
+										<p:inputText id="bairro" value="" />
+									</p:column>
+									<p:column>
+										<p:inputText id="complemento" value="" />
+									</p:column>
+								</p:row>
+
+							</p:panelGrid>
+
+						</div>
+
+					<p:commandLink class="botaoLink" action="#{cidadao.save}" >
+						<h:outputText value="Cadastrar" />
+						<i class="fa fa-check" style="color: white; padding-left: 3px" />						
+					</p:commandLink>
+
+				</div>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
 </h:body>
 </html>

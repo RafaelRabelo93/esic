@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
+// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,28 +21,31 @@ public class Responsavel implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7705311247766841073L;
+	private static final long serialVersionUID = 4683753718646281832L;
 	private Integer idResponsavel;
 	private Entidades entidades;
-	private Representante representante;
+	private Usuario usuario;
 	private Short nivel;
 	private String email;
 
 	public Responsavel() {
 	}
+	
 
-	public Responsavel(Entidades entidades, Representante representante, String email) {
+
+	public Responsavel(Entidades entidades, Usuario usuario, String email) {
 		this.entidades = entidades;
-		this.representante = representante;
+		this.usuario = usuario;
 		this.email = email;
 	}
 
-	public Responsavel(Entidades entidades, Representante representante, Short nivel, String email) {
+	public Responsavel(Entidades entidades, Usuario usuario, Short nivel, String email) {
 		this.entidades = entidades;
-		this.representante = representante;
+		this.usuario = usuario;
 		this.nivel = nivel;
 		this.email = email;
 	}
+	
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -56,6 +59,7 @@ public class Responsavel implements java.io.Serializable {
 		this.idResponsavel = idResponsavel;
 	}
 
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idEntidades", nullable = false)
 	public Entidades getEntidades() {
@@ -65,15 +69,17 @@ public class Responsavel implements java.io.Serializable {
 	public void setEntidades(Entidades entidades) {
 		this.entidades = entidades;
 	}
+	
+
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idRepresentante", nullable = false)
-	public Representante getRepresentante() {
-		return this.representante;
+	@JoinColumn(name = "idUsuario", nullable = false)
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public void setRepresentante(Representante representante) {
-		this.representante = representante;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Column(name = "nivel")

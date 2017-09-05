@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
+	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<title>SICC | Cadastro</title>	
+</h:head>
+
+<h:body>
+
+	<h:form id="cad_responsavel" >
+	
+		<h:panelGrid columns="2" >
+		
+			<h:outputLabel value="Email: " for="email" />
+			<p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" maxlength="100" />	
+	
+			<h:outputLabel value="Orgão/Entidade: " for="orgao" />		
+			<p:selectOneMenu id="orgao" value="#{responsavel.entidades}" var="ent" style="width:125px" >
+	            <f:selectItem itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />	            
+       		</p:selectOneMenu>
+		
+			
+			<h:outputLabel value="Nível: " for="nivel" />
+			<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}" >
+	            <f:selectItem itemLabel="Representante" itemValue="1" />
+	            <f:selectItem itemLabel="Autoridade 1" itemValue="2" />
+	            <f:selectItem itemLabel="Gestor" itemValue="3" />
+	        </p:selectOneRadio>	
+
+	        
+	        
+	        <h:commandButton value="Salvar" action="#{responsavel.save()}"/>			
+			
+		</h:panelGrid>
+	
+	</h:form>
+
+</h:body>
+</html>

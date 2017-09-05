@@ -6,17 +6,16 @@
   <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/esic</property>
   <property name="hibernate.connection.username">root</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>  
   
-  <mapping class="br.gov.se.lai.Entity.Acoes" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Cidadao" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Entidades" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Mensagem" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Orgaos" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Representante" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Responsavel" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.ResponsavelId" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Solicitacao" package="br.gov.se.lai.Entity"/>
-  <mapping class="br.gov.se.lai.Entity.Usuario" package="br.gov.se.lai.Entity"/>
+  <mapping package="br.gov.se.lai.entity"/>
+  <mapping class="br.gov.se.lai.entity.Acoes"/>
+  <mapping class="br.gov.se.lai.entity.Cidadao"/>
+  <mapping class="br.gov.se.lai.entity.Competencias"/>
+  <mapping class="br.gov.se.lai.entity.Entidades"/>
+  <mapping class="br.gov.se.lai.entity.Mensagem"/>
+  <mapping class="br.gov.se.lai.entity.Responsavel"/>  
+  <mapping class="br.gov.se.lai.entity.Solicitacao"/>
+  <mapping class="br.gov.se.lai.entity.Usuario"/>
  </session-factory>
 </hibernate-configuration>

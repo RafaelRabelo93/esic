@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
+// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,15 +22,15 @@ public class Usuario implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5299525150214128347L;
+	private static final long serialVersionUID = -2380284948334048659L;
 	private Integer idUsuario;
 	private String nome;
 	private String nick;
 	private String senha;
 	private short perfil;
-	private Set<Representante> representantes = new HashSet<Representante>(0);
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private Set<Cidadao> cidadaos = new HashSet<Cidadao>(0);
+	private Set<Responsavel> responsavels = new HashSet<Responsavel>(0);
 
 	public Usuario() {
 	}
@@ -42,15 +42,15 @@ public class Usuario implements java.io.Serializable {
 		this.perfil = perfil;
 	}
 
-	public Usuario(String nome, String nick, String senha, short perfil, Set<Representante> representantes,
-			Set<Mensagem> mensagems, Set<Cidadao> cidadaos) {
+	public Usuario(String nome, String nick, String senha, short perfil, Set<Mensagem> mensagems, Set<Cidadao> cidadaos,
+			Set<Responsavel> responsavels) {
 		this.nome = nome;
 		this.nick = nick;
 		this.senha = senha;
 		this.perfil = perfil;
-		this.representantes = representantes;
 		this.mensagems = mensagems;
 		this.cidadaos = cidadaos;
+		this.responsavels = responsavels;
 	}
 
 	@Id
@@ -83,7 +83,7 @@ public class Usuario implements java.io.Serializable {
 		this.nick = nick;
 	}
 
-	@Column(name = "senha", nullable = false, length = 45)
+	@Column(name = "senha", nullable = false, length = 64)
 	public String getSenha() {
 		return this.senha;
 	}
@@ -102,15 +102,6 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	public Set<Representante> getRepresentantes() {
-		return this.representantes;
-	}
-
-	public void setRepresentantes(Set<Representante> representantes) {
-		this.representantes = representantes;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
 	public Set<Mensagem> getMensagems() {
 		return this.mensagems;
 	}
@@ -126,6 +117,15 @@ public class Usuario implements java.io.Serializable {
 
 	public void setCidadaos(Set<Cidadao> cidadaos) {
 		this.cidadaos = cidadaos;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	public Set<Responsavel> getResponsavels() {
+		return this.responsavels;
+	}
+
+	public void setResponsavels(Set<Responsavel> responsavels) {
+		this.responsavels = responsavels;
 	}
 
 }

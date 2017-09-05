@@ -31,7 +31,8 @@ public class UsuarioBean implements Serializable{
 		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
 		usuario.setPerfil((short) 3);
 		UsuarioDAO.saveOrUpdate(usuario);
-		return "cad_cidadao";
+		//return "cad_cidadao";
+		return "cad_responsavel";
 	}
 	
 	public String delete() {

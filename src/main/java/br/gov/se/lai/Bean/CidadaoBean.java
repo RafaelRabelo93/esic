@@ -19,16 +19,17 @@ public class CidadaoBean implements Serializable{
 	 */
 	private static final long serialVersionUID = 6367328853853098867L;
 	private Cidadao cidadao;
+	private Usuario usuario;
 	
 	@PostConstruct
 	public void init() {
 		cidadao = new Cidadao();
 	}
 	
-	public String save(Usuario usuario) {
+	public String save() {
 		cidadao.setUsuario(usuario);
 		CidadaoDAO.saveOrUpdate(cidadao);
-		return "../index.xhtml";
+		return "../index";
 	}
 	
 	public String delete() {
@@ -50,6 +51,15 @@ public class CidadaoBean implements Serializable{
 
 	public void setCidadao(Cidadao cidadao) {
 		this.cidadao = cidadao;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}	
 	
+		
 }

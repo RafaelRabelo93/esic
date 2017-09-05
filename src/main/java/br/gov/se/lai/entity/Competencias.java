@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 04/09/2017 09:25:00 by Hibernate Tools 5.2.5.Final
+// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

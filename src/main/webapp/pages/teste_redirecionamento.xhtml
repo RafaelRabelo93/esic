@@ -9,39 +9,23 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
 	<h:outputStylesheet name="index.css" library="css" />
-	<h:outputStylesheet name="header.css" library="css" />
-	<h:outputStylesheet name="menu.css" library="css" />
-	<h:outputStylesheet name="footer.css" library="css" />
-	<h:outputStylesheet name="cadastro.css" library="css" />
 	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
 	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
-	<title>SICC</title>	
+	<title>SICC | Cadastro</title>	
 </h:head>
 
 <h:body>
+
+	<h:form id="cad_usuario" >
 	
-	<div id="page" style="display: flex; flex-direction: column; height: 100vh;">
- 
-	    <div id="header">
-		<ui:insert name="header" >
-		  <ui:include src="/pages/header.xhtml" />
-		</ui:insert>
-	    </div>
- 
-	    <div id="content" style="height: 100%">
-	  	<ui:insert name="content" >
-	 	  Conteúdo da página
-	   	</ui:insert>
-	    </div>
-
-		<div id="footer">
-			<ui:insert name="footer">
-<!-- 				<ui:include src="/pages/footer.xhtml" /> -->
-			</ui:insert>
-		</div>
-
-	</div>
-
+		<h:panelGrid columns="1" >
+	
+			<h:outputLabel value="Salvou "/>		
+			
+			
+		</h:panelGrid>
+	
+	</h:form>
 
 </h:body>
 </html>

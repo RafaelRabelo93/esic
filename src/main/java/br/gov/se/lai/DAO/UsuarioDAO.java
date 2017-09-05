@@ -9,12 +9,13 @@ import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class UsuarioDAO {
+	
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
     public static void saveOrUpdate(Usuario usuario) {     	        
         try {
-        	em.getTransaction().begin();
-        	if(usuario.getIdUsuario() == 0) {
+        	if(!em.getTransaction().isActive()) em.getTransaction().begin();
+        	if(usuario.getIdUsuario() ==  null) {
         		em.persist(usuario);
     		}else {
     			em.merge(usuario);

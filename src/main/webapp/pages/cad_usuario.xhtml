@@ -9,6 +9,7 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
 	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet name="cadasto.css" library="css" />
 	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
 	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
 	<title>SICC | Cadastro</title>	
@@ -16,32 +17,80 @@
 
 <h:body>
 
-	<h:form id="cad_usuario" >
-	
-		<h:panelGrid columns="2" >
-		
-			<h:outputLabel value="Nome: " for="nome" />
-			<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}" />
-			
-			<h:outputLabel value="Usuario: " for="nick" />
-			<p:inputText id="nick" required="true" value="#{usuario.usuario.nick}"/>
-			
-			<h:outputLabel value="Email: " for="email" />
-			<p:inputText id="email" required="true" value="#{usuario.email}" />			
-			
-			<h:outputLabel value="Senha 1: " for="senha1" />
-	        <p:password id="senha1" match="senha2" placeholder="Digite sua senha" required="true" value="#{usuario.usuario.senha}" />
-	 
-	        <h:outputLabel for="senha2" value="Senha 2: " />
-	        <p:password id="senha2" placeholder="Repita sua senha" required="true" />
-	        
-	        <h:commandButton value="Salvar" action="#{usuario.save}" >
-	        	<f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.cidadao.email}" />
-	        </h:commandButton>		
-			
-		</h:panelGrid>
-	
-	</h:form>
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<h:form id="cad_usuario">
+
+				<!--		Mensagens de Erro		-->
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:steps activeIndex="0" styleClass="custom" readonly="true">
+					<p:menuitem value="Dados do Usuário" url="#" />
+					<p:menuitem value="Dados Pessoais" url="#" />
+				</p:steps>
+
+				<div class="container">
+
+					<h:outputText
+						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
+						style="color:gray" />
+
+					<div class="ficha">
+
+						<h:outputText value="Dados do Usuário"
+							style="color:#1a568c; font-size:25px;" />
+
+						<p:panelGrid layout="grid" cellpadding="5px" columns="1">
+
+							<h:outputLabel value="Nome completo *: " for="nome" />
+							<p:inputText id="nome" required="true"
+								value="#{usuario.usuario.nome}" size="50" />
+
+							<h:outputLabel value="Nome de usuário *: " for="nick" />
+							<p:inputText id="nick" required="true"
+								value="#{usuario.usuario.nick}" size="50" />
+
+							<h:outputLabel value="Email: *" for="email" />
+							<p:inputText id="email" required="true" value="#{usuario.email}"
+								size="50" />
+
+							<h:outputLabel value="Senha: *" for="senha1" />
+							<p:password id="senha1" match="senha2"
+								placeholder="Digite sua senha" required="true"
+								value="#{usuario.usuario.senha}" />
+
+							<h:outputLabel value="Confirme sua senha *:" for="senha2" />
+							<p:password id="senha2" placeholder="Repita sua senha"
+								required="true" />
+
+						</p:panelGrid>
+
+					</div>
+					
+			        <p:commandLink action="#{usuario.save}" class="botaoLink">
+			        
+			        	<h:outputText value="Avançar" />
+			        	<i class="fa fa-arrow-right" style="color:white; padding-left:3px" />
+			        	
+			        	
+			        	<!-- <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.cidadao.email}" /> -->
+			        	<!-- <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> -->
+			        	
+			        	<f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.responsavel.email}" /> 
+			        	<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
+			        	
+			        </p:commandLink>							
+
+				</div>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
 
 </h:body>
 </html>

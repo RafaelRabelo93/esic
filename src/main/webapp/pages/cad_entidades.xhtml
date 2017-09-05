@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
+	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<title>SICC | Cadastro</title>	
+</h:head>
+
+<h:body>
+
+	<h:form id="cad_entidades" >
+	
+		<h:panelGrid columns="2" >
+		
+			<h:outputLabel value="Nome: " for="nome" />
+			<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" />
+			
+			<h:outputLabel value="É orgão?: " for="orgao" />
+			<p:selectOneRadio id="orgao" value="#{entidades.entidades.orgao}">
+	            <f:selectItem itemLabel="Sim" itemValue="true" />
+	            <f:selectItem itemLabel="Não" itemValue="false" />
+        	</p:selectOneRadio>		
+						
+			<h:outputLabel value="ID Orgão: " for="idOrgao" />
+			<p:inputText id="idOrgao" required="true" value="#{entidades.entidades.idOrgaos}"/>
+			
+		
+	        
+	        <h:commandButton value="Salvar" action="#{entidades.save()}" >
+	        </h:commandButton>		
+			
+		</h:panelGrid>
+	
+	</h:form>
+
+</h:body>
+</html>
+

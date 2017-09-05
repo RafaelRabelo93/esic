@@ -14,7 +14,7 @@ public class CidadaoDAO {
     public static void saveOrUpdate(Cidadao cidadao) {     	        
         try {
         	em.getTransaction().begin();
-        	if(cidadao.getIdCidadao() == 0) {
+        	if(cidadao.getIdCidadao() == null) {
         		em.persist(cidadao);
     		}else {
     			em.merge(cidadao);
