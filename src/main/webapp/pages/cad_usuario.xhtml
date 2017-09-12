@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:p="http://primefaces.org/ui">
-
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
-	<h:outputStylesheet name="index.css" library="css" />
-	<h:outputStylesheet name="cadasto.css" library="css" />
-	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
-	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
-	<title>SICC | Cadastro</title>	
-</h:head>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:body>
 
@@ -21,68 +12,84 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_usuario">
+			<h:form id="cad_usuario" styleClass="cad_form">
 
-				<!--		Mensagens de Erro		-->
-				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
+				<div class="ficha">
 
-				<p:steps activeIndex="0" styleClass="custom" readonly="true">
-					<p:menuitem value="Dados do Usuário" url="#" />
-					<p:menuitem value="Dados Pessoais" url="#" />
-				</p:steps>
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
 
-				<div class="container">
+					<p:steps activeIndex="0" styleClass="custom" readonly="true">
+						<p:menuitem value="Dados do Usuário" url="#" />
+						<p:menuitem value="Dados Pessoais" url="#" />
+					</p:steps>
 
-					<h:outputText
-						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-						style="color:gray" />
+<!-- 					<h:outputText -->
+<!-- 						value="Os campos abaixo marcados com * são de preenchimento obrigatório." -->
+<!-- 						style="color:gray; align-self: flex-start;" /> -->
 
-					<div class="ficha">
 
-						<h:outputText value="Dados do Usuário"
-							style="color:#1a568c; font-size:25px;" />
+					<p:panelGrid style="margin-bottom:1vw">
 
-						<p:panelGrid layout="grid" cellpadding="5px" columns="1">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2" />
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<h:outputText value="Dados do Usuário"
+										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2" />
+							</p:row>
+						</f:facet>
 
-							<h:outputLabel value="Nome completo *: " for="nome" />
-							<p:inputText id="nome" required="true"
-								value="#{usuario.usuario.nome}" size="50" />
 
-							<h:outputLabel value="Nome de usuário *: " for="nick" />
-							<p:inputText id="nick" required="true"
-								value="#{usuario.usuario.nick}" size="50" />
+						<p:row><p:column> <p:outputLabel value="Nome completo: " for="nome" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}" size="50" /> </p:column></p:row>
 
-							<h:outputLabel value="Email: *" for="email" />
-							<p:inputText id="email" required="true" value="#{usuario.email}"
-								size="50" />
+						<p:row><p:column> <p:outputLabel value="Nome de usuário: " for="nick" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="nick" required="true"
+							value="#{usuario.usuario.nick}" size="50" /> </p:column></p:row>
 
-							<h:outputLabel value="Senha: *" for="senha1" />
-							<p:password id="senha1" match="senha2"
-								placeholder="Digite sua senha" required="true"
-								value="#{usuario.usuario.senha}" />
+						<p:row><p:column> <p:outputLabel value="Email:" for="email" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="email" required="true" value="#{usuario.email}"
+							size="50" /> </p:column></p:row>
 
-							<h:outputLabel value="Confirme sua senha *:" for="senha2" />
-							<p:password id="senha2" placeholder="Repita sua senha"
-								required="true" />
+						<p:row><p:column> <p:outputLabel value="Senha:" for="senha1" /> </p:column></p:row>
+						<p:row><p:column> <p:password id="senha1" match="senha2"
+							placeholder="Digite sua senha" required="true"
+							value="#{usuario.usuario.senha}" /> </p:column></p:row>
 
-						</p:panelGrid>
+						<p:row><p:column> <p:outputLabel value="Confirme sua senha:" for="senha2" /> </p:column></p:row>
+						<p:row><p:column> <p:password id="senha2" placeholder="Repita sua senha"
+							required="true" /> </p:column></p:row>
+							
+						<p:row><p:column> <h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray"/> </p:column></p:row>
 
-					</div>
-					
-			        <p:commandLink action="#{usuario.save}" class="botaoLink">
-			        
-			        	<h:outputText value="Avançar" />
-			        	<i class="fa fa-arrow-right" style="color:white; padding-left:3px" />
-			        	
-			        	
-			        	<!-- <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.cidadao.email}" /> -->
-			        	<!-- <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> -->
-			        	
-			        	<f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.responsavel.email}" /> 
-			        	<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
-			        	
-			        </p:commandLink>							
+					</p:panelGrid>
+
+
+
+					<p:commandLink action="#{usuario.save}" class="botaoLink">
+
+						<h:outputText value="Avançar" />
+						<i class="fa fa-arrow-right"
+							style="color: white; padding-left: 3px" />
+
+
+						<!--  <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.cidadao.email}" />  -->
+						<!--  <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" />  -->
+
+						 <f:setPropertyActionListener value="#{usuario.email}"
+							target="#{responsavel.responsavel.email}" />
+						<f:setPropertyActionListener value="#{usuario.usuario}"
+							target="#{responsavel.usuario}" /> 
+
+					</p:commandLink>
 
 				</div>
 

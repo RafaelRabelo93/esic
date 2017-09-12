@@ -15,6 +15,7 @@
 	<h:outputStylesheet name="cadastro.css" library="css" />
 	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
 	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<h:outputScript library="js" name="locale.js"/>
 	<title>SICC</title>	
 </h:head>
 
@@ -28,7 +29,7 @@
 		</ui:insert>
 	    </div>
  
-	    <div id="content" style="height: 100%">
+	    <div id="content">
 	  	<ui:insert name="content" >
 	 	  Conteúdo da página
 	   	</ui:insert>
@@ -36,7 +37,7 @@
 
 		<div id="footer">
 			<ui:insert name="footer">
-<!-- 				<ui:include src="/pages/footer.xhtml" /> -->
+				<ui:include src="/pages/footer.xhtml" />
 			</ui:insert>
 		</div>
 

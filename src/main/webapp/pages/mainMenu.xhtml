@@ -21,9 +21,33 @@
 				</div>
 
 				<div class="menu">
+				
+					<div class="botao">
+						<h:commandLink styleClass="link" href="#lai">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
+								width="80%"/>
+
+							<h:outputText styleClass="titulo" value="LAI" style="font-size:35px; padding: 2% 0;"/>
+							
+							<h:outputText style="font-size:20px; color:#333"
+								value="Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe" />
+						</h:commandLink>
+					</div>
+					
+					<div class="botao">
+						<h:commandLink styleClass="link" action="pages/cad_usuario">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
+								width="80%" />
+
+							<h:outputText styleClass="titulo" value="Cadastro" style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Registrar usuário " />
+						</h:commandLink>
+					</div>
 
 					<div class="botao">
-						<h:commandLink styleClass="link" href="#solicita">
+						<h:commandLink styleClass="link" action="pages/solicitacao">
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
 								width="80%"/>
@@ -45,30 +69,6 @@
 
 							<h:outputText style="font-size:20px; color:#333"
 								value="Acompanhar andamento da solicitação realizada" />
-						</h:commandLink>
-					</div>
-
-					<div class="botao">
-						<h:commandLink styleClass="link" href="#cadastro">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
-								width="80%" />
-
-							<h:outputText styleClass="titulo" value="Cadastro" style="font-size:35px; padding: 2% 0;" />
-
-							<h:outputText style="font-size:20px; color:#333"
-								value="Registrar usuário " />
-						</h:commandLink>
-					</div>
-
-					<div class="botao">
-						<h:commandLink styleClass="link" href="#lai">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
-								width="80%"/>
-
-							<h:outputText styleClass="titulo" value="LAI" style="font-size:35px; padding: 2% 0;"/>
-							
-							<h:outputText style="font-size:20px; color:#333"
-								value="Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe" />
 						</h:commandLink>
 					</div>
 

@@ -49,8 +49,8 @@ public class  EntidadesDAO {
     	return em.find(Entidades.class, id);
     }
 
-	public static List<Entidades> list() {
-	
-        return null;
+	@SuppressWarnings("unchecked")
+	public static List<Entidades> list() {		
+        return em.createNativeQuery("SELECT * FROM esic.entidades", Entidades.class).getResultList();
     }  
 }

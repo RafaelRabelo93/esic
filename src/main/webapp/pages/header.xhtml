@@ -27,7 +27,7 @@
 				<div id="barraNav" class="barraNav">
 
 					<h:graphicImage value="#{resource['img/logoGovSerg.png']}"
-						style="padding: 0.5%" width="141" height="50" />
+						style="padding: 0.5vw" width="140" height="50" />
 
 					<ul id="menuSM">
 						<li><h:commandLink
@@ -39,11 +39,15 @@
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
-								<p:inputText placeholder="E-mail" />
-								<p:password placeholder="Senha" />
-								<p:commandButton value="Login" />
+								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
+								<p:password placeholder="Senha" value="#{usuario.senha}" />
+								<p:commandButton value="Login" action="#{usuario.login}"/>
 							</h:panelGrid>
 						</p:overlayPanel>
+						
+						<li><h:commandLink
+								action="#{usuario.logout()}">Logout</h:commandLink></li>
+								
 					</ul>
 
 				</div>

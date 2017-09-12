@@ -27,17 +27,18 @@ public class ResponsavelBean implements Serializable{
 	private Responsavel responsavel;
 	private Usuario usuario;
 	private List<Entidades> entidades;
+	private int idEntidade;
 	
 	
 	@PostConstruct
 	public void init() {
-		responsavel = new Responsavel();
-		entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		this.responsavel = new Responsavel();
+		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 	}
 	
 	public String save() {
-		responsavel.setEntidades(EntidadesDAO.find(3));
-		responsavel.setUsuario(usuario);
+		this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
+		this.responsavel.setUsuario(this.usuario);
 		ResponsavelDAO.saveOrUpdate(responsavel);
 		return "teste_redirecionamento";
 	}
@@ -77,6 +78,14 @@ public class ResponsavelBean implements Serializable{
 
 	public void setEntidades(List<Entidades> entidades) {
 		this.entidades = entidades;
+	}
+
+	public int getIdEntidade() {
+		return idEntidade;
+	}
+
+	public void setIdEntidade(int idEntidade) {
+		this.idEntidade = idEntidade;
 	}
 
 	

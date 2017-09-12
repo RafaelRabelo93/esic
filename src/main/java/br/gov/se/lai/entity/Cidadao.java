@@ -217,7 +217,7 @@ public class Cidadao implements java.io.Serializable {
 		this.cep = cep;
 	}
 
-	@Column(name = "tel", length = 11)
+	@Column(name = "tel", length = 15)
 	public String getTel() {
 		return this.tel;
 	}

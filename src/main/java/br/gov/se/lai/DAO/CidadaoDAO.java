@@ -39,6 +39,10 @@ public class CidadaoDAO {
             em.getTransaction().rollback();            
         }
     }    
+    
+    public static Cidadao findCidadao(int id){
+    	return em.find(Cidadao.class, id) ;
+    }
 
 	public static List<Cidadao> list() {
 	

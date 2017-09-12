@@ -19,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "usuario", catalog = "esic")
 public class Usuario implements java.io.Serializable {
 
+
 	/**
 	 * 
 	 */

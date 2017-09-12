@@ -90,7 +90,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.entidades = entidades;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dataIni", length = 10)
 	public Date getDataIni() {
 		return this.dataIni;
@@ -109,7 +109,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "datafim", length = 10)
 	public Date getDatafim() {
 		return this.datafim;

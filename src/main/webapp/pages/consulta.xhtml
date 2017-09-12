@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<div class="ficha">
+
+				<!--		Mensagens de Erro		-->
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<h:outputText value="Consulta de solicitações"
+					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
+
+<!-- 				<div class="linha"> -->
+<!-- 					<p:outputLabel value="Nº do protocolo:" for="protocolo" /> -->
+<!-- 					<p:inputText id="protocolo" size="30" style="margin: 0 0.5vw" /> -->
+<!-- 					<p:commandLink class="botaoLinkIcon"> -->
+<!-- 						<i class="fa fa-search" style="color: white; padding: 6px;" /> -->
+<!-- 					</p:commandLink> -->
+<!-- 				</div> -->
+
+<!-- 				<div id="tabela"> -->
+<!-- 					<p:dataList value="#{dataListView.soliciticao}" type="unordered" itemType="none"> -->
+<!-- 						<f:facet name="header"> -->
+<!--         			Nº protocolo -->
+<!-- 					</f:facet> -->
+
+<!-- 					</p:dataList> -->
+
+<!-- 					<p:dataList value="#{dataListView.soliciticao}" type="unordered" itemType="none"> -->
+<!-- 						<f:facet name="header"> -->
+<!--         			Titulo -->
+<!-- 					</f:facet> -->
+
+<!-- 					</p:dataList> -->
+
+<!-- 					<p:dataList value="#{dataListView.soliciticao}" type="unordered" itemType="none"> -->
+<!-- 						<f:facet name="header"> -->
+<!--         			Órgão / Entidade -->
+<!-- 					</f:facet> -->
+
+<!-- 					</p:dataList> -->
+
+<!-- 					<p:dataList value="#{dataListView.soliciticao}" type="unordered" itemType="none"> -->
+<!-- 					<f:facet name="header"> -->
+<!--         			Status -->
+<!-- 					</f:facet> -->
+<!-- 						<p:commandLink class="botaoLinkIcon"><i class="fa fa-search" style="color: white; padding: 6px;" /></p:commandLink> -->
+<!-- 					</p:dataList> -->
+<!-- 				</div> -->
+
+				<p:dataTable var="solicitacao" widgetVar="consultaTable" value="" style="margin-bottom:1vw">
+
+					<p:column headerText="Nº Protocolo" sortBy="">
+						<h:outputText value="oi" />
+					</p:column>
+
+					<p:column headerText="Título" sortBy="">
+						<h:outputText value="oi" />
+					</p:column>
+
+					<p:column headerText="Órgão / Entidade" sortBy="">
+						<h:outputText value="oi" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="" filterBy="#{solicitacao.status}" filterMatchMode="equals">
+						<f:facet name="filter">
+			                <p:selectOneMenu onchange="PF('consultaTable').filter()">
+			                    <f:selectItem itemLabel="Todos" itemValue="" />
+			                    <f:selectItem itemLabel="Aberta" itemValue="1"/>
+			                    <f:selectItem itemLabel="Respondida" itemValue="2"/>
+			                    <f:selectItem itemLabel="Fechada" itemValue="3"/>
+			                </p:selectOneMenu>
+			            </f:facet>
+						<h:outputText value="oi" />
+					</p:column>
+					
+					<p:column style="width:32px; text-align: center">
+			             <p:commandLink class="botaoLinkIcon" onclick="PF('detalheDialog').show();">
+							<i class="fa fa-search" style="color: white; padding: 6px;" />
+			           	</p:commandLink>
+			        </p:column>
+				</p:dataTable>
+				
+			</div>
+
+			<p:dialog widgetVar="detalheDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" draggable="false" closeOnEscape="true" style="box-shadow: none">
+				<p:outputPanel id="solicitacaoDetalhe" style="display:flex; flex-flow:column wrap; width:70vw; box-shadow:none !important">
+					<p:panelGrid style="border:none; margin-bottom:1vw">
+					
+						<p:row>
+							<p:column> <h:outputText value="Nª protocolo:" style="color:#1a568c; font-size:18px"/> </p:column>
+							<p:column> <h:outputText value="Status:" style="color:#1a568c; font-size:18px" /></p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column> <h:outputText value="blabla" /> </p:column>
+							<p:column> <h:outputText value="blabla" /> </p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column> <h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" /></p:column>
+							<p:column> <h:outputText value="Data:" style="color:#1a568c; font-size:18px" /> </p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column> <h:outputText value="blabla" /> </p:column>
+							<p:column> <h:outputText value="bla/bla/bla" /> </p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="Assunto:" style="color:#1a568c; font-size:18px" /> </p:column>
+						</p:row>
+
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="blabla" /> </p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="Título:" style="color:#1a568c; font-size:18px" /> </p:column>
+						</p:row>
+
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="blabla" /> </p:column>
+						</p:row>
+												
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="Mensagem:" style="color:#1a568c; font-size:18px" /> </p:column>
+						</p:row>
+
+						<p:row>
+							<p:column colspan="2"> 
+								<p:scrollPanel mode="native" style="height:200px" >
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+									<h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
+								</p:scrollPanel>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="Anexos:" style="color:#1a568c; font-size:18px" /> </p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2"> <h:outputText value="blabla.png" /> </p:column>
+						</p:row>
+						
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:dialog>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

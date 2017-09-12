@@ -29,7 +29,7 @@ public class CidadaoBean implements Serializable{
 	public String save() {
 		cidadao.setUsuario(usuario);
 		CidadaoDAO.saveOrUpdate(cidadao);
-		return "../index";
+		return "cad_solicitacao_mensagem";
 	}
 	
 	public String delete() {

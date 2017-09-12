@@ -11,7 +11,7 @@ public class HibernateUtil {
     static {
                 try {
                      entityManagerFactory = Persistence.createEntityManagerFactory("esic");
-                     System.out.println("Entity Menager Test.............."+ entityManagerFactory);
+                     System.out.println("Entity Manager Test.............."+ entityManagerFactory);
                 } catch (Throwable ex) {
 
                     System.err.println("Initial SessionFactory creation failed." + ex);

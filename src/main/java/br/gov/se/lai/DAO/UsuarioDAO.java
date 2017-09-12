@@ -4,6 +4,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
@@ -45,8 +46,22 @@ public class UsuarioDAO {
         }
     }    
     
-    public static Usuario findUsuario(String email){
-    	return em.find(Usuario.class, email) ;
+    public static Usuario buscarUsuario(String nick) {      	
+    	Query query = em.createQuery("FROM Usuario as usu WHERE usu.nick= :nickParam");
+    	query.setParameter("nickParam", nick);    	
+    	@SuppressWarnings("unchecked")
+    	List<Usuario> results = query.getResultList();
+
+    	if(results.isEmpty()){
+    	    return null;
+    	} else {
+    	    return results.get(0);
+    	}
+        
+    }        
+    
+    public static Usuario findUsuario(int id){
+    	return em.find(Usuario.class, id) ;
     }
 
 	public static List<Usuario> list() {
