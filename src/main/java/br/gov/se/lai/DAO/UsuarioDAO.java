@@ -38,11 +38,11 @@ public class UsuarioDAO {
 				em.getTransaction().begin();
 				em.remove(usu);
 	            em.getTransaction().commit();
-	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Atividade "+ usuario.getNome()+" exclu√≠da com sucesso!"));
+	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuario "+ usuario.getNome()+" exclui≠do com sucesso!"));
 			}            
         } catch (Exception e) {
             em.getTransaction().rollback();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao excluir atividade "+ usuario.getNome()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao excluir usuario "+ usuario.getNome()));
         }
     }    
     

@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -24,18 +24,18 @@ import javax.persistence.TemporalType;
 @Table(name = "solicitacao", catalog = "esic")
 public class Solicitacao implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3080838965683189217L;
+
+	private static final long serialVersionUID = -2604883216685714784L;
 	private Integer idSolicitacao;
 	private Cidadao cidadao;
 	private Entidades entidades;
+	private Acoes acoes;
 	private Date dataIni;
 	private String status;
 	private Date datafim;
 	private String titulo;
-	private Short assunto;
+	private Integer protocolo;
+	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 
 	public Solicitacao() {
@@ -46,15 +46,17 @@ public class Solicitacao implements java.io.Serializable {
 		this.entidades = entidades;
 	}
 
-	public Solicitacao(Cidadao cidadao, Entidades entidades, Date dataIni, String status, Date datafim, String titulo,
-			Short assunto, Set<Mensagem> mensagems) {
+	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, String status, Date datafim, String titulo,
+			Integer protocolo, String tipo, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
+		this.acoes = acoes;
 		this.dataIni = dataIni;
 		this.status = status;
 		this.datafim = datafim;
 		this.titulo = titulo;
-		this.assunto = assunto;
+		this.protocolo = protocolo;
+		this.tipo = tipo;
 		this.mensagems = mensagems;
 	}
 
@@ -91,7 +93,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dataIni", length = 10)
+	@Column(name = "dataIni", length = 19)
 	public Date getDataIni() {
 		return this.dataIni;
 	}
@@ -109,7 +111,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "datafim", length = 10)
 	public Date getDatafim() {
 		return this.datafim;
@@ -128,13 +130,22 @@ public class Solicitacao implements java.io.Serializable {
 		this.titulo = titulo;
 	}
 
-	@Column(name = "assunto")
-	public Short getAssunto() {
-		return this.assunto;
+	@Column(name = "protocolo")
+	public Integer getProtocolo() {
+		return this.protocolo;
 	}
 
-	public void setAssunto(Short assunto) {
-		this.assunto = assunto;
+	public void setProtocolo(Integer protocolo) {
+		this.protocolo = protocolo;
+	}
+
+	@Column(name = "tipo", length = 10)
+	public String getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacao")
@@ -144,6 +155,16 @@ public class Solicitacao implements java.io.Serializable {
 
 	public void setMensagems(Set<Mensagem> mensagems) {
 		this.mensagems = mensagems;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idAcoes", nullable = false)
+	public Acoes getAcoes() {
+		return acoes;
+	}
+
+	public void setAcoes(Acoes acoes) {
+		this.acoes = acoes;
 	}
 
 }

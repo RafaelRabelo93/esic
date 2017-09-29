@@ -19,8 +19,10 @@ public class CidadaoDAO {
     		}else {
     			em.merge(cidadao);
     		}
-            em.getTransaction().commit();            
-        } catch (Exception e) {        	
+            em.getTransaction().commit();  
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadao "+ cidadao.getUsuario().getNome()+" salvo(a) com sucesso!"));
+        } catch (Exception e) {   
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar cidadao "));
         	System.out.println(e);
             em.getTransaction().rollback();
         }

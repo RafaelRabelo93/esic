@@ -46,14 +46,43 @@
 								<p:outputLabel value="Nome: " for="nome" />
 							</p:column>
 						</p:row>
+						
+						<p:row><p:column> <p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="50" /> </p:column></p:row>
+
+
+												
 						<p:row>
 							<p:column>
-								<p:inputText id="nome" required="true" size="30"
-									value="#{entidades.entidades.nome}" />
+								<p:outputLabel value="Sigla: " for="sigla" />
 							</p:column>
 						</p:row>
-
 						<p:row>
+							<p:column>
+								<p:inputText id="sigla" required="true" size="10"
+									value="#{entidades.entidades.sigla}" />
+							</p:column>
+						</p:row>
+						
+						
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Orgão/Entidade: " for="idOrgao" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:selectOneMenu id="idOrgao"
+									value="#{entidades.entidades.idOrgaos}" style="width:125px">
+									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+									<f:selectItem itemLabel="CGE" itemValue="1" />
+									<f:selectItem itemLabel="Outro" itemValue="2" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+
+
+
 							<p:column>
 								<p:outputLabel value="É orgão?: " for="orgao" />
 							</p:column>

@@ -55,10 +55,6 @@
 						<p:row><p:column> <p:inputText id="nick" required="true"
 							value="#{usuario.usuario.nick}" size="50" /> </p:column></p:row>
 
-						<p:row><p:column> <p:outputLabel value="Email:" for="email" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="email" required="true" value="#{usuario.email}"
-							size="50" /> </p:column></p:row>
-
 						<p:row><p:column> <p:outputLabel value="Senha:" for="senha1" /> </p:column></p:row>
 						<p:row><p:column> <p:password id="senha1" match="senha2"
 							placeholder="Digite sua senha" required="true"
@@ -79,17 +75,8 @@
 						<h:outputText value="Avançar" />
 						<i class="fa fa-arrow-right"
 							style="color: white; padding-left: 3px" />
-
-
-						<!--  <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.cidadao.email}" />  -->
-						<!--  <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" />  -->
-
-						 <f:setPropertyActionListener value="#{usuario.email}"
-							target="#{responsavel.responsavel.email}" />
-						<f:setPropertyActionListener value="#{usuario.usuario}"
-							target="#{responsavel.usuario}" /> 
-
 					</p:commandLink>
+				
 
 				</div>
 

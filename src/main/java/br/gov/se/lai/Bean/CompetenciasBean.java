@@ -3,6 +3,7 @@ package br.gov.se.lai.Bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -26,6 +27,7 @@ public class CompetenciasBean implements Serializable{
 	private static final long serialVersionUID = -1964244964778917209L;
 	private Competencias competencias;
 	private List<Entidades> entidades;
+	private List<Competencias> listCompetencias;
 	private List<Acoes> acoes;
 	private int idAcoes;
 	private int idEntidades;
@@ -39,11 +41,19 @@ public class CompetenciasBean implements Serializable{
 	}
 	
 	public String save() {
-		this.competencias.setAcoes(AcoesDAO.findAcoes(this.idAcoes));
+		this.competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
 		this.competencias.setEntidades(EntidadesDAO.find(this.idEntidades));
 		CompetenciasDAO.saveOrUpdate(competencias);
-		return "teste_redirecionamento";
+		return "/index";
 	}
+	
+	public void filtrarCompetencias(AjaxBehaviorEvent e) {
+		if(idAcoes != 0) {
+			listCompetencias = CompetenciasDAO.filtrarCompetencias(idAcoes);
+		}else {
+			listCompetencias = null;
+		}
+	}	
 	
 	public String delete() {
 
@@ -82,12 +92,13 @@ public class CompetenciasBean implements Serializable{
 		this.entidades = entidades;
 	}
 
+
 	public int getIdAcoes() {
 		return idAcoes;
 	}
 
-	public void setIdAcoes(int titulo) {
-		this.idAcoes = titulo;
+	public void setIdAcoes(int idAcoes) {
+		this.idAcoes = idAcoes;
 	}
 
 	public int getIdEntidades() {
@@ -96,6 +107,18 @@ public class CompetenciasBean implements Serializable{
 
 	public void setIdEntidades(int idEntidades) {
 		this.idEntidades = idEntidades;
+	}
+
+	public List<Competencias> getListCompetencias() {
+		return listCompetencias;
+	}
+
+	public void setListCompetencias(List<Competencias> listCompetencias) {
+		this.listCompetencias = listCompetencias;
+	}
+
+	public void setCompetencias(Competencias competencias) {
+		this.competencias = competencias;
 	}
 
 	

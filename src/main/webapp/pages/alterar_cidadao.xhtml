@@ -13,7 +13,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_cidadao" styleClass="cad_form">
+			<h:form id="alterar_cidadao" styleClass="cad_form">
 
 				<div class="ficha">
 
@@ -42,11 +42,6 @@
 								<p:column colspan="2" />
 							</p:row>
 						</f:facet>
-						
-
-						<p:row><p:column> <p:outputLabel value="Email:" for="email" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="email" value="#{cidadao.cidadao.email}"
-							size="50" /> </p:column></p:row>
 
 						<p:row>
 							<p:column>
@@ -60,12 +55,12 @@
 						<p:row>
 							<p:column>
 								<p:calendar styleClass="date" id="datanasc"
-									value="#{cidadao.cidadao.datanasc}" showOn="button"
+									value="#{cidadao.datanasc}" showOn="button"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" />
 							</p:column>
 							<p:column>
-								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
+								<p:selectOneMenu id="tipo" 
 									style="width:125px">
 									<f:selectItem itemLabel="Física" itemValue="true" />
 									<f:selectItem itemLabel="Jurídica" itemValue="false" />
@@ -84,7 +79,7 @@
 
 						<p:row>
 							<p:column>
-								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
+								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"
 									layout="pageDirection">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
@@ -92,7 +87,7 @@
 							</p:column>
 
 							<p:column>
-								<p:inputMask id="telefone" value="#{cidadao.cidadao.tel}"
+								<p:inputMask id="telefone" value="#{cidadao.tel}"
 									mask="(99)99999-9999" />
 							</p:column>
 						</p:row>
@@ -108,11 +103,11 @@
 
 						<p:row>
 							<p:column>
-								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"
+								<p:inputMask id="rg" value="#{cidadao.rg}"
 									mask="?9999999999999999" />
 							</p:column>
 							<p:column>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}"
+								<p:inputMask id="cpf" value="#{cidadao.cpf}"
 									mask="999.999.999-99" />
 							</p:column>
 						</p:row>
@@ -128,13 +123,13 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}"
+								<p:inputText id="orgao" value="#{cidadao.orgaoexp}"
 									style="width:125px" />
 							</p:column>
 
 							<p:column>
 								<p:selectOneMenu id="escolaridade"
-									value="#{cidadao.cidadao.escolaridade}" style="width:125px">
+									value="#{cidadao.escolaridade}" style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto"
@@ -168,7 +163,7 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="cep" value="#{cidadao.cidadao.cep}"
+								<p:inputText id="cep" value="#{cidadao.cep}"
 									maxlength="10" />
 							</p:column>
 							<p:column></p:column>
@@ -185,7 +180,7 @@
 
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="estado" value="#{cidadao.cidadao.estado}"
+								<p:selectOneMenu id="estado" value="#{cidadao.estado}"
 									style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
@@ -217,7 +212,7 @@
 								</p:selectOneMenu>
 							</p:column>
 							<p:column>
-								<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+								<p:inputText id="cidade" value="#{cidadao.cidade}" />
 							</p:column>
 						</p:row>
 
@@ -232,7 +227,7 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="30" />
+								<p:inputText id="logradouro" value="#{cidadao.endereco}" size="30" />
 							</p:column>
 							<p:column>
 								<p:inputText id="numero"  size="10" />
@@ -266,11 +261,10 @@
 					</p:panelGrid>
 
 
-					<p:commandLink class="botaoLink" action="#{cidadao.save}">
+					<p:commandLink class="botaoLink" action="#{cidadao.edit}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 						 
-						<f:setPropertyActionListener value="#{cidadao.cidadao}" target="#{solicitacao.solicitacao.cidadao}" /> 
 						
 					</p:commandLink>
 

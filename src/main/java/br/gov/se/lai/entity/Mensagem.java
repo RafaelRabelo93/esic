@@ -1,7 +1,9 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,16 +24,15 @@ import javax.persistence.TemporalType;
 @Table(name = "mensagem", catalog = "esic")
 public class Mensagem implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -117379702782850057L;
+
+	private static final long serialVersionUID = -4273056639466954495L;
 	private Integer idMensagem;
 	private Solicitacao solicitacao;
 	private Usuario usuario;
 	private String texto;
-	private String anexo;
 	private Date data;
+	private short tipo;
+	private Set<Anexo> anexos = new HashSet<Anexo>(0);
 
 	public Mensagem() {
 	}
@@ -40,12 +42,13 @@ public class Mensagem implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, String anexo, Date data) {
+	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, Date data, short tipo, Set<Anexo> anexos) {
 		this.solicitacao = solicitacao;
 		this.usuario = usuario;
 		this.texto = texto;
-		this.anexo = anexo;
 		this.data = data;
+		this.tipo = tipo;
+		this.anexos = anexos;
 	}
 
 	@Id
@@ -89,15 +92,6 @@ public class Mensagem implements java.io.Serializable {
 		this.texto = texto;
 	}
 
-	@Column(name = "anexo", length = 65535)
-	public String getAnexo() {
-		return this.anexo;
-	}
-
-	public void setAnexo(String anexo) {
-		this.anexo = anexo;
-	}
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data", length = 19)
 	public Date getData() {
@@ -106,6 +100,25 @@ public class Mensagem implements java.io.Serializable {
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+	
+	@Column(name = "tipo")
+	public Short getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(Short tipo) {
+		this.tipo = tipo;
+	}
+
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
+	public Set<Anexo> getAnexos() {
+		return this.anexos;
+	}
+
+	public void setAnexos(Set<Anexo> anexos) {
+		this.anexos = anexos;
 	}
 
 }

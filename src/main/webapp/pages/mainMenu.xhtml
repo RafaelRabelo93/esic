@@ -14,6 +14,10 @@
 
 			<div class="mainMenu">
 				
+				<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				
 				<div id="title">
 					<h:outputText value="Sistema Eletrônico de"/>
 					<br />
@@ -21,7 +25,7 @@
 				</div>
 
 				<div class="menu">
-				
+						
 					<div class="botao">
 						<h:commandLink styleClass="link" href="#lai">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
@@ -47,7 +51,7 @@
 					</div>
 
 					<div class="botao">
-						<h:commandLink styleClass="link" action="pages/solicitacao">
+						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadao}">
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
 								width="80%"/>
@@ -61,7 +65,7 @@
 					</div>
 
 					<div class="botao">
-						<h:commandLink styleClass="link" href="#consulta">
+						<h:commandLink styleClass="link" action="pages/consulta">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
 								width="80%"/>
 

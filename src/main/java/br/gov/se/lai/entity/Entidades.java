@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,14 +19,14 @@ import javax.persistence.Table;
 @Table(name = "entidades", catalog = "esic")
 public class Entidades implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8180155637392238816L;
+
+	private static final long serialVersionUID = 6715782305551647625L;
 	private Integer idEntidades;
 	private int idOrgaos;
 	private String nome;
+	private String sigla;
 	private boolean orgao;
+	private boolean ativa;
 	private Set<Responsavel> responsavels = new HashSet<Responsavel>(0);
 	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
 	private Set<Competencias> competenciases = new HashSet<Competencias>(0);
@@ -34,17 +34,19 @@ public class Entidades implements java.io.Serializable {
 	public Entidades() {
 	}
 
-	public Entidades(int idOrgaos, String nome, boolean orgao) {
+	public Entidades(int idOrgaos, String nome, boolean orgao, boolean ativa) {
 		this.idOrgaos = idOrgaos;
 		this.nome = nome;
 		this.orgao = orgao;
+		this.ativa = ativa;
 	}
 
-	public Entidades(int idOrgaos, String nome, boolean orgao, Set<Responsavel> responsavels,
+	public Entidades(int idOrgaos, String nome, boolean orgao, boolean ativa, Set<Responsavel> responsavels,
 			Set<Solicitacao> solicitacaos, Set<Competencias> competenciases) {
 		this.idOrgaos = idOrgaos;
 		this.nome = nome;
 		this.orgao = orgao;
+		this.ativa = ativa;
 		this.responsavels = responsavels;
 		this.solicitacaos = solicitacaos;
 		this.competenciases = competenciases;
@@ -89,6 +91,15 @@ public class Entidades implements java.io.Serializable {
 		this.orgao = orgao;
 	}
 
+	@Column(name = "ativa", nullable = false)
+	public boolean isAtiva() {
+		return this.ativa;
+	}
+
+	public void setAtiva(boolean ativa) {
+		this.ativa = ativa;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entidades")
 	public Set<Responsavel> getResponsavels() {
 		return this.responsavels;
@@ -114,6 +125,15 @@ public class Entidades implements java.io.Serializable {
 
 	public void setCompetenciases(Set<Competencias> competenciases) {
 		this.competenciases = competenciases;
+	}
+
+	@Column(name = "sigla", nullable = false, length = 45)
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
 }

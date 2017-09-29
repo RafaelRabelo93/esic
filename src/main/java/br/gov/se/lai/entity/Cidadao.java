@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -26,9 +26,7 @@ import javax.persistence.UniqueConstraint;
 		@UniqueConstraint(columnNames = "email") })
 public class Cidadao implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -7063672246584518287L;
 	private Integer idCidadao;
 	private Usuario usuario;

@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
+import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
@@ -25,22 +26,28 @@ public class ResponsavelBean implements Serializable{
 	
 	private static final long serialVersionUID = -534835121161473086L;
 	private Responsavel responsavel;
-	private Usuario usuario;
 	private List<Entidades> entidades;
+	private Usuario usuario;
 	private int idEntidade;
+	private int nivel;
+	private String email;
+	private String nick;
 	
 	
 	@PostConstruct
 	public void init() {
 		this.responsavel = new Responsavel();
-		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 	}
 	
 	public String save() {
 		this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
+		this.usuario = UsuarioDAO.buscarUsuario(nick);
+		this.usuario.setPerfil((short)2);
 		this.responsavel.setUsuario(this.usuario);
 		ResponsavelDAO.saveOrUpdate(responsavel);
-		return "teste_redirecionamento";
+		UsuarioDAO.saveOrUpdate(usuario);
+		return "/index";
 	}
 	
 	public String delete() {
@@ -49,8 +56,11 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String edit() {
-
-		return "usuario";
+		this.usuario = UsuarioDAO.buscarUsuario(nick);
+		this.responsavel.setUsuario(this.usuario);
+		ResponsavelDAO.saveOrUpdate(responsavel);
+		
+		return "/index";
 	}
 	
 
@@ -88,6 +98,29 @@ public class ResponsavelBean implements Serializable{
 		this.idEntidade = idEntidade;
 	}
 
-	
+	public int getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
 		
 }

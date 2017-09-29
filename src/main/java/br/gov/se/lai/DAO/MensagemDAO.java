@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 import br.gov.se.lai.entity.Mensagem;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class MensagemDAO {
@@ -50,7 +51,8 @@ public class MensagemDAO {
     }
 
 	@SuppressWarnings("unchecked")
-	public static List<Mensagem> list() {
-		return em.createNativeQuery("SELECT * FROM esic.mensagem", Mensagem.class).getResultList();
+	public static List<Mensagem> list(int idSolicitacao) {
+		//return em.createNativeQuery("SELECT * FROM esic.mensagem", Mensagem.class).getResultList();
+		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.idSolicitacao = "+idSolicitacao,em);
     }  
 }

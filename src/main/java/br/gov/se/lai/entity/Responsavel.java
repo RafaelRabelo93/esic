@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +18,7 @@ import javax.persistence.Table;
 @Table(name = "responsavel", catalog = "esic")
 public class Responsavel implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 4683753718646281832L;
 	private Integer idResponsavel;
 	private Entidades entidades;
@@ -30,8 +28,6 @@ public class Responsavel implements java.io.Serializable {
 
 	public Responsavel() {
 	}
-	
-
 
 	public Responsavel(Entidades entidades, Usuario usuario, String email) {
 		this.entidades = entidades;
@@ -45,7 +41,6 @@ public class Responsavel implements java.io.Serializable {
 		this.nivel = nivel;
 		this.email = email;
 	}
-	
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -59,7 +54,6 @@ public class Responsavel implements java.io.Serializable {
 		this.idResponsavel = idResponsavel;
 	}
 
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idEntidades", nullable = false)
 	public Entidades getEntidades() {
@@ -69,8 +63,6 @@ public class Responsavel implements java.io.Serializable {
 	public void setEntidades(Entidades entidades) {
 		this.entidades = entidades;
 	}
-	
-
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idUsuario", nullable = false)

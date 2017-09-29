@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<h:form class="form">
+
+				<div class="mainMenu">
+
+					<div id="title">
+						<h:outputText value="Sistema Eletrônico de" />
+						<br />
+						<h:outputText value="Informação ao Cidadão" />
+					</div>
+
+					<div class="menu">
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/consulta">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/monitor.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo"
+									value="Acompanhar Solicitações"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Acompanhamento de solicitações" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_entidades">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/office.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo" value="Cadastrar Entidade"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar entidade ou ógrão" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_responsavel">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/actions.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo"
+									value="Cadastro de Responsável"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar responsável" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_acao">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/exchange.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo" value="Cadastro de Ação"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar ação" />
+							</h:commandLink>
+						</div>
+
+					</div>
+				</div>
+
+			</h:form>
+			
+		</ui:define>
+		
+	</ui:composition>
+
+</h:body>
+</html>

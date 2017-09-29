@@ -6,14 +6,13 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-
 <h:body>
 
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
-			<h:form id="cad_cidadao" styleClass="cad_form">
+			<h:form id="edit_usuario" styleClass="cad_form">
 
 				<div class="ficha">
 
@@ -21,12 +20,39 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 
-					<p:steps activeIndex="1" styleClass="custom" readonly="true">
-						<p:menuitem value="Dados do Usuário" url="#" />
-						<p:menuitem value="Dados Pessoais" url="#" />
-					</p:steps>
+<!-- 					<p:steps activeIndex="0" styleClass="custom" readonly="true"> -->
+<!-- 						<p:menuitem value="Dados do Usuário" url="#" /> -->
+<!-- 						<p:menuitem value="Dados Pessoais" url="#" /> -->
+<!-- 					</p:steps> -->
 
-					<p:panelGrid style="margin-bottom:1vw">
+					<p:panelGrid columns="1" style="margin-bottom:1vw">
+
+						<f:facet name="header">
+							<br />
+							<h:outputText value="Dados do Usuário" style="color:#1a568c; font-size:25px; padding: 0 7vw;" />
+							<br /><br />
+						</f:facet>
+
+						<p:outputLabel value="Nome completo: " for="nome" />
+						<p:inplace editor="true" emptyLabel=" ... ">							
+							<p:inputText id="nome" value="#{usuario.usuario.nome}" size="50" />
+						</p:inplace>
+
+						<p:outputLabel value="Nome de usuário: " for="nick" />
+						<h:outputText id="nick" required="true" value="#{usuario.usuario.nick}" size="50" />
+
+						<p:outputLabel value="Email:" for="email" />
+						<p:inplace editor="true" emptyLabel=" ... ">
+							<p:inputText id="email" value="#{usuario.email}" size="50" />
+						</p:inplace>
+
+						<p:outputLabel value="Alterar senha:" for="senha1" />
+						<p:password id="senha1" match="senha2" placeholder="Digite nova senha" value="#{usuario.usuario.senha}" />
+
+						<p:outputLabel value="Confirme nova senha:" for="senha2" />
+						<p:password id="senha2" placeholder="Repita nova senha" required="true" />
+						
+						<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '3'}">
 
 						<f:facet name="header">
 							<p:row>
@@ -34,19 +60,13 @@
 							</p:row>
 							<p:row>
 								<p:column colspan="2">
-									<h:outputText value="Dados Pessoais"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
+									<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; padding: 0 7vw;" />
 								</p:column>
 							</p:row>
 							<p:row>
 								<p:column colspan="2" />
 							</p:row>
 						</f:facet>
-						
-
-						<p:row><p:column> <p:outputLabel value="Email:" for="email" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="email" value="#{cidadao.cidadao.email}"
-							size="50" /> </p:column></p:row>
 
 						<p:row>
 							<p:column>
@@ -59,17 +79,21 @@
 
 						<p:row>
 							<p:column>
+							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:calendar styleClass="date" id="datanasc"
-									value="#{cidadao.cidadao.datanasc}" showOn="button"
+									value="#{usuario.cidadao.datanasc}" showOn="button"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" />
+							</p:inplace>
 							</p:column>
 							<p:column>
-								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
 									style="width:125px">
 									<f:selectItem itemLabel="Física" itemValue="true" />
 									<f:selectItem itemLabel="Jurídica" itemValue="false" />
 								</p:selectOneMenu>
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -84,16 +108,20 @@
 
 						<p:row>
 							<p:column>
-								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"
 									layout="pageDirection">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
+							</p:inplace>
 							</p:column>
 
 							<p:column>
-								<p:inputMask id="telefone" value="#{cidadao.cidadao.tel}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputMask id="telefone" value="#{usuario.cidadao.tel}"
 									mask="(99)99999-9999" />
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -108,12 +136,16 @@
 
 						<p:row>
 							<p:column>
-								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputMask id="rg" value="#{usuario.cidadao.rg}"
 									mask="?9999999999999999" />
+							</p:inplace>
 							</p:column>
 							<p:column>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}"
 									mask="999.999.999-99" />
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -128,21 +160,24 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}"
 									style="width:125px" />
+							</p:inplace>
 							</p:column>
 
 							<p:column>
+							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:selectOneMenu id="escolaridade"
-									value="#{cidadao.cidadao.escolaridade}" style="width:125px">
+									value="#{usuario.cidadao.escolaridade}" style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
-									<f:selectItem itemLabel="Semi-Analfabeto"
-										itemValue="2" />
+									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
 									<f:selectItem itemLabel="Fundamental" itemValue="3" />
 									<f:selectItem itemLabel="Medio" itemValue="4" />
 									<f:selectItem itemLabel="Superior" itemValue="5" />
 								</p:selectOneMenu>
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -168,8 +203,10 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="cep" value="#{cidadao.cidadao.cep}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputText id="cep" value="#{usuario.cidadao.cep}"
 									maxlength="10" />
+							</p:inplace>
 							</p:column>
 							<p:column></p:column>
 						</p:row>
@@ -185,7 +222,8 @@
 
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="estado" value="#{cidadao.cidadao.estado}"
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:selectOneMenu id="estado" value="#{usuario.cidadao.estado}"
 									style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
@@ -215,9 +253,12 @@
 									<f:selectItem itemLabel="Sergipe" itemValue="SE" />
 									<f:selectItem itemLabel="Tocantins" itemValue="TO" />
 								</p:selectOneMenu>
+							</p:inplace>
 							</p:column>
 							<p:column>
-								<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" />
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -232,10 +273,14 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="30" />
+							<p:inplace editor="true" emptyLabel=" ... ">
+								<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="30" />
+							</p:inplace>
 							</p:column>
 							<p:column>
+							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:inputText id="numero"  size="10" />
+							</p:inplace>
 							</p:column>
 						</p:row>
 
@@ -250,28 +295,42 @@
 
 						<p:row>
 							<p:column>
+							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:inputText id="bairro"  />
+							</p:inplace>
 							</p:column>
 							<p:column>
+							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:inputText id="complemento"  />
+							</p:inplace>
 							</p:column>
 						</p:row>
-
-						<p:row>
-							<p:column colspan="2">
-								<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-									style="font-size:14px; color:gray" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-
-
-					<p:commandLink class="botaoLink" action="#{cidadao.save}">
-						<h:outputText value="Cadastrar" />
-						<i class="fa fa-check" style="color: white; padding-left: 3px" />
-						 
-						<f:setPropertyActionListener value="#{cidadao.cidadao}" target="#{solicitacao.solicitacao.cidadao}" /> 
 						
+					</p:panelGrid>
+						<p:row> <p:column colspan="2"> <h:outputText value="Clique nos campos para editar." style="font-size:14px; color:gray"/> </p:column> </p:row>
+					</p:panelGrid>
+					
+					<p:commandLink action="#{usuario.edit}" class="botaoLink">
+
+						<h:outputText value="Atualizar" />
+						<i class="fa fa-arrow-right"
+							style="color: white; padding-left: 3px" />
+
+
+						 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
+						 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
+						 
+						 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
+						 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
+
+
+					</p:commandLink>
+					
+					<p:commandLink action="#{usuario.delete}" class="botaoLink">
+
+						<h:outputText value="Excluir" />
+						<i class="fa fa-arrow-right"
+							style="color: white; padding-left: 3px" />
 					</p:commandLink>
 
 				</div>
@@ -281,5 +340,7 @@
 		</ui:define>
 
 	</ui:composition>
+
 </h:body>
 </html>
+

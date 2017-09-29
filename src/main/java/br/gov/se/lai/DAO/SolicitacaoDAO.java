@@ -5,7 +5,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
+import br.gov.se.lai.Bean.UsuarioBean;
 import br.gov.se.lai.entity.Solicitacao;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class SolicitacaoDAO {
@@ -48,9 +50,21 @@ public class SolicitacaoDAO {
     public static Solicitacao findSolicitacao(int idSolicitacao){
     	return em.find(Solicitacao.class, idSolicitacao) ;
     }
+    
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> list() {
-		return em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
-    }  
+		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		if(usuarioBean != null) {
+			if(usuarioBean.getUsuario().getPerfil() == 3) {
+				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
+			} else {
+				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades(),em);
+			} 
+		}else{	
+			return null;
+		
+		}  
+	}
+	
 }

@@ -115,12 +115,11 @@
 
 .icone:hover {
 	opacity: 0.8;
-	font-size: 40px;
 }
 
 .titulo:hover {
-	color: #2854b9;
-	font-size: 37px !important;
+	color: #1d72cf;
+	font-weight: 700;
 }
 
 /* <-- Menu Secundário --> */

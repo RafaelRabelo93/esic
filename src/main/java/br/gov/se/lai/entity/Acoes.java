@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,9 +19,6 @@ import javax.persistence.Table;
 @Table(name = "acoes", catalog = "esic")
 public class Acoes implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8345153301601548063L;
 	private Integer idAcoes;
 	private String titulo;
@@ -49,7 +46,7 @@ public class Acoes implements java.io.Serializable {
 		this.idAcoes = idAcoes;
 	}
 
-	@Column(name = "titulo", length = 45)
+	@Column(name = "titulo", length = 60)
 	public String getTitulo() {
 		return this.titulo;
 	}

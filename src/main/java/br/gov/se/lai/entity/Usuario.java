@@ -1,5 +1,5 @@
 package br.gov.se.lai.entity;
-// Generated 05/09/2017 09:17:51 by Hibernate Tools 5.2.5.Final
+// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,9 +20,6 @@ import javax.persistence.Table;
 public class Usuario implements java.io.Serializable {
 
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2380284948334048659L;
 	private Integer idUsuario;
 	private String nome;

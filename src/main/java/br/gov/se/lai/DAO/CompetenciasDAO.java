@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 import br.gov.se.lai.entity.Competencias;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class  CompetenciasDAO {
@@ -13,7 +14,7 @@ public class  CompetenciasDAO {
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
     public static void saveOrUpdate(Competencias competencias) {     	        
-        try {
+        try {        	
         	if(!em.getTransaction().isActive()) em.getTransaction().begin();
         	if(competencias.getIdCompetencias() ==  null) {
         		em.persist(competencias);
@@ -54,4 +55,9 @@ public class  CompetenciasDAO {
 	public static List<Competencias> list() {
 		return em.createNativeQuery("SELECT * FROM esic.competencias", Competencias.class).getResultList();
     }  
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> filtrarCompetencias(int idAcao) {
+		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.acoes.idAcoes = "+idAcao,em);
+    }
 }
