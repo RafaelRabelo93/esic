@@ -39,6 +39,15 @@ public class MensagemBean implements Serializable{
 	public String save() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
+//		if(usuarioBean.getUsuario().getPerfil() == 3) {
+//			mensagem.setTipo((short)1);
+//		}else {
+//			if (mensagem.getSolicitacao().getMensagems().size() == 1 && usuarioBean.getUsuario().getPerfil() == 2) {
+//				mensagem.setTipo((short)2);
+//			}else {
+//				mensagem.setTipo((short)3);
+//			}
+//		}
 		mensagem.setData(new Date(System.currentTimeMillis()));	
 		mensagem.setSolicitacao(solicitacao);
 		MensagemDAO.saveOrUpdate(mensagem);

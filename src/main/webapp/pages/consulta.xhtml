@@ -30,6 +30,10 @@
 						<h:outputText value="#{slt.entidades.nome}" />
 					</p:column>
 
+					<p:column headerText="Tipo" sortBy="">
+						<h:outputText value="#{slt.tipo}" />
+					</p:column>
+
 					<p:column headerText="Status" sortBy="">
 						<h:outputText value="#{slt.status}" />
 					</p:column>
@@ -50,17 +54,19 @@
 					
 							<h:outputText value="Nª protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+							
+							<h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
+							
+							<h:outputText value="Tipo de solicitação:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
 						
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"  />
 						
 							<h:outputText value="Data:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
-						
-							<h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
-					
-						
+											
 							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="blabla.png" />
 												
@@ -97,12 +103,12 @@
 			         
 			         <p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" action="#{solicitacao.finalizarSolicitacao}"  style="margin-bottom:1vw; align-self:flex-end">
 							<h:outputText value="Finalizar solicitação" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao }" target="#{solicitacao.idSolicitacao}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao}" target="#{solicitacao.idSolicitacao}" />
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 
 				<h:form>
-					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2'}" style="display:flex; flex-flow: column">
+					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
 							<p:inputText id="mensagem"

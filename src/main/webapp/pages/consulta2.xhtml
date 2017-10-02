@@ -20,46 +20,29 @@
 				<h:outputText value="Consulta de solicitações"
 					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
 
-				<p:dataTable widgetVar="consultaTable" value="#{solicitacao.solicitacoes}" var="slt"
-					emptyMessage="Nenhuma Solicitação encontrada nesses parâmetros"
-					filteredValue="#{solicitacao.filteredSolicitacoes}" style="margin-bottom:1vw" >
+				<p:dataTable var="slt" value="#{solicitacao.solicitacoes}"
+					sortBy="#{slt.status}" expandableRowGroups="true"
+					style="margin-bottom:1vw" emptyMessage="Nenhuma Solicitação encontrada nesses parâmetros"
+					rows="10" paginator="true"
+	                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                rowsPerPageTemplate="5,10,15">
 
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="Pesquisar:" />
-							<p:inputText id="globalFilter" onkeyup="PF('consultaTable').filter()"
-								style="width:150px" placeholder="Informação" />
-						</p:outputPanel>
-					</f:facet>
-
-					<p:column filterBy="#{slt.idSolicitacao}" headerText="Protocolo"
-						footerText="contains" filterMatchMode="contains">
+					<p:headerRow >
+						<p:column colspan="5">
+							<h:outputText value="#{slt.status}" />
+						</p:column>
+					</p:headerRow>
+					<p:column headerText="Protocolo">
 						<h:outputText value="#{slt.idSolicitacao}" />
 					</p:column>
-
-					<p:column filterBy="#{slt.entidades.nome}" headerText="Brand"
-						footerText="exact" filterMatchMode="exact">
-						<f:facet name="filter">
-							<p:selectOneMenu onchange="PF('consultaTable').filter()" value="#{entidades.todasEntidades}">
-								<f:selectItem itemLabel="Select One" itemValue=""
-									noSelectionOption="true" />
-								<f:selectItems value="#{slt.entidades.nome}" />
-							</p:selectOneMenu>
-						</f:facet>
+					<p:column headerText="Órgão/Entidade:">
 						<h:outputText value="#{slt.entidades.nome}" />
 					</p:column>
-
-					<p:column filterBy="#{slt.status}" headerText="Status"
-						footerText="equals" filterMatchMode="equals">
-						<f:facet name="filter">
-							<p:selectOneButton onchange="PF('carsTable').filter()">
-								<f:converter converterId="javax.faces.Boolean" />
-								<f:selectItem itemLabel="Todos" itemValue="" />
-								<f:selectItem itemLabel="Aberta" itemValue="aberta" />
-								<f:selectItem itemLabel="finalizada" itemValue="finalizada" />
-							</p:selectOneButton>
-						</f:facet>
-						<h:outputText value="#{slt.status}" />
+					<p:column headerText="Tipo:">
+						<h:outputText value="#{slt.tipo}" />
+					</p:column>
+					<p:column headerText="Usuario:">
+						<h:outputText value="#{slt.cidadao.usuario.nome}" />
 					</p:column>
 					
 					<p:column style="width:32px; text-align: center">
@@ -70,9 +53,8 @@
 								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 					</p:column>
-
+					
 				</p:dataTable>
-
 			</div>
 
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="Título da solicação" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" style="box-shadow: none">
@@ -81,17 +63,19 @@
 					
 							<h:outputText value="Nª protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+							
+							<h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
+							
+							<h:outputText value="Tipo de solicitação:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
 						
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"  />
 						
 							<h:outputText value="Data:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
-						
-							<h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
-					
-						
+											
 							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="blabla.png" />
 												
@@ -128,12 +112,12 @@
 			         
 			         <p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" action="#{solicitacao.finalizarSolicitacao}"  style="margin-bottom:1vw; align-self:flex-end">
 							<h:outputText value="Finalizar solicitação" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao }" target="#{solicitacao.idSolicitacao}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao}" target="#{solicitacao.idSolicitacao}" />
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 
 				<h:form>
-					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2'}" style="display:flex; flex-flow: column">
+					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
 							<p:inputText id="mensagem"

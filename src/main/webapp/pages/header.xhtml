@@ -10,7 +10,7 @@
 
 	<ui:composition>
 	
-	<h:form class="form">
+	<h:form id="formHeader" class="form">
 		<div id="header">				
 				
 				<div id="menuAcess" class="menuAcess">
@@ -39,20 +39,27 @@
 
 						<li><p:commandButton id="Login" value="Login"
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
-								 rendered="#{usuario.usuario.perfil ne '2'}" /></li>
+								 rendered="#{usuario.usuario.perfil eq '0'}" /></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
 								<p:password placeholder="Senha" value="#{usuario.senha}" />
-								<p:commandButton value="Login" action="#{usuario.login}"  />
+								<p:commandButton value="Login" action="#{usuario.login}" update="formHeader"/>
 							</h:panelGrid>
 						</p:overlayPanel>
-						
-						<li><h:commandLink
-								action="#{usuario.logout()}">Logout</h:commandLink></li>
-								
-					
-								
+
+						<p:growl id="messages" showDetail="true" />
+
+						<p:menuButton value="#{usuario.usuario.nome}" rendered="#{usuario.usuario.perfil ne '0'}">
+							<p:menuitem value="Editar perfil" action="pages/altterar_usuario"
+								update="messages" icon="ui-icon-disk" />
+							<p:menuitem value="Update" actionListener="#{menuView.update}"
+								update="messages" icon="ui-icon-arrowrefresh-1-w" />
+							<p:separator />
+							<p:menuitem value="Logout" action="#{usuario.logout}"
+								ajax="true" icon="ui-icon-close" update="formHeader" />
+						</p:menuButton>
+	
 					</ul>
 
 				</div>
