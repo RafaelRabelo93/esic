@@ -38,6 +38,7 @@ public class UsuarioBean implements Serializable{
 		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
 		UsuarioDAO.saveOrUpdate(usuario);
 		if (veioDeSolicitacao == 0) {
+			usuario.setPerfil((short)1);
 			nick = usuario.getNick();
 			login();
 			return "/index";
