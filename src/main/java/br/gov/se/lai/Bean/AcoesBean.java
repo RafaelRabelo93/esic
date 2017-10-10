@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.entity.Acoes;
+import br.gov.se.lai.utils.HibernateUtil;
 
 
 @ManagedBean(name = "acoes")
@@ -21,6 +22,7 @@ public class AcoesBean implements Serializable{
 	 */
 	private static final long serialVersionUID = -1157796158944497538L;
 	private Acoes acao;
+	private UsuarioBean usuarioBean ;
 	private int idAcao;
 	private List<Acoes> acoes;
 	private String teste;
@@ -29,16 +31,21 @@ public class AcoesBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		acao = new Acoes();
-		acoes = new ArrayList<Acoes>(AcoesDAO.list());		
+		acoes = new ArrayList<Acoes>(AcoesDAO.list());
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
 	public String save() {
-		AcoesDAO.saveOrUpdate(acao);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			AcoesDAO.saveOrUpdate(acao);
+		}
 		return "/index";
 	}
 	
 	public String delete() {
-		AcoesDAO.delete(acao);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			AcoesDAO.delete(acao);
+		}
 		return "/index";
 	}
 	

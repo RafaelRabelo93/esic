@@ -71,17 +71,19 @@ public class UsuarioBean implements Serializable{
     	//this.logout();
     	this.usuario = UsuarioDAO.buscarUsuario(this.nick);
     	if(this.usuario == null) {    		
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));    		
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));    
+    		logout();
     	}else {
     		if(!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())){    		
     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
-    			this.usuario = null;
+    			logout();
     		}else {
     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
     		}    		
     	}
-    	return "index";       	
+    	return "/index";   	
     }
+    
     
     public String logout(){
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -103,12 +105,16 @@ public class UsuarioBean implements Serializable{
 	}
 
 	public String getEmail() {
-		if(usuario.getPerfil() == 3) {
+		if(usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 			return listCidadao.get(0).getEmail();
 		}else {
-			List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-			return listResponsavel.get(0).getEmail();
+			if(usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty() ) {
+				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+				return listResponsavel.get(0).getEmail();
+			}else {
+				return "Não cadastrado";
+			}
 		}
 	}
 	

@@ -55,7 +55,7 @@ public class CidadaoBean implements Serializable{
 		cidadao.setUsuario(this.usuario);
 		CidadaoDAO.saveOrUpdate(cidadao);
 		UsuarioDAO.saveOrUpdate(this.usuario);
-		return "questionario1";
+		return "/index";
 	}
 	
 	public String delete() {

@@ -10,9 +10,12 @@
 
 	<ui:composition>
 
-		<h:form class="form">
+		<h:form class="form" id="mainMenu">
 
 			<div class="mainMenu">
+			<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
 				
 				<div id="title">
 					<h:outputText value="Sistema Eletrônico de"/>
@@ -21,7 +24,83 @@
 				</div>
 
 				<div class="menu">
-						
+				
+				<!-- 					menu gestor -->
+
+					<h:panelGroup class="menu"
+						rendered="#{usuario.usuario.perfil eq '2' or  usuario.usuario.perfil eq '4' }">
+
+						<h:panelGroup class="botao" layout="block"
+							rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '4'}">
+							<h:commandLink styleClass="link" action="pages/altterar_usuario">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/contract.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo" value="Editar Dados"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Editar dados pessoais do usuário" />
+							</h:commandLink>
+						</h:panelGroup>
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/consulta">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/monitor.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo"
+									value="Acompanhar Solicitações"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Acompanhamento de solicitações" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_entidades">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/office.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo" value="Cadastrar Entidade"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar entidade ou ógrão" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_responsavel">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/actions.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo"
+									value="Cadastro de Responsável"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar responsável" />
+							</h:commandLink>
+						</div>
+
+						<div class="botao">
+							<h:commandLink styleClass="link" action="pages/cad_acoes">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/exchange.png']}" width="80%" />
+
+								<h:outputText styleClass="titulo" value="Cadastro de Ação"
+									style="font-size:35px; padding: 2% 0;" />
+
+								<h:outputText style="font-size:20px; color:#333"
+									value="Registrar ação" />
+							</h:commandLink>
+						</div>
+					</h:panelGroup>
+					
+<!-- 					menu cidadao -->
+				
+				<h:panelGroup class="menu" rendered="#{usuario.usuario.perfil ne'2'}">		
 					<div class="botao">
 						<h:commandLink styleClass="link" href="#lai">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
@@ -34,7 +113,7 @@
 						</h:commandLink>
 					</div>
 					
-					<div class="botao">
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0'}">
 						<h:commandLink styleClass="link" action="pages/cad_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
 								width="80%" />
@@ -44,10 +123,22 @@
 							<h:outputText style="font-size:20px; color:#333"
 								value="Registrar usuário " />
 						</h:commandLink>
-					</div>
+					</h:panelGroup>
+					
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil ne '0'}">
+						<h:commandLink styleClass="link" action="pages/altterar_usuario">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
+								width="80%" />
+
+							<h:outputText styleClass="titulo" value="Editar Dados" style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Editar dados pessoais do usuário" />
+						</h:commandLink>
+					</h:panelGroup>
 
 					<div class="botao">
-						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadao}">
+						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
 								width="80%"/>
@@ -61,7 +152,7 @@
 					</div>
 
 					<div class="botao">
-						<h:commandLink styleClass="link" action="pages/consulta">
+						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
 								width="80%"/>
 
@@ -71,6 +162,9 @@
 								value="Acompanhar andamento da solicitação realizada" />
 						</h:commandLink>
 					</div>
+				</h:panelGroup>	
+					
+
 
 				</div>
 			</div>

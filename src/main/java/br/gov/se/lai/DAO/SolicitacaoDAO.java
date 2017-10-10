@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 import br.gov.se.lai.Bean.UsuarioBean;
+import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
@@ -59,12 +60,23 @@ public class SolicitacaoDAO {
 			if(usuarioBean.getUsuario().getPerfil() == 3) {
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			} else {
-				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades(),em);
+				if(usuarioBean.getUsuario().getPerfil() == 2) {
+					return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades(),em);
+				}else {
+					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
+				}
 			} 
 		}else{	
 			return null;
-		
 		}  
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPersonalizada(String status) {
+			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status,em)); 
+	}	
+		
+	
 	
 }

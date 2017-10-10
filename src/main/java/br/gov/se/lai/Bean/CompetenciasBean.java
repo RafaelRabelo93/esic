@@ -2,8 +2,13 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.event.AjaxBehaviorEvent;
+
+import org.hibernate.sql.Update;
+
+import com.mysql.jdbc.IterateBlock;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -30,7 +35,7 @@ public class CompetenciasBean implements Serializable{
 	private List<Competencias> listCompetencias;
 	private List<Acoes> acoes;
 	private int idAcoes;
-	private int idEntidades;
+	private Entidades ent;
 
 	
 	@PostConstruct
@@ -38,12 +43,13 @@ public class CompetenciasBean implements Serializable{
 		this.competencias = new Competencias();
 		this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		this.listCompetencias= new ArrayList<Competencias>();
 	}
 	
 	public String save() {
-		this.competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
-		this.competencias.setEntidades(EntidadesDAO.find(this.idEntidades));
-		CompetenciasDAO.saveOrUpdate(competencias);
+		for (Competencias comp : listCompetencias) {
+			CompetenciasDAO.saveOrUpdate(comp);
+		}		
 		return "/index";
 	}
 	
@@ -55,6 +61,40 @@ public class CompetenciasBean implements Serializable{
 		}
 	}	
 	
+	public List<Competencias> addLista() {
+		competencias.setEntidades(ent);
+		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
+		listCompetencias.add(competencias);
+		listaAcoesUpdate();
+		competencias = new Competencias();
+		return listCompetencias;
+	}
+	
+	private List<Acoes> listaAcoesUpdate(){
+		Iterator<Acoes> a = acoes.iterator();
+		while(a.hasNext()) {
+			Acoes acao = a.next();
+			if(acao.getIdAcoes() == idAcoes) {
+				a.remove();
+				break;
+			}
+		}
+	return this.acoes;
+	}
+	
+	public List<Competencias> listaCompetenciasUpdate(){
+		Iterator<Competencias> c = listCompetencias.iterator();
+		while(c.hasNext()) {
+			Competencias comp = c.next();
+			if(comp == competencias) {
+				c.remove();
+				break;
+			}
+		}
+		
+		return listCompetencias;
+	}
+	
 	public String delete() {
 
 		return "usuario";
@@ -65,6 +105,7 @@ public class CompetenciasBean implements Serializable{
 		return "usuario";
 	}
 	
+
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
@@ -101,14 +142,6 @@ public class CompetenciasBean implements Serializable{
 		this.idAcoes = idAcoes;
 	}
 
-	public int getIdEntidades() {
-		return idEntidades;
-	}
-
-	public void setIdEntidades(int idEntidades) {
-		this.idEntidades = idEntidades;
-	}
-
 	public List<Competencias> getListCompetencias() {
 		return listCompetencias;
 	}
@@ -121,7 +154,13 @@ public class CompetenciasBean implements Serializable{
 		this.competencias = competencias;
 	}
 
-	
-	
-		
+	public Entidades getEnt() {
+		return ent;
+	}
+
+	public void setEnt(Entidades ent) {
+		this.ent = ent;
+		competencias.setEntidades(ent);
+	}
+
 }

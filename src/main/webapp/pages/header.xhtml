@@ -11,6 +11,7 @@
 	<ui:composition>
 	
 	<h:form id="formHeader" class="form">
+	
 		<div id="header">				
 				
 				<div id="menuAcess" class="menuAcess">
@@ -25,17 +26,19 @@
 
 
 				<div id="barraNav" class="barraNav">
-					<h:outputLink value="../index.xhtml">
+					<h:outputLink value="index.xhtml">
 						<h:graphicImage value="#{resource['img/logoGovSerg.png']}"
 						style="padding: 0.5vw" width="140" height="50" /></h:outputLink>
 
 					<ul id="menuSM">
-						<li><h:outputLink value="../index.xhtml">Navegacao</h:outputLink>
+						<li><h:outputLink value="index.xhtml">Navegacao</h:outputLink>
 								</li>
 						
-						<li><h:outputLink value="../index.xhtml">Sobre</h:outputLink>
+						<li><h:outputLink value="index.xhtml">Sobre</h:outputLink>
 								</li>
 						
+						<!--		Mensagens de Erro		-->
+						<p:growl id="messages" showDetail="true" autoUpdate="true" severity="error, warn" />
 
 						<li><p:commandButton id="Login" value="Login"
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
@@ -44,28 +47,37 @@
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
 								<p:password placeholder="Senha" value="#{usuario.senha}" />
-								<p:commandButton value="Login" action="#{usuario.login}" update="formHeader"/>
+								<p:commandButton value="Login" action="#{usuario.login}" update="@all"/>
 							</h:panelGrid>
 						</p:overlayPanel>
 
-						<p:growl id="messages" showDetail="true" />
-
-						<p:menuButton value="#{usuario.usuario.nome}" rendered="#{usuario.usuario.perfil ne '0'}">
-							<p:menuitem value="Editar perfil" action="pages/altterar_usuario"
-								update="messages" icon="ui-icon-disk" />
-							<p:menuitem value="Update" actionListener="#{menuView.update}"
-								update="messages" icon="ui-icon-arrowrefresh-1-w" />
-							<p:separator />
-							<p:menuitem value="Logout" action="#{usuario.logout}"
-								ajax="true" icon="ui-icon-close" update="formHeader" />
-						</p:menuButton>
+						<li><p:commandButton id="userInfo" value="#{usuario.usuario.nick}" rendered="#{usuario.usuario.perfil ne '0'}" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
 	
 					</ul>
-
+					
+					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
+						<h:panelGrid columns="1" cellpadding="5">
+							<h:outputText value="Nome:" style="color:#1a568c;" />
+							<h:outputText value="#{usuario.usuario.nome}" />
+							<h:outputText value="E-mail:" style="color:#1a568c;" />
+							<h:outputText value="#{usuario.email}" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" cellpadding="5" style="margin-top:1vh">
+							<p:commandLink styleClass="botaoLink" action="pages/altterar_usuario" update="@all">
+								<i class="fa fa-pencil-square-o" style="color: white; padding-right: 5px" />
+								<h:outputText value="Editar Perfil" />
+							</p:commandLink>
+							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all">
+								<i class="fa fa-sign-out" style="color: white; padding-right: 5px" />
+								<h:outputText value="Sair" />
+							</p:commandLink>						
+						</h:panelGrid>
+					</p:overlayPanel>
+					
 				</div>
 
 			</div>
-		
+			
 	</h:form>
 		
 	</ui:composition>

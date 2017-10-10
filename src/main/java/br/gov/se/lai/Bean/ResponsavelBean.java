@@ -14,6 +14,7 @@ import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.utils.HibernateUtil;
 
 
 @ManagedBean(name = "responsavel")
@@ -27,6 +28,7 @@ public class ResponsavelBean implements Serializable{
 	private static final long serialVersionUID = -534835121161473086L;
 	private Responsavel responsavel;
 	private List<Entidades> entidades;
+	private UsuarioBean usuarioBean ;
 	private Usuario usuario;
 	private int idEntidade;
 	private int nivel;
@@ -38,15 +40,18 @@ public class ResponsavelBean implements Serializable{
 	public void init() {
 		this.responsavel = new Responsavel();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
 	public String save() {
-		this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
-		this.usuario = UsuarioDAO.buscarUsuario(nick);
-		this.usuario.setPerfil((short)2);
-		this.responsavel.setUsuario(this.usuario);
-		ResponsavelDAO.saveOrUpdate(responsavel);
-		UsuarioDAO.saveOrUpdate(usuario);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
+			this.usuario = UsuarioDAO.buscarUsuario(nick);
+			this.usuario.setPerfil((short)2);
+			this.responsavel.setUsuario(this.usuario);
+			ResponsavelDAO.saveOrUpdate(responsavel);
+			UsuarioDAO.saveOrUpdate(usuario);
+		}	
 		return "/index";
 	}
 	
@@ -56,9 +61,11 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String edit() {
-		this.usuario = UsuarioDAO.buscarUsuario(nick);
-		this.responsavel.setUsuario(this.usuario);
-		ResponsavelDAO.saveOrUpdate(responsavel);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			this.usuario = UsuarioDAO.buscarUsuario(nick);
+			this.responsavel.setUsuario(this.usuario);
+			ResponsavelDAO.saveOrUpdate(responsavel);
+		}	
 		
 		return "/index";
 	}

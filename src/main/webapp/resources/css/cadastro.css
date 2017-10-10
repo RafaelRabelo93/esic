@@ -225,12 +225,13 @@
     
 /* Outros */
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
-	border-radius: 0;
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border-radius: 0;
     border-color: #d2d6de;
-    background-color: #fff;    
-    padding: 3px;    
-    color: #555;    
+    background-color: #ffffff;
+    box-shadow: none;
+    padding: 3px;
+    color: #555;
     background-image: none;
 }
 
@@ -388,6 +389,12 @@
     opacity: 0.5;
 }
 
+.ui-panelgrid-cell .ui-outputlabel {
+    color: black;
+    font-variant-caps: all-petite-caps;
+    font-size: 20px;
+}
+
 .mensagem {
  	display: -ms-flexbox; 
  	display: -moz-flexbox;
@@ -413,9 +420,38 @@
  	-webkit-align-items: flex-start;
 }
 
+/* Data Table */
 
-/* .balao{ */
-/*     padding: 0.5vw; */
-/*     border-radius: 5px; */
-/*     background-color: #e0e0e0; */
-/* } */
+.ui-datatable tbody td {
+    border: 1px solid #a7acb1 !important;
+}
+
+.ui-datatable th {
+    background-color: #f2f5f9 !important;
+    border: 1px solid #a7acb1;
+}
+
+.ui-datatable .ui-widget-header {
+    background-color: #f2f5f9 !important;
+    border: 1px solid #d2d6de !important;
+}
+
+.ui-datatable-header {
+	background-color: #eaeff4 !important;
+}
+
+.ui-datatable-odd {
+    background-color: #ffffff;
+}
+
+.ui-paginator {
+	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
+	border: 1px solid #135186;
+}
+ 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    background: #799cd0;
+    background: linear-gradient(to bottom right, #799cd0, #5b87bd) !important;
+    color: #fff;
+    text-shadow: none !important;
+}

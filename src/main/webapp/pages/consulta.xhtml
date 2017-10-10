@@ -15,37 +15,64 @@
 			<div class="ficha">
 
 				<!--		Mensagens de Erro		-->
-				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
 
 				<h:outputText value="Consulta de solicitações"
 					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
 
-				<p:dataTable  widgetVar="consultaTable" value="#{solicitacao.solicitacoes}" var="slt" style="margin-bottom:1vw">
 
-					<p:column headerText="Nº Protocolo" sortBy="">
-						<h:outputText value="#{slt.idSolicitacao}" />
-					</p:column>
+				<h:panelGroup id="solicitacao_panel">
+					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
+						emptyMessage="Não há solicitações" sortBy="#{slt.status}"
+						expandableRowGroups="true" 
+						value="#{solicitacao.filteredSolicitacoes}"
+						style="margin-bottom:1vw" filteredValue="#{solicitacao.filteredSolicitacoes}" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+           				rowsPerPageTemplate="5,10,15" rowKey="#{slt.idSolicitacao}">
+           				
+						<p:ajax event="rowEdit" oncomplete="PF('solicitacoes').filter()" />
 
-					<p:column headerText="Órgão / Entidade" sortBy="">
-						<h:outputText value="#{slt.entidades.nome}" />
-					</p:column>
+						<p:headerRow>
+							<p:column colspan="6">
+								<h:outputText value="#{slt.status}" />
+							</p:column>
+						</p:headerRow>
 
-					<p:column headerText="Tipo" sortBy="">
-						<h:outputText value="#{slt.tipo}" />
-					</p:column>
+						<p:column headerText="Nº Protocolo" sortBy="">
+							<h:outputText value="#{slt.idSolicitacao}" />
+						</p:column>
 
-					<p:column headerText="Status" sortBy="">
-						<h:outputText value="#{slt.status}" />
-					</p:column>
-					
-					<p:column style="width:32px; text-align: center">
-			             <p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-							<i class="fa fa-search"/>
-							<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.solicitacao}" />
-			           	</p:commandLink>
-			        </p:column>
-				</p:dataTable>
-				
+						<p:column headerText="Órgão / Entidade" sortBy="">
+							<h:outputText value="#{slt.entidades.nome}" />
+						</p:column>
+
+						<p:column headerText="Tipo" sortBy="">
+							<h:outputText value="#{slt.tipo}" />
+						</p:column>
+
+						<p:column headerText="Status" sortBy="#{slt.status}">
+							<h:outputText value="#{slt.status}" />
+						</p:column>
+
+						<p:column headerText="Cidadão" sortBy="">
+							<h:outputText value="#{slt.cidadao.usuario.nome}" />
+						</p:column>
+
+						<p:column style="width:32px; text-align: center">
+							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
+								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+								<i class="fa fa-search" />
+								<f:setPropertyActionListener value="#{slt}"
+									target="#{solicitacao.solicitacao}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+
+				</h:panelGroup>
+
+
+
 			</div>
 
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="Título da solicação" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" style="box-shadow: none">

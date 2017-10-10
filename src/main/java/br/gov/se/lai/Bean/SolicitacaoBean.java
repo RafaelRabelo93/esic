@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
@@ -50,6 +51,7 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		this.filteredSolicitacoes =  new ArrayList<Solicitacao>(SolicitacaoDAO.list());
 	
 	}
 	
@@ -63,7 +65,7 @@ public class SolicitacaoBean implements Serializable{
 		//this.solicitacao.setEntidades(EntidadesDAO.find(2));	
 		this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));	
-		this.solicitacao.setStatus("aberto");
+		this.solicitacao.setStatus("Aberta");
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 		
 		//Salvar Mensagem
@@ -76,32 +78,57 @@ public class SolicitacaoBean implements Serializable{
 	}	
 	public void finalizarSolicitacao() {
 		this.solicitacao = SolicitacaoDAO.findSolicitacao(idSolicitacao);
-		this.solicitacao.setStatus("finalizada");
+		this.solicitacao.setStatus("Finalizada");
 		this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 	}
 	
-	public String verificaCidadao() {
+	public String verificaCidadaoSolicitacao() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());	
+		
 		if(usuarioBean.getUsuario().getIdUsuario() == null) {
+			//se não tiver cadastro de usuario, vai cadastrar primeiro
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			usuarioBean.setVeioDeSolicitacao(1);
 			return "pages/cad_usuario";
-		}else {
-			if(usuarioBean.getUsuario().getPerfil() == 0 || usuarioBean.getUsuario().getPerfil() != 2 ) {
-				if((listCidadao.isEmpty()) && (usuarioBean.getUsuario().getPerfil() == 0)) {
-					return "pages/cad_cidadao";
-				}else{
-					return "pages/questionario1" ;
+		} else {
+				if (usuarioBean.getUsuario().getPerfil() == 1 || usuarioBean.getUsuario().getPerfil() != 2) {
+					//verifico se há a instancia de um usuario e se este usuario não é um responsável
+					
+					if ((listCidadao.isEmpty()) && (usuarioBean.getUsuario().getPerfil() == 1)) {
+						//se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa cadastrar cidadão
+						return "pages/cad_cidadao";
+					} else {
+						//se já for cadastrado usuario e cidadão inicia solicitacao
+						return "pages/questionario1";
+					}
+				} else {
+					//Se for um responsável não tem autorização para solicitar
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Usuário sem permissão.", "Tente outro login."));
+					return null;
 				}
-			}else {
+			}	
+	}
+	
+	public String verificaCidadaoConsulta() {
+		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		if(usuarioBean.getUsuario().getPerfil() == 3) {
+			return "pages/consulta";
+		}else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Uusário sem permissão.", "Tente outro login."));
 				return null;
 			}
-		}	
+	}	
+
+	public void listPersonalizada(AjaxBehaviorEvent e){
+		if(status == "Todas") {
+			filteredSolicitacoes = SolicitacaoDAO.list();
+		}else {
+			filteredSolicitacoes = SolicitacaoDAO.listPersonalizada(status);
+		}
 	}
-	
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

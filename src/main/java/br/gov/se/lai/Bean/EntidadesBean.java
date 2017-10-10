@@ -11,6 +11,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.utils.HibernateUtil;
 
 
 @ManagedBean(name = "entidades")
@@ -22,6 +23,7 @@ public class EntidadesBean implements Serializable{
 	 */
 	private static final long serialVersionUID = -1157796158944497538L;
 	private Entidades entidades;
+	private UsuarioBean usuarioBean ;
 	private int idOrgaos;
 	private int idEntidades;
 	private String nome;
@@ -35,23 +37,30 @@ public class EntidadesBean implements Serializable{
 	public void init() {
 		entidades = new Entidades();
 		todasEntidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 		
 	}
 	
 	public String save() {
-		entidades.setAtiva(true);
-		EntidadesDAO.saveOrUpdate(entidades);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			entidades.setAtiva(true);
+			EntidadesDAO.saveOrUpdate(entidades);
+		}
 		return "/index";
 	}
 	
 //	public String delete() {
-//		entidades = EntidadesDAO.find(idEntidades);
-//		EntidadesDAO.delete(entidades);
+//		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+//			entidades = EntidadesDAO.find(idEntidades);
+//			EntidadesDAO.delete(entidades);
+//		}	
 //		return "usuario";
 //	}
 //	
 	public String edit() {
-		EntidadesDAO.saveOrUpdate(entidades);
+		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			EntidadesDAO.saveOrUpdate(entidades);
+		}
 		return "/index";
 	}
 	
