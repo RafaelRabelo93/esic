@@ -37,8 +37,8 @@
 						<li><h:outputLink value="index.xhtml">Sobre</h:outputLink>
 								</li>
 						
-						<!--		Mensagens de Erro		-->
-						<p:growl id="messages" showDetail="true" autoUpdate="true" severity="error, warn" />
+<!-- 								Mensagens de Erro		 -->
+<!-- 						<p:growl id="messages" showDetail="true" autoUpdate="true" severity="error, warn" /> -->
 
 						<li><p:commandButton id="Login" value="Login"
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
@@ -51,19 +51,21 @@
 							</h:panelGrid>
 						</p:overlayPanel>
 
-						<li><p:commandButton id="userInfo" value="#{usuario.usuario.nick}" rendered="#{usuario.usuario.perfil ne '0'}" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
+						<li><p:commandButton id="userInfo" value="#{usuario.nomeCompleto}" rendered="#{usuario.usuario.perfil ne '0'}" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
 	
 					</ul>
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
 						<h:panelGrid columns="1" cellpadding="5">
-							<h:outputText value="Nome:" style="color:#1a568c;" />
-							<h:outputText value="#{usuario.usuario.nome}" />
+							<h:outputText value="Nick:" style="color:#1a568c;" />
+							<h:outputText value="#{usuario.usuario.nick}" />
 							<h:outputText value="E-mail:" style="color:#1a568c;" />
 							<h:outputText value="#{usuario.email}" />
+							<h:outputText value="Órgão/Entidade:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2'}"/>
+							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
 						<h:panelGrid columns="2" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="pages/altterar_usuario" update="@all">
+							<p:commandLink styleClass="botaoLink" action="pages/alterar_usuario" update="@all">
 								<i class="fa fa-pencil-square-o" style="color: white; padding-right: 5px" />
 								<h:outputText value="Editar Perfil" />
 							</p:commandLink>

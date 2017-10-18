@@ -50,6 +50,23 @@ public class  CompetenciasDAO {
     	return em.find(Competencias.class, idCompetencias) ;
     }
     
+    @SuppressWarnings("unchecked")
+    public static boolean verificaExistencia(int idAcao, int idEntidade) {
+    	String sql = "SELECT idCompetencias FROM esic.competencias WHERE idEntidades = "+ idEntidade +" AND idAcoes ="+ idAcao; 
+		List<Competencias> query = (List<Competencias>) Consultas.buscaSQL(sql, em);
+		if (query.isEmpty()) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+    
+//    @SuppressWarnings("unchecked")
+//    public static List<Competencias> verificaExistencia(int idEntidade) {
+//    	String sql = "SELECT idCompetencias FROM esic.competencias WHERE idEntidades = "; 
+//		List<Competencias> query = (List<Competencias>) Consultas.buscaSQL(sql, em);
+//		return query;
+//	}
 
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> list() {
@@ -59,5 +76,10 @@ public class  CompetenciasDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> filtrarCompetencias(int idAcao) {
 		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.acoes.idAcoes = "+idAcao,em);
+    }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> filtrarCompetenciaPorEntidade(int idEntidade) {
+		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.entidades.idEntidades = "+idEntidade,em);
     }
 }

@@ -53,8 +53,11 @@ public class CidadaoBean implements Serializable{
 			cidadao = new Cidadao();
 		}
 		cidadao.setUsuario(this.usuario);
-		CidadaoDAO.saveOrUpdate(cidadao);
-		UsuarioDAO.saveOrUpdate(this.usuario);
+		if(CidadaoDAO.saveOrUpdate(cidadao)) {
+			usuarioBean.setEmail(cidadao.getEmail());
+			usuario.getCidadaos().add(cidadao);
+			UsuarioDAO.saveOrUpdate(this.usuario);
+		}				
 		return "/index";
 	}
 	

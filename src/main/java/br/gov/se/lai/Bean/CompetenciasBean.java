@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.faces.event.AjaxBehaviorEvent;
-
-import org.hibernate.sql.Update;
-
-import com.mysql.jdbc.IterateBlock;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -33,25 +30,38 @@ public class CompetenciasBean implements Serializable{
 	private Competencias competencias;
 	private List<Entidades> entidades;
 	private List<Competencias> listCompetencias;
+	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	private int idAcoes;
+	private int idEntidade;
 	private Entidades ent;
+	private String novaAcao;
 
 	
 	@PostConstruct
 	public void init() {
 		this.competencias = new Competencias();
-		this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		this.listCompetencias= new ArrayList<Competencias>();
+		this.acoes = null;
 	}
 	
 	public String save() {
 		for (Competencias comp : listCompetencias) {
+//			if(CompetenciasDAO.verificaExistencia(comp.getAcoes().getIdAcoes(), comp.getEntidades().getIdEntidades()) == false){
+//				CompetenciasDAO.saveOrUpdate(comp);
+//			}	
 			CompetenciasDAO.saveOrUpdate(comp);
-		}		
+		}	
+		
 		return "/index";
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void filtrarCompetenciasEntidade(AjaxBehaviorEvent e) {
+		List<Competencias> compEnt = new ArrayList<Competencias>(EntidadesDAO.find(idEntidade).getCompetenciases());
+		listCompetencias = compEnt;	
+	}	
 	
 	public void filtrarCompetencias(AjaxBehaviorEvent e) {
 		if(idAcoes != 0) {
@@ -60,17 +70,17 @@ public class CompetenciasBean implements Serializable{
 			listCompetencias = null;
 		}
 	}	
-	
-	public List<Competencias> addLista() {
+
+	public void addLista() {
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
 		listCompetencias.add(competencias);
 		listaAcoesUpdate();
 		competencias = new Competencias();
-		return listCompetencias;
 	}
 	
-	private List<Acoes> listaAcoesUpdate(){
+	
+	private void listaAcoesUpdate(){
 		Iterator<Acoes> a = acoes.iterator();
 		while(a.hasNext()) {
 			Acoes acao = a.next();
@@ -79,33 +89,46 @@ public class CompetenciasBean implements Serializable{
 				break;
 			}
 		}
-	return this.acoes;
 	}
 	
-	public List<Competencias> listaCompetenciasUpdate(){
+	public void listaCompetenciasUpdate(){
 		Iterator<Competencias> c = listCompetencias.iterator();
 		while(c.hasNext()) {
 			Competencias comp = c.next();
 			if(comp == competencias) {
+				acoes.add(comp.getAcoes());
 				c.remove();
 				break;
 			}
 		}
-		
-		return listCompetencias;
+		competencias = new Competencias();
 	}
 	
-	public String delete() {
-
-		return "usuario";
+	public String filtrarAcoesEntidade(){
+		List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
+		Iterator<Acoes> a = getAcoes().iterator();
+		for (Competencias competencias : compEnt) {
+			while(a.hasNext()) {
+				Acoes acao = a.next();
+				if(competencias.getAcoes().getIdAcoes() == acao.getIdAcoes()) {
+					a.remove();
+					break;
+				}
+			}
+		}
+		return "cad_competencias2.xthml";
 	}
 	
-	public String edit() {
-
-		return "usuario";
+	
+	
+	public void delete() {
+		for (Competencias comp : listCompetenciasExcluir) {
+			CompetenciasDAO.delete(comp);
+		}
 	}
 	
-
+	
+	
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
@@ -118,8 +141,60 @@ public class CompetenciasBean implements Serializable{
 	}
 	
 	public List<Acoes> getAcoes() {
+		if(this.acoes == null) {
+			List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
+			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
+			Iterator<Acoes> a = this.acoes.iterator();
+			for (Competencias competencias : compEnt) {
+				while(a.hasNext()) {
+					Acoes acao = a.next();
+					if(competencias.getAcoes().getIdAcoes() == acao.getIdAcoes()) {
+						a.remove();
+						break;
+					}
+				}
+			}
+		} else {
+			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
+			Acoes acaoRemover = AcoesDAO.findAcoes(idAcoes);
+			Iterator<Acoes> acs = this.acoes.iterator();
+			while (acs.hasNext()) {
+				Acoes a = acs.next();
+				if (a == acaoRemover) {
+					acs.remove();
+				}
+			}
+		}
 		return acoes;
 	}
+	
+/*
+ * 	Método getAcoes() para forma de monitorar as ações que já foram selecionadas na lista, 
+ * porém não restringe as ações às entidades.
+ */
+
+//	public List<Acoes> getAcoes() {
+//		this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
+//		Acoes acaoRemover = null ;
+//		
+//		if(idAcoes == 0) {
+//			acaoRemover = AcoesDAO.findAcoes(idAcoes); 
+//		}else {
+//			List<Competencias> listaCompDaEntidade = CompetenciasDAO.verificaExistencia(competencias.getEntidades().getIdEntidades());
+//		}
+//		
+//		Iterator<Acoes> acs = this.acoes.iterator();
+//		for (Competencias el : listCompetencias) {
+//			while (acs.hasNext()) {
+//				Acoes a = acs.next();
+//				if (a == acaoRemover || a == el.getAcoes()) {
+//					acs.remove();
+//				}				
+//			}
+//		}
+//		return acoes;
+//	}
+
 
 	public void setAcoes(List<Acoes> acoes) {
 		this.acoes = acoes;
@@ -162,5 +237,32 @@ public class CompetenciasBean implements Serializable{
 		this.ent = ent;
 		competencias.setEntidades(ent);
 	}
+	
+//	Para editar objetos de competencias alterando a sua ação respectiva, recebendo uma string.
+
+	public String getNovaAcao() {
+		return novaAcao;
+	}
+
+	public void setNovaAcao(String novaAcao) {
+		this.novaAcao = novaAcao;
+	}
+
+	public int getIdEntidade() {
+		return idEntidade;
+	}
+
+	public void setIdEntidade(int idEntidade) {
+		this.idEntidade = idEntidade;
+	}
+
+	public List<Competencias> getListCompetenciasExcluir() {
+		return listCompetenciasExcluir;
+	}
+
+	public void setListCompetenciasExcluir(List<Competencias> listCompetenciasExcluir) {
+		this.listCompetenciasExcluir = listCompetenciasExcluir;
+	}
+
 
 }

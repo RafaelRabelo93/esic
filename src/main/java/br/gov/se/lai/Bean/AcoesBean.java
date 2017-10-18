@@ -2,14 +2,18 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.context.RequestContext;
+
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.entity.Acoes;
+import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.utils.HibernateUtil;
 
 
@@ -25,7 +29,7 @@ public class AcoesBean implements Serializable{
 	private UsuarioBean usuarioBean ;
 	private int idAcao;
 	private List<Acoes> acoes;
-	private String teste;
+	private String titulo;
 	
 	
 	@PostConstruct
@@ -35,15 +39,16 @@ public class AcoesBean implements Serializable{
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
-	public String save() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+	public void save() {
+		if(usuarioBean.getUsuario().getPerfil() == 0 || usuarioBean.getUsuario().getPerfil() == 4 ) {
 			AcoesDAO.saveOrUpdate(acao);
 		}
-		return "/index";
+		
 	}
 	
+	
 	public String delete() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
 			AcoesDAO.delete(acao);
 		}
 		return "/index";
@@ -58,14 +63,19 @@ public class AcoesBean implements Serializable{
 		return "index";
 	}
 	
-	public List<String> completeText(String query) {
-        List<String> results = new ArrayList<String>();
-        for(int i = 0; i < 10; i++) {
-            results.add(query + i);
-        }
-         
-        return results;
-    }
+	public String filtrarAcoes(List<Competencias> comps){
+		Iterator<Acoes> a = acoes.iterator();
+		for (Competencias competencias : comps) {
+			while(a.hasNext()) {
+				Acoes acao = a.next();
+				if(competencias.getAcoes() == a) {
+					a.remove();
+					break;
+				}
+			}
+		}
+		return "cad_competencias2";
+	}
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
@@ -86,14 +96,6 @@ public class AcoesBean implements Serializable{
 			this.acoes = acoes;
 		}
 
-		public String getTeste() {
-			return teste;
-		}
-
-		public void setTeste(String teste) {
-			this.teste = teste;
-		}
-
 		public int getIdAcao() {
 			return idAcao;
 		}
@@ -104,6 +106,14 @@ public class AcoesBean implements Serializable{
 
 		public void setAcao(Acoes acao) {
 			this.acao = acao;
+		}
+
+		public String getTitulo() {
+			return titulo;
+		}
+
+		public void setTitulo(String titulo) {
+			this.titulo = titulo;
 		}
 
 

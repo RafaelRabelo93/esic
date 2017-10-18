@@ -11,7 +11,7 @@ import br.gov.se.lai.utils.HibernateUtil;
 public class CidadaoDAO {
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
-    public static void saveOrUpdate(Cidadao cidadao) {     	        
+    public static boolean saveOrUpdate(Cidadao cidadao) {     	        
         try {
         	em.getTransaction().begin();
         	if(cidadao.getIdCidadao() == null) {
@@ -21,10 +21,12 @@ public class CidadaoDAO {
     		}
             em.getTransaction().commit();  
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadao "+ cidadao.getUsuario().getNome()+" salvo(a) com sucesso!"));
+            return true;
         } catch (Exception e) {   
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar cidadao "));
         	System.out.println(e);
             em.getTransaction().rollback();
+            return false;
         }
     }
     public static void delete(Cidadao cidadao) {        

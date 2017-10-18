@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
+import br.gov.se.lai.entity.Acoes;
+import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.utils.HibernateUtil;
 
@@ -42,23 +44,23 @@ public class EntidadesBean implements Serializable{
 	}
 	
 	public String save() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
 			entidades.setAtiva(true);
 			EntidadesDAO.saveOrUpdate(entidades);
 		}
 		return "/index";
 	}
 	
-//	public String delete() {
-//		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
-//			entidades = EntidadesDAO.find(idEntidades);
-//			EntidadesDAO.delete(entidades);
-//		}	
-//		return "usuario";
-//	}
-//	
+	public void delete() {
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			entidades = EntidadesDAO.find(idEntidades);
+			//EntidadesDAO.delete(entidades);
+			entidades.setAtiva(false);
+		}	
+	}
+	
 	public String edit() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
 			EntidadesDAO.saveOrUpdate(entidades);
 		}
 		return "/index";
@@ -73,6 +75,12 @@ public class EntidadesBean implements Serializable{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void verificaCompetenciasEntidade(){
+		List<Competencias> compEnt = new ArrayList<Competencias>(this.entidades.getCompetenciases());
+		AcoesBean acaobean = new AcoesBean();
+		acaobean.filtrarAcoes(compEnt);
+	}
 	
 //GETTERS E SETTERS ==============================================	
 	
@@ -91,6 +99,10 @@ public class EntidadesBean implements Serializable{
 
 	public void setEntidades() {
 		Entidades ent = EntidadesDAO.find(idEntidades);
+		this.entidades = ent;
+	}
+	
+	public void setEntidades(Entidades ent) {
 		this.entidades = ent;
 	}
 

@@ -26,6 +26,8 @@ public class UsuarioBean implements Serializable{
 	private String senha;
 	private String nick;
 	private String nome;
+	private String nomeCompleto;
+	private String email;
 	private int veioDeSolicitacao;
 	
 	@PostConstruct
@@ -57,13 +59,27 @@ public class UsuarioBean implements Serializable{
 	public String edit() {	
 		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
 		UsuarioDAO.saveOrUpdate(usuario);
-		if(usuario.getPerfil() == 3) {
-			CidadaoBean cidadao = new CidadaoBean();
-			cidadao.save();
-		}else {
-			ResponsavelBean responsavel = new ResponsavelBean();
-			responsavel.save();
+		if(usuario.getPerfil() != 1) {
+			
+			if(usuario.getPerfil() == 3) {
+				CidadaoBean cidadao = new CidadaoBean();
+				cidadao.save();
+			}else {
+				ResponsavelBean responsavel = new ResponsavelBean();
+				responsavel.save();
+			}
 		}
+		
+		if(usuario.getPerfil() != 1) {
+			if(usuario.getPerfil() == 3) {
+				List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+				 listCidadao.get(0).setEmail(email);;
+			}else {
+				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+				listResponsavel.get(0).setEmail(email);;
+			}
+		}
+		
 		return "/index";
 	}
 	
@@ -78,12 +94,12 @@ public class UsuarioBean implements Serializable{
     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
     			logout();
     		}else {
+    			loadEmail();
     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
     		}    		
     	}
     	return "/index";   	
     }
-    
     
     public String logout(){
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -91,6 +107,20 @@ public class UsuarioBean implements Serializable{
 		session.invalidate();
 		this.usuario = null;		
     	return "/index";
+    }
+    
+    public void loadEmail() {
+		if(usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
+			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+			setEmail(listCidadao.get(0).getEmail());
+		}else {
+			if(usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty() ) {
+				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+				setEmail(listResponsavel.get(0).getEmail());
+			}else {
+				setEmail("Não cadastrado");
+			}
+		}		
     }
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -103,31 +133,6 @@ public class UsuarioBean implements Serializable{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	public String getEmail() {
-		if(usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
-			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			return listCidadao.get(0).getEmail();
-		}else {
-			if(usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty() ) {
-				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-				return listResponsavel.get(0).getEmail();
-			}else {
-				return "Não cadastrado";
-			}
-		}
-	}
-	
-	public void setEmail(String email) {
-		if(usuario.getPerfil() == 3) {
-			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			 listCidadao.get(0).setEmail(email);;
-		}else {
-			List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-			listResponsavel.get(0).setEmail(email);;
-		}
-	}
-
 
 	public String getNick() {
 		return nick;
@@ -145,8 +150,20 @@ public class UsuarioBean implements Serializable{
 		this.senha = senha;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeCompleto() {
+		String completo = usuario.getNome();
+		if(completo != null) {
+	    	String[] nomeSobrenome = completo.split(" ");
+	    	if(nomeSobrenome.length > 1) {
+	    		this.nome =  nomeSobrenome[0]+" "+nomeSobrenome[nomeSobrenome.length -1];
+	    	}else {
+	    		this.nome =  nomeSobrenome[0];
+	    	}
+	    	
+	    	return this.nome;
+		}else {
+			return "";
+		}
 	}
 
 	public void setNome(String nome) {
@@ -160,7 +177,11 @@ public class UsuarioBean implements Serializable{
 
 	public Responsavel getResponsavel() {
 		List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-		return listResponsavel.get(0);
+		if (!listResponsavel.isEmpty()) {
+			return listResponsavel.get(0);
+		}else {
+			return null;
+		}
 	}
 
 	public int getVeioDeSolicitacao() {
@@ -170,6 +191,13 @@ public class UsuarioBean implements Serializable{
 	public void setVeioDeSolicitacao(int veioDeSolicitacao) {
 		this.veioDeSolicitacao = veioDeSolicitacao;
 	}
-	
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

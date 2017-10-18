@@ -44,7 +44,7 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String save() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 ) {
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
 			this.usuario.setPerfil((short)2);
@@ -55,13 +55,17 @@ public class ResponsavelBean implements Serializable{
 		return "/index";
 	}
 	
-	public String delete() {
-
-		return "usuario";
+	public void delete() {
+		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+			this.responsavel = ResponsavelDAO.findResponsavel(email);
+			this.responsavel.getUsuario().setPerfil((short)-1);
+			ResponsavelDAO.saveOrUpdate(responsavel);
+		}
 	}
 	
 	public String edit() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 2 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
