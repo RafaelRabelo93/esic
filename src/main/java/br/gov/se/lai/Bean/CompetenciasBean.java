@@ -17,15 +17,16 @@ import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.PermissaoUsuario;
 
 
 @ManagedBean(name = "competencias")
 @SessionScoped
-public class CompetenciasBean implements Serializable{
+public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -1964244964778917209L;
 	private Competencias competencias;
 	private List<Entidades> entidades;
@@ -36,6 +37,7 @@ public class CompetenciasBean implements Serializable{
 	private int idEntidade;
 	private Entidades ent;
 	private String novaAcao;
+	private Usuario user;
 
 	
 	@PostConstruct
@@ -44,20 +46,18 @@ public class CompetenciasBean implements Serializable{
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		this.listCompetencias= new ArrayList<Competencias>();
 		this.acoes = null;
+		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
 	public String save() {
-		for (Competencias comp : listCompetencias) {
-//			if(CompetenciasDAO.verificaExistencia(comp.getAcoes().getIdAcoes(), comp.getEntidades().getIdEntidades()) == false){
-//				CompetenciasDAO.saveOrUpdate(comp);
-//			}	
-			CompetenciasDAO.saveOrUpdate(comp);
-		}	
-		
+		if(verificaPermissao()) {
+			for (Competencias comp : listCompetencias) {
+				CompetenciasDAO.saveOrUpdate(comp);
+			}	
+		}
 		return "/index";
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public void filtrarCompetenciasEntidade(AjaxBehaviorEvent e) {
 		List<Competencias> compEnt = new ArrayList<Competencias>(EntidadesDAO.find(idEntidade).getCompetenciases());
 		listCompetencias = compEnt;	
@@ -122,12 +122,23 @@ public class CompetenciasBean implements Serializable{
 	
 	
 	public void delete() {
-		for (Competencias comp : listCompetenciasExcluir) {
-			CompetenciasDAO.delete(comp);
-		}
+		if(verificaPermissao()) {
+			for (Competencias comp : listCompetenciasExcluir) {
+				CompetenciasDAO.delete(comp);
+			}
+		}	
 	}
 	
 	
+	@Override
+	public boolean verificaPermissao() {
+		if(user.getPerfil() != 1 && user.getPerfil() != 3 ) {
+			return true;
+		}else {
+			return false;
+		}	
+	}
+
 	
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -168,33 +179,6 @@ public class CompetenciasBean implements Serializable{
 		return acoes;
 	}
 	
-/*
- * 	Método getAcoes() para forma de monitorar as ações que já foram selecionadas na lista, 
- * porém não restringe as ações às entidades.
- */
-
-//	public List<Acoes> getAcoes() {
-//		this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
-//		Acoes acaoRemover = null ;
-//		
-//		if(idAcoes == 0) {
-//			acaoRemover = AcoesDAO.findAcoes(idAcoes); 
-//		}else {
-//			List<Competencias> listaCompDaEntidade = CompetenciasDAO.verificaExistencia(competencias.getEntidades().getIdEntidades());
-//		}
-//		
-//		Iterator<Acoes> acs = this.acoes.iterator();
-//		for (Competencias el : listCompetencias) {
-//			while (acs.hasNext()) {
-//				Acoes a = acs.next();
-//				if (a == acaoRemover || a == el.getAcoes()) {
-//					acs.remove();
-//				}				
-//			}
-//		}
-//		return acoes;
-//	}
-
 
 	public void setAcoes(List<Acoes> acoes) {
 		this.acoes = acoes;
@@ -263,6 +247,5 @@ public class CompetenciasBean implements Serializable{
 	public void setListCompetenciasExcluir(List<Competencias> listCompetenciasExcluir) {
 		this.listCompetenciasExcluir = listCompetenciasExcluir;
 	}
-
 
 }

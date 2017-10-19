@@ -12,10 +12,11 @@ import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "cidadao")
 @SessionScoped
-public class CidadaoBean implements Serializable{
+public class CidadaoBean implements Serializable, PermissaoUsuario{
 	
 	/**
 	 * 
@@ -36,6 +37,7 @@ public class CidadaoBean implements Serializable{
 	private String cidade;
 	private String cep;
 	private String tel;
+	private UsuarioBean usuarioBean;
 
 	
 	
@@ -43,22 +45,26 @@ public class CidadaoBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		cidadao = new Cidadao();
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
 	public String save() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
-		this.usuario = usuarioBean.getUsuario();
-		this.usuario.setPerfil((short)3);
-		if(this.cidadao == null) {
-			cidadao = new Cidadao();
+		if (verificaPermissao()) {
+			this.usuario = usuarioBean.getUsuario();
+			this.usuario.setPerfil((short) 3);
+			if (this.cidadao == null) {
+				cidadao = new Cidadao();
+			}
+			cidadao.setUsuario(this.usuario);
+			if (CidadaoDAO.saveOrUpdate(cidadao)) {
+				usuarioBean.setEmail(cidadao.getEmail());
+				usuario.getCidadaos().add(cidadao);
+				UsuarioDAO.saveOrUpdate(this.usuario);
+			}
+			return "/index";
+		} else {
+			return null;
 		}
-		cidadao.setUsuario(this.usuario);
-		if(CidadaoDAO.saveOrUpdate(cidadao)) {
-			usuarioBean.setEmail(cidadao.getEmail());
-			usuario.getCidadaos().add(cidadao);
-			UsuarioDAO.saveOrUpdate(this.usuario);
-		}				
-		return "/index";
 	}
 	
 	public String delete() {
@@ -67,16 +73,24 @@ public class CidadaoBean implements Serializable{
 	}
 	
 	public String edit() {
-
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
-		this.usuario = usuarioBean.getUsuario();
-		cidadao.setUsuario(this.usuario);
-		CidadaoDAO.saveOrUpdate(cidadao);
-		return "/index";
+		if (verificaPermissao()) {
+			this.usuario = usuarioBean.getUsuario();
+			cidadao.setUsuario(this.usuario);
+			CidadaoDAO.saveOrUpdate(cidadao);
+			return "/index";
+		} else {
+			return null;
+		}
 	}
 	
-	
-	
+	@Override
+	public boolean verificaPermissao() {
+		if(usuarioBean.getUsuario().getPerfil() == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -44,14 +46,12 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String save() {
-		if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 ) {
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
 			this.usuario.setPerfil((short)2);
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
-			UsuarioDAO.saveOrUpdate(usuario);
-		}	
+			UsuarioDAO.saveOrUpdate(usuario);	
 		return "/index";
 	}
 	
@@ -74,6 +74,15 @@ public class ResponsavelBean implements Serializable{
 		return "/index";
 	}
 	
+	public String verificaAcesso() {
+		if(usuarioBean.getUsuario().getPerfil() == 4 ) {
+			return "pages/cad_responsavel";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
+			return null;
+		}
+	}
+		
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 

@@ -10,22 +10,23 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
-import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.PermissaoUsuario;
 
 
 @ManagedBean(name = "entidades")
 @SessionScoped
-public class EntidadesBean implements Serializable{
+public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1157796158944497538L;
 	private Entidades entidades;
-	private UsuarioBean usuarioBean ;
+	private Usuario user ;
 	private int idOrgaos;
 	private int idEntidades;
 	private String nome;
@@ -38,21 +39,23 @@ public class EntidadesBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		entidades = new Entidades();
-		todasEntidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 		
 	}
 	
 	public String save() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaPermissao()) {
 			entidades.setAtiva(true);
 			EntidadesDAO.saveOrUpdate(entidades);
+			return "cad_competencias1";
+		}else{
+			return "/index";
 		}
-		return "/index";
+		
 	}
 	
 	public void delete() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaPermissao() ) {
 			entidades = EntidadesDAO.find(idEntidades);
 			//EntidadesDAO.delete(entidades);
 			entidades.setAtiva(false);
@@ -60,7 +63,7 @@ public class EntidadesBean implements Serializable{
 	}
 	
 	public String edit() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaPermissao()) {
 			EntidadesDAO.saveOrUpdate(entidades);
 		}
 		return "/index";
@@ -75,12 +78,21 @@ public class EntidadesBean implements Serializable{
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void verificaCompetenciasEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.entidades.getCompetenciases());
 		AcoesBean acaobean = new AcoesBean();
 		acaobean.filtrarAcoes(compEnt);
 	}
+	
+	@Override
+	public boolean verificaPermissao() {
+		if(user.getPerfil() == 4 || user.getPerfil() == 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	
 //GETTERS E SETTERS ==============================================	
 	
@@ -140,11 +152,12 @@ public class EntidadesBean implements Serializable{
 	}
 
 	public List<Entidades> getTodasEntidades() {
+		todasEntidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		return todasEntidades;
 	}
 
 	public void setTodasEntidades(List<Entidades> todasEntidades) {
 		this.todasEntidades = todasEntidades;
 	}
-	
+
 }

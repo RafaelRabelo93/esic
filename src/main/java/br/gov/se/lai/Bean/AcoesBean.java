@@ -9,21 +9,17 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import org.primefaces.context.RequestContext;
-
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.PermissaoUsuario;
 
 
 @ManagedBean(name = "acoes")
 @SessionScoped
-public class AcoesBean implements Serializable{
+public class AcoesBean implements Serializable, PermissaoUsuario{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1157796158944497538L;
 	private Acoes acao;
 	private UsuarioBean usuarioBean ;
@@ -40,41 +36,41 @@ public class AcoesBean implements Serializable{
 	}
 	
 	public void save() {
-		if(usuarioBean.getUsuario().getPerfil() == 0 || usuarioBean.getUsuario().getPerfil() == 4 ) {
+		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);
 		}
 		
 	}
 	
-	
 	public String delete() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaPermissao() ) {
 			AcoesDAO.delete(acao);
 		}
 		return "/index";
 	}
-	
-	public String edit() {
 
-		return "/index";
-	}
-	
-	public String login() {
-		return "index";
-	}
-	
 	public String filtrarAcoes(List<Competencias> comps){
 		Iterator<Acoes> a = acoes.iterator();
 		for (Competencias competencias : comps) {
 			while(a.hasNext()) {
 				Acoes acao = a.next();
-				if(competencias.getAcoes() == a) {
+				if(competencias.getAcoes() == acao) {
 					a.remove();
 					break;
 				}
 			}
 		}
 		return "cad_competencias2";
+	}
+	
+
+	@Override
+	public boolean verificaPermissao() {
+		if(usuarioBean.getUsuario().getPerfil() == 4) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
