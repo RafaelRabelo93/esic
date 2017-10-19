@@ -12,13 +12,18 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_entidades" styleClass="cad_form">
+			<h:form id="cad_entidades" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '0'}">
 
 				<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+					
+					<p:steps activeIndex="0" styleClass="custom" readonly="true">
+						<p:menuitem value="Entidade" url="#" />
+						<p:menuitem value="Competências" url="#" />
+					</p:steps>
 
 					<h:outputText
 						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
@@ -96,13 +101,6 @@
 								</p:selectOneRadio>
 							</p:column>
 						</p:row>
-						
-						
-						
-
-						<!-- 						<p:row><p:column> <p:outputLabel value="ID Orgão: " for="idOrgao" /> </p:column></p:row> -->
-						<!-- 						<p:row><p:column> <p:inputText id="idOrgao" required="true" -->
-						<!-- 							value="#{entidades.entidades.idOrgaos}" /> </p:column></p:row> -->
 
 						<p:row>
 							<p:column />

@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_competencias2" styleClass="cad_form">
+			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '0'}">
 
 				<div class="ficha">
 
@@ -155,7 +155,8 @@
 
 						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}"
 							style="margin:1vw 0" update="@all"
-							oncomplete="PF('dlg2').hide();">
+							oncomplete="PF('dlg2').hide();"
+							rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '0'}">
 							<h:outputText value="Salvar" />
 							<i class="fa fa-hand-o-up" />
 						</p:commandLink>

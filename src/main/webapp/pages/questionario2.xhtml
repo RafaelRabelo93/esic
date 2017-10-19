@@ -11,8 +11,8 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-
-			<h:form id="questionario2" styleClass="cad_form">
+ 
+			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '0'}">
 
 				<div class="ficha">
 
