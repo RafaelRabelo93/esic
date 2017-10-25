@@ -51,7 +51,6 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	public String save() {
 		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
-			this.usuario.setPerfil((short) 3);
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
 			}
@@ -59,6 +58,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
 				usuarioBean.setEmail(cidadao.getEmail());
 				usuario.getCidadaos().add(cidadao);
+				this.usuario.setPerfil((short) 3);
 				UsuarioDAO.saveOrUpdate(this.usuario);
 			}
 			return "/index";

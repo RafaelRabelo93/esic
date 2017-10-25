@@ -57,7 +57,7 @@ public class ResponsavelBean implements Serializable{
 	
 	public void delete() {
 		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaAcesso()) {
 			this.responsavel = ResponsavelDAO.findResponsavel(email);
 			this.responsavel.getUsuario().setPerfil((short)-1);
 			ResponsavelDAO.saveOrUpdate(responsavel);
@@ -74,12 +74,12 @@ public class ResponsavelBean implements Serializable{
 		return "/index";
 	}
 	
-	public String verificaAcesso() {
-		if(usuarioBean.getUsuario().getPerfil() == 4 ) {
-			return "pages/cad_responsavel";
+	public boolean verificaAcesso() {
+		if(usuarioBean.getUsuario().getPerfil() == 4 || usuarioBean.getUsuario().getPerfil() == 5 ) {
+			return true;
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
-			return null;
+			return false;
 		}
 	}
 		

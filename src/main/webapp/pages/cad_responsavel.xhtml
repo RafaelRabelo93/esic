@@ -20,7 +20,7 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 
-					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '4' and usuario.usuario.perfil eq '0'}">
+					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
 
 						<f:facet name="header">
 							<p:row>
@@ -66,7 +66,7 @@
 					</p:panelGrid>
 					
 					 
-					<p:commandLink class="botaoLink" action="#{responsavel.save}" update="@all" rendered="#{usuario.usuario.perfil eq '4'}">
+					<p:commandLink class="botaoLink" action="#{responsavel.save}" update="@all" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>

@@ -33,6 +33,7 @@ public class Solicitacao implements java.io.Serializable {
 	private Date dataIni;
 	private String status;
 	private Date datafim;
+	private Date dataLimite;
 	private String titulo;
 	private Integer protocolo;
 	private String tipo;
@@ -46,12 +47,13 @@ public class Solicitacao implements java.io.Serializable {
 		this.entidades = entidades;
 	}
 
-	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, String status, Date datafim, String titulo,
+	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
 			Integer protocolo, String tipo, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
 		this.dataIni = dataIni;
+		this.dataIni = dataLimite;
 		this.status = status;
 		this.datafim = datafim;
 		this.titulo = titulo;
@@ -100,6 +102,16 @@ public class Solicitacao implements java.io.Serializable {
 
 	public void setDataIni(Date dataIni) {
 		this.dataIni = dataIni;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dataLimite", length = 19)
+	public Date getDataLimite() {
+		return this.dataLimite;
+	}
+	
+	public void setDataLimite(Date dataLimite) {
+		this.dataLimite = dataLimite;
 	}
 
 	@Column(name = "status", length = 10)

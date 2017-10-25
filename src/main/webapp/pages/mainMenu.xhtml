@@ -28,10 +28,10 @@
 				<!-- 					menu gestor -->
 
 					<h:panelGroup class="menu"
-						rendered="#{usuario.usuario.perfil eq '2' or  usuario.usuario.perfil eq '4' }">
+						rendered="#{usuario.usuario.perfil eq '2' or  usuario.usuario.perfil eq '4'  or  usuario.usuario.perfil eq '5'}">
 
 						<h:panelGroup class="botao" layout="block"
-							rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '4'}">
+							rendered="#{usuario.usuario.perfil ne '0'}">
 							<h:commandLink styleClass="link" action="pages/altterar_usuario">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/contract.png']}" width="80%" />
@@ -58,7 +58,7 @@
 						</div>
 
 						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/cad_entidades">
+							<h:commandLink styleClass="link" action="pages/cad_entidades" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/office.png']}" width="80%" />
 
@@ -71,7 +71,7 @@
 						</div>
 
 						<div class="botao">
-							<h:commandLink styleClass="link" action="#{responsavel.verificaAcesso}">
+							<h:commandLink styleClass="link" action="pages/cad_responsavel" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/actions.png']}" width="80%" />
 
@@ -85,7 +85,7 @@
 						</div>
 
 						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/cad_acoes">
+							<h:commandLink styleClass="link" action="pages/cad_acoes" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/exchange.png']}" width="80%" />
 
@@ -136,6 +136,18 @@
 								value="Editar dados pessoais do usuário" />
 						</h:commandLink>
 					</h:panelGroup>
+					
+					<div class="botao">
+						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
+								width="80%"/>
+
+							<h:outputText styleClass="titulo" value="Consulta" style="font-size:35px; padding: 2% 0;"/>
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Acompanhar andamento da solicitação realizada" />
+						</h:commandLink>
+					</div>
 
 					<div class="botao">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
@@ -151,17 +163,6 @@
 						</h:commandLink>
 					</div>
 
-					<div class="botao">
-						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
-								width="80%"/>
-
-							<h:outputText styleClass="titulo" value="Consulta" style="font-size:35px; padding: 2% 0;"/>
-
-							<h:outputText style="font-size:20px; color:#333"
-								value="Acompanhar andamento da solicitação realizada" />
-						</h:commandLink>
-					</div>
 				</h:panelGroup>	
 					
 

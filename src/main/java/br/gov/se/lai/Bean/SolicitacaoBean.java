@@ -1,6 +1,9 @@
 package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,6 +47,8 @@ public class SolicitacaoBean implements Serializable{
 	private int idAcao;
 	private int idSolicitacao;
 	private Mensagem mensagem;	
+	private boolean ativa;
+	private final static int constanteTempo = 10;
 
 	@PostConstruct
 	public void init() {
@@ -51,8 +56,6 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		this.filteredSolicitacoes =  new ArrayList<Solicitacao>(SolicitacaoDAO.list());
-	
 	}
 	
 
@@ -61,17 +64,18 @@ public class SolicitacaoBean implements Serializable{
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());	
 		
 		//Salvar Solicitação
-		this.solicitacao.setCidadao(listCidadao.get(0));		
-		//this.solicitacao.setEntidades(EntidadesDAO.find(2));	
+		this.solicitacao.setCidadao(listCidadao.get(0));	
 		this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));	
+		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(20)));
 		this.solicitacao.setStatus("Aberta");
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 		
 		//Salvar Mensagem
 		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
-		this.mensagem.setData(new Date(System.currentTimeMillis()));	
+		this.mensagem.setData(java.sql.Date.valueOf(LocalDate.now()));	
 		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
 		return "/index";
@@ -87,7 +91,7 @@ public class SolicitacaoBean implements Serializable{
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());	
 		
-		if(usuarioBean.getUsuario().getIdUsuario() == null) {
+		if(usuarioBean.getUsuario().getPerfil() == 0) {
 			//se não tiver cadastro de usuario, vai cadastrar primeiro
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			usuarioBean.setVeioDeSolicitacao(1);
@@ -129,7 +133,58 @@ public class SolicitacaoBean implements Serializable{
 			filteredSolicitacoes = SolicitacaoDAO.listPersonalizada(status);
 		}
 	}
+
 	
+	public void verificaTempoSolicitacao() {
+		Date now = new Date();
+		for (Solicitacao solicitacao : filteredSolicitacoes) {
+			if(solicitacao.getDataLimite()!=null && !solicitacao.getStatus().equals("Finalizada")) {
+					if(now.after(solicitacao.getDataLimite())) {
+						if (solicitacao.getMensagems().size() == 1) {
+							setStatus("Negada");
+							prorrogar(solicitacao);
+							SolicitacaoDAO.saveOrUpdate(solicitacao);
+						}else {
+							solicitacao.setStatus("Finalizada");
+							solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+							SolicitacaoDAO.saveOrUpdate(solicitacao);
+						}
+					}
+			}
+		} 
+	} 
+	
+	public static int prazoResposta(String status) {
+		switch (status) {
+		case "Aberta" :
+			return constanteTempo;
+		case "Prorrogada" :
+			return constanteTempo;
+		case "Negada" :
+			return constanteTempo;
+		case "Recurso" :
+			return 5;
+		default:
+			return 20;
+		}
+	}
+	
+	
+	public void prorrogar(Solicitacao solicitacao) {
+		if(solicitacao.getStatus() != "Prorrogada") {
+			solicitacao.setStatus(status);
+			solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(prazoResposta(solicitacao.getStatus()))));
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já está em período de prorrogação.",null));
+		}
+	}
+	
+	public void recurso() {
+		prorrogar(solicitacao);
+	}
+	
+
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 	
@@ -237,6 +292,7 @@ public class SolicitacaoBean implements Serializable{
 
 
 	public List<Solicitacao> getFilteredSolicitacoes() {
+		this.filteredSolicitacoes =  new ArrayList<Solicitacao>(SolicitacaoDAO.list());
 		return filteredSolicitacoes;
 	}
 
@@ -244,7 +300,6 @@ public class SolicitacaoBean implements Serializable{
 	public void setFilteredSolicitacoes(List<Solicitacao> filteredSolicitacoes) {
 		this.filteredSolicitacoes = filteredSolicitacoes;
 	}
-	
 	
 	
 }

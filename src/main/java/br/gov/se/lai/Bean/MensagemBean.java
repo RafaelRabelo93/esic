@@ -1,8 +1,10 @@
 package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -10,9 +12,12 @@ import javax.faces.bean.SessionScoped;
 
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
+import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
+import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 
 
@@ -28,28 +33,24 @@ public class MensagemBean implements Serializable{
 	private Calendar data;
 	private Solicitacao solicitacao;
 	private Anexo anexo;
+	private final int constanteTempo = 10;
+	private Usuario usuario;
 
 
 	@PostConstruct
 	public void init() {
 		this.mensagem = new Mensagem();		
 		this.anexo = new Anexo();
+		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 
 	public String save() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
-//		if(usuarioBean.getUsuario().getPerfil() == 3) {
-//			mensagem.setTipo((short)1);
-//		}else {
-//			if (mensagem.getSolicitacao().getMensagems().size() == 1 && usuarioBean.getUsuario().getPerfil() == 2) {
-//				mensagem.setTipo((short)2);
-//			}else {
-//				mensagem.setTipo((short)3);
-//			}
-//		}
+		
+		this.mensagem.setUsuario(usuario); 
+
 		mensagem.setData(new Date(System.currentTimeMillis()));	
 		mensagem.setSolicitacao(solicitacao);
+		verificaMensagem();
 		MensagemDAO.saveOrUpdate(mensagem);
 		if(anexo != null) {
 			anexo.setFile("anexo.txt");
@@ -61,17 +62,17 @@ public class MensagemBean implements Serializable{
 		return "consulta";
 	}
 	
-	public String delete() {
-
-		return "usuario";
+	public void verificaMensagem() {
+		if(solicitacao.getStatus() != "Respondida") {
+			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
+			solicitacao.setStatus("Respondida");
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		}
 	}
 	
-	public String edit() {
-
-		return "calma";
+	public int tipoMensagem() {
+		return 1;
 	}
-
-
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

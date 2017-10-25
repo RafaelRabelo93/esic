@@ -19,10 +19,10 @@
 					closable="true" />
 
 				<h:outputText value="Consulta de solicitações"
-					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
+					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 
 
-				<h:panelGroup id="solicitacao_panel">
+				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
 						emptyMessage="Não há solicitações" sortBy="#{slt.status}"
 						expandableRowGroups="true" 
@@ -67,8 +67,11 @@
 									target="#{solicitacao.solicitacao}" />
 							</p:commandLink>
 						</p:column>
+						
 					</p:dataTable>
 
+					<p:commandLink class="botaoLinkIcon" update="solicitacao_panel" value="Verificar prazo das solicitações" action="#{solicitacao.verificaTempoSolicitacao()}">
+					</p:commandLink>
 				</h:panelGroup>
 
 
@@ -91,8 +94,11 @@
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"  />
 						
-							<h:outputText value="Data:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="Data de Solicitação:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
+							
+							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  />
 											
 							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="blabla.png" />
@@ -123,7 +129,8 @@
 
 					</p:dataScroller>
 
-					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="margin-bottom:1vw; align-self:flex-end">
+					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
+								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.prorrogar(solicitacao.solicitacao)}">
 							<h:outputText value="Realizar Recurso" />
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
@@ -135,7 +142,7 @@
 			         </p:commandLink>
 
 				<h:form>
-					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="display:flex; flex-flow: column">
+					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
 							<p:inputText id="mensagem"
@@ -162,6 +169,12 @@
 							<i class="fa fa-hand-o-up" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
 							<f:setPropertyActionListener value="#{mensagem.mensagem}" target="#{mensagem.anexo.mensagem}" />
+						</p:commandLink>
+
+						<p:commandLink class="botaoLink"  action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" style="margin:1vw 0">
+							<h:outputText value="Prorrogar Resposta" />
+							<i class="fa fa-hand-o-up" />
+							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}"></f:setPropertyActionListener>
 						</p:commandLink>
 
 					</p:outputPanel>
