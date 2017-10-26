@@ -47,8 +47,8 @@ public class SolicitacaoBean implements Serializable{
 	private int idAcao;
 	private int idSolicitacao;
 	private Mensagem mensagem;	
-	private boolean ativa;
-	private final static int constanteTempo = 10;
+	private final static int constanteTempo = 20;
+	private final static int constanteAdicionalTempo = 10;
 
 	@PostConstruct
 	public void init() {
@@ -67,9 +67,10 @@ public class SolicitacaoBean implements Serializable{
 		this.solicitacao.setCidadao(listCidadao.get(0));	
 		this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));	
-		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(20)));
+		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo)));
 		this.solicitacao.setStatus("Aberta");
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
+		
 		
 		//Salvar Mensagem
 		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
@@ -78,14 +79,12 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
+		//Salvar Alteração de Status
+		MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+		
 		return "/index";
 	}	
-	public void finalizarSolicitacao() {
-		this.solicitacao = SolicitacaoDAO.findSolicitacao(idSolicitacao);
-		this.solicitacao.setStatus("Finalizada");
-		this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-		SolicitacaoDAO.saveOrUpdate(solicitacao);
-	}
+	
 	
 	public String verificaCidadaoSolicitacao() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
@@ -135,55 +134,63 @@ public class SolicitacaoBean implements Serializable{
 	}
 
 	
+	
+///////// Verificação dos Status-Tempo
+	
 	public void verificaTempoSolicitacao() {
 		Date now = new Date();
 		for (Solicitacao solicitacao : filteredSolicitacoes) {
-			if(solicitacao.getDataLimite()!=null && !solicitacao.getStatus().equals("Finalizada")) {
+			try {
+				if(!solicitacao.getStatus().equals("Finalizada")) {
 					if(now.after(solicitacao.getDataLimite())) {
-						if (solicitacao.getMensagems().size() == 1) {
-							setStatus("Negada");
-							prorrogar(solicitacao);
-							SolicitacaoDAO.saveOrUpdate(solicitacao);
-						}else {
-							solicitacao.setStatus("Finalizada");
 							solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+							solicitacao.setStatus("Finalizada");
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
-						}
+							MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
 					}
 			}
+			}catch (NullPointerException e) {
+				System.out.println(e.getMessage());
+			}
+			
 		} 
 	} 
 	
 	public static int prazoResposta(String status) {
 		switch (status) {
-		case "Aberta" :
-			return constanteTempo;
-		case "Prorrogada" :
-			return constanteTempo;
-		case "Negada" :
-			return constanteTempo;
-		case "Recurso" :
-			return 5;
-		default:
-			return 20;
+			case "Aberta":
+				return constanteAdicionalTempo;
+			case "Prorrogada":
+				return constanteAdicionalTempo;
+			case "Resposta":
+				return constanteAdicionalTempo;
+			case "Recurso":
+				return 5;
+			default:
+				return constanteTempo;
 		}
 	}
 	
 	
 	public void prorrogar(Solicitacao solicitacao) {
-		if(solicitacao.getStatus() != "Prorrogada") {
-			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(prazoResposta(solicitacao.getStatus()))));
-			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		if(solicitacao.getStatus().equals("Aberta")) {
+			try {
+				solicitacao.setStatus(status);
+				solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(prazoResposta(solicitacao.getStatus()))));
+				SolicitacaoDAO.saveOrUpdate(solicitacao);
+				MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+			} catch (NullPointerException e) {
+				System.out.println(e.getMessage());
+			}			
 		}else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já está em período de prorrogação.",null));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não está disponível para Prorrogação.",null));				
 		}
 	}
 	
 	public void recurso() {
 		prorrogar(solicitacao);
 	}
-	
+
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

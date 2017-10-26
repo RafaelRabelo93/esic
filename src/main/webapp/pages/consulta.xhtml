@@ -132,6 +132,7 @@
 					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
 								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.prorrogar(solicitacao.solicitacao)}">
 							<h:outputText value="Realizar Recurso" />
+							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}"/>
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 			         
@@ -171,15 +172,13 @@
 							<f:setPropertyActionListener value="#{mensagem.mensagem}" target="#{mensagem.anexo.mensagem}" />
 						</p:commandLink>
 
+					</p:outputPanel>
+				</h:form>	
 						<p:commandLink class="botaoLink"  action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" style="margin:1vw 0">
 							<h:outputText value="Prorrogar Resposta" />
 							<i class="fa fa-hand-o-up" />
 							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}"></f:setPropertyActionListener>
 						</p:commandLink>
-
-					</p:outputPanel>
-				</h:form>	
-
 				</p:outputPanel>
 			</p:dialog>
 

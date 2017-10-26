@@ -13,6 +13,7 @@ import javax.faces.bean.SessionScoped;
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
+import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Responsavel;
@@ -29,7 +30,7 @@ public class MensagemBean implements Serializable{
 	
 
 	private static final long serialVersionUID = -353994363743436917L;
-	private Mensagem mensagem;
+	private static Mensagem mensagem;
 	private Calendar data;
 	private Solicitacao solicitacao;
 	private Anexo anexo;
@@ -44,6 +45,7 @@ public class MensagemBean implements Serializable{
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 
+	@SuppressWarnings("static-access")
 	public String save() {
 		
 		this.mensagem.setUsuario(usuario); 
@@ -72,6 +74,16 @@ public class MensagemBean implements Serializable{
 	
 	public int tipoMensagem() {
 		return 1;
+	}
+	
+	public static void salvarStatus(Solicitacao solicitacao, String status) {
+		mensagem = new Mensagem();
+		mensagem.setData(new Date(System.currentTimeMillis()));
+		mensagem.setSolicitacao(solicitacao);
+		mensagem.setTexto("Solicitação foi "+status+" no sistema.");
+		mensagem.setTipo((short)4);
+		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		MensagemDAO.saveOrUpdate(mensagem);
 	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
