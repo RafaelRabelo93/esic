@@ -43,6 +43,7 @@ public class MensagemBean implements Serializable{
 		this.mensagem = new Mensagem();		
 		this.anexo = new Anexo();
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
 	}
 
 	@SuppressWarnings("static-access")
@@ -66,9 +67,10 @@ public class MensagemBean implements Serializable{
 	
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
-			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
 			solicitacao.setStatus("Respondida");
+			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			mensagem.setTipo((short)2);
 		}
 	}
 	
@@ -77,12 +79,26 @@ public class MensagemBean implements Serializable{
 	}
 	
 	public static void salvarStatus(Solicitacao solicitacao, String status) {
+		int tipoAux;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTexto("Solicitação foi "+status+" no sistema.");
-		mensagem.setTipo((short)4);
 		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		switch (status) {
+		case "Recurso":
+			tipoAux = 3;
+			break;
+			
+		case "Prorrogada":
+			tipoAux = 4;
+			break;
+			
+		default:
+			tipoAux = 1;
+			break;
+		}
+		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
 	}
 

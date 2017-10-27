@@ -70,7 +70,8 @@
 						
 					</p:dataTable>
 
-					<p:commandLink class="botaoLinkIcon" update="solicitacao_panel" value="Verificar prazo das solicitações" action="#{solicitacao.verificaTempoSolicitacao()}">
+					<p:commandLink class="botaoLinkIcon" update="solicitacao_panel" value="Verificar prazo das solicitações" 
+									action="#{solicitacao.verificaTempoSolicitacao()}">
 					</p:commandLink>
 				</h:panelGroup>
 
@@ -130,18 +131,13 @@
 					</p:dataScroller>
 
 					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
-								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.prorrogar(solicitacao.solicitacao)}">
+								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.recurso()}" update="solicitacao_panel" >
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}"/>
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{solicitacao.solicitacao}" />
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 			         
-			         <p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" action="#{solicitacao.finalizarSolicitacao}"  style="margin-bottom:1vw; align-self:flex-end">
-							<h:outputText value="Finalizar solicitação" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao}" target="#{solicitacao.idSolicitacao}" />
-							<i class="fa fa-hand-o-up"/>
-			         </p:commandLink>
-
 				<h:form>
 					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
@@ -165,7 +161,7 @@
 								invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  action="#{mensagem.save}" style="margin:1vw 0">
+						<p:commandLink class="botaoLink"  action="#{mensagem.save}" style="margin:1vw 0" update="solicitacao_panel" >
 							<h:outputText value="Responder" />
 							<i class="fa fa-hand-o-up" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
@@ -174,7 +170,7 @@
 
 					</p:outputPanel>
 				</h:form>	
-						<p:commandLink class="botaoLink"  action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" style="margin:1vw 0">
+						<p:commandLink class="botaoLink"  action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" update="solicitacao_panel" style="margin:1vw 0">
 							<h:outputText value="Prorrogar Resposta" />
 							<i class="fa fa-hand-o-up" />
 							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}"></f:setPropertyActionListener>
