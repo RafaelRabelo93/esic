@@ -11,11 +11,22 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
 import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Criptografia;
+import br.gov.se.lai.utils.verificarStatusSolicitacao;
 
 @ManagedBean(name = "usuario")
 @SessionScoped
@@ -33,6 +44,17 @@ public class UsuarioBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
+		SchedulerFactory shedFact = new StdSchedulerFactory();
+		try {
+			Scheduler scheduler = shedFact.getScheduler();
+			scheduler.start();
+			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *")).build();
+			scheduler.scheduleJob(job, trigger);
+		} catch (SchedulerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	public String save() {

@@ -9,6 +9,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,8 +22,19 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
+import br.gov.se.lai.utils.verificarStatusSolicitacao;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Cidadao;
@@ -50,13 +66,16 @@ public class SolicitacaoBean implements Serializable{
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
+	private final static String[] tipos = {"Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada"};
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		
 	}
 	
 
@@ -185,25 +204,7 @@ public class SolicitacaoBean implements Serializable{
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private void verificaTempoSolicitacao() {
-		Date now = new Date();
-		for (Solicitacao solicitacao : filteredSolicitacoes) {
-			try {
-				if(!solicitacao.getStatus().equals("Finalizada")) {
-					if(now.after(solicitacao.getDataLimite())) {
-						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-						solicitacao.setStatus("Finalizada");
-						SolicitacaoDAO.saveOrUpdate(solicitacao);
-						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
-					}
-				}
-			}catch (NullPointerException e) {
-				System.out.println(e.getMessage());
-			}
-			
-		} 
-	} 
+
 	
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
 		boolean retorno = false;
@@ -350,5 +351,8 @@ public class SolicitacaoBean implements Serializable{
 		this.filteredSolicitacoes = filteredSolicitacoes;
 	}
 	
-	
+	public static String[] getTipos() {
+		return tipos;
+	}
+
 }

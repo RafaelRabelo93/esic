@@ -77,6 +77,10 @@ public class SolicitacaoDAO {
 			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status,em)); 
 	}	
 		
-	
-	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listar() {
+			return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
+
+	}
+
 }
