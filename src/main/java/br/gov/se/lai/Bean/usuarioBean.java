@@ -9,11 +9,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.id.UUIDGenerationStrategy;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -49,27 +52,33 @@ public class UsuarioBean implements Serializable{
 			Scheduler scheduler = shedFact.getScheduler();
 			scheduler.start();
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *")).build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 35 9 ? * *")).build();
 			scheduler.scheduleJob(job, trigger);
 		} catch (SchedulerException e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			e.getMessage();
 		}
 	}
 	
 	public String save() {
 		senha = usuario.getSenha();
 		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
-		usuario.setPerfil((short)1);
-		UsuarioDAO.saveOrUpdate(usuario);	
-		if (veioDeSolicitacao == 0) {
-			nick = usuario.getNick();
-			login();
-			return "/index";
-		}else {
-			nick = usuario.getNick();
-			login();
-			return "cad_cidadao";
+		usuario.setPerfil((short) 1);
+		if (!verificaExistenciaNick(usuario.getNick())) {
+			UsuarioDAO.saveOrUpdate(usuario);
+			if (veioDeSolicitacao == 0) {
+				nick = usuario.getNick();
+				login();
+				return "/index";
+			} else {
+				nick = usuario.getNick();
+				login();
+				return "cad_cidadao";
+			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Nick já existente no sistema.", "Escolha outro."));
+			usuario = new Usuario();
+			return null;
 		}
 	}
 	
@@ -126,7 +135,7 @@ public class UsuarioBean implements Serializable{
     public String logout(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-		session.invalidate();
+		session.invalidate(); 
 		this.usuario = null;		
     	return "/index";
     }
@@ -144,6 +153,33 @@ public class UsuarioBean implements Serializable{
 			}
 		}		
     }
+    
+    private boolean verificaExistenciaNick(String nick) {
+    	if(UsuarioDAO.buscarUsuario(nick) != null) {
+    		return true;
+    	}else {    		
+    		return false;
+    	}
+    }
+    
+    public void sugestaoNick() {
+    	int cont = 1;
+    	try {
+    		List<Usuario> usuarios = UsuarioDAO.buscarNicks(usuario.getNome().split(" ", 2)[0]);
+    		cont += (usuarios.size());    		
+    	}catch (NullPointerException e) {
+			e.getMessage();
+		}finally {
+			if(cont == 1) {
+				this.nick = ((getNomeCompleto().replace(" ", ".")).toLowerCase());								
+			}else {
+				this.nick = ((getNomeCompleto().replace(" ", ".")+cont).toLowerCase());								
+			}
+			this.usuario.setNick(this.nick);			
+		}
+    }
+    
+    
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
@@ -161,7 +197,7 @@ public class UsuarioBean implements Serializable{
 	}
 
 	public void setNick(String nick) {
-		this.nick = nick;
+		this.nick = nick;			
 	}
 
 	public String getSenha() {
@@ -190,6 +226,7 @@ public class UsuarioBean implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+		sugestaoNick();
 	}
 
 	public Cidadao getCidadao() {	

@@ -60,6 +60,20 @@ public class UsuarioDAO {
         
     }        
     
+    @SuppressWarnings("unchecked")
+	public static List<Usuario> buscarNicks(String primeiroNome){
+    	Query query = em.createQuery("FROM Usuario as usu WHERE usu.nick LIKE :nickParam");
+    	query.setParameter("nickParam", "%"+primeiroNome+"%");
+    	List<Usuario> results = query.getResultList();
+    	
+    	if (results.isEmpty()) {
+    		return null;
+    	}else {    		
+    		return results;
+    	}
+    	
+    }
+    
     public static Usuario findUsuario(int id){
     	return em.find(Usuario.class, id) ;
     }

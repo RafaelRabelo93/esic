@@ -16,9 +16,9 @@
 
 				<div class="ficha">
 
-					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
+<!-- 							Mensagens de Erro		 -->
+<!-- 					<p:messages id="messages" showDetail="true" autoUpdate="true" -->
+<!-- 						closable="true" /> -->
 
 <!-- 					<h:outputText -->
 <!-- 						value="Os campos abaixo marcados com * são de preenchimento obrigatório." -->
@@ -44,8 +44,10 @@
 
 
 						<p:row><p:column> <p:outputLabel value="Nome completo: " for="nome" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}" size="50" /> </p:column></p:row>
-
+						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  size="50" > 
+						<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" /></p:inputText>
+						</p:column></p:row>
+						
 						<p:row><p:column> <p:outputLabel value="Nome de usuário: " for="nick" /> </p:column></p:row>
 						<p:row><p:column> <p:inputText id="nick" required="true"
 							value="#{usuario.usuario.nick}" size="50" /> </p:column></p:row>

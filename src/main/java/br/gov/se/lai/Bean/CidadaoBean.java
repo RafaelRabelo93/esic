@@ -44,11 +44,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	
 	@PostConstruct
 	public void init() {
-		cidadao = new Cidadao();
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		cidadao = new Cidadao();	
 	}
 	
 	public String save() {
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			if (this.cidadao == null) {
@@ -73,6 +73,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public String edit() {
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			cidadao.setUsuario(this.usuario);

@@ -44,9 +44,9 @@
 							</p:column>
 						</p:row>
 
-						<p:separator />
+<!-- 						<p:separator /> -->
 
-						<p:outputLabel value="Órgão / Entidade:" />
+<!-- 						<p:outputLabel value="Órgão / Entidade:" /> -->
 
 						<h:panelGroup id="competencias_panel">
 							<p:dataTable style="width:720px" var="comp"
@@ -65,16 +65,14 @@
 								<p:column selectionMode="multiple"
 									style="width:35px;text-align:center" />
 								<p:rowExpansion>
-									<p:panelGrid columns="2" columnClasses="label,value"
-										style="width:720px">
+									<p:panelGrid columns="1" rowClasses="nome,conteudo" style="width:720px; border: none;">
 
-										<h:outputText value="Descrição da ação:" />
-										<h:outputText value="Descrição da competência:" />
-
+										<h:outputText value="Descrição da Ação:" styleClass="titulo" />
 										<p:inplace editor="true">
-											<p:inputTextarea id="descricao"
-												value="#{comp.acoes.descricao}" />
+											<p:inputTextarea id="descricao"	value="#{comp.acoes.descricao}" />
 										</p:inplace>
+										
+										<h:outputText value="Descrição da Competência:" styleClass="titulo" />
 										<p:inplace>
 											<p:inputTextarea value="#{comp.descricao}" />
 										</p:inplace>
@@ -83,29 +81,25 @@
 
 							</p:dataTable>
 
-						</h:panelGroup>
-						
-						<p:row >
-						<p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
-							<h:outputText value="Excluir"  />
-							<i class="fa fa-arrow-right" />
-						</p:commandLink>
-
-						<p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
-							<h:outputText value="Atualizar" />
-							<i class="fa fa-arrow-right" />
-						</p:commandLink>
-
-						<p:commandLink class="botaoLink" action="cad_competencias1" >
-							<h:outputText value="Nova Competencia" />
-							<i class="fa fa-arrow-right" />
-						</p:commandLink>
-
-					</p:row>
+						</h:panelGroup>						
 					</p:panelGrid>
 
-					
-
+					<h:panelGroup styleClass="divBtn">	
+						<p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
+							<h:outputText value="Excluir "  />
+							<i class="fa fa-trash" />
+						</p:commandLink>
+	
+						<p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
+							<h:outputText value="Atualizar " />
+							<i class="fa fa-pencil" />
+						</p:commandLink>
+	
+						<p:commandLink class="botaoLink" action="cad_competencias1" >
+							<h:outputText value="Nova Competencia " />
+							<i class="fa fa-plus-square" />
+						</p:commandLink>
+					</h:panelGroup>
 
 				</div>
 

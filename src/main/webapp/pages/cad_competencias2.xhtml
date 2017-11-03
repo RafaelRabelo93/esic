@@ -14,7 +14,7 @@
 
 			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '5'}">
 
-				<div class="ficha">
+				<div class="ficha" style="width:50%">
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
@@ -29,7 +29,7 @@
 						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
 						style="color:gray; align-self: flex-start; padding-top: 2vw;" />
 
-					<p:panelGrid style="margin-bottom:1vw; width: 50%">
+					<p:panelGrid columns="3" style="margin-bottom:1vw; width:100%" layout="grid">
 
 						<f:facet name="header">
 							<p:row>
@@ -40,65 +40,39 @@
 							</p:row>
 						</f:facet>
 
-						<p:row>
-							<p:column>
-								<h:outputLabel value="Órgão/Entidade:"/>
-									<br />
-								<h:outputText id="redirect2"
-									value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
-							</p:column>
-						</p:row>
+						<h:outputLabel value="Órgão/Entidade:"/> 
+						<br/> <h:outputText value=" " />
+						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+						<br/> <h:outputText value=" " />
 
-						<p:row>
-							<p:column>
-								<h:outputLabel value="Ações: " for="acoes" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" >
-									<f:selectItem itemLabel="Selecione" itemValue="0" />
-									<f:selectItems value="#{competencias.acoes}" var="acs"
-										itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
-								</p:selectOneMenu>
-							</p:column>
-							<p:column>
-								<h:outputLabel value="Ou" />
-							</p:column>
-								<p:column>
-									<p:commandLink class="botaoLinkIcon" update="cad_competencias2"
-										onclick="PF('dlg2').show();">
-										<i class="fa fa-plus " />
-										<h:outputLabel value=" Criar nova ação " />
-									</p:commandLink>
-								</p:column>
-							
-						</p:row>
-						<p:row>
-							<p:column>
-								<h:outputLabel value="Descrição: " for="descricao" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputTextarea id="descricao" counter="display"
-									value="#{competencias.competencias.descricao}" maxlength="200"
-									autoResize="false" style="width:100%"
-									counterTemplate="{0} caracteres restantes." />
-								<h:outputText id="display" />
-							</p:column>
-						</p:row>
+						<h:outputLabel value="Ações: " for="acoes" /> <br/> <h:outputText value=" " />
+						<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" >
+							<f:selectItem itemLabel="Selecione" itemValue="0" />
+							<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
+						</p:selectOneMenu>
 
-						<p:row>
-							<p:column>
-								<p:commandButton value="Adicionar"
-									action="#{competencias.addLista}" update="cad_competencias2" />
-							</p:column>
-						</p:row>
+						<h:outputLabel value="Ou" style="margin-left: 1em" />
+						<p:commandLink class="botaoLinkIcon" update="cad_competencias2"	onclick="PF('dlg2').show();">
+							<i class="fa fa-plus" />
+							<h:outputLabel value=" Nova ação" />
+						</p:commandLink>
+						
+						<h:outputLabel value="Descrição: " for="descricao" /> <br/> <h:outputText value=" " />
+						<p:inputTextarea id="descricao" cols="90" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
+							autoResize="false" style="width:100%" counterTemplate="{0} caracteres restantes." /> <br/><h:outputText value=" " />
+						<h:outputText id="display" />
 
 					</p:panelGrid>
 					
-					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 50%">
+						<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="cad_competencias2" >
+							<h:outputLabel value="Adicionar" />
+							<i class="fa fa-plus" />
+						</p:commandLink>
+					
+
+				</div>
+
+					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%">
 							<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada"
 								value="#{competencias.listCompetencias}">
 								<f:facet name="header">
@@ -126,26 +100,22 @@
 							</p:dataTable>
 						</h:panelGroup>
 
-					<p:commandLink class="botaoLink" action="#{competencias.save}">
+					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%">
 						<h:outputText value="Salvar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>
-
-				</div>
-
+					
 			</h:form>
 
-			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true">
-				<h:form>
-					<p:outputPanel id="dlg" style="width:640px; height: 480px">
-						<p:panelGrid columns="1">
-							<h:outputText value="This is a Modal Dialog." />
-
-							<p:outputLabel value="Título:" for="title" />
-							<p:inputText id="title" value="#{acoes.acao.titulo}" />
+			<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" resizable="false" >
+<!-- 				<h:form> -->
+<!-- 					<p:outputPanel id="dlg" style="width:640px; height: 480px"> -->
+						<p:panelGrid columns="1" style="border:none; width: 60%;">
+							<p:outputLabel value="Título:" for="titulo" />
+							<p:inputText id="titulo" value="#{acoes.acao.titulo}" />
 
 							<p:outputLabel value="Descrição:" for="descr" />
-							<p:inputTextarea id="descr" counter="display" maxlength="200"
+							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
 								autoResize="false" style="width:100%"
 								counterTemplate="{0} caracteres restantes."
 								value="#{acoes.acao.descricao}" />
@@ -153,16 +123,13 @@
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}"
-							style="margin:1vw 0" update="@all"
-							oncomplete="PF('dlg2').hide();"
-							rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '0'}">
+						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin:0" update="@all" oncomplete="PF('dlg2').hide();">
 							<h:outputText value="Salvar" />
-							<i class="fa fa-hand-o-up" />
+							<i class="fa fa-check" style="padding-left: 3px" />
 						</p:commandLink>
 
-					</p:outputPanel>
-				</h:form>
+<!-- 					</p:outputPanel> -->
+<!-- 				</h:form> -->
 
 			</p:dialog>
 

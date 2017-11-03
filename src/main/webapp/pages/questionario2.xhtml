@@ -42,7 +42,8 @@
 							 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat" />
 							 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 							 <f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue= "#{acoes.idAcoes}"/>
-						</p:selectOneMenu> </p:column></p:row>
+						</p:selectOneMenu> 
+						></p:column></p:row>
 
 						<p:outputLabel value="Categoria:" for="cat" />
 						<p:row><p:column> <p:selectOneMenu id="cat"  value="#{entidades.idEntidades}">

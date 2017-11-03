@@ -59,6 +59,7 @@
 	padding: 10px;
 	border-radius: 3px;
 	margin-bottom: 2vw;
+	
 }
 
 .botaoLinkIcon {
@@ -67,11 +68,14 @@
 	color: white !important;
 	padding: 0.1vw 0.45vw;
 	border-radius: 3px;
+	flex-flow: row nowrap;
+	word-wrap: normal; 
 }
 
 
 /* #tabela{ */
 /* 	display: -ms-flexbox;  */
+
 /*  	display: -moz-flexbox; */
 /*  	display: -webkit-flex; */
 /*  	display: -o-flex; */
@@ -121,10 +125,33 @@
  	padding: 1vw;
 }
 
+.divBtn {
+	margin: 1em 0;
+    width: 100%;
+    
+    display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
+ 	-moz-flex-flow: row nowrap;
+ 	-ms-flex-flow: row nowrap;
+ 	-o-flex-flow: row nowrap;
+ 	-webkit-flex-flow: row nowrap;
+ 	flex-flow: row nowrap;
+    
+    -moz-justify-content: space-between;
+ 	-ms-justify-content: space-between;
+ 	-o-justify-content: space-between;
+ 	-webkit-justify-content: space-between;
+ 	justify-content: space-between;
+}
+
 /* Configurações do Step */
 
 .ui-steps .ui-steps-item {
-    width: 33%;
+    width: 50%;
 }
  
 .ui-state-highlight {
@@ -200,6 +227,7 @@
 .ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
     font-weight: normal;
     box-shadow: none;
+    padding: 0;
 }
 
 .ui-inputfield .ui-state-focus, .ui-widget-content .ui-inputfield-state-focus {
@@ -222,7 +250,39 @@
 .ui-datepicker .ui-datepicker-header {
     background-color: white;
 }
-    
+
+/* Dialog */
+
+.consultaDialog.ui-dialog {
+	height: fit-content !important;
+    width: 90% !important;
+    left: 5% !important;
+    top: 3vh !important;
+    border: 1px solid #395a8c;
+}
+
+.consultaDialog.ui-dialog .ui-dialog-content {
+	height: auto !important;
+	width: auto !important;
+	max-height: 85vh;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: linear-gradient(to bottom right, #135186, #3d6ea9);
+    color: white;
+    font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span, .consultaDialog.ui-dialog .ui-dialog-titlebar-minimize span, .consultaDialog.ui-dialog .ui-dialog-titlebar-maximize span {
+    background-color: white;
+    border-radius: 4px;
+}
+
+.ui-dialog .ui-dialog-content {
+	display: flex;
+    flex-flow: column nowrap;	
+}
+
 /* Outros */
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
@@ -230,7 +290,7 @@
     border-color: #d2d6de;
     background-color: #ffffff;
     box-shadow: none;
-    padding: 3px;
+    padding: 5px;
     color: #555;
     background-image: none;
 }
@@ -342,19 +402,11 @@
     border: 1px solid #a8a8a8 !important;
 }
 
-.ui-dialog .ui-dialog-titlebar {
-    background: linear-gradient(to bottom right, #135186, #3d6ea9);
-    color: white;
-    font-weight: bold;
-}
-
-.ui-dialog .ui-dialog-titlebar-close span, .ui-dialog .ui-dialog-titlebar-minimize span, .ui-dialog .ui-dialog-titlebar-maximize span {
-    background-color: white;
-    border-radius: 4px;
-}
 
 .ui-datascroller-content.ui-widget-content.ui-corner-all {
     border: 1px solid #d3d3d3 !important;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* .ui-widget .ui-outputpanel{ */
@@ -371,18 +423,6 @@
 	border: 1px solid red;
 }
 
-.ui-dialog-content .ui-widget-content{
-	height: auto !important;
-	width: auto !important;
-}
-
-.ui-dialog {
-    height: 90% !important;
-    width: 90% !important;
-    left: 5% !important;
-    top: 5% !important;
-    border: 1px solid #395a8c;
-}
 
 .ui-widget-overlay {
     background: rgb(42, 45, 68);
@@ -423,12 +463,12 @@
 /* Data Table */
 
 .ui-datatable tbody td {
-    border: 1px solid #a7acb1 !important;
+/*     border: 1px solid #a7acb1 !important; */
 }
 
 .ui-datatable th {
     background-color: #f2f5f9 !important;
-    border: 1px solid #a7acb1;
+/*     border: 1px solid #a7acb1; */
 }
 
 .ui-datatable .ui-widget-header {
@@ -448,10 +488,39 @@
 	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
 	border: 1px solid #135186;
 }
+
+.ui-paginator .ui-paginator-page, .ui-paginator .ui-paginator-pages, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-rpp-options {
+	background-color: #155288;
+    border: 1px solid #155288;
+    border-radius: 3px;
+    
+    color: white;
+    text-shadow: none;
+}
+
+
+
+.ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
+	color: white;
+    text-shadow: none;
+}
  
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     background: #799cd0;
     background: linear-gradient(to bottom right, #799cd0, #5b87bd) !important;
     color: #fff;
     text-shadow: none !important;
+    border-color: #3d5f87;
+}
+
+.ui-datatable tr.ui-state-hover, .ui-widget-header .ui-state-hover {
+	background: linear-gradient(to bottom right, #f2f5f9, #f2f5f9) !important;
+    box-shadow: none !important;
+}
+
+
+.titulo {
+	font-size: 20px;
+	font-weight: bold;
+	font-variant-caps: all-petite-caps;
 }
