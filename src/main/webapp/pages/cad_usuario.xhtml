@@ -17,12 +17,12 @@
 				<div class="ficha">
 
 <!-- 							Mensagens de Erro		 -->
-<!-- 					<p:messages id="messages" showDetail="true" autoUpdate="true" -->
-<!-- 						closable="true" /> -->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
 
-<!-- 					<h:outputText -->
-<!-- 						value="Os campos abaixo marcados com * são de preenchimento obrigatório." -->
-<!-- 						style="color:gray; align-self: flex-start;" /> -->
+					<h:outputText
+						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
+						style="color:gray; align-self: flex-start;" />
 
 
 					<p:panelGrid style="margin-bottom:1vw">
@@ -44,22 +44,28 @@
 
 
 						<p:row><p:column> <p:outputLabel value="Nome completo: " for="nome" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  size="50" > 
+						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="55"> 
 						<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" /></p:inputText>
+						<p:message for="nome" display="text"/>
 						</p:column></p:row>
 						
 						<p:row><p:column> <p:outputLabel value="Nome de usuário: " for="nick" /> </p:column></p:row>
 						<p:row><p:column> <p:inputText id="nick" required="true"
-							value="#{usuario.usuario.nick}" size="50" /> </p:column></p:row>
+							value="#{usuario.usuario.nick}" maxlength="50" />
+						<p:message for="nick" display="text"/>
+							 </p:column></p:row>
 
 						<p:row><p:column> <p:outputLabel value="Senha:" for="senha1" /> </p:column></p:row>
 						<p:row><p:column> <p:password id="senha1" match="senha2"
 							placeholder="Digite sua senha" required="true"
-							value="#{usuario.usuario.senha}" /> </p:column></p:row>
+							value="#{usuario.usuario.senha}" maxlength="20" /> 
+						<p:message for="senha1" display="text"/>
+							</p:column></p:row>
 
 						<p:row><p:column> <p:outputLabel value="Confirme sua senha:" for="senha2" /> </p:column></p:row>
 						<p:row><p:column> <p:password id="senha2" placeholder="Repita sua senha"
-							required="true" /> </p:column></p:row>
+							required="true" />
+							 </p:column></p:row>
 							
 						<p:row><p:column> <h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray"/> </p:column></p:row>
 
@@ -67,7 +73,7 @@
 
 
 
-					<p:commandLink action="#{usuario.save}" class="botaoLink" update="formHeader">
+					<p:commandLink action="#{usuario.save}" class="botaoLink" update="formHeader cad_usuario">
 
 						<h:outputText value="Avançar" />
 						<i class="fa fa-arrow-right"

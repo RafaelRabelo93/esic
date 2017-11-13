@@ -91,7 +91,15 @@
 		    <artifactId>quartz</artifactId>
 		    <version>2.2.1</version>
 		</dependency>
-				
+		
+		<!-- Apache Commons Email 1.5 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-email</artifactId>
+		    <version>1.5</version>
+		</dependency>
+
+						
 
 
   </dependencies>  

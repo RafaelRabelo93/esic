@@ -27,6 +27,7 @@ public class Solicitacao implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2604883216685714784L;
 	private Integer idSolicitacao;
+	private short instancia;
 	private Cidadao cidadao;
 	private Entidades entidades;
 	private Acoes acoes;
@@ -48,7 +49,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			Integer protocolo, String tipo, Set<Mensagem> mensagems) {
+			Integer protocolo,short instancia, String tipo, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
@@ -58,6 +59,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.datafim = datafim;
 		this.titulo = titulo;
 		this.protocolo = protocolo;
+		this.instancia = instancia;
 		this.tipo = tipo;
 		this.mensagems = mensagems;
 	}
@@ -177,6 +179,15 @@ public class Solicitacao implements java.io.Serializable {
 
 	public void setAcoes(Acoes acoes) {
 		this.acoes = acoes;
+	}
+
+	@Column(name = "instancia", length = 1)
+	public Short getInstancia() {
+		return instancia;
+	}
+
+	public void setInstancia(short instancia) {
+		this.instancia = instancia;
 	}
 
 }

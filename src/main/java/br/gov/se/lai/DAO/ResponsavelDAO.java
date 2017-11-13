@@ -6,6 +6,8 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 import br.gov.se.lai.entity.Responsavel;
+import br.gov.se.lai.entity.Solicitacao;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class  ResponsavelDAO {
@@ -49,6 +51,10 @@ public class  ResponsavelDAO {
     	return em.find(Responsavel.class, email) ;
     }
 
+    @SuppressWarnings("unchecked")
+	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {
+		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades+" AND nivel = "+nivel,em);
+    }
 	public static List<Responsavel> list() {
 	
         return null;

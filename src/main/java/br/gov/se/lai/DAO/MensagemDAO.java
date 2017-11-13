@@ -53,6 +53,6 @@ public class MensagemDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Mensagem> list(int idSolicitacao) {
 		//return em.createNativeQuery("SELECT * FROM esic.mensagem", Mensagem.class).getResultList();
-		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.idSolicitacao = "+idSolicitacao,em);
+		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao,em);
     }  
 }

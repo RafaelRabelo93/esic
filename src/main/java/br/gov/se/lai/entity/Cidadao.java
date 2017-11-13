@@ -44,6 +44,9 @@ public class Cidadao implements java.io.Serializable {
 	private String cidade;
 	private String cep;
 	private String tel;
+	private String bairro;
+	private String complemento;
+	private int numero;
 	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
 
 	public Cidadao() {
@@ -232,5 +235,34 @@ public class Cidadao implements java.io.Serializable {
 	public void setSolicitacaos(Set<Solicitacao> solicitacaos) {
 		this.solicitacaos = solicitacaos;
 	}
+
+	@Column(name = "bairro", length = 45)
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	@Column(name = "complemento", length = 200)
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	@Column(name = "numero", length = 11)
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
+	
 
 }

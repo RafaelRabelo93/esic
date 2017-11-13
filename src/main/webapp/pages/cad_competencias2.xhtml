@@ -20,7 +20,7 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 
-					<p:steps activeIndex="1" styleClass="custom" readonly="true">
+					<p:steps activeIndex="1" styleClass="custom dois" readonly="true">
 						<p:menuitem value="Entidade" url="#" />
 						<p:menuitem value="Competências" url="#" />
 					</p:steps>
@@ -108,8 +108,8 @@
 			</h:form>
 
 			<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" resizable="false" >
-<!-- 				<h:form> -->
-<!-- 					<p:outputPanel id="dlg" style="width:640px; height: 480px"> -->
+				<h:form>
+					<p:outputPanel id="dlg" style="width:640px; height: 480px">
 						<p:panelGrid columns="1" style="border:none; width: 60%;">
 							<p:outputLabel value="Título:" for="titulo" />
 							<p:inputText id="titulo" value="#{acoes.acao.titulo}" />
@@ -118,18 +118,19 @@
 							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
 								autoResize="false" style="width:100%"
 								counterTemplate="{0} caracteres restantes."
-								value="#{acoes.acao.descricao}" />
+								value="#{acoes.acao.descricao}"  />
 							<h:outputText id="display" />
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin:0" update="@all" oncomplete="PF('dlg2').hide();">
+						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin:0"  oncomplete="PF('dlg2').hide();"
+										update="cad_competencias2:acoes cad_competencias2:descricao cad_competencias2:entidades_panel">
 							<h:outputText value="Salvar" />
 							<i class="fa fa-check" style="padding-left: 3px" />
 						</p:commandLink>
 
-<!-- 					</p:outputPanel> -->
-<!-- 				</h:form> -->
+					</p:outputPanel>
+				</h:form>
 
 			</p:dialog>
 

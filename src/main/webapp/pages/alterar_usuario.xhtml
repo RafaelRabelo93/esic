@@ -41,11 +41,6 @@
 							<p:inputText id="email" value="#{usuario.email}" size="50" />
 						</p:inplace>
 
-						<p:outputLabel value="Alterar senha:" for="senha1" />
-						<p:password id="senha1" match="senha2" placeholder="Digite nova senha" value="#{usuario.usuario.senha}" />
-
-						<p:outputLabel value="Confirme nova senha:" for="senha2" />
-						<p:password id="senha2" placeholder="Repita nova senha" required="true" />
 						
 						<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '3'}">
 
@@ -302,14 +297,20 @@
 						</p:row>
 						
 					</p:panelGrid>
+					
 						<p:row> <p:column colspan="2"> <h:outputText value="Clique nos campos para editar." style="font-size:14px; color:gray"/> </p:column> </p:row>
 					</p:panelGrid>
 					
+					<div class="divBtn">
+					<div style="display: flex; flex-flow: column nowrap; align-self: flex-start; margin-bottom: 2vw;">
+						<p:outputLabel value="Confirmar senha:" for="senha1" />
+						<p:password id="senha1" required="true" placeholder="Digite nova senha" value="#{usuario.usuario.senha}" />
+					</div>
+					
 					<p:commandLink action="#{usuario.edit}" class="botaoLink">
 
-						<h:outputText value="Atualizar" />
-						<i class="fa fa-arrow-right"
-							style="color: white; padding-left: 3px" />
+						<h:outputText value="Salvar alterações" />
+						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 
 
 						 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
@@ -318,15 +319,16 @@
 						 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
 						 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
 
-
 					</p:commandLink>
 					
-					<p:commandLink action="#{usuario.delete}" class="botaoLink">
+					<p:commandLink rendered="false" action="#{usuario.delete}" class="botaoLink">
 
 						<h:outputText value="Excluir" />
 						<i class="fa fa-arrow-right"
 							style="color: white; padding-left: 3px" />
 					</p:commandLink>
+					
+					</div>
 
 				</div>
 
@@ -338,4 +340,3 @@
 
 </h:body>
 </html>
-

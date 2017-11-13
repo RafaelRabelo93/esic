@@ -20,6 +20,7 @@ import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 
 
 
@@ -55,6 +56,7 @@ public class MensagemBean implements Serializable{
 		mensagem.setSolicitacao(solicitacao);
 		verificaMensagem();
 		MensagemDAO.saveOrUpdate(mensagem);
+		NotificacaoEmail.enviarEmail(solicitacao, usuario);
 		if(anexo != null) {
 			anexo.setFile("anexo.txt");
 			anexo.setNome("anexo");
@@ -93,6 +95,10 @@ public class MensagemBean implements Serializable{
 		case "Prorrogada":
 			tipoAux = 4;
 			break;
+
+		case "Finalizada":
+			tipoAux = 4;
+			break;
 			
 		default:
 			tipoAux = 1;
@@ -100,6 +106,7 @@ public class MensagemBean implements Serializable{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
+		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	

@@ -24,38 +24,35 @@
 
 				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
-						emptyMessage="Não há solicitações" sortBy="#{slt.status}"
-						expandableRowGroups="true" 
+						emptyMessage="Não há solicitações" sortBy="#{slt.status}" expandableRowGroups="true" 
 						value="#{solicitacao.filteredSolicitacoes}"
 						style="margin-bottom:1vw" filteredValue="#{solicitacao.filteredSolicitacoes}" paginator="true"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
            				rowsPerPageTemplate="5,10,15" rowKey="#{slt.idSolicitacao}">
-           				
-						<p:ajax event="rowEdit" oncomplete="PF('solicitacoes').filter()" />
-
+           			
 						<p:headerRow>
-							<p:column colspan="6">
+							<p:column colspan="6" sortBy="#{slt.status}" priority="1">
 								<h:outputText value="#{slt.status}" />
 							</p:column>
 						</p:headerRow>
-
-						<p:column headerText="Nº Protocolo" sortBy="">
-							<h:outputText value="#{slt.idSolicitacao}" />
+	
+						<p:column headerText="Nº Protocolo" priority="3">
+							<h:outputText value="#{slt.idSolicitacao}"  />
 						</p:column>
 
-						<p:column headerText="Órgão / Entidade" sortBy="">
+						<p:column headerText="Órgão / Entidade" sortBy="#{slt.entidades.nome}" priority="3">
 							<h:outputText value="#{slt.entidades.nome}" />
 						</p:column>
 
-						<p:column headerText="Tipo" sortBy="">
+						<p:column headerText="Tipo" sortBy="#{slt.tipo}" priority="3">
 							<h:outputText value="#{slt.tipo}" />
 						</p:column>
 
-						<p:column headerText="Status" sortBy="#{slt.status}">
+						<p:column headerText="Status" sortBy="#{slt.status}" priority="1" >
 							<h:outputText value="#{slt.status}" />
 						</p:column>
 
-						<p:column headerText="Cidadão" sortBy="">
+						<p:column headerText="Cidadão" sortBy="#{slt.cidadao.usuario.nome}" priority="3">
 							<h:outputText value="#{slt.cidadao.usuario.nome}" />
 						</p:column>
 
@@ -70,9 +67,6 @@
 						
 					</p:dataTable>
 
-					<p:commandLink class="botaoLinkIcon" update="solicitacao_panel" value="Verificar prazo das solicitações" 
-									action="#{solicitacao.verificaTempoSolicitacao()}">
-					</p:commandLink>
 				</h:panelGroup>
 
 
@@ -170,7 +164,7 @@
 
 					</p:outputPanel>
 				</h:form>	
-						<p:commandLink class="botaoLink"  action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" update="solicitacao_panel" style="margin:1vw 0">
+						<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada'}" action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" update="solicitacao_panel" style="margin:1vw 0">
 							<h:outputText value="Prorrogar Resposta" />
 							<i class="fa fa-clock-o" />
 							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}"></f:setPropertyActionListener>

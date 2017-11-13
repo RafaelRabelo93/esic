@@ -62,7 +62,7 @@
 								<p:calendar styleClass="date" id="datanasc"
 									value="#{cidadao.cidadao.datanasc}" showOn="button"
 									locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd/MM/yyyy" mask="true" />
+									pattern="dd/MM/yyyy" mask="true" yearRange="c-100:c"/>
 							</p:column>
 							<p:column>
 								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
@@ -235,7 +235,7 @@
 								<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="30" />
 							</p:column>
 							<p:column>
-								<p:inputText id="numero"  size="10" />
+								<p:inputNumber id="numero"  size="10" value="#{cidadao.cidadao.numero}"/>
 							</p:column>
 						</p:row>
 
@@ -250,10 +250,10 @@
 
 						<p:row>
 							<p:column>
-								<p:inputText id="bairro"  />
+								<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" />
 							</p:column>
 							<p:column>
-								<p:inputText id="complemento"  />
+								<p:inputText id="complemento"  value="#{cidadao.cidadao.complemento}"/>
 							</p:column>
 						</p:row>
 

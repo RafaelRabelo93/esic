@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.hibernate.id.UUIDGenerationStrategy;
 import org.quartz.CronScheduleBuilder;
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.ObjectAlreadyExistsException;
@@ -29,6 +30,7 @@ import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Criptografia;
+import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.verificarStatusSolicitacao;
 
 @ManagedBean(name = "usuario")
@@ -42,8 +44,10 @@ public class UsuarioBean implements Serializable{
 	private String nome;
 	private String nomeCompleto;
 	private String email;
+	private String tipoString;
 	private int veioDeSolicitacao;
 	
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
@@ -52,33 +56,54 @@ public class UsuarioBean implements Serializable{
 			Scheduler scheduler = shedFact.getScheduler();
 			scheduler.start();
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 35 9 ? * *")).build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 0/3 * * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
+//			JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
+//			Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 0/4 * * * ?")).build();
+//			scheduler.scheduleJob(jobEmail, triggerEmail);
 		} catch (SchedulerException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 	}
 	
-	public String save() {
-		senha = usuario.getSenha();
-		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
-		usuario.setPerfil((short) 1);
-		if (!verificaExistenciaNick(usuario.getNick())) {
-			UsuarioDAO.saveOrUpdate(usuario);
-			if (veioDeSolicitacao == 0) {
-				nick = usuario.getNick();
-				login();
-				return "/index";
+	public String save() {		
+		
+		if(!verificaSeVazio(usuario.getNome()) == true && !verificaSeVazio(usuario.getSenha()) == true && !verificaSeVazio(usuario.getNick()) == true) {			
+			senha = usuario.getSenha();
+			usuario.setSenha(Criptografia.Criptografar(senha));
+			usuario.setPerfil((short) 1);
+			if (!verificaExistenciaNick(usuario.getNick())) {
+				UsuarioDAO.saveOrUpdate(usuario);
+				if (veioDeSolicitacao == 0) {
+					nick = usuario.getNick();
+					login();
+					return "/index";
+				} else {
+					nick = usuario.getNick();
+					login();
+					return "cad_cidadao";
+				}
 			} else {
-				nick = usuario.getNick();
-				login();
-				return "cad_cidadao";
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Nick já existente no sistema.", "Escolha outro."));
+				usuario = new Usuario();
+				return null;
 			}
-		} else {
+		}else {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Nick já existente no sistema.", "Escolha outro."));
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Não é possível cadastrar usuário." ,"Preencha os campos vazios."));
 			usuario = new Usuario();
 			return null;
+		}
+
+	}
+	
+	public boolean verificaSeVazio(String palavra) {
+		String verificacao = palavra.replaceAll(" ", "");
+		if(verificacao.equals("")) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	
@@ -168,7 +193,9 @@ public class UsuarioBean implements Serializable{
     		List<Usuario> usuarios = UsuarioDAO.buscarNicks(usuario.getNome().split(" ", 2)[0]);
     		cont += (usuarios.size());    		
     	}catch (NullPointerException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
+		}catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println(e.getMessage());
 		}finally {
 			if(cont == 1) {
 				this.nick = ((getNomeCompleto().replace(" ", ".")).toLowerCase());								
@@ -176,7 +203,9 @@ public class UsuarioBean implements Serializable{
 				this.nick = ((getNomeCompleto().replace(" ", ".")+cont).toLowerCase());								
 			}
 			this.usuario.setNick(this.nick);			
+			
 		}
+
     }
     
     
@@ -257,6 +286,19 @@ public class UsuarioBean implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getTipoString() {
+		if (getCidadao().getTipo() == true) {;
+			return "Física";
+		}else {
+			return "Jurídica";
+		}
+		
+	}
+
+	public void setTipoString(Boolean tipo) {
+		getCidadao().setTipo(tipo);
 	}
 
 }

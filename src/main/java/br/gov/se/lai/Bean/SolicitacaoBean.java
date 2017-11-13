@@ -9,11 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,26 +17,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
-import br.gov.se.lai.utils.verificarStatusSolicitacao;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
+import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 
 
 
@@ -50,25 +36,27 @@ import br.gov.se.lai.utils.HibernateUtil;
 public class SolicitacaoBean implements Serializable{
 	
 
+	@SuppressWarnings("unused")
+	private List<Solicitacao> solicitacoes;
+	@SuppressWarnings("unused")
+	private int idAcao;
+	private List<Solicitacao> filteredSolicitacoes;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
-	private List<Solicitacao> solicitacoes;
-	private List<Solicitacao> filteredSolicitacoes;
 	private Cidadao cidadao;;
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
 	private Calendar datafim;
 	private int idEntidades;
-	private int idAcao;
 	private int idSolicitacao;
 	private Mensagem mensagem;	
+	private Acoes acoesTemporaria;	
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = {"Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada"};
 
-	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -85,22 +73,26 @@ public class SolicitacaoBean implements Serializable{
 		
 		//Salvar Solicitação
 		this.solicitacao.setCidadao(listCidadao.get(0));	
-		this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
+		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));	
 		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo)));
 		this.solicitacao.setStatus("Aberta");
+		this.solicitacao.setInstancia((short) 1);
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 		
 		
 		//Salvar Mensagem
 		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
-		this.mensagem.setData(java.sql.Date.valueOf(LocalDate.now()));	
+		this.mensagem.setData(new Date(System.currentTimeMillis()));	
 		this.mensagem.setSolicitacao(solicitacao);
 		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
 		//Salvar Alteração de Status
 		//MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+		
+		//verifique se não está ocorrendo erro
+		NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
 		
 		return "/index";
 	}	
@@ -181,7 +173,9 @@ public class SolicitacaoBean implements Serializable{
 	
 
 	public void recurso() {
-		if(!verificaSeLimiteRecurso(solicitacao)) {			
+		if(!verificaSeLimiteRecurso(solicitacao)) {	
+			short novaInstancia = (short) (solicitacao.getInstancia() + 1);
+			solicitacao.setInstancia(novaInstancia);
 			alterarPrazo(solicitacao);
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não está disponível para Recurso.",null));
@@ -316,13 +310,13 @@ public class SolicitacaoBean implements Serializable{
 	}
 
 
-	public int getIdAcao() {
-		return idAcao;
-	}
-
-
+//	public int getIdAcao() {
+//		return idAcao;
+//	}
+//
+//
 	public void setIdAcao(int idAcao) {
-		this.idAcao = idAcao;
+		setAcoesTemporaria(idAcao);
 	}
 
 
@@ -353,6 +347,16 @@ public class SolicitacaoBean implements Serializable{
 	
 	public static String[] getTipos() {
 		return tipos;
+	}
+
+
+	public Acoes getAcoesTemporaria() {
+		return acoesTemporaria;
+	}
+
+
+	public void setAcoesTemporaria(int idAcao) {
+		this.acoesTemporaria = AcoesDAO.findAcoes(idAcao);
 	}
 
 }
