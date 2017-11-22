@@ -6,6 +6,83 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui">
 
+<h:head>
+	<h:outputStylesheet name="header.css" library="css" />		
+	
+    <script language="javascript">  
+	    var tam=15;       
+	    var cont=0;
+	
+	    function normalTamanho(){
+	        tam=13;
+	        modificarFonte(tam);
+	    }
+	
+	    function aumentaTamanho(){
+	        tam+=1;
+	        modificarFonte(tam);
+	    }
+	
+	    function diminuiTamanho(){
+	        tam-=1;
+	        modificarFonte(tam);
+	    }
+	
+	    function modificarFonte(tamanho){
+	        var seletor = '.ui-widget';
+	        var css = 'font-size: '+ tamanho+'px !important;';
+	        S= document.styleSheets[document.styleSheets.length-1];
+	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
+	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
+	        else if(S.addRule)S.addRule(seletor,css,r.length);
+	        
+	        var seletor = 'body';
+	        var css = 'font-size: '+ tamanho+'px !important;';
+	        S= document.styleSheets[document.styleSheets.length-1];
+	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
+	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
+	        else if(S.addRule)S.addRule(seletor,css,r.length);
+	    }
+	    
+	    function mudarContraste(){
+	    	if(cont==0)
+	    	{
+	     	var seletor = '.page, .header, .mainMenu, #title';
+	     	var css = 'background: black !important; color: yellow !important; background-image: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)) !important;';
+	         S= document.styleSheets[document.styleSheets.length-1];
+	         var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
+	         if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
+	         else if(S.addRule)S.addRule(seletor,css,r.length);
+	         
+	         cont = 1;
+	        }else{
+	        	location.reload();
+	    		cont = 0;
+	    	}
+	    }
+	    
+	    window.onload = function() {
+	
+	        var head = document.getElementsByTagName("head")[0];
+	
+	        var code = document.createElement('script');
+	        code.text = "var _gaq = _gaq || [];\n_gaq.push(['_setAccount', 'UA-10997494-2']);\n_gaq.push(['_trackPageview']);";
+	
+	        var ga = document.createElement('script');
+	        ga.type = 'text/javascript';
+	        ga.async = true;
+	        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	
+	        var s = document.getElementsByTagName('script')[0];
+	
+	        head.appendChild(code);
+	        code.parentNode.insertBefore(ga, s);
+	    };
+
+	</script>
+
+</h:head>
+
 <h:body>
 
 	<ui:composition>
@@ -16,7 +93,7 @@
 				
 				<div id="menuAcess" class="menuAcess">
 					<ul style="padding:0px;	margin:0px;	list-style:none;">					
-						<li><p:commandLink action="#{cabecalhoBean.redirect('/Informacoes/Acessibilidade')}" value="Acessibilidade"/></li>						
+						<li><p:commandLink value="Acessibilidade"/></li>						
 						<li><p:commandLink onclick="aumentaTamanho();" value="A+"/></li>
 						<li><p:commandLink onclick="normalTamanho();" value="A"/></li>
 						<li><p:commandLink onclick="diminuiTamanho();" value="A-"/></li>
@@ -31,14 +108,9 @@
 						style="padding: 0.5vw" width="140" height="50" /></h:outputLink>
 
 					<ul id="menuSM">
-						<li><h:outputLink value="index.xhtml">Navegacao</h:outputLink>
-								</li>
+						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
 						
-						<li><h:outputLink value="index.xhtml">Sobre</h:outputLink>
-								</li>
-						
-<!-- 								Mensagens de Erro		 -->
-<!-- 						<p:growl id="messages" showDetail="true" autoUpdate="true" severity="error, warn" /> -->
+						<li><h:outputLink value="">Sobre</h:outputLink></li>
 
 						<li><p:commandButton id="Login" value="Login"
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
@@ -64,14 +136,20 @@
 							<h:outputText value="Órgão/Entidade:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2'}"/>
 							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
-						<h:panelGrid columns="2" cellpadding="5" style="margin-top:1vh">
+						<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
 							<p:commandLink styleClass="botaoLink" action="pages/alterar_usuario" update="@all">
-								<i class="fa fa-pencil-square-o" style="color: white; padding-right: 5px" />
-								<h:outputText value="Editar Perfil" />
+								<h:outputText value="Visualisar Perfil" />
+								<i class="fa fa-address-card" style="color: white; padding-right: 5px" />
 							</p:commandLink>
+							
+							<p:commandLink styleClass="botaoLink" action="pages/alterar_senha" update="@all">
+								<h:outputText value="Alterar Senha" />
+								<i class="fa fa-unlock-alt" style="color: white; padding-right: 5px" />
+							</p:commandLink>
+							
 							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all">
-								<i class="fa fa-sign-out" style="color: white; padding-right: 5px" />
 								<h:outputText value="Sair" />
+								<i class="fa fa-sign-out" style="color: white; padding-right: 5px" />
 							</p:commandLink>						
 						</h:panelGrid>
 					</p:overlayPanel>

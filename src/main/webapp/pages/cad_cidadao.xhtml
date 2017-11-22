@@ -21,11 +21,6 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 
-					<p:steps activeIndex="1" styleClass="custom" readonly="true" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '5'}">
-						<p:menuitem value="Dados do Usuário" url="#" />
-						<p:menuitem value="Dados Pessoais" url="#" />
-					</p:steps>
-
 					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '5'}" >
 
 						<f:facet name="header">

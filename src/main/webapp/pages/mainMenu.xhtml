@@ -23,85 +23,15 @@
 					<h:outputText value="Informação ao Cidadão"/>
 				</div>
 
-				<div class="menu">
+				<div class="menu" >
 				
-				<!-- 					menu gestor -->
-
-					<h:panelGroup class="menu"
-						rendered="#{usuario.usuario.perfil eq '2' or  usuario.usuario.perfil eq '4'  or  usuario.usuario.perfil eq '5'}">
-
-						<h:panelGroup class="botao" layout="block"
-							rendered="#{usuario.usuario.perfil ne '0'}">
-							<h:commandLink styleClass="link" action="pages/altterar_usuario">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/contract.png']}" width="80%" />
-
-								<h:outputText styleClass="titulo" value="Editar Dados"
-									style="font-size:35px; padding: 2% 0;" />
-
-								<h:outputText style="font-size:20px; color:#333"
-									value="Editar dados pessoais do usuário" />
-							</h:commandLink>
-						</h:panelGroup>
-						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/consulta">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/monitor.png']}" width="80%" />
-
-								<h:outputText styleClass="titulo"
-									value="Acompanhar Solicitações"
-									style="font-size:35px; padding: 2% 0;" />
-
-								<h:outputText style="font-size:20px; color:#333"
-									value="Acompanhamento de solicitações" />
-							</h:commandLink>
-						</div>
-
-						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/cad_entidades" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/office.png']}" width="80%" />
-
-								<h:outputText styleClass="titulo" value="Cadastrar Entidade"
-									style="font-size:35px; padding: 2% 0;" />
-
-								<h:outputText style="font-size:20px; color:#333"
-									value="Registrar entidade ou ógrão" />
-							</h:commandLink>
-						</div>
-
-						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/cad_responsavel" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/actions.png']}" width="80%" />
-
-								<h:outputText styleClass="titulo"
-									value="Cadastro de Responsável"
-									style="font-size:35px; padding: 2% 0;" />
-
-								<h:outputText style="font-size:20px; color:#333"
-									value="Registrar responsável" />
-							</h:commandLink>
-						</div>
-
-						<div class="botao">
-							<h:commandLink styleClass="link" action="pages/cad_acoes" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/exchange.png']}" width="80%" />
-
-								<h:outputText styleClass="titulo" value="Cadastro de Ação"
-									style="font-size:35px; padding: 2% 0;" />
-
-								<h:outputText style="font-size:20px; color:#333"
-									value="Registrar ação" />
-							</h:commandLink>
-						</div>
-					</h:panelGroup>
 					
-<!-- 					menu cidadao -->
+			<!-- Menu cidadao -->
 				
-				<h:panelGroup class="menu" rendered="#{usuario.usuario.perfil ne'2'}">		
-					<div class="botao">
+				<h:panelGroup class="menuBtn">		
+					
+					<!-- LAI -->
+					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" href="#lai">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
 								width="80%"/>
@@ -111,9 +41,10 @@
 							<h:outputText style="font-size:20px; color:#333"
 								value="Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe" />
 						</h:commandLink>
-					</div>
+					</h:panelGroup>
 					
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0'}">
+					<!-- Cadastro de usuário -->
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '5'}">
 						<h:commandLink styleClass="link" action="pages/cad_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
 								width="80%" />
@@ -125,19 +56,21 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
+					<!-- Alterar dados -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil ne '0'}">
 						<h:commandLink styleClass="link" action="pages/alterar_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
 								width="80%" />
 
-							<h:outputText styleClass="titulo" value="Editar Dados" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="titulo" value="Alterar Dados" style="font-size:35px; padding: 2% 0;" />
 
 							<h:outputText style="font-size:20px; color:#333"
 								value="Editar dados pessoais do usuário" />
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<div class="botao">
+					<!-- Consulta (Cidadão) -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil ne '2' or usuario.usuario.perfil ne '4'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
 								width="80%"/>
@@ -147,9 +80,10 @@
 							<h:outputText style="font-size:20px; color:#333"
 								value="Acompanhar andamento da solicitação realizada" />
 						</h:commandLink>
-					</div>
+					</h:panelGroup>
 
-					<div class="botao">
+					<!-- Solicitação -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '5'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
@@ -161,10 +95,67 @@
 								value="Realizar pedido de informação a orgãos ou entidades do governo do estado de Sergipe" />
 
 						</h:commandLink>
-					</div>
+					</h:panelGroup>
 
-				</h:panelGroup>	
+					<!-- Consulta (Representante) -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
+						<h:commandLink styleClass="link" action="pages/consulta">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/monitor.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo"
+								value="Acompanhar Solicitações"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Acompanhamento de solicitações" />
+						</h:commandLink>
+					</h:panelGroup>
 					
+					<!-- Cadastro de órgão/entidade -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
+						<h:commandLink styleClass="link" action="pages/cad_entidades">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/office.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo" value="Cadastrar Entidade"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Registrar entidade ou ógrão" />
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<!-- Cadastro de responsável -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+						<h:commandLink styleClass="link" action="pages/cad_responsavel">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/actions.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo"
+								value="Cadastro de Responsável"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Registrar responsável" />
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<!-- Cadastro de ação -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+						<h:commandLink styleClass="link" action="pages/cad_acoes">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/exchange.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo" value="Cadastro de Ação"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Registrar ação" />
+						</h:commandLink>
+					</h:panelGroup>
+					
+				</h:panelGroup>
 
 
 				</div>

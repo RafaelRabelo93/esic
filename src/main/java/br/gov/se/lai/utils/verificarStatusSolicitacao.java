@@ -18,6 +18,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
 				finalizaSolicitacao(solicitacao);
@@ -35,9 +36,9 @@ public class verificarStatusSolicitacao implements Job {
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 
 			Date now = new Date();
-			
+
+			//Datas dos prazos para comparações
 			LocalDate lcSolicitacaoInicio = LocalDate.of(solicitacao.getDataIni().getYear(), solicitacao.getDataIni().getMonth(), solicitacao.getDataIni().getDay());
-			
 			LocalDate metadePrazo = lcSolicitacaoInicio.plusDays((SolicitacaoBean.prazoResposta(solicitacao.getStatus()))/2);
 			LocalDate vesperaPrazo = lcSolicitacaoInicio.plusDays((SolicitacaoBean.prazoResposta(solicitacao.getStatus()))-1);
 			

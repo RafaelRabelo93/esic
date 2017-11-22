@@ -50,6 +50,20 @@ public class  EntidadesDAO {
     	return em.find(Entidades.class, id);
     }
     
+    public static Entidades existeNome(String nome){
+    	return (Entidades) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.nome = "+nome,em));
+    }
+   
+    public static Entidades existeSigla(String sigla){
+    	return (Entidades) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.sigla = "+sigla,em));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Entidades> listOrgaos() {		
+    	return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.orgao = "+1,em));
+    }
+    
+    
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> list() {		
         return em.createNativeQuery("SELECT * FROM esic.entidades", Entidades.class).getResultList();

@@ -14,11 +14,11 @@
 
 			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0' }">
 
-				<div class="ficha">
-
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+
+				<div class="ficha">
 
 					<p:panelGrid columns="1" style="margin-bottom:1vw">
 
@@ -42,7 +42,7 @@
 						</p:inplace>
 
 						
-						<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '3'}">
+						<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '3' }">
 
 						<f:facet name="header">
 							<p:row>
@@ -304,7 +304,7 @@
 					<div class="divBtn">
 					<div style="display: flex; flex-flow: column nowrap; align-self: flex-start; margin-bottom: 2vw;">
 						<p:outputLabel value="Confirmar senha:" for="senha1" />
-						<p:password id="senha1" required="true" placeholder="Digite nova senha" value="#{usuario.usuario.senha}" />
+						<p:password id="senha1" required="true" placeholder="Digite sua senha" value="#{usuario.usuario.senha}" />
 					</div>
 					
 					<p:commandLink action="#{usuario.edit}" class="botaoLink">

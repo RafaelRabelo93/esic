@@ -37,7 +37,31 @@
 }
 
 .menu {
-	padding: 3vw 0;
+	list-style: none;
+	  
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: column wrap;
+	-ms-flex-flow: column wrap;
+	-o-flex-flow: column wrap;
+	-webkit-flex-flow: column wrap;
+	flex-flow: column wrap;
+	
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	width: 100%;
+	margin-top: 5vh;
+}
+
+.menuBtn {
 	list-style: none;
 	  
 	display: -ms-flexbox;
@@ -63,7 +87,7 @@
 
 .botao{
 	list-style: none;
-	padding: 0 2vw;
+	margin: 1vh 2vw;
 	
 	display: -ms-flexbox;
 	display: -moz-flexbox;

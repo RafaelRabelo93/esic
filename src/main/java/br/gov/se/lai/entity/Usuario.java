@@ -72,7 +72,7 @@ public class Usuario implements java.io.Serializable {
 		this.nome = nome;
 	}
 
-	@Column(name = "nick", nullable = false, length = 12)
+	@Column(name = "nick", nullable = false, length = 45)
 	public String getNick() {
 		return this.nick;
 	}

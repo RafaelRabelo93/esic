@@ -20,7 +20,7 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 					
-					<p:steps activeIndex="0" styleClass="custom" readonly="true">
+					<p:steps activeIndex="0" styleClass="custom dois" readonly="true">
 						<p:menuitem value="Entidade" url="#" />
 						<p:menuitem value="Competências" url="#" />
 					</p:steps>
@@ -52,7 +52,10 @@
 							</p:column>
 						</p:row>
 						
-						<p:row><p:column> <p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="50" /> </p:column></p:row>
+						<p:row><p:column> 
+							<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" /> 
+							<p:ajax />
+						</p:column></p:row>
 
 
 												

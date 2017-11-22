@@ -14,62 +14,46 @@
 
 			<h:form id="cad_usuario" styleClass="cad_form">
 
-				<div class="ficha">
-
 <!-- 							Mensagens de Erro		 -->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+
+				<div class="ficha">
 
 					<h:outputText
 						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
 						style="color:gray; align-self: flex-start;" />
 
 
-					<p:panelGrid style="margin-bottom:1vw">
-
-						<f:facet name="header">
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-							<p:row>
-								<p:column colspan="2">
-									<h:outputText value="Dados do Usuário"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-						</f:facet>
-
-
-						<p:row><p:column> <p:outputLabel value="Nome completo: " for="nome" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="55"> 
-						<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" /></p:inputText>
+					<h:panelGroup styleClass="box">
+							
+						<h:outputText value="Dados do Usuário" styleClass="tituloBox" />
+								
+						<p:outputLabel value="Nome completo: " for="nome" />
+						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="55"> 
+							<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" /></p:inputText>
 						<p:message for="nome" display="text"/>
-						</p:column></p:row>
 						
-						<p:row><p:column> <p:outputLabel value="Nome de usuário: " for="nick" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nick" required="true"
+						<p:outputLabel value="Nome de usuário: " for="nick" />
+						<p:inputText id="nick" required="true"
 							value="#{usuario.usuario.nick}" maxlength="50" />
 						<p:message for="nick" display="text"/>
-							 </p:column></p:row>
-
-						<p:row><p:column> <p:outputLabel value="Senha:" for="senha1" /> </p:column></p:row>
-						<p:row><p:column> <p:password id="senha1" match="senha2"
+						
+						<p:outputLabel value="Email:" for="email" />
+						<p:inputText id="email" value="#{cidadao.cidadao.email}"
+							size="50" required="true"/>
+						
+						<p:outputLabel value="Senha:" for="senha1" />
+						<p:password id="senha1" match="senha2"
 							placeholder="Digite sua senha" required="true"
 							value="#{usuario.usuario.senha}" maxlength="20" /> 
 						<p:message for="senha1" display="text"/>
-							</p:column></p:row>
 
-						<p:row><p:column> <p:outputLabel value="Confirme sua senha:" for="senha2" /> </p:column></p:row>
-						<p:row><p:column> <p:password id="senha2" placeholder="Repita sua senha"
+						<p:outputLabel value="Confirme sua senha:" for="senha2" />
+						<p:password id="senha2" placeholder="Repita sua senha"
 							required="true" />
-							 </p:column></p:row>
-							
-						<p:row><p:column> <h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray"/> </p:column></p:row>
 
-					</p:panelGrid>
+					</h:panelGroup>
 
 
 

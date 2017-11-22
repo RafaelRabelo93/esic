@@ -1,3 +1,7 @@
+#content {
+    min-height: 86.4vh;
+}
+
 .cad_form {
 	display: flex;
 	
@@ -18,7 +22,6 @@
  	-o-align-items: center;
  	-webkit-align-items: center; 
  	align-items: center;
- 
 }
 
 .ficha {
@@ -51,6 +54,77 @@
  	align-items: center;
 }
 
+.box {
+	padding: 1vw;
+	margin-bottom: 1vh;
+	
+ 	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+  
+	-moz-flex-flow: column wrap;
+ 	-ms-flex-flow: column wrap;
+ 	-o-flex-flow: column wrap;
+ 	-webkit-flex-flow: column wrap;
+ 	flex-flow: column wrap;
+	
+   	-moz-justify-content: flex-start;
+ 	-ms-justify-content: flex-start;
+ 	-o-justify-content: flex-start;
+ 	-webkit-justify-content: flex-start;
+ 	justify-content: flex-start;
+	
+ 	-moz-align-items: flex-start;
+ 	-ms-align-items: flex-start;
+ 	-o-align-items: flex-start;
+ 	-webkit-align-items: flex-start; 
+ 	align-items: flex-start;
+ 	
+ 	border: 1px solid lightgray;
+    background: white;
+    
+    width: 100%;
+    width: -webkit-fill-available;
+}
+
+.box label {
+	margin-top: 20px;
+}
+
+.tituloBox {
+	color: #1a568c;
+	font-size:25px;
+	margin-bottom: 15px;
+	
+	-moz-align-self: center;
+ 	-ms-align-self: center;
+ 	-o-align-self: center;
+ 	-webkit-align-self: center; 
+ 	align-self: center;
+}
+
+.inline {
+	display: -ms-inline-flexbox; 
+ 	display: -moz-inline-flexbox;
+ 	display: -webkit-inline-flex;
+ 	display: -o-inline-flex;
+ 	display: inline-flex;
+ 	
+	-moz-flex-flow: row nowrap;
+ 	-ms-flex-flow: row nowrap;
+ 	-o-flex-flow: row nowrap;
+ 	-webkit-flex-flow: row nowrap;
+ 	flex-flow: row nowrap;
+ 	
+    -moz-align-items: baseline;
+ 	-ms-align-items: baseline;
+ 	-o-align-items: baseline;
+ 	-webkit-align-items: baseline; 
+ 	align-items: baseline;
+}
+
 .botaoLink {
 	background: linear-gradient(to bottom right, #135186, #276eb3);
 	align-self: flex-end;
@@ -59,7 +133,6 @@
 	padding: 10px;
 	border-radius: 3px;
 	margin-bottom: 2vw;
-	
 }
 
 .botaoLinkIcon {
@@ -150,8 +223,12 @@
 
 /* Configurações do Step */
 
-.ui-steps .ui-steps-item {
+.ui-steps.dois .ui-steps-item {
     width: 50%;
+}
+
+.ui-steps.tres .ui-steps-item {
+    width: 33%;
 }
  
 .ui-state-highlight {
@@ -230,6 +307,10 @@
     padding: 0;
 }
 
+.ui-inputfield {
+	margin: 0 !important;
+}
+
 .ui-inputfield .ui-state-focus, .ui-widget-content .ui-inputfield-state-focus {
     box-shadow: none;
 }
@@ -262,6 +343,12 @@
 }
 
 .consultaDialog.ui-dialog .ui-dialog-content {
+	height: auto !important;
+	width: auto !important;
+	max-height: 85vh;
+}
+
+.customDialog.ui-dialog{
 	height: auto !important;
 	width: auto !important;
 	max-height: 85vh;
@@ -409,10 +496,10 @@
     overflow-y: auto;
 }
 
-/* .ui-widget .ui-outputpanel{ */
-/* 	display:flex; */
-/* 	flex-flow: column nowrap; */
-/* } */
+.ui-widget .ui-outputpanel{
+	display:flex;
+	flex-flow: column nowrap;
+}
 
 .ui-inplace .ui-inplace-editor {
    display: flex
@@ -518,9 +605,25 @@
     box-shadow: none !important;
 }
 
-
 .titulo {
 	font-size: 20px;
 	font-weight: bold;
 	font-variant-caps: all-petite-caps;
+}
+
+/* Mensagens */
+
+.ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
+    border: 1px solid;
+    margin: 10px 0;
+    padding: 10px 10px 10px 10px;
+    border: none !important;
+    background: rgba(0, 0, 0, 0) !important;
+	font-family: "lato", Sans-serif;
+}
+
+.ui-messages-info, .ui-message-info {
+    color: #3a5cad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
 }

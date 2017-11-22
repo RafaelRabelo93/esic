@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
@@ -32,6 +34,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private String nome;
 	private boolean ativa;
 	private List<Entidades> listEntidades;
+	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
 	
 	
@@ -40,15 +43,29 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		entidades = new Entidades();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
-		
 	}
 	
 	public String save() {
 		if(verificaPermissao()) {
-			entidades.setAtiva(true);
-			EntidadesDAO.saveOrUpdate(entidades);
-			return "cad_competencias1";
+			if(verificaUnicidadeNome()) {
+				if(verificaUnicidadeSigla()) {
+					entidades.setAtiva(true);
+					EntidadesDAO.saveOrUpdate(entidades);
+					//serEntidadeOrgao(entidades);
+					return "cad_competencias1";
+				}else {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN, "Sigla já existente no sistema.", "Escolha outra."));
+					return null;
+				}
+			}else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Nome já existente no sistema.", "Escolha outro."));
+				return null;
+			}
 		}else{
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação negada.", "Usuário sem permissão."));
 			return "/index";
 		}
 		
@@ -78,6 +95,14 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	public void listarOrgaos(AjaxBehaviorEvent e) {
+		if(entidades.isOrgao()) {
+			this.listOrgao = null;
+		}else {
+			this.listOrgao = EntidadesDAO.listOrgaos();
+		}
+	}
+	
 	public void verificaCompetenciasEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.entidades.getCompetenciases());
 		AcoesBean acaobean = new AcoesBean();
@@ -93,6 +118,30 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	public boolean verificaUnicidadeNome() {
+		if(EntidadesDAO.existeNome(entidades.getNome()).equals(null)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean verificaUnicidadeSigla() {
+		if(EntidadesDAO.existeSigla(entidades.getSigla()).equals(null)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	public void serEntidadeOrgao(Entidades entidade) {
+		if(entidade.getIdOrgaos() == 0) {
+			entidade.setIdOrgaos(entidade.getIdEntidades());
+			entidade.setOrgao(true);
+			EntidadesDAO.saveOrUpdate(entidade);
+		}
+	}
 
 //GETTERS E SETTERS ==============================================	
 	
@@ -159,5 +208,15 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setTodasEntidades(List<Entidades> todasEntidades) {
 		this.todasEntidades = todasEntidades;
 	}
+
+	public List<Entidades> getListOrgao() {
+		return listOrgao;
+	}
+
+	public void setListOrgao(List<Entidades> listOrgao) {
+		this.listOrgao = listOrgao;
+	}
+	
+	
 
 }
