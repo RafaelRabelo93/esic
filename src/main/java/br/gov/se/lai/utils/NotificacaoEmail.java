@@ -5,6 +5,7 @@ import java.util.List;
 import java.io.File;  
 
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.quartz.Job;
@@ -24,7 +25,6 @@ public class NotificacaoEmail implements Job{
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		enviarEmailAutomatico();
 	}
 	
 	public static void enviarEmail(Solicitacao solicitacao, Usuario usuario) {
@@ -40,6 +40,8 @@ public class NotificacaoEmail implements Job{
 			System.out.println("Entrou em email");
 			System.out.println(remetente + " - "+destinatario);
 			
+			EmailAttachment attachment = new EmailAttachment();
+			
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
@@ -48,6 +50,8 @@ public class NotificacaoEmail implements Job{
 			email.setSubject(solicitacao.getTitulo().toString());  
 			email.setMsg(mensagem.get(mensagem.size()-1).getTexto());  
 			email.send();  
+			
+			
 			
 		} catch (EmailException e) {  
 			
@@ -82,7 +86,7 @@ public class NotificacaoEmail implements Job{
 		return envio;
 	}
 	
-	public void enviarEmailAutomatico() {
+	public static void enviarEmailAutomatico(Solicitacao solicitacao,String titulo, String mensagem) {
 		Email email = new SimpleEmail();
 		
 		try {  
@@ -91,15 +95,12 @@ public class NotificacaoEmail implements Job{
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
-			email.setFrom("mayara.machado@cge.se.gov.br"); //será passado o email que você fará a autenticação 
-			email.setSubject("Testando a API");  
-			email.setMsg("Email automatico");  
+			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
+			email.setSubject(titulo);  
+			email.setMsg(mensagem);  
 			email.send();  
-			
 		} catch (EmailException e) {  
-			
 			System.out.println(e.getMessage());  
-			
 		}
 	}
 }

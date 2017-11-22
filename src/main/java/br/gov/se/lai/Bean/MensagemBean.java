@@ -1,22 +1,27 @@
 package br.gov.se.lai.Bean;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.gov.se.lai.DAO.AnexoDAO;
+import org.primefaces.model.UploadedFile;
+
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
-import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
@@ -37,33 +42,34 @@ public class MensagemBean implements Serializable{
 	private Anexo anexo;
 	private final int constanteTempo = 10;
 	private Usuario usuario;
+	private UploadedFile file;
 
 
 	@PostConstruct
 	public void init() {
-		this.mensagem = new Mensagem();		
-		this.anexo = new Anexo();
+		mensagem = new Mensagem();		
+		anexo = new Anexo();
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		AnexoBean.listarFiles();
 		
 	}
 
-	@SuppressWarnings("static-access")
 	public String save() {
-		
-		this.mensagem.setUsuario(usuario); 
 
-		mensagem.setData(new Date(System.currentTimeMillis()));	
-		mensagem.setSolicitacao(solicitacao);
-		verificaMensagem();
-		MensagemDAO.saveOrUpdate(mensagem);
-		NotificacaoEmail.enviarEmail(solicitacao, usuario);
-		if(anexo != null) {
-			anexo.setFile("anexo.txt");
-			anexo.setNome("anexo");
-			AnexoDAO.saveOrUpdate(anexo);
-			this.anexo = null;
-		};
-		this.mensagem = new Mensagem();	
+			mensagem.setUsuario(usuario);
+			mensagem.setData(new Date(System.currentTimeMillis()));
+			mensagem.setSolicitacao(solicitacao);
+			verificaMensagem();
+			MensagemDAO.saveOrUpdate(mensagem);
+			NotificacaoEmail.enviarEmail(solicitacao, usuario);
+			System.out.println(anexo.toString());
+			
+			if (file != null) {
+				AnexoBean anx = new AnexoBean();
+				anx.save(anexo, mensagem, file);
+			}
+		
+		mensagem = new Mensagem();	
 		return "consulta";
 	}
 	
@@ -80,6 +86,7 @@ public class MensagemBean implements Serializable{
 		return 1;
 	}
 	
+
 	public static void salvarStatus(Solicitacao solicitacao, String status) {
 		int tipoAux;
 		mensagem = new Mensagem();
@@ -116,6 +123,7 @@ public class MensagemBean implements Serializable{
 		return mensagem;
 	}
 
+	@SuppressWarnings("static-access")
 	public void setMensagem(Mensagem mensagem) {
 		this.mensagem = mensagem;
 	}
@@ -142,6 +150,14 @@ public class MensagemBean implements Serializable{
 
 	public void setAnexo(Anexo anexo) {
 		this.anexo = anexo;
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
 	}	
 	
 	

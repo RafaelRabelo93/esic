@@ -120,6 +120,13 @@
 								<h:outputText value="#{msg.data}" style="color:#1a568c" />
 							</div>
 							<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
+								
+							<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
+								<h:outputLink value="#{anexo.downloadAnexo(msg)}">
+									<h:outputText value="Anexo"/> 
+								</h:outputLink>
+							</p:dataList>
+			
 						</p:outputPanel>
 
 					</p:dataScroller>
@@ -132,7 +139,7 @@
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 			         
-				<h:form>
+				<h:form enctype="multipart/form-data">
 					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
@@ -147,19 +154,20 @@
 								counterTemplate="{0} caracteres restantes." value="#{mensagem.anexo.descricao}" />
 							<h:outputText id="display" />
 
-							<p:fileUpload mode="simple" label="Anexar arquivo"
-								skinSimple="true" style="display: flex;  align-items: center;"
-								allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|doc|xls|csv|xml)$/"
-								invalidFileMessage="São permitidas somente arquivos do tipo gif, jpeg, png, txt, doc, xls, csv e xml"
-								sizeLimit="1048576"
-								invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
+							<p:fileUpload mode="simple" value="#{mensagem.file}"
+									label="Enviar Foto" skinSimple="true"
+									style="display: flex;  align-items: center;"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|zip|rar|docx|doc|xls|xlsx|tar)$/"
+									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
+									sizeLimit="1048576"
+									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
+									<p:growl id="msg" />
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  action="#{mensagem.save}" style="margin:1vw 0" update="solicitacao_panel" >
+						<p:commandLink class="botaoLink"  action="#{mensagem.save}" ajax="false" style="margin:1vw 0" update="solicitacao_panel" >
 							<h:outputText value="Responder" />
 							<i class="fa fa-hand-o-up" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
-							<f:setPropertyActionListener value="#{mensagem.mensagem}" target="#{mensagem.anexo.mensagem}" />
 						</p:commandLink>
 
 					</p:outputPanel>

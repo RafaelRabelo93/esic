@@ -1,6 +1,12 @@
 package br.gov.se.lai.Bean;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,11 +23,16 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 import br.gov.se.lai.DAO.AcoesDAO;
+import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Acoes;
+import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
@@ -33,16 +44,16 @@ import br.gov.se.lai.utils.NotificacaoEmail;
 
 @ManagedBean(name = "solicitacao")
 @SessionScoped
+@SuppressWarnings("unused")
 public class SolicitacaoBean implements Serializable{
 	
 
-	@SuppressWarnings("unused")
 	private List<Solicitacao> solicitacoes;
-	@SuppressWarnings("unused")
 	private int idAcao;
 	private List<Solicitacao> filteredSolicitacoes;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
+	private Anexo anexo ;
 	private Cidadao cidadao;;
 	private List<Entidades> entidades;
 	private Calendar datainic;
@@ -51,6 +62,7 @@ public class SolicitacaoBean implements Serializable{
 	private int idEntidades;
 	private int idSolicitacao;
 	private Mensagem mensagem;	
+	private UploadedFile file;
 	private Acoes acoesTemporaria;	
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
@@ -62,8 +74,8 @@ public class SolicitacaoBean implements Serializable{
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
 		this.cidadao = new Cidadao();
+		this.anexo = new Anexo();		
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		
 	}
 	
 
@@ -88,16 +100,20 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
+		if (file != null) {
+			AnexoBean anx = new AnexoBean();
+			anx.save(anexo, mensagem,file);
+		}
+        
 		//Salvar Alteração de Status
 		//MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
 		
 		//verifique se não está ocorrendo erro
-		NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
+		//NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
 		
 		return "/index";
 	}	
-	
-	
+
 	public String verificaCidadaoSolicitacao() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());	
@@ -289,6 +305,16 @@ public class SolicitacaoBean implements Serializable{
 	}
 
 
+	public Anexo getAnexo() {
+		return anexo;
+	}
+
+
+	public void setAnexo(Anexo anexo) {
+		this.anexo = anexo;
+	}
+
+
 	public Mensagem getMensagem() {
 		return mensagem;
 	}
@@ -358,5 +384,14 @@ public class SolicitacaoBean implements Serializable{
 	public void setAcoesTemporaria(int idAcao) {
 		this.acoesTemporaria = AcoesDAO.findAcoes(idAcao);
 	}
+	
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+	
 
 }

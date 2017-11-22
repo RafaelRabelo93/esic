@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="solicitacao" styleClass="cad_form">
+			<h:form id="solicitacao" styleClass="cad_form" enctype="multipart/form-data">
 
 				<div class="ficha">
 				
@@ -79,26 +79,30 @@
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
+								<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" 
+								value="#{solicitacao.mensagem.texto}" />
 							</p:column>
 						</p:row>
 
 						<p:row>
 							<p:column>
-								<p:fileUpload mode="simple" label="Anexar arquivo"
-									skinSimple="true" style="display: flex;  align-items: center;"
-									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|doc|xls|csv|xml)$/"
-									invalidFileMessage="São permitidas somente arquivos do tipo gif, jpeg, png, txt, doc, xls, csv e xml"
+								<p:fileUpload mode="simple" value="#{solicitacao.file}"
+									label="Enviar Foto" skinSimple="true"
+									style="display: flex;  align-items: center;"
+									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
+									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
 									sizeLimit="1048576"
 									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
+								<p:growl id="msg" />
+
 							</p:column>
 						</p:row>
-						
+
 						<p:row><p:column/></p:row>
 
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" action="#{solicitacao.save}">
+					<p:commandLink class="botaoLink" ajax="false" action="#{solicitacao.save}">
 						<h:outputText value="Enviar" />
 						<i class="fa fa-share-square-o" style="color: white; padding-left: 3px" /> 
 					</p:commandLink>
