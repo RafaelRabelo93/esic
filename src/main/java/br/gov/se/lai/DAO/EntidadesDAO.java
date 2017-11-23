@@ -4,8 +4,10 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
@@ -50,13 +52,34 @@ public class  EntidadesDAO {
     	return em.find(Entidades.class, id);
     }
     
-    public static Entidades existeNome(String nome){
-    	return (Entidades) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.nome = "+nome,em));
+	@SuppressWarnings("unchecked")
+	public static boolean existeNome(String nome){
+		Query query = em.createQuery("FROM Entidades as ent WHERE ent.nome= :nomeParam");
+    	query.setParameter("nomeParam", nome);    	
+    	List<Usuario> results = query.getResultList();
+
+    	if(results.isEmpty()){
+    	    return false;
+    	} else {
+    	    return true;
+    	}
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static boolean existeSigla(String sigla){
+    	
+    	Query query = em.createQuery("FROM Entidades as ent WHERE ent.sigla= :siglaParam");
+    	query.setParameter("siglaParam", sigla);    	
+    	List<Usuario> results = query.getResultList();
+
+    	if(results.isEmpty()){
+    		  return false;
+    	} else {
+    	    return true;
+    	}
+
     }
    
-    public static Entidades existeSigla(String sigla){
-    	return (Entidades) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.sigla = "+sigla,em));
-    }
 
     @SuppressWarnings("unchecked")
     public static List<Entidades> listOrgaos() {		

@@ -54,7 +54,6 @@
 						
 						<p:row><p:column> 
 							<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" /> 
-							<p:ajax />
 						</p:column></p:row>
 
 
@@ -71,26 +70,7 @@
 							</p:column>
 						</p:row>
 						
-						
 						<p:row>
-							<p:column>
-								<p:outputLabel value="Orgão/Entidade: " for="idOrgao" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="idOrgao"
-									value="#{entidades.entidades.idOrgaos}" style="width:125px">
-									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-									<f:selectItem itemLabel="CGE" itemValue="1" />
-									<f:selectItem itemLabel="Outro" itemValue="2" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-						<p:row>
-
-
-
 							<p:column>
 								<p:outputLabel value="É orgão?: " for="orgao" />
 							</p:column>
@@ -98,15 +78,27 @@
 						<p:row>
 							<p:column>
 								<p:selectOneRadio id="orgao"
-									value="#{entidades.entidades.orgao}">
+									value="#{entidades.forOrgao}">
+									<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
 									<f:selectItem itemLabel="Sim" itemValue="true" />
 									<f:selectItem itemLabel="Não" itemValue="false" />
 								</p:selectOneRadio>
 							</p:column>
 						</p:row>
-
+						
 						<p:row>
-							<p:column />
+							<p:column>
+								<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:selectOneMenu id="idOrgao"
+									value="#{entidades.entidades.idOrgaos}" style="width:125px">
+									<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+									<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+								</p:selectOneMenu>
+							</p:column>
 						</p:row>
 
 					</p:panelGrid>
@@ -114,6 +106,7 @@
 					<p:commandLink class="botaoLink" action="#{entidades.save}" update="@all">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						<f:setPropertyActionListener value="#{entidades.entidades}" target="#{competencias.ent}" />
 					</p:commandLink>
 
 				</div>

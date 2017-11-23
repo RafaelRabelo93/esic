@@ -78,9 +78,9 @@
 
 							<p:row>
 								<p:column>
-									<p:inplace id="idOrgao">
-										<p:inputText value="#{entidades.entidades.idOrgaos}" />
-									</p:inplace>
+									<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}">
+										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+									</p:selectOneMenu>
 								</p:column>
 
 								<p:column>

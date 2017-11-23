@@ -101,7 +101,7 @@
 			</h:form>
 
 			<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-				<h:form>
+				<h:form id="dialog">
 					<p:outputPanel id="dlg" style="max-width: 690px">
 						<p:panelGrid columns="1" style="border:none; width: 60%;">
 							<p:outputLabel value="Título:" for="titulo" />
@@ -117,7 +117,7 @@
 						</p:panelGrid>
 
 						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
-										update="cad_competencias2:acoes cad_competencias2:descricao cad_competencias2:entidades_panel">
+										update="cad_competencias2:acoes cad_competencias2:descricao cad_competencias2:entidades_panel dialog:dlg">
 							<h:outputText value="Salvar" />
 							<i class="fa fa-check" style="padding-left: 3px" />
 						</p:commandLink>

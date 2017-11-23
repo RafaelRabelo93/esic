@@ -45,7 +45,7 @@
 						<p:row><p:column> <p:inputText id="email" required="true"
 							value="#{responsavel.responsavel.email}" maxlength="100" /> </p:column></p:row>
 
-						<p:row><p:column> <p:outputLabel value="Orgão/Entidade: " for="orgao" /> </p:column></p:row>
+						<p:row><p:column> <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true" /> </p:column></p:row>
 						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}"
 							 style="width:125px">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
@@ -53,8 +53,8 @@
 						</p:selectOneMenu> </p:column></p:row>
 
 
-						<p:row><p:column> <p:outputLabel value="Nível: " for="nivel" /> </p:column></p:row>
-						<p:row><p:column> <p:selectOneRadio id="nivel"
+						<p:row><p:column> <p:outputLabel value="Nível: "  for="nivel" /> </p:column></p:row>
+						<p:row><p:column> <p:selectOneRadio id="nivel" required="true"
 							value="#{responsavel.responsavel.nivel}">
 							<f:selectItem itemLabel="Representante" itemValue="1" />
 							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />

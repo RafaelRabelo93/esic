@@ -33,6 +33,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private int idEntidades;
 	private String nome;
 	private boolean ativa;
+	private boolean forOrgao;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
@@ -49,10 +50,14 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		if(verificaPermissao()) {
 			if(verificaUnicidadeNome()) {
 				if(verificaUnicidadeSigla()) {
+
 					entidades.setAtiva(true);
+					entidades.setOrgao(forOrgao);
 					EntidadesDAO.saveOrUpdate(entidades);
-					//serEntidadeOrgao(entidades);
-					return "cad_competencias1";
+					serEntidadeOrgao(entidades);
+					entidades =  new Entidades();
+					return "cad_competencias2";
+					
 				}else {
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_WARN, "Sigla já existente no sistema.", "Escolha outra."));
@@ -82,6 +87,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public String edit() {
 		if(verificaPermissao()) {
 			EntidadesDAO.saveOrUpdate(entidades);
+			this.entidades = new Entidades();
 		}
 		return "/index";
 	}
@@ -96,11 +102,12 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public void listarOrgaos(AjaxBehaviorEvent e) {
-		if(entidades.isOrgao()) {
+		if(forOrgao) {
 			this.listOrgao = null;
 		}else {
 			this.listOrgao = EntidadesDAO.listOrgaos();
-		}
+	}
+	
 	}
 	
 	public void verificaCompetenciasEntidade(){
@@ -119,7 +126,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public boolean verificaUnicidadeNome() {
-		if(EntidadesDAO.existeNome(entidades.getNome()).equals(null)) {
+		if(!EntidadesDAO.existeNome(entidades.getNome())) {
 			return true;
 		}else {
 			return false;
@@ -127,7 +134,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 
 	public boolean verificaUnicidadeSigla() {
-		if(EntidadesDAO.existeSigla(entidades.getSigla()).equals(null)) {
+		if(!EntidadesDAO.existeSigla(entidades.getSigla())) {
 			return true;
 		}else {
 			return false;
@@ -136,12 +143,12 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	
 	public void serEntidadeOrgao(Entidades entidade) {
-		if(entidade.getIdOrgaos() == 0) {
+		if(entidade.isOrgao()) {
 			entidade.setIdOrgaos(entidade.getIdEntidades());
-			entidade.setOrgao(true);
 			EntidadesDAO.saveOrUpdate(entidade);
 		}
 	}
+	
 
 //GETTERS E SETTERS ==============================================	
 	
@@ -216,7 +223,13 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setListOrgao(List<Entidades> listOrgao) {
 		this.listOrgao = listOrgao;
 	}
-	
-	
+
+	public boolean isForOrgao() {
+		return forOrgao;
+	}
+
+	public void setForOrgao(boolean forOrgao) {
+		this.forOrgao = forOrgao;
+	}
 
 }

@@ -2,6 +2,7 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -46,6 +47,7 @@ public class UsuarioBean implements Serializable{
 	private String email;
 	private String tipoString;
 	private int veioDeSolicitacao;
+	private Date dataHoje = new Date();
 	
 	@SuppressWarnings("unchecked")
 	@PostConstruct
@@ -113,30 +115,37 @@ public class UsuarioBean implements Serializable{
 	}
 	
 	public String edit() {	
-		usuario.setSenha(Criptografia.Criptografar(usuario.getSenha()));
-		UsuarioDAO.saveOrUpdate(usuario);
-		if(usuario.getPerfil() != 1) {
-			
-			if(usuario.getPerfil() == 3) {
-				CidadaoBean cidadao = new CidadaoBean();
-				cidadao.save();
-			}else {
-				ResponsavelBean responsavel = new ResponsavelBean();
-				responsavel.save();
+		if (Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
+			UsuarioDAO.saveOrUpdate(usuario);
+
+			if (usuario.getPerfil() != 1) {
+
+				if (usuario.getPerfil() == 3) {
+					CidadaoBean cidadao = new CidadaoBean();
+					cidadao.save();
+				} else {
+					ResponsavelBean responsavel = new ResponsavelBean();
+					responsavel.save();
+				}
 			}
+
+			if (usuario.getPerfil() != 1) {
+				if (usuario.getPerfil() == 3) {
+					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+					listCidadao.get(0).setEmail(email);
+					;
+				} else {
+					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+					listResponsavel.get(0).setEmail(email);
+					;
+				}
+			}
+			return "/index";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
+			return null;
 		}
 		
-		if(usuario.getPerfil() != 1) {
-			if(usuario.getPerfil() == 3) {
-				List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-				 listCidadao.get(0).setEmail(email);;
-			}else {
-				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-				listResponsavel.get(0).setEmail(email);;
-			}
-		}
-		
-		return "/index";
 	}
 	
     public String login(){
@@ -300,5 +309,14 @@ public class UsuarioBean implements Serializable{
 	public void setTipoString(Boolean tipo) {
 		getCidadao().setTipo(tipo);
 	}
+
+	public Date getDataHoje() {
+		return dataHoje;
+	}
+
+	public void setDataHoje(Date hoje) {
+		this.dataHoje= hoje;
+	}
+	
 
 }

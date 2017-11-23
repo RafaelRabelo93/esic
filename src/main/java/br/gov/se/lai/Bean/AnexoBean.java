@@ -34,6 +34,7 @@ public class AnexoBean implements Serializable {
 	private final String descricaoPadrao = "Anexo relacionado ao tema ";
 	private UploadedFile file;
 	private String descricao;
+	private String nomeView;
 	private StreamedContent fileDownload;
 	private static List<File> filesInFolder;
 	private static final String filesPath = "C:\\resources\\esic\\arquivos\\";
@@ -90,6 +91,7 @@ public class AnexoBean implements Serializable {
 			String mensagemNum = anexoNome[1];
 			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(msgKeyStr)) {
 				retorno = "\\arquivos\\"+file.getName();
+				nomeView = file.getName();
 				break;
 			}
 		}
@@ -159,6 +161,14 @@ public class AnexoBean implements Serializable {
 
 	public void setFileDownload(StreamedContent fileDownload) {
 		this.fileDownload = fileDownload;
+	}
+
+	public String getNomeView() {
+		return nomeView;
+	}
+
+	public void setNomeView(String nomeView) {
+		this.nomeView = nomeView;
 	}
 
 	

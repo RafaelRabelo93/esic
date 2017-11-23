@@ -70,7 +70,7 @@
 						<p:row>
 							<p:column>
 							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:calendar styleClass="date" id="datanasc"
+								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
 									value="#{usuario.cidadao.datanasc}" showOn="button"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" />
@@ -269,7 +269,7 @@
 							</p:column>
 							<p:column>
 							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:inputText id="numero"  size="10" />
+								<p:inputText id="numero" value="#{usuario.cidadao.numero}"  size="10" />
 							</p:inplace>
 							</p:column>
 						</p:row>
@@ -300,25 +300,11 @@
 					
 						<p:row> <p:column colspan="2"> <h:outputText value="Clique nos campos para editar." style="font-size:14px; color:gray"/> </p:column> </p:row>
 					</p:panelGrid>
-					
-					<div class="divBtn">
-					<div style="display: flex; flex-flow: column nowrap; align-self: flex-start; margin-bottom: 2vw;">
-						<p:outputLabel value="Confirmar senha:" for="senha1" />
-						<p:password id="senha1" required="true" placeholder="Digite sua senha" value="#{usuario.usuario.senha}" />
-					</div>
-					
-					<p:commandLink action="#{usuario.edit}" class="botaoLink">
+
+					<p:commandLink class="botaoLink" onclick="PF('dlg2').show();">
 
 						<h:outputText value="Salvar alterações" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
-
-
-						 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
-						 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
-						 
-						 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
-						 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
-
 					</p:commandLink>
 					
 					<p:commandLink rendered="false" action="#{usuario.delete}" class="botaoLink">
@@ -330,9 +316,39 @@
 					
 					</div>
 
-				</div>
-
 			</h:form>
+			
+			<p:dialog header="Confirmar senha" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="dialog">
+					<p:outputPanel id="dlg" style="max-width: 690px">
+						<p:panelGrid columns="1" style="border:none; width: 60%;">
+							<div class="divBtn"/>
+								<div
+									style="display: flex; flex-flow: column nowrap; align-self: flex-start; margin-bottom: 2vw;">
+									<p:outputLabel value="Confirmar senha:" for="senha1" />
+									<p:password id="senha1" required="true"
+										placeholder="Digite sua senha"
+										value="#{usuario.senha}" />
+								</div>
+						</p:panelGrid>
+
+						<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
+										update="@all">
+							<h:outputText value="Salvar Alterações" />
+							<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+
+							 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
+							 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
+							 
+							 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
+							 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
+
+						</p:commandLink>
+
+					</p:outputPanel>
+				</h:form>
+
+			</p:dialog>
 
 		</ui:define>
 

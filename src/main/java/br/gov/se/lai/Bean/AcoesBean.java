@@ -38,6 +38,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	public void save() {
 		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);
+			acao = new Acoes();
 		}
 		
 	}
