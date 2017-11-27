@@ -1,5 +1,7 @@
 package br.gov.se.lai.utils;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -66,12 +68,21 @@ public class verificarStatusSolicitacao implements Job {
 		
 			Date now = new Date();
 			
-			if (now.after(solicitacao.getDataLimite())) {
+			if (solicitacao.getStatus().equals("Respondida") && now.after(solicitacao.getDataLimite())) {
 				System.out.println("Finalizou");
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
 				MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+			}else {
+				if((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada") ) && now.after(solicitacao.getDataLimite())) {
+					System.out.println("Resposta negada no sistema");
+					solicitacao.setStatus("Respondida");
+					solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
+					SolicitacaoDAO.saveOrUpdate(solicitacao);
+					MensagemBean.salvarStatus(solicitacao, "Negada");
+	
+				}
 			}
 		}		
 	}

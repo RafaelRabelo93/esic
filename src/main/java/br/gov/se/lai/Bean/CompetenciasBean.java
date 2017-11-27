@@ -55,6 +55,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 				CompetenciasDAO.saveOrUpdate(comp);
 			}	
 		}
+		ent = null;
+		listCompetencias = null;
 		return "/index";
 	}
 

@@ -81,14 +81,10 @@ public class MensagemBean implements Serializable{
 			mensagem.setTipo((short)2);
 		}
 	}
-	
-	public int tipoMensagem() {
-		return 1;
-	}
-	
+
 
 	public static void salvarStatus(Solicitacao solicitacao, String status) {
-		int tipoAux;
+		int tipoAux = 0;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
@@ -107,14 +103,16 @@ public class MensagemBean implements Serializable{
 			tipoAux = 4;
 			break;
 			
-		default:
-			tipoAux = 1;
+		case "Negada":
+			tipoAux = 4;
 			break;
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
 		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
+	
+
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

@@ -205,7 +205,7 @@ public class SolicitacaoBean implements Serializable{
 			return constanteAdicionalTempo;
 		case "Prorrogada":
 			return constanteAdicionalTempo;
-		case "Resposta":
+		case "Respondida":
 			return constanteAdicionalTempo;
 		case "Recurso":
 			return 5;
@@ -244,6 +244,7 @@ public class SolicitacaoBean implements Serializable{
 		
 		return retorno;
 	}
+	
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

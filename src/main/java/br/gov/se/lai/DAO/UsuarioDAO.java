@@ -55,7 +55,7 @@ public class UsuarioDAO {
     	if(results.isEmpty()){
     	    return null;
     	} else {
-    	    return results.get(0);
+    	    return (Usuario) results.get(0);
     	}
         
     }        

@@ -130,12 +130,13 @@
 						</p:outputPanel>
 
 					</p:dataScroller>
+					
+					<!-- 	Botão Realizar recurso -->
 
 					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
-								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.recurso()}" update="solicitacao_panel" >
+								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.recurso}" update="solicitacao_panel" >
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}"/>
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{solicitacao.solicitacao}" />
 							<i class="fa fa-hand-o-up"/>
 			         </p:commandLink>
 			         

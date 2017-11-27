@@ -121,25 +121,20 @@ public class UsuarioBean implements Serializable{
 			if (usuario.getPerfil() != 1) {
 
 				if (usuario.getPerfil() == 3) {
-					CidadaoBean cidadao = new CidadaoBean();
-					cidadao.save();
+					CidadaoBean cidadaoBean = new CidadaoBean();
+					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+					listCidadao.get(0).setEmail(email);
+					cidadaoBean.setCidadao(listCidadao.get(0));
+					cidadaoBean.edit();
 				} else {
-					ResponsavelBean responsavel = new ResponsavelBean();
-					responsavel.save();
+					ResponsavelBean responsavelBean = new ResponsavelBean();
+					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+					listResponsavel.get(0).setEmail(email);
+					responsavelBean.setResponsavel(listResponsavel.get(0));
+					responsavelBean.alterarDadosUsuario();
 				}
 			}
 
-			if (usuario.getPerfil() != 1) {
-				if (usuario.getPerfil() == 3) {
-					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-					listCidadao.get(0).setEmail(email);
-					;
-				} else {
-					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-					listResponsavel.get(0).setEmail(email);
-					;
-				}
-			}
 			return "/index";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));

@@ -71,9 +71,9 @@
 							<p:column>
 							<p:inplace editor="true" emptyLabel=" ... ">
 								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
-									value="#{usuario.cidadao.datanasc}" showOn="button"
+									 showOn="button" value="#{usuario.cidadao.datanasc}"
 									locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd/MM/yyyy" mask="true" />
+									pattern="dd-MM-yyyy" mask="true" timeInput="false"  />
 							</p:inplace>
 							</p:column>
 							<p:column>
@@ -286,12 +286,12 @@
 						<p:row>
 							<p:column>
 							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:inputText id="bairro"  />
+								<p:inputText id="bairro"  value="#{usuario.cidadao.bairro}"/>
 							</p:inplace>
 							</p:column>
 							<p:column>
 							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:inputText id="complemento"  />
+								<p:inputText id="complemento"  value="#{usuario.cidadao.complemento}" />
 							</p:inplace>
 							</p:column>
 						</p:row>

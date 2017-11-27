@@ -1,6 +1,8 @@
 package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -47,8 +49,10 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		cidadao = new Cidadao();	
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		cidadao.setDatanasc(new java.sql.Date(cidadao.getDatanasc().getTime()));
 		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			if (this.cidadao == null) {
@@ -74,14 +78,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	
 	public String edit() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao()) {
-			this.usuario = usuarioBean.getUsuario();
-			cidadao.setUsuario(this.usuario);
-			CidadaoDAO.saveOrUpdate(cidadao);
-			return "/index";
-		} else {
-			return null;
-		}
+		this.usuario = usuarioBean.getUsuario();
+		cidadao.setUsuario(this.usuario);
+		cidadao.setDatanasc(new java.sql.Date(cidadao.getDatanasc().getTime()));
+		CidadaoDAO.saveOrUpdate(cidadao);
+		return "/index";
 	}
 	
 	@Override

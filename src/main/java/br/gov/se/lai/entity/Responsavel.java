@@ -25,21 +25,25 @@ public class Responsavel implements java.io.Serializable {
 	private Usuario usuario;
 	private Short nivel;
 	private String email;
+	private boolean ativo;
 
 	public Responsavel() {
 	}
 
-	public Responsavel(Entidades entidades, Usuario usuario, String email) {
+	public Responsavel(Entidades entidades, Usuario usuario,  boolean ativo, String email) {
 		this.entidades = entidades;
 		this.usuario = usuario;
 		this.email = email;
+		this.ativo = ativo;
+
 	}
 
-	public Responsavel(Entidades entidades, Usuario usuario, Short nivel, String email) {
+	public Responsavel(Entidades entidades, Usuario usuario,  boolean ativo, Short nivel, String email) {
 		this.entidades = entidades;
 		this.usuario = usuario;
 		this.nivel = nivel;
 		this.email = email;
+		this.ativo = ativo;
 	}
 
 	@Id
@@ -91,5 +95,15 @@ public class Responsavel implements java.io.Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	@Column(name = "ativo", nullable = false)
+	public boolean isAtivo() {
+		return this.ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
 
 }

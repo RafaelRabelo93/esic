@@ -47,13 +47,18 @@ public class  ResponsavelDAO {
         }
     }    
     
-    public static Responsavel findResponsavel(String email){
-    	return em.find(Responsavel.class, email) ;
+    public static Responsavel findResponsavel(int id){
+    	return em.find(Responsavel.class, id) ;
     }
 
     @SuppressWarnings("unchecked")
 	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {
 		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades+" AND nivel = "+nivel,em);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Responsavel findResponsavelEmail(String email) {
+    	return (Responsavel) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).get(0);
     }
 	public static List<Responsavel> list() {
 	
