@@ -73,11 +73,13 @@
 								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
 									 showOn="button" value="#{usuario.cidadao.datanasc}"
 									locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd-MM-yyyy" mask="true" timeInput="false"  />
+									pattern="dd/MM/yyyy" mask="true" timeInput="false"  >
+									<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</p:calendar>
 							</p:inplace>
 							</p:column>
 							<p:column>
-							<p:inplace editor="true" emptyLabel=" ... ">
+							<p:inplace editor="true" emptyLabel=" ... " label="#{usuario.tipoString}">
 								<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
 									style="width:125px">
 									<f:selectItem itemLabel="Física" itemValue="true" />
@@ -98,7 +100,7 @@
 
 						<p:row>
 							<p:column>
-							<p:inplace editor="true" emptyLabel=" ... ">
+							<p:inplace editor="true" emptyLabel=" ... " label="#{usuario.generoString}">
 								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"
 									layout="pageDirection">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
@@ -157,15 +159,17 @@
 							</p:column>
 
 							<p:column>
-							<p:inplace editor="true" emptyLabel=" ... ">
+							<p:inplace editor="true" emptyLabel=" ... " label="#{usuario.escolaridade}">
 								<p:selectOneMenu id="escolaridade"
 									value="#{usuario.cidadao.escolaridade}" style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
 									<f:selectItem itemLabel="Fundamental" itemValue="3" />
-									<f:selectItem itemLabel="Medio" itemValue="4" />
-									<f:selectItem itemLabel="Superior" itemValue="5" />
+									<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
+									<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
+									<f:selectItem itemLabel="Ensino Superior Incompleto" itemValue="6" />
+									<f:selectItem itemLabel="Ensino Superior Completo" itemValue="7" />
 								</p:selectOneMenu>
 							</p:inplace>
 							</p:column>

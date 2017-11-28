@@ -46,6 +46,7 @@ public class UsuarioBean implements Serializable{
 	private String nomeCompleto;
 	private String email;
 	private String tipoString;
+	private String escolaridade;
 	private int veioDeSolicitacao;
 	private Date dataHoje = new Date();
 	
@@ -299,6 +300,40 @@ public class UsuarioBean implements Serializable{
 			return "Jurídica";
 		}
 		
+	}
+	
+	public String getGeneroString() {
+		if(getCidadao().getSexo().equals("F")) {
+			return "Feminino";
+		}else {
+			return "Masculino";
+		}
+		
+	}
+	
+	public String getEscolaridade() {
+		try {
+			switch(getCidadao().getEscolaridade()) {
+			case 1:
+				escolaridade =  "Analfabeto";
+			case 2:
+				escolaridade =  "Semi-Analfabeto";
+			case 3:
+				escolaridade =  "Fundamental";
+			case 4:
+				escolaridade =  "Ensino Médio Incompleto";
+			case 5:
+				escolaridade =  "Ensino Médio Completo";
+			case 6:
+				escolaridade =  "Ensino Superior Incompleto";
+			case 7:
+				escolaridade =  "Ensino Superior Completo";
+			}
+			return escolaridade;
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "...";
+		}
 	}
 
 	public void setTipoString(Boolean tipo) {

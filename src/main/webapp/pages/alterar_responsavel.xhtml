@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="alterar_responsavel" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '4' or  usuario.usuario.perfil eq '5' }">
+			<h:form id="alterar_responsavel" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }">
 
 				<div class="ficha">
 

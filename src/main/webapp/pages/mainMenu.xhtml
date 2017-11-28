@@ -44,7 +44,7 @@
 					</h:panelGroup>
 					
 					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '5'}">
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '4'}">
 						<h:commandLink styleClass="link" action="pages/cad_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
 								width="80%" />
@@ -70,7 +70,7 @@
 					</h:panelGroup>
 					
 					<!-- Consulta (Cidadão) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil ne '2' or usuario.usuario.perfil ne '4'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '3' }">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
 								width="80%"/>
@@ -83,7 +83,7 @@
 					</h:panelGroup>
 
 					<!-- Solicitação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '5'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
@@ -98,7 +98,7 @@
 					</h:panelGroup>
 
 					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4' }">
 						<h:commandLink styleClass="link" action="pages/consulta">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/monitor.png']}" width="80%" />
@@ -113,7 +113,7 @@
 					</h:panelGroup>
 					
 					<!-- Cadastro de órgão/entidade -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }">
 						<h:commandLink styleClass="link" action="pages/cad_entidades">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/office.png']}" width="80%" />
@@ -127,7 +127,7 @@
 					</h:panelGroup>
 					
 					<!-- Cadastro de responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
 						<h:commandLink styleClass="link" action="pages/cad_responsavel">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/actions.png']}" width="80%" />
@@ -142,7 +142,7 @@
 					</h:panelGroup>
 					
 					<!-- Cadastro de ação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
 						<h:commandLink styleClass="link" action="pages/cad_acoes">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/exchange.png']}" width="80%" />

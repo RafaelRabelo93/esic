@@ -20,7 +20,7 @@
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 
-					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
 
 						<f:facet name="header">
 							<p:row>

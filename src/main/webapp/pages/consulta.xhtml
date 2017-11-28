@@ -18,13 +18,13 @@
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
 
-				<h:outputText value="Consulta de solicita��es"
+				<h:outputText value="Consulta de solicitações"
 					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 
 
 				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
-						emptyMessage="N�o h� solicita��es" sortBy="#{slt.status}" expandableRowGroups="true" 
+						emptyMessage="Nao há solicitação" sortBy="#{slt.status}" expandableRowGroups="true" 
 						value="#{solicitacao.filteredSolicitacoes}"
 						style="margin-bottom:1vw" filteredValue="#{solicitacao.filteredSolicitacoes}" paginator="true"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -36,11 +36,11 @@
 							</p:column>
 						</p:headerRow>
 	
-						<p:column headerText="N� Protocolo" priority="3">
+						<p:column headerText="Protocolo" priority="3">
 							<h:outputText value="#{slt.idSolicitacao}"  />
 						</p:column>
 
-						<p:column headerText="�rg�o / Entidade" sortBy="#{slt.entidades.nome}" priority="3">
+						<p:column headerText="Orgao/ Entidade" sortBy="#{slt.entidades.nome}" priority="3">
 							<h:outputText value="#{slt.entidades.nome}" />
 						</p:column>
 
@@ -52,8 +52,12 @@
 							<h:outputText value="#{slt.status}" />
 						</p:column>
 
-						<p:column headerText="Cidad�o" sortBy="#{slt.cidadao.usuario.nome}" priority="3">
+						<p:column headerText="Cidadao" sortBy="#{slt.cidadao.usuario.nome}" priority="3">
 							<h:outputText value="#{slt.cidadao.usuario.nome}" />
+						</p:column>
+
+						<p:column headerText="Instancia" sortBy="#{slt.instancia}" priority="3">
+							<h:outputText value="#{slt.instancia}" />
 						</p:column>
 
 						<p:column style="width:32px; text-align: center">
@@ -75,21 +79,26 @@
 
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="T�tulo da solica��o" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" styleClass="consultaDialog">
 				<p:outputPanel id="solicitacaoDetalhe"  style="display:flex; flex-flow: column">
-					<p:panelGrid columns="2" layout="grid" style="border:none; width: 100%;">
-					
-							<h:outputText value="N� protocolo:" style="color:#1a568c; font-size:18px"/>
+					<p:panelGrid columns="2" layout="grid" style="border: none; width: 100%;">
+		
+							<h:outputText value="Protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
-							
-							<h:outputText value="�rg�o / Entidade:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
-							
-							<h:outputText value="Tipo de solicita��o:" style="color:#1a568c; font-size:18px" />
+
+				
+							<h:outputText value="Orgao/ Entidade:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}" />
+			
+
+							<h:outputText value="Tipo de solicitacao:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
-						
+		
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"  />
-						
-							<h:outputText value="Data de Solicita��o:" style="color:#1a568c; font-size:18px" />
+
+							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}"  />
+
+							<h:outputText value="Data de Solicitacao:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
 							
 							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" />
@@ -98,6 +107,9 @@
 							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="blabla.png" />
 												
+							<h:outputText value="Titulo:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.titulo}"  />
+							
 							<h:outputText value="Mensagens:" style="color:#1a568c; font-size:18px" />
 					</p:panelGrid>
 

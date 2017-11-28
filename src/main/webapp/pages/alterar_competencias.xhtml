@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
+			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 
 				<div class="ficha">
 
@@ -95,7 +95,7 @@
 							<i class="fa fa-pencil" />
 						</p:commandLink>
 	
-						<p:commandLink class="botaoLink" action="cad_competencias1" >
+						<p:commandLink class="botaoLink" action="cad_competencias2" >
 							<h:outputText value="Nova Competencia " />
 							<i class="fa fa-plus-square" />
 						</p:commandLink>

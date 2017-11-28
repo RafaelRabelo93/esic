@@ -105,7 +105,8 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public boolean verificaAcesso() {
-		if(usuarioBean.getUsuario().getPerfil() == 4 || usuarioBean.getUsuario().getPerfil() == 5 ) {
+		if(usuarioBean.getUsuario().getPerfil() == 4 || (usuarioBean.getUsuario().getPerfil() == 2 && 
+				((ArrayList<Responsavel>) usuarioBean.getUsuario().getResponsavels()).get(0).getNivel() == (short) 3)) {
 			return true;
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
