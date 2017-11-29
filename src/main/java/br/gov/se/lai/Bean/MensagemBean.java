@@ -85,6 +85,11 @@ public class MensagemBean implements Serializable{
 
 	public static void salvarStatus(Solicitacao solicitacao, String status) {
 		int tipoAux = 0;
+		
+		solicitacao.setStatus(status);
+		solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+		SolicitacaoDAO.saveOrUpdate(solicitacao);
+		
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
@@ -109,6 +114,7 @@ public class MensagemBean implements Serializable{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
+		
 		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
 	
