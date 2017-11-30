@@ -70,7 +70,8 @@ public class NotificacaoEmail implements Job{
 			if(solicitacao.getInstancia().equals((short)1)) {
 					envio[1] = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1).get(0).getEmail().toString();
 			}else if (solicitacao.getInstancia().equals((short)2)){
-					envio[1] = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2).get(0).getEmail().toString();
+					List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2);
+					envio[1] = resp.get(0).getEmail().toString();
 			} else if (solicitacao.getInstancia().equals((short)3)) {
 					envio[1] = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3).get(0).getEmail().toString();
 			}

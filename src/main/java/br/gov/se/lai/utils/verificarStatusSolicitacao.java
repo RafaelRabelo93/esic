@@ -1,7 +1,5 @@
 package br.gov.se.lai.utils;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -23,10 +21,10 @@ public class verificarStatusSolicitacao implements Job {
 		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
-				updateStatusSolicitacao(solicitacao);
-			} catch (Exception e) {
-				e.printStackTrace();
-				}
+				finalizaSolicitacao(solicitacao);
+			} catch (NullPointerException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 
 	}
@@ -61,39 +59,23 @@ public class verificarStatusSolicitacao implements Job {
 	} 
 	
 	
-	public void updateStatusSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
+	public void finalizaSolicitacao(Solicitacao solicitacao) {
+		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 		
 			Date now = new Date();
 			
-			if ((solicitacao.getStatus().equals("Respondida") 
-					||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short)2)) ) 
-					&& now.after(solicitacao.getDataLimite()))
-			{
+			if (now.after(solicitacao.getDataLimite())) {
 				System.out.println("Finalizou");
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
 				MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
-				
-			}else {
-				if((solicitacao.getStatus().equals("Aberta") 
-						|| solicitacao.getStatus().equals("Prorrogada") 
-						||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short)2))
-						&& now.after(solicitacao.getDataLimite())) 
-				{
-					System.out.println("Resposta negada no sistema");
-					solicitacao.setStatus("Respondida");
-					solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
-					SolicitacaoDAO.saveOrUpdate(solicitacao);
-					MensagemBean.salvarStatus(solicitacao, "Negada");
-	
-				}
 			}
 		}		
 	}
+	
 	
 
 }

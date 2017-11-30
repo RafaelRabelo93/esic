@@ -30,12 +30,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private static final long serialVersionUID = -1964244964778917209L;
 	private Competencias competencias;
 	private List<Entidades> entidades;
-	private List<Entidades> listEntidades;
 	private List<Competencias> listCompetencias;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	private int idAcoes;
-	private int idEntidades;
+	private int idEntidade;
 	private Entidades ent;
 	private String novaAcao;
 	private Usuario user;
@@ -56,13 +55,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 				CompetenciasDAO.saveOrUpdate(comp);
 			}	
 		}
-		ent = null;
-		listCompetencias = null;
 		return "/index";
 	}
 
 	public void filtrarCompetenciasEntidade(AjaxBehaviorEvent e) {
-		List<Competencias> compEnt = new ArrayList<Competencias>(EntidadesDAO.find(idEntidades).getCompetenciases());
+		List<Competencias> compEnt = new ArrayList<Competencias>(EntidadesDAO.find(idEntidade).getCompetenciases());
 		listCompetencias = compEnt;	
 	}	
 	
@@ -72,19 +69,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}else {
 			listCompetencias = null;
 		}
-		listEntidades = null;
 		
 	}	
 
-	public  void filtraEntidades(AjaxBehaviorEvent e){
-		if(idEntidades != 0) {
-			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidades);
-		}else {
-			listEntidades = null;
-		}
-	}
-	
-	
 	public void addLista() {
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
@@ -146,7 +133,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 2 || user.getPerfil() == 4  ) {
+		if(user.getPerfil() == 2 || user.getPerfil() == 4 || user.getPerfil() == 5 ) {
 			return true;
 		}else {
 			return false;
@@ -247,11 +234,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 
 	public int getIdEntidade() {
-		return idEntidades;
+		return idEntidade;
 	}
 
 	public void setIdEntidade(int idEntidade) {
-		this.idEntidades = idEntidade;
+		this.idEntidade = idEntidade;
 	}
 
 	public List<Competencias> getListCompetenciasExcluir() {
@@ -262,13 +249,4 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		this.listCompetenciasExcluir = listCompetenciasExcluir;
 	}
 
-	public List<Entidades> getListEntidades() {
-		return listEntidades;
-	}
-
-	public void setListEntidades(List<Entidades> listEntidades) {
-		this.listEntidades = listEntidades;
-	}
-
-	
 }

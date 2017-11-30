@@ -126,18 +126,17 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<!-- Cadastro de responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
-						<h:commandLink styleClass="link" action="pages/cad_responsavel">
+					<!-- Alterar órgão/entidade -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }">
+						<h:commandLink styleClass="link" action="pages/alterar_entidades">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/actions.png']}" width="80%" />
+								value="#{resource['img/icon/office-edit.png']}" width="80%" />
 
-							<h:outputText styleClass="titulo"
-								value="Cadastro de Responsável"
+							<h:outputText styleClass="titulo" value="Alterar Entidade"
 								style="font-size:35px; padding: 2% 0;" />
 
 							<h:outputText style="font-size:20px; color:#333"
-								value="Registrar responsável" />
+								value="Alterar entidade ou ógrão" />
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -154,6 +153,50 @@
 								value="Registrar ação" />
 						</h:commandLink>
 					</h:panelGroup>
+					
+					<!-- Cadastro de responsável -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+						<h:commandLink styleClass="link" action="pages/cad_responsavel">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/businessman.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo"
+								value="Cadastro de Responsável"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Registrar responsável" />
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<!-- Consulta responsável -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+						<h:commandLink styleClass="link" action="pages/consulta_responsavel">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/human-resources.png']}" width="80%" />
+
+							<h:outputText styleClass="titulo" value="Consulta de responsável"
+								style="font-size:35px; padding: 2% 0;" />
+
+							<h:outputText style="font-size:20px; color:#333"
+								value="Lista de responsáveis" />
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<!-- Alterar responsável -->
+<!-- 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}"> -->
+<!-- 						<h:commandLink styleClass="link" action="pages/alterar_responsavel"> -->
+<!-- 							<p:graphicImage styleClass="icone" -->
+<!-- 								value="#{resource['img/icon/businessman.png']}" width="80%" /> -->
+
+<!-- 							<h:outputText styleClass="titulo" -->
+<!-- 								value="Alterar Responsável" -->
+<!-- 								style="font-size:35px; padding: 2% 0;" /> -->
+
+<!-- 							<h:outputText style="font-size:20px; color:#333" -->
+<!-- 								value="Alterar responsável" /> -->
+<!-- 						</h:commandLink> -->
+<!-- 					</h:panelGroup> -->
 					
 				</h:panelGroup>
 

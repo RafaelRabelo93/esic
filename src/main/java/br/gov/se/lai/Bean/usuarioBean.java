@@ -46,7 +46,6 @@ public class UsuarioBean implements Serializable{
 	private String nomeCompleto;
 	private String email;
 	private String tipoString;
-	private String escolaridade;
 	private int veioDeSolicitacao;
 	private Date dataHoje = new Date();
 	
@@ -122,20 +121,25 @@ public class UsuarioBean implements Serializable{
 			if (usuario.getPerfil() != 1) {
 
 				if (usuario.getPerfil() == 3) {
-					CidadaoBean cidadaoBean = new CidadaoBean();
-					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-					listCidadao.get(0).setEmail(email);
-					cidadaoBean.setCidadao(listCidadao.get(0));
-					cidadaoBean.edit();
+					CidadaoBean cidadao = new CidadaoBean();
+					cidadao.save();
 				} else {
-					ResponsavelBean responsavelBean = new ResponsavelBean();
-					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-					listResponsavel.get(0).setEmail(email);
-					responsavelBean.setResponsavel(listResponsavel.get(0));
-					responsavelBean.alterarDadosUsuario();
+					ResponsavelBean responsavel = new ResponsavelBean();
+					responsavel.save();
 				}
 			}
 
+			if (usuario.getPerfil() != 1) {
+				if (usuario.getPerfil() == 3) {
+					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+					listCidadao.get(0).setEmail(email);
+					;
+				} else {
+					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+					listResponsavel.get(0).setEmail(email);
+					;
+				}
+			}
 			return "/index";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
@@ -300,40 +304,6 @@ public class UsuarioBean implements Serializable{
 			return "Jurídica";
 		}
 		
-	}
-	
-	public String getGeneroString() {
-		if(getCidadao().getSexo().equals("F")) {
-			return "Feminino";
-		}else {
-			return "Masculino";
-		}
-		
-	}
-	
-	public String getEscolaridade() {
-		try {
-			switch(getCidadao().getEscolaridade()) {
-			case 1:
-				escolaridade =  "Analfabeto";
-			case 2:
-				escolaridade =  "Semi-Analfabeto";
-			case 3:
-				escolaridade =  "Fundamental";
-			case 4:
-				escolaridade =  "Ensino Médio Incompleto";
-			case 5:
-				escolaridade =  "Ensino Médio Completo";
-			case 6:
-				escolaridade =  "Ensino Superior Incompleto";
-			case 7:
-				escolaridade =  "Ensino Superior Completo";
-			}
-			return escolaridade;
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-			return "...";
-		}
 	}
 
 	public void setTipoString(Boolean tipo) {

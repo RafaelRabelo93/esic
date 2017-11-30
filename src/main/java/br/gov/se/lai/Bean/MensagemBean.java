@@ -81,19 +81,18 @@ public class MensagemBean implements Serializable{
 			mensagem.setTipo((short)2);
 		}
 	}
-
+	
+	public int tipoMensagem() {
+		return 1;
+	}
+	
 
 	public static void salvarStatus(Solicitacao solicitacao, String status) {
-		int tipoAux = 0;
-		
-		solicitacao.setStatus(status);
-		solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-		SolicitacaoDAO.saveOrUpdate(solicitacao);
-		
+		int tipoAux;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
-		mensagem.setTexto("Solicitação foi "+status+" no sistema.");
+		mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema.");
 		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
 		switch (status) {
 		case "Recurso":
@@ -108,17 +107,14 @@ public class MensagemBean implements Serializable{
 			tipoAux = 4;
 			break;
 			
-		case "Negada":
-			tipoAux = 4;
+		default:
+			tipoAux = 1;
 			break;
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
-		
 		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
-	
-
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

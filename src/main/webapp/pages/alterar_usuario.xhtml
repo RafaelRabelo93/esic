@@ -42,7 +42,7 @@
 						</p:inplace>
 
 						
-						<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '3' }">
+						<p:panelGrid style="margin-bottom:1vw; border: none;" rendered="#{usuario.usuario.perfil eq '3' }">
 
 						<f:facet name="header">
 							<p:row>
@@ -324,30 +324,21 @@
 			
 			<p:dialog header="Confirmar senha" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
-					<p:outputPanel id="dlg" style="max-width: 690px">
-						<p:panelGrid columns="1" style="border:none; width: 60%;">
-							<div class="divBtn"/>
-								<div
-									style="display: flex; flex-flow: column nowrap; align-self: flex-start; margin-bottom: 2vw;">
-									<p:outputLabel value="Confirmar senha:" for="senha1" />
-									<p:password id="senha1" required="true"
-										placeholder="Digite sua senha"
-										value="#{usuario.senha}" />
-								</div>
-						</p:panelGrid>
+					<p:outputPanel id="dlg" styleClass="divBtn" style="max-width: 690px">
+							<p:outputLabel value="Confirmar senha:" for="senha1" />
+							<p:password id="senha1" required="true"	placeholder="Digite sua senha" value="#{usuario.senha}" />
 
-						<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
-										update="@all">
-							<h:outputText value="Salvar Alterações" />
-							<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+							<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" update="@all">
+								<h:outputText value="Confirmar" />
+								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+	
+								 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
+								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
+								 
+								 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
+								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
 
-							 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
-							 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
-							 
-							 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
-							 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
-
-						</p:commandLink>
+							</p:commandLink>
 
 					</p:outputPanel>
 				</h:form>

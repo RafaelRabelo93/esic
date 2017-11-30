@@ -18,8 +18,7 @@
 				<p:messages id="messages" showDetail="true" autoUpdate="true"
 					closable="true" />
 
-				<h:outputText value="Consulta de solicitações"
-					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
+				<h:outputText value="Consulta de solicitações"	style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 
 
 				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
@@ -73,22 +72,18 @@
 
 				</h:panelGroup>
 
-
-
 			</div>
 
-			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="T�tulo da solica��o" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" styleClass="consultaDialog">
+			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="#{solicitacao.solicitacao.titulo}" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" styleClass="consultaDialog">
 				<p:outputPanel id="solicitacaoDetalhe"  style="display:flex; flex-flow: column">
 					<p:panelGrid columns="2" layout="grid" style="border: none; width: 100%;">
 		
 							<h:outputText value="Protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
 
-				
 							<h:outputText value="Orgao/ Entidade:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}" />
 			
-
 							<h:outputText value="Tipo de solicitacao:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
 		
@@ -103,12 +98,6 @@
 							
 							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  />
-											
-							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="blabla.png" />
-												
-							<h:outputText value="Titulo:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.titulo}"  />
 							
 							<h:outputText value="Mensagens:" style="color:#1a568c; font-size:18px" />
 					</p:panelGrid>
@@ -144,8 +133,7 @@
 					</p:dataScroller>
 					
 					<!-- 	Botão Realizar recurso -->
-
-					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
+					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada'}" 
 								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.recurso}" update="solicitacao_panel" >
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}"/>
@@ -153,7 +141,7 @@
 			         </p:commandLink>
 			         
 				<h:form enctype="multipart/form-data">
-					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
+					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
 							<p:inputText id="mensagem"
@@ -161,7 +149,7 @@
 								value="#{mensagem.mensagem.texto}" style="width:100%" />
 
 							<p:outputLabel value="Anexo:" />
-							<p:outputLabel value="Descri��o:" for="descricao" />
+							<p:outputLabel value="Descrição:" for="descricao" />
 							<p:inputTextarea id="descricao" counter="display" maxlength="200"
 								autoResize="false" style="width:100%"
 								counterTemplate="{0} caracteres restantes." value="#{mensagem.anexo.descricao}" />
@@ -171,9 +159,9 @@
 									label="Enviar Foto" skinSimple="true"
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|zip|rar|docx|doc|xls|xlsx|tar)$/"
-									invalidFileMessage="S�o permitidas somente imagens (gif, jpeg, jpg e png)"
+									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
 									sizeLimit="1048576"
-									invalidSizeMessage="O tamanho m�ximo permitido � de 1MB." />
+									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
 									<p:growl id="msg" />
 						</p:panelGrid>
 
@@ -185,8 +173,7 @@
 
 					</p:outputPanel>
 				</h:form>	
-						<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada'}" 
-						action="#{solicitacao.prorrogar}" update="solicitacao_panel" style="margin:1vw 0">
+						<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada'}" action="#{solicitacao.prorrogar(solicitacao.solicitacao)}" update="solicitacao_panel" style="margin:1vw 0">
 							<h:outputText value="Prorrogar Resposta" />
 							<i class="fa fa-clock-o" />
 							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}"></f:setPropertyActionListener>

@@ -55,7 +55,7 @@
 }
 
 .box {
-	padding: 1vw;
+	padding: 1.5em;
 	margin-bottom: 1vh;
 	
  	display: -ms-flexbox; 
@@ -301,6 +301,18 @@
 .ui-grid-responsive{
 	border: none;
 }
+
+.blank.ui-panelgrid, .blank.ui-widget-content.ui-panelgrid, .blank.ui-widget-content {
+	border: none;
+	background: none !important;
+}
+
+.blank .ui-panelgrid .ui-panelgrid-cell {
+	padding: 0 !important;
+}
+
+/* ============================= */
+
 .ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
     font-weight: normal;
     box-shadow: none;
@@ -371,6 +383,10 @@
 }
 
 /* Outros */
+
+.ui-panelgrid .ui-widget-content {
+    background: none;
+}
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border-radius: 0;
@@ -584,8 +600,6 @@
     color: white;
     text-shadow: none;
 }
-
-
 
 .ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
 	color: white;

@@ -14,7 +14,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
-import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.PermissaoUsuario;
@@ -35,6 +34,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private String nome;
 	private boolean ativa;
 	private boolean forOrgao;
+	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
 	
@@ -92,6 +92,15 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		return "/index";
 	}
 	
+
+	public void filtraEntidades(AjaxBehaviorEvent e){
+		if(idEntidades != 0) {
+			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidades);
+		}else {
+			listEntidades = null;
+		}
+	}
+	
 	public void listarOrgaos(AjaxBehaviorEvent e) {
 		if(forOrgao) {
 			this.listOrgao = null;
@@ -107,11 +116,9 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		acaobean.filtrarAcoes(compEnt);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 4 || (user.getPerfil() == 2 && 
-				((ArrayList<Responsavel>) user.getResponsavels()).get(0).getNivel() == (short) 3)) {
+		if(user.getPerfil() == 4 || user.getPerfil() == 5) {
 			return true;
 		}else {
 			return false;
@@ -174,6 +181,14 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<Entidades> getListEntidades() {
+		return listEntidades;
+	}
+
+	public void setListEntidades(List<Entidades> listEntidades) {
+		this.listEntidades = listEntidades;
 	}
 
 	public int getIdEntidades() {

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<h:form id="buscar_responsavel" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '4' or  usuario.usuario.perfil eq '5' }">
+
+				<div class="ficha">
+
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+					<h:outputText value="Consulta de responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
+					
+					<div style="display: flex; flex-flow: row nowrap; align-items: flex-end" >
+						<p:panelGrid columns="4" id="painel" styleClass="blank" layout="grid">
+			    			<p:panelGrid columns="1" styleClass="blank">
+								<p:outputLabel value="Nome: " for="nome" />
+								<p:inputText id="nome" />
+							</p:panelGrid>
+						
+							<p:panelGrid columns="1" styleClass="blank">
+								<p:outputLabel value="Apelido: " for="nick" />
+								<p:inputText id="nick" />
+							</p:panelGrid>
+							
+							<p:panelGrid columns="1" styleClass="blank">
+								<p:outputLabel value="E-mail: " for="email" />
+								<p:inputText id="email" />
+							</p:panelGrid>
+							
+							<p:panelGrid columns="1" styleClass="blank">	
+								<p:outputLabel value="Orgão/Entidade: " for="orgao" />
+								<p:selectOneMenu id="orgao"   value="#{responsavel.responsavel.entidades}" style="width:125px">
+									 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+									 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent}"/>
+								</p:selectOneMenu>
+							</p:panelGrid>
+						
+						</p:panelGrid>
+						
+						<p:commandLink class="botaoLinkIcon" actionListener="#{responsavel.selecionarResponsavel}" update="responsaveis" style="padding: 5px 11px 4px 9px; margin-left: 2vw; height: 25px; margin-bottom: 1vh;">
+							<i class="fa fa-search"/>
+						</p:commandLink>
+					
+					</div>
+					
+					<p:dataTable id="responsaveis" widget="solicitacoes" var="slt" emptyMessage="Não há responsáveis"  value="#{responsavel.entidades}"
+						paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+           				rowsPerPageTemplate="5,10,15">
+           				
+           			</p:dataTable>
+					
+				</div>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>
