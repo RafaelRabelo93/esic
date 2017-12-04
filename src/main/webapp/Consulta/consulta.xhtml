@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -77,18 +77,16 @@
 
 			</div>
 
-			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="T�tulo da solica��o" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" styleClass="consultaDialog">
+			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="#{solicitacao.solicitacao.titulo}" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" styleClass="consultaDialog">
 				<p:outputPanel id="solicitacaoDetalhe"  style="display:flex; flex-flow: column">
 					<p:panelGrid columns="2" layout="grid" style="border: none; width: 100%;">
 		
 							<h:outputText value="Protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
-
 				
 							<h:outputText value="Orgao/ Entidade:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}" />
 			
-
 							<h:outputText value="Tipo de solicitacao:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
 		
@@ -103,13 +101,7 @@
 							
 							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  />
-											
-							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="blabla.png" />
 												
-							<h:outputText value="Titulo:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.titulo}"  />
-							
 							<h:outputText value="Mensagens:" style="color:#1a568c; font-size:18px" />
 					</p:panelGrid>
 
@@ -153,27 +145,25 @@
 			         </p:commandLink>
 			         
 				<h:form enctype="multipart/form-data">
-					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
+					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' ) and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
-							<p:inputText id="mensagem"
-								rendered="#{usuario.usuario.perfil eq '2'}" 
-								value="#{mensagem.mensagem.texto}" style="width:100%" />
+							<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" style="width:100%" />
 
 							<p:outputLabel value="Anexo:" />
-							<p:outputLabel value="Descri��o:" for="descricao" />
-							<p:inputTextarea id="descricao" counter="display" maxlength="200"
+							<p:outputLabel value="Descrição:" for="descricao" />
+							<p:inputTextarea id="descricao" counter="display" maxlength="150"
 								autoResize="false" style="width:100%"
 								counterTemplate="{0} caracteres restantes." value="#{mensagem.anexo.descricao}" />
 							<h:outputText id="display" />
 
 							<p:fileUpload mode="simple" value="#{mensagem.file}"
-									label="Enviar Foto" skinSimple="true"
+									label="Enviar Arquivo" skinSimple="true"
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|zip|rar|docx|doc|xls|xlsx|tar)$/"
-									invalidFileMessage="S�o permitidas somente imagens (gif, jpeg, jpg e png)"
+									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
 									sizeLimit="1048576"
-									invalidSizeMessage="O tamanho m�ximo permitido � de 1MB." />
+									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
 									<p:growl id="msg" />
 						</p:panelGrid>
 

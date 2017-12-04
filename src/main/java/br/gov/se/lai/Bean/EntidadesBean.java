@@ -89,7 +89,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 			EntidadesDAO.saveOrUpdate(entidades);
 			this.entidades = new Entidades();
 		}
-		return "/index";
+		return "/Consulta/consulta_entidades";
 	}
 	
 	public void listarOrgaos(AjaxBehaviorEvent e) {

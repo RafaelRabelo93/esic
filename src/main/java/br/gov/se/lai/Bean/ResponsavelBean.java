@@ -39,9 +39,6 @@ public class ResponsavelBean implements Serializable{
 	private String email;
 	private String nick;
 	private boolean ativo;
-	
-	
-	
 
 	@PostConstruct
 	public void init() {

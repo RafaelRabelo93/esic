@@ -55,7 +55,7 @@
 }
 
 .box {
-	padding: 1vw;
+	padding: 1.5em;
 	margin-bottom: 1vh;
 	
  	display: -ms-flexbox; 
@@ -133,6 +133,13 @@
 	padding: 10px;
 	border-radius: 3px;
 	margin-bottom: 2vw;
+    
+    width: fit-content;
+    height: fit-content;
+	
+/* 	display: flex; */
+    
+    align-items: center;
 }
 
 .botaoLinkIcon {
@@ -301,6 +308,18 @@
 .ui-grid-responsive{
 	border: none;
 }
+
+.blank.ui-panelgrid, .blank.ui-widget-content.ui-panelgrid, .blank.ui-widget-content {
+	border: none;
+	background: none !important;
+}
+
+.blank .ui-panelgrid .ui-panelgrid-cell {
+	padding: 0 !important;
+}
+
+/* ============================= */
+
 .ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
     font-weight: normal;
     box-shadow: none;
@@ -371,6 +390,10 @@
 }
 
 /* Outros */
+
+.ui-panelgrid .ui-widget-content {
+    background: none;
+}
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border-radius: 0;
@@ -571,6 +594,10 @@
     background-color: #ffffff;
 }
 
+.ui-state-highlight .ui-icon{
+	filter: brightness(100);
+}
+
 .ui-paginator {
 	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
 	border: 1px solid #135186;
@@ -584,8 +611,6 @@
     color: white;
     text-shadow: none;
 }
-
-
 
 .ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
 	color: white;

@@ -5,6 +5,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
+import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.utils.Consultas;
@@ -60,8 +61,5 @@ public class  ResponsavelDAO {
     public static Responsavel findResponsavelEmail(String email) {
     	return (Responsavel) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).get(0);
     }
-	public static List<Responsavel> list() {
-	
-        return null;
-    }  
+    
 }

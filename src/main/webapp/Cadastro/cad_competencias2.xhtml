@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '4'}">
 
 				<div class="ficha" style="width:50%">
 
@@ -66,11 +66,10 @@
 				</div>
 
 					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%">
-							<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada"
-								value="#{competencias.listCompetencias}">
+							<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}">
 								<f:facet name="header">
-								            Competências
-								        </f:facet>
+									Competências
+								</f:facet>
 								<p:column headerText="Órgão/Entidade">
 									<h:outputText value="#{comp.entidades.nome}" />
 								</p:column>
