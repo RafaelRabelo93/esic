@@ -53,7 +53,8 @@ public class  ResponsavelDAO {
 
     @SuppressWarnings("unchecked")
 	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {    	
-		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades,em);
+		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades
+																	+" AND resp.nivel = "+nivel+" AND resp.ativo = 1",em);
     }
 	
     

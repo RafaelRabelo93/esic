@@ -62,13 +62,12 @@ public class MensagemBean implements Serializable{
 			verificaMensagem();
 			MensagemDAO.saveOrUpdate(mensagem);
 			NotificacaoEmail.enviarEmail(solicitacao, usuario);
-			System.out.println(anexo.toString());
 			
 			if (file != null) {
+				System.out.println(anexo.toString());
 				AnexoBean anx = new AnexoBean();
 				anx.save(anexo, mensagem, file);
 			}
-		
 		mensagem = new Mensagem();	
 		return "consulta";
 	}
