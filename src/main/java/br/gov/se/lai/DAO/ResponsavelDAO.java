@@ -58,12 +58,21 @@ public class  ResponsavelDAO {
 																	+" AND resp.nivel = "+nivel+" AND resp.ativo = 1",em);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	
+    
+    public static List<Responsavel> list() {
+        return null;
+=======
+>>>>>>> hotfix
     
     @SuppressWarnings("unchecked")
     public static Responsavel findResponsavelEmail(String email) {
     	return (Responsavel) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).get(0);
     }
     
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	
@@ -79,4 +88,12 @@ public class  ResponsavelDAO {
 	
     }   
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+    @SuppressWarnings("unchecked")
+	public static List<Responsavel> list() {		
+        return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();
+>>>>>>> origin/master
+    }  
+    
+>>>>>>> hotfix
 }

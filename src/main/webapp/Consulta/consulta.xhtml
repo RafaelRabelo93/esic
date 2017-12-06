@@ -23,40 +23,70 @@
 
 				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
-						emptyMessage="Nao há solicitação" sortBy="#{slt.status}" expandableRowGroups="true" 
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+						emptyMessage="Nao há solicitação" sortBy="#{slt.status}" 
 						value="#{solicitacao.filteredSolicitacoes}"
-						style="margin-bottom:1vw" filteredValue="#{solicitacao.filteredSolicitacoes}" paginator="true"
+						style="margin-bottom:1vw" filteredValue="#{solicitacao.filteredSolicitacoes}">
+
+	
+						<p:column headerText="Protocolo" priority="3">
+							<h:outputText value="#{slt.protocolo}"  />
+=======
+						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
+						expandableRowGroups="true" value="#{solicitacao.filteredSolicitacoes}"
+						rowStyleClass="#{slt.status}" style="margin-bottom:1vw"
+						filteredValue="#{solicitacao.filteredSolicitacoes}"
+						paginator="true"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-           				rowsPerPageTemplate="5,10,15" rowKey="#{slt.idSolicitacao}">
-           			
-						<p:headerRow>
+						rowsPerPageTemplate="5,10,15" rowKey="#{slt.idSolicitacao}">
+
+						<p:headerRow rendered="#{usuario.usuario.perfil eq '2' }">
 							<p:column colspan="6" sortBy="#{slt.status}" priority="1">
 								<h:outputText value="#{slt.status}" />
 							</p:column>
 						</p:headerRow>
-	
-						<p:column headerText="Protocolo" priority="3">
-							<h:outputText value="#{slt.idSolicitacao}"  />
+
+						<p:headerRow>
+							<p:column colspan="8" sortBy="#{slt.status}" priority="1">
+								<h:outputText value="#{slt.status}" />
+							</p:column>
+						</p:headerRow>
+
+						<p:column headerText="Protocolo" priority="6">
+							<h:outputText value="#{slt.idSolicitacao}" />
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
 						</p:column>
 
-						<p:column headerText="Orgao/ Entidade" sortBy="#{slt.entidades.nome}" priority="3">
+						<p:column headerText="Orgao/ Entidade"
+							sortBy="#{slt.entidades.nome}" priority="3">
 							<h:outputText value="#{slt.entidades.nome}" />
 						</p:column>
 
-						<p:column headerText="Tipo" sortBy="#{slt.tipo}" priority="3">
+						<p:column headerText="Título" sortBy="#{slt.titulo}" priority="3">
+							<h:outputText value="#{slt.titulo}" />
+						</p:column>
+
+						<p:column headerText="Tipo" width="120" sortBy="#{slt.tipo}"
+							priority="6">
 							<h:outputText value="#{slt.tipo}" />
 						</p:column>
 
-						<p:column headerText="Status" sortBy="#{slt.status}" priority="1" >
+						<p:column headerText="Status" width="120" sortBy="#{slt.status}"
+							priority="3">
 							<h:outputText value="#{slt.status}" />
 						</p:column>
 
-						<p:column headerText="Cidadao" sortBy="#{slt.cidadao.usuario.nome}" priority="3">
+						<p:column headerText="Cidadão" width="150"
+							sortBy="#{slt.cidadao.usuario.nome}"
+							rendered="#{usuario.usuario.perfil ne '3' }" priority="3">
 							<h:outputText value="#{slt.cidadao.usuario.nome}" />
 						</p:column>
 
-						<p:column headerText="Instancia" sortBy="#{slt.instancia}" priority="3">
-							<h:outputText value="#{slt.instancia}" />
+						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
+							width="120" priority="1">
+							<h:outputText value="#{slt.dataLimite}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							</h:outputText>
 						</p:column>
 
 						<p:column style="width:32px; text-align: center">
@@ -67,7 +97,7 @@
 									target="#{solicitacao.solicitacao}" />
 							</p:commandLink>
 						</p:column>
-						
+
 					</p:dataTable>
 
 				</h:panelGroup>
@@ -80,6 +110,7 @@
 		
 							<h:outputText value="Protocolo:" style="color:#1a568c; font-size:18px"/>
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 <<<<<<< HEAD
 <<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 				
@@ -89,6 +120,13 @@
 =======
 
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+
+=======
+				
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 							<h:outputText value="Orgao/ Entidade:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}" />
 			
@@ -102,10 +140,14 @@
 							<h:outputText value="#{solicitacao.solicitacao.instancia}"  />
 
 							<h:outputText value="Data de Solicitacao:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
+							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  >
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
+							</h:outputText>
 							
 							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" />
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
 							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  />
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 <<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 												
 =======
@@ -116,6 +158,15 @@
 							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  />
 							
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+							
+=======
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"  >
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
+							</h:outputText>
+												
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 							<h:outputText value="Mensagens:" style="color:#1a568c; font-size:18px" />
 					</p:panelGrid>
 
@@ -135,7 +186,9 @@
 						<p:outputPanel style="margin-top: 1vw;">
 							<div class="mensagem">
 								<h:outputText value="#{msg.usuario.nome}"  style="color:#1a568c" />
-								<h:outputText value="#{msg.data}" style="color:#1a568c" />
+								<h:outputText value="#{msg.data}" style="color:#1a568c">
+									<f:convertDateTime pattern="d/M/yy - hh:mm" timeZone="GMT-03:00"/>
+								</h:outputText>
 							</div>
 							<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 								
@@ -150,7 +203,16 @@
 					</p:dataScroller>
 					
 					<!-- 	Botão Realizar recurso -->
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada'}" 
+=======
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada'}" 
+=======
+
+					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'finalizada'}" 
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 								style="margin-bottom:1vw; align-self:flex-end" action="#{solicitacao.recurso}" update="solicitacao_panel" >
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}"/>
@@ -159,6 +221,7 @@
 			         </p:commandLink>
 			         
 				<h:form enctype="multipart/form-data">
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 <<<<<<< HEAD
 <<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' ) and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
@@ -168,18 +231,33 @@
 =======
 					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
+=======
+					<p:outputPanel id="responderSolicitacao" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' ) and solicitacao.solicitacao.status ne 'Finalizada'}" style="display:flex; flex-flow: column">
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 						<p:panelGrid columns="1" style="width:100%">
 							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
 							<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" style="width:100%" />
 
 							<p:outputLabel value="Anexo:" />
 							<p:outputLabel value="Descrição:" for="descricao" />
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 <<<<<<< HEAD
 <<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 							<p:inputTextarea id="descricao" counter="display" maxlength="150"
 =======
 							<p:inputTextarea id="descricao" counter="display" maxlength="200"
 >>>>>>> origin/Hotfix:src/main/webapp/pages/consulta.xhtml
+=======
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+							<p:inputTextarea id="descricao" counter="display" maxlength="200"
+=======
+							<p:inputTextarea id="descricao" counter="display" maxlength="150"
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 								autoResize="false" style="width:100%"
 =======
 							<p:inputTextarea id="descricao" counter="display" maxlength="200" autoResize="false" style="width:100%"
@@ -191,7 +269,15 @@
 									label="Enviar Arquivo" skinSimple="true"
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|zip|rar|docx|doc|xls|xlsx|tar)$/"
+<<<<<<< HEAD:src/main/webapp/Consulta/consulta.xhtml
 									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
+=======
+<<<<<<< HEAD:src/main/webapp/pages/consulta.xhtml
+									invalidFileMessage="São permitidas somente imagens (gif, jpeg, jpg e png)"
+=======
+									invalidFileMessage="São permitidos apenas arquivos de imagem (gif, jpeg, jpg, png), office(doc, docx, xls, xlsx), pdf,txt, zip, rar e tar."
+>>>>>>> origin/master:src/main/webapp/Consulta/consulta.xhtml
+>>>>>>> hotfix:src/main/webapp/Consulta/consulta.xhtml
 									sizeLimit="1048576"
 									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
 									<p:growl id="msg" />

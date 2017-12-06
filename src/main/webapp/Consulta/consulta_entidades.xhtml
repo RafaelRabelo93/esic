@@ -21,9 +21,15 @@
 				<h:outputText value="Entidades"	style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil eq '4' }" />
 				
 				<h:form id="form">
+<<<<<<< HEAD
 					<p:dataTable id="entidades" var="orgaos" editable="false" editMode="row" emptyMessage="Não há entidades" value="#{entidades.todasEntidades}"
 					paginator="false" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
 							
+=======
+					<p:dataTable id="entidades" widget="solicitacoes" var="orgaos" emptyMessage="Nao há solicitação" filteredValue="#{entidades.todasEntidades}" sortBy="#{orgaos.sigla}" expandableRowGroups="false" 
+					value="#{entidades.todasEntidades}" rowStyleClass="#{orgaos.sigla}"	 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+          			rowsPerPageTemplate="5,10,15" rowKey="#{orgaos.idEntidades}" sortField="#{orgaos.sigla}" style="margin-bottom:1vw">	
+>>>>>>> hotfix
 							<p:column headerText="Sigla" sortBy="#{orgaos.sigla}" width="70">
 								<h:outputText value="#{orgaos.sigla}" />
 							</p:column>
@@ -38,15 +44,22 @@
 							</p:column>
 							
 							<p:column headerText="Ações" width="50" style="text-align: center">
+<<<<<<< HEAD
 	           					<p:commandLink class="botaoLinkIcon" action="/Cadastro/cad_competencias2" style="margin:5px">
+=======
+	           					<p:commandLink class="botaoLinkIcon" action="/Alterar/alterar_competencias" style="margin:5px">
+>>>>>>> hotfix
 									<i class="fa fa-plus" />
 									<f:setPropertyActionListener value="#{orgaos}" target="#{competencias.ent}"  />
 								</p:commandLink>
 							</p:column>
+<<<<<<< HEAD
 							
 <!-- 							<p:column headerText="Editar" width="45" style="text-align: center"> -->
 <!-- 					           <p:rowEditor  /> -->
 <!-- 					       </p:column> -->
+=======
+>>>>>>> hotfix
 	
 							<p:column headerText="Editar" width="45" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">

@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 import br.gov.se.lai.DAO.AcoesDAO;
@@ -100,7 +101,7 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
-		if (file != null) {
+		if (!(file.getContents().length == 0)) {
 			AnexoBean anx = new AnexoBean();
 			anx.save(anexo, mensagem,file);
 		}
@@ -111,6 +112,10 @@ public class SolicitacaoBean implements Serializable{
 		//verifique se não está ocorrendo erro
 		//NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
 		
+		this.solicitacao = new Solicitacao();
+		this.mensagem = new Mensagem();
+		CompetenciasBean.listCompetencias = null;
+		CompetenciasBean.listEntidades = null;
 		return "/index";
 	}	
 
@@ -213,6 +218,11 @@ public class SolicitacaoBean implements Serializable{
 		}
 	}
 
+	public void onRowSelect(SelectEvent event) {
+	    int rownum = filteredSolicitacoes.indexOf((Solicitacao)event.getObject());
+	    solicitacao = SolicitacaoDAO.findSolicitacao(rownum);
+
+	}
 
 	
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
@@ -391,6 +401,4 @@ public class SolicitacaoBean implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-	
-
 }

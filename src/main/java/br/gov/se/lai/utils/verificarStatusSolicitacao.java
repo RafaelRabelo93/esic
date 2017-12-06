@@ -18,7 +18,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		System.out.println("Entrou em verificacoes");
+//		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
 				finalizaSolicitacao(solicitacao);
@@ -31,7 +31,7 @@ public class verificarStatusSolicitacao implements Job {
 	
 	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo verificaTempoSolicitacao às" + new Date());
+//		System.out.println("Entrou no metodo verificaTempoSolicitacao às" + new Date());
 		
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 
@@ -45,12 +45,12 @@ public class verificarStatusSolicitacao implements Job {
 			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
 			
 			if (now.equals(metadePrazo)) {
-				System.out.println("Metade do prazo para resposta");
+//				System.out.println("Metade do prazo para resposta");
 				String corpoMensagem = "Faltam "+metadePrazo+" dias para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
 				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
 			}else {
 				if(now.equals(vesperaPrazo)) {
-					System.out.println("Véspera do prazo para resposta");
+//					System.out.println("Véspera do prazo para resposta");
 					String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
 					NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
 				}
@@ -60,38 +60,80 @@ public class verificarStatusSolicitacao implements Job {
 	
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
 	public void finalizaSolicitacao(Solicitacao solicitacao) {
 		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
+=======
+	public void finalizaSolicitacao(Solicitacao solicitacao) {
+		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
+=======
+	public void updateStatusSolicitacao(Solicitacao solicitacao) {
+//		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
+>>>>>>> origin/master
+>>>>>>> hotfix
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 		
 			Date now = new Date();
 			
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			if (now.after(solicitacao.getDataLimite())) {
+				System.out.println("Finalizou");
+>>>>>>> hotfix
 =======
 			if ((solicitacao.getStatus().equals("Respondida") 
 					||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short)2)) ) 
 					&& now.after(solicitacao.getDataLimite()))
 			{
 //				System.out.println("Finalizou");
+<<<<<<< HEAD
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
 			if (now.after(solicitacao.getDataLimite())) {
 				System.out.println("Finalizou");
+=======
+>>>>>>> origin/master
+>>>>>>> hotfix
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
 				MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+				
+			}else {
+				if((solicitacao.getStatus().equals("Aberta") 
+						|| solicitacao.getStatus().equals("Prorrogada") 
+						||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short)2))
+						&& now.after(solicitacao.getDataLimite())) 
+				{
+//					System.out.println("Resposta negada no sistema");
+					solicitacao.setStatus("Respondida");
+					solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
+					SolicitacaoDAO.saveOrUpdate(solicitacao);
+					MensagemBean.salvarStatus(solicitacao, "Negada");
+	
+				}
+>>>>>>> origin/master
+>>>>>>> hotfix
 			}
 		}		
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 =======
 	}	
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+	
+>>>>>>> hotfix
 
 }

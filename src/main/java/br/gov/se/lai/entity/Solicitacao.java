@@ -162,7 +162,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.tipo = tipo;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitacao")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "solicitacao")
 	public Set<Mensagem> getMensagems() {
 		return this.mensagems;
 	}

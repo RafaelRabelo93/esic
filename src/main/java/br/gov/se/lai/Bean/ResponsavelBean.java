@@ -37,6 +37,7 @@ public class ResponsavelBean implements Serializable{
 	private String email;
 	private String nick;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private boolean ativo;
 
 =======
@@ -46,6 +47,15 @@ public class ResponsavelBean implements Serializable{
 >>>>>>> origin/Hotfix
 =======
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
+=======
+	
+=======
+	private boolean ativo;
+	private List<Responsavel> todosResponsaveis;
+
+>>>>>>> origin/master
+	
+>>>>>>> hotfix
 	@PostConstruct
 	public void init() {
 		this.responsavel = new Responsavel();
@@ -92,6 +102,10 @@ public class ResponsavelBean implements Serializable{
 	}
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> hotfix
 =======
 	public boolean verificaExistenciaResponsavel(Usuario usuario) {
 		if(usuario.getPerfil() == (short) 2) {
@@ -101,8 +115,12 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+<<<<<<< HEAD
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
 
+=======
+>>>>>>> origin/master
+>>>>>>> hotfix
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {
@@ -162,6 +180,10 @@ public class ResponsavelBean implements Serializable{
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		
+>>>>>>> hotfix
 =======
 	public boolean isAtivo() {
 		return ativo;
@@ -180,6 +202,10 @@ public class ResponsavelBean implements Serializable{
 		this.todosResponsaveis = todosResponsaveis;
 	}
 	
+<<<<<<< HEAD
 >>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
 		
+=======
+>>>>>>> origin/master
+>>>>>>> hotfix
 }

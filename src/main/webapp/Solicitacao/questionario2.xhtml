@@ -39,7 +39,11 @@
 
 						<p:outputLabel value="Assunto:" for="assunto" />
         				<p:row><p:column> <p:selectOneMenu id="assunto" value="#{competencias.idAcoes}">
+<<<<<<< HEAD:src/main/webapp/Solicitacao/questionario2.xhtml
 							 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat" />
+=======
+							 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat entidades_panel" />
+>>>>>>> hotfix:src/main/webapp/Solicitacao/questionario2.xhtml
 							 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 							 <f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue= "#{acoes.idAcoes}"/>
 						</p:selectOneMenu> 
@@ -56,7 +60,12 @@
 						<p:outputLabel value="Órgão / Entidade:" />
 
 						<h:panelGroup id="entidades_panel">
+<<<<<<< HEAD:src/main/webapp/Solicitacao/questionario2.xhtml
 							<p:dataTable id="entidades" widget="entidades" var="ent" emptyMessage="Selecione Assunto e Categoria" value="#{entidades.listEntidades}" selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" style="width: 50vw">
+=======
+							<p:dataTable id="entidades" widget="entidades" var="ent" emptyMessage="Selecione Assunto e Categoria" value="#{competencias.listEntidades}"
+							 selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" style="width: 50vw">
+>>>>>>> hotfix:src/main/webapp/Solicitacao/questionario2.xhtml
 						        <p:ajax event="rowEdit" oncomplete="PF('entidades').filter()"/>
 						        <f:facet name="header">
 						            Entidades/Órgãos
@@ -73,7 +82,7 @@
 						</h:panelGroup>
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" action="solicitacao">
+					<p:commandLink class="botaoLink" action="solicitacao" update="@all">
 						<h:outputText value="Continuar" />
 						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
 						<i class="fa fa-arrow-right" />
