@@ -133,6 +133,13 @@
 	padding: 10px;
 	border-radius: 3px;
 	margin-bottom: 2vw;
+    
+    width: fit-content;
+    height: fit-content;
+	
+/* 	display: flex; */
+    
+    align-items: center;
 }
 
 .botaoLinkIcon {
@@ -587,6 +594,10 @@
     background-color: #ffffff;
 }
 
+.ui-state-highlight .ui-icon{
+	filter: brightness(100);
+}
+
 .ui-paginator {
 	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
 	border: 1px solid #135186;
@@ -623,6 +634,23 @@
 	font-size: 20px;
 	font-weight: bold;
 	font-variant-caps: all-petite-caps;
+}
+
+ /* Cores de prazo */
+ 
+.Respondida {
+/*     background-color: #c8f5c8; */
+	border-bottom: 3px solid limegreen;
+}
+
+.Aberta {
+/*     background-color: #fff9ae; */
+	border-bottom: 3px solid gold;
+}
+
+.Finalizada {
+/*     background-color: #ffb9b9; */
+	border-bottom: 3px solid crimsom;
 }
 
 /* Mensagens */

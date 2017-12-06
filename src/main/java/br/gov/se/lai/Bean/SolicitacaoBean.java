@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 import br.gov.se.lai.DAO.AcoesDAO;
@@ -100,7 +101,7 @@ public class SolicitacaoBean implements Serializable{
 		this.mensagem.setTipo((short)1);
 		MensagemDAO.saveOrUpdate(mensagem);
 		
-		if (file != null) {
+		if (!(file.getContents().length == 0)) {
 			AnexoBean anx = new AnexoBean();
 			anx.save(anexo, mensagem,file);
 		}
@@ -111,6 +112,10 @@ public class SolicitacaoBean implements Serializable{
 		//verifique se não está ocorrendo erro
 		//NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
 		
+		this.solicitacao = new Solicitacao();
+		this.mensagem = new Mensagem();
+		CompetenciasBean.listCompetencias = null;
+		CompetenciasBean.listEntidades = null;
 		return "/index";
 	}	
 
@@ -122,17 +127,17 @@ public class SolicitacaoBean implements Serializable{
 			//se não tiver cadastro de usuario, vai cadastrar primeiro
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			usuarioBean.setVeioDeSolicitacao(1);
-			return "pages/cad_usuario";
+			return "Cadastro/cad_usuario";
 		} else {
 				if (usuarioBean.getUsuario().getPerfil() == 1 || usuarioBean.getUsuario().getPerfil() != 2) {
 					//verifico se há a instancia de um usuario e se este usuario não é um responsável
 					
 					if ((listCidadao.isEmpty()) && (usuarioBean.getUsuario().getPerfil() == 1)) {
 						//se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa cadastrar cidadão
-						return "pages/cad_cidadao";
+						return "Cadastro/cad_cidadao";
 					} else {
 						//se já for cadastrado usuario e cidadão inicia solicitacao
-						return "pages/questionario1";
+						return "Solicitacao/questionario1";
 					}
 				} else {
 					//Se for um responsável não tem autorização para solicitar
@@ -146,9 +151,9 @@ public class SolicitacaoBean implements Serializable{
 	public String verificaCidadaoConsulta() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if(usuarioBean.getUsuario().getPerfil() == 3) {
-			return "pages/consulta";
+			return "Consulta/consulta";
 		}else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Uusário sem permissão.", "Tente outro login."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário sem permissão.", "Tente outro login."));
 				return null;
 			}
 	}	
@@ -213,6 +218,11 @@ public class SolicitacaoBean implements Serializable{
 		}
 	}
 
+	public void onRowSelect(SelectEvent event) {
+	    int rownum = filteredSolicitacoes.indexOf((Solicitacao)event.getObject());
+	    solicitacao = SolicitacaoDAO.findSolicitacao(rownum);
+
+	}
 
 	
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
@@ -391,6 +401,4 @@ public class SolicitacaoBean implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-	
-
 }

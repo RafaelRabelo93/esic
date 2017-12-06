@@ -30,7 +30,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private static final long serialVersionUID = -1964244964778917209L;
 	private Competencias competencias;
 	private List<Entidades> entidades;
-	private List<Competencias> listCompetencias;
+	public static List<Entidades> listEntidades;
+	public static List<Competencias> listCompetencias;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	private int idAcoes;
@@ -44,7 +45,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		this.listCompetencias= new ArrayList<Competencias>();
+		listCompetencias= new ArrayList<Competencias>();
 		this.acoes = null;
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
@@ -66,11 +67,21 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void filtrarCompetencias(AjaxBehaviorEvent e) {
 		if(idAcoes != 0) {
 			listCompetencias = CompetenciasDAO.filtrarCompetencias(idAcoes);
+			listEntidades = null;
 		}else {
 			listCompetencias = null;
 		}
 		
 	}	
+	
+	public void filtraEntidades(AjaxBehaviorEvent e){
+		if(idEntidade != 0) {
+			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidade);
+		}else {
+			listEntidades = null;
+		}
+	}
+	
 
 	public void addLista() {
 		competencias.setEntidades(ent);
@@ -206,8 +217,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		return listCompetencias;
 	}
 
-	public void setListCompetencias(List<Competencias> listCompetencias) {
-		this.listCompetencias = listCompetencias;
+	public void setListCompetencias(List<Competencias> NovalistCompetencias) {
+		listCompetencias = NovalistCompetencias;
 	}
 
 	public void setCompetencias(Competencias competencias) {
@@ -248,5 +259,15 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void setListCompetenciasExcluir(List<Competencias> listCompetenciasExcluir) {
 		this.listCompetenciasExcluir = listCompetenciasExcluir;
 	}
+
+	public List<Entidades> getListEntidades() {
+		return listEntidades;
+	}
+
+	public void setListEntidades(List<Entidades> NovalistEntidades) {
+		listEntidades = NovalistEntidades;
+	}
+	
+	
 
 }

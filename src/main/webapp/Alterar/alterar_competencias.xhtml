@@ -36,10 +36,8 @@
 							<p:column>
 								<p:selectOneMenu id="org_ent" value="#{competencias.idEntidade}" >
 								<p:ajax event="change" update="competencias_panel" listener="#{competencias.filtrarCompetenciasEntidade}"/>
-									<f:selectItem itemLabel="Selecione" itemValue="0"
-										noSelectionOption="true" />
-									<f:selectItems value="#{entidades.todasEntidades}" var="ent"
-										itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />
+									<f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />
+									<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>
@@ -49,9 +47,7 @@
 <!-- 						<p:outputLabel value="Órgão / Entidade:" /> -->
 
 						<h:panelGroup id="competencias_panel">
-							<p:dataTable style="width:720px" var="comp"
-								value="#{competencias.listCompetencias}"
-								selection="#{competencias.listCompetenciasExcluir}"
+							<p:dataTable style="width:720px" var="comp"	value="#{competencias.listCompetencias}" selection="#{competencias.listCompetenciasExcluir}"
 								rowKey="#{comp.idCompetencias}">
 								<f:facet name="header">
 						           Competências

@@ -34,7 +34,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private String nome;
 	private boolean ativa;
 	private boolean forOrgao;
-	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
 	
@@ -89,18 +88,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 			EntidadesDAO.saveOrUpdate(entidades);
 			this.entidades = new Entidades();
 		}
-		return "/index";
+		return "/Consulta/consulta_entidades";
 	}
 	
 
-	public void filtraEntidades(AjaxBehaviorEvent e){
-		if(idEntidades != 0) {
-			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidades);
-		}else {
-			listEntidades = null;
-		}
-	}
-	
+
 	public void listarOrgaos(AjaxBehaviorEvent e) {
 		if(forOrgao) {
 			this.listOrgao = null;
@@ -183,13 +175,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		this.nome = nome;
 	}
 
-	public List<Entidades> getListEntidades() {
-		return listEntidades;
-	}
-
-	public void setListEntidades(List<Entidades> listEntidades) {
-		this.listEntidades = listEntidades;
-	}
 
 	public int getIdEntidades() {
 		return idEntidades;
