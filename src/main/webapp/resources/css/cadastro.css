@@ -636,23 +636,6 @@
 	font-variant-caps: all-petite-caps;
 }
 
- /* Cores de prazo */
- 
-.Respondida {
-/*     background-color: #c8f5c8; */
-	border-bottom: 3px solid limegreen;
-}
-
-.Aberta {
-/*     background-color: #fff9ae; */
-	border-bottom: 3px solid gold;
-}
-
-.Finalizada {
-/*     background-color: #ffb9b9; */
-	border-bottom: 3px solid crimsom;
-}
-
 /* Mensagens */
 
 .ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
