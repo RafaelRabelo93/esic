@@ -264,7 +264,6 @@ public class SolicitacaoBean implements Serializable{
 		return retorno;
 	}
 	
-	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 	
@@ -412,6 +411,4 @@ public class SolicitacaoBean implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-	
-
 }

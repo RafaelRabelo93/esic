@@ -39,7 +39,9 @@ public class ResponsavelBean implements Serializable{
 	private String email;
 	private String nick;
 	private boolean ativo;
+	private List<Responsavel> todosResponsaveis;
 
+	
 	@PostConstruct
 	public void init() {
 		this.responsavel = new Responsavel();
@@ -118,7 +120,7 @@ public class ResponsavelBean implements Serializable{
 			return false;			
 		}
 	}
-
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {
@@ -183,6 +185,15 @@ public class ResponsavelBean implements Serializable{
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	public List<Responsavel> getTodosResponsaveis() {
+		todosResponsaveis = new ArrayList<Responsavel>(ResponsavelDAO.list());
+		return todosResponsaveis;
+	}
+	
+	public void setTodosResponsaveis(List<Responsavel> todosResponsaveis) {
+		this.todosResponsaveis = todosResponsaveis;
 	}
 	
 }

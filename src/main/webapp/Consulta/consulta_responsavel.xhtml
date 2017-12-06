@@ -12,16 +12,15 @@
 
 		<ui:define name="content">
 
-			<h:form id="buscar_responsavel" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '4' or  usuario.usuario.perfil eq '5' }">
-
-				<div class="ficha">
+				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '4' }" >
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
 					<h:outputText value="Consulta de responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 					
-					<div style="display: flex; flex-flow: row nowrap; align-items: flex-end" >
+					<h:form id="form">
+					<div style="display: flex; flex-flow: row nowrap; align-items: flex-end; align-self: flex-start" >
 						<p:panelGrid columns="4" id="painel" styleClass="blank" layout="grid">
 			    			<p:panelGrid columns="1" styleClass="blank">
 								<p:outputLabel value="Nome: " for="nome" />
@@ -53,25 +52,68 @@
 						</p:commandLink>
 					
 					</div>
-					
-					<p:dataTable id="responsaveis" widget="solicitacoes" var="slt" emptyMessage="Não há responsáveis"  value="#{responsavel.entidades}"
-						paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-           				rowsPerPageTemplate="5,10,15">
+
+					<p:dataTable id="responsaveis" var="responsavel" editable="false" editMode="row" emptyMessage="Não há entidades" value="#{responsavel.todosResponsaveis}"
+					paginator="true" rowsPerPageTemplate="5,10,15">
+           				
+           				<p:column headerText="Nome" sortBy="#{responsavel.usuario.nome}" width="70">
+							<h:outputText value="#{responsavel.usuario.nome}" />
+						</p:column>
+						
+						<p:column headerText="Nick" sortBy="#{responsavel.usuario.nick}" width="70">
+							<h:outputText value="#{responsavel.usuario.nick}" />
+						</p:column>
+						
+						<p:column headerText="E-mail" sortBy="#{responsavel.email}" width="70">
+							<h:outputText value="#{responsavel.email}" />
+						</p:column>
+						
+						<p:column headerText="Órgão" sortBy="#{responsavel.entidades.nome}" width="70">
+							<h:outputText value="#{responsavel.entidades.nome}" />
+						</p:column>
+						
+						<p:column headerText="Tipo" sortBy="#{responsavel.nivel}" width="70">
+							<h:outputText value="Representante" rendered="#{responsavel.nivel eq '1' }"/>
+							<h:outputText value="Autoridade 1" rendered="#{responsavel.nivel eq '2' }"/>
+							<h:outputText value="Gestor" rendered="#{responsavel.nivel eq '3' }"/>
+							<h:outputText value="Comissão Mista" rendered="#{responsavel.nivel eq '4' }"/>
+						</p:column>
+						
+						<p:column headerText="Status" sortBy="#{responsavel.ativo}" width="50">
+							<h:outputText value="Ativo" rendered="#{responsavel.ativo}"/>
+							<h:outputText value="Inativo" rendered="#{!responsavel.ativo}"/>
+						</p:column>
+						
+						<p:column headerText="Editar" width="45" style="text-align: center">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
+								<i class="fa fa-pencil-square-o" />
+								<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
+							</p:commandLink>
+						</p:column>
            				
            			</p:dataTable>
            			
-           			<p:commandLink action="/Cadastro/cad_responsavel" class="botaoLink" style="margin:10px">
-						<i class="fa fa-plus" style="color: white; padding-left: 3px" />
-						<h:outputText value="Novo responsável" />
-					</p:commandLink>
+           			<h:commandLink action="/Cadastro/cad_respnsavel" style="display: flex; margin-top: 10px" styleClass="botaoLink">
+					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+					<h:outputText value="Novo Responsável" />
+				</h:commandLink>
 					
-				</div>
-
-			</h:form>
+					</h:form>
+					
+					<p:dialog widgetVar="editDialog" header="Editar Órgão / Entidade" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+						<h:form id="dialog">
+						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
+							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
+							
+							</p:panelGrid>
+						</p:outputPanel>
+						</h:form>
+					</p:dialog>
+			
+			</h:panelGroup>
 
 		</ui:define>
-
 	</ui:composition>
-
 </h:body>
+
 </html>

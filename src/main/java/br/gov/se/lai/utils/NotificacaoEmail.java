@@ -37,8 +37,8 @@ public class NotificacaoEmail implements Job{
 		List<Mensagem> mensagem = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
 		
 		try {  
-			System.out.println("Entrou em email");
-			System.out.println(remetente + " - "+destinatario);
+//			System.out.println("Entrou em email");
+//			System.out.println(remetente + " - "+destinatario);
 			
 			EmailAttachment attachment = new EmailAttachment();
 			
@@ -55,7 +55,7 @@ public class NotificacaoEmail implements Job{
 			
 		} catch (EmailException e) {  
 			
-			System.out.println(e.getMessage());  
+//			System.out.println(e.getMessage());  
 			
 		}   
 		
@@ -90,7 +90,7 @@ public class NotificacaoEmail implements Job{
 		Email email = new SimpleEmail();
 		
 		try {  
-			System.out.println("Entrou em email");
+//			System.out.println("Entrou em email");
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
@@ -100,7 +100,7 @@ public class NotificacaoEmail implements Job{
 			email.setMsg(mensagem);  
 			email.send();  
 		} catch (EmailException e) {  
-			System.out.println(e.getMessage());  
+//			System.out.println(e.getMessage());  
 		}
 	}
 }

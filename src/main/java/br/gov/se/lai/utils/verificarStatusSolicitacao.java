@@ -20,7 +20,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		System.out.println("Entrou em verificacoes");
+//		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
 				updateStatusSolicitacao(solicitacao);
@@ -33,7 +33,7 @@ public class verificarStatusSolicitacao implements Job {
 	
 	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo verificaTempoSolicitacao às" + new Date());
+//		System.out.println("Entrou no metodo verificaTempoSolicitacao às" + new Date());
 		
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 
@@ -47,12 +47,12 @@ public class verificarStatusSolicitacao implements Job {
 			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
 			
 			if (now.equals(metadePrazo)) {
-				System.out.println("Metade do prazo para resposta");
+//				System.out.println("Metade do prazo para resposta");
 				String corpoMensagem = "Faltam "+metadePrazo+" dias para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
 				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
 			}else {
 				if(now.equals(vesperaPrazo)) {
-					System.out.println("Véspera do prazo para resposta");
+//					System.out.println("Véspera do prazo para resposta");
 					String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
 					NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
 				}
@@ -62,7 +62,7 @@ public class verificarStatusSolicitacao implements Job {
 	
 	
 	public void updateStatusSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
+//		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 		
@@ -72,7 +72,7 @@ public class verificarStatusSolicitacao implements Job {
 					||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short)2)) ) 
 					&& now.after(solicitacao.getDataLimite()))
 			{
-				System.out.println("Finalizou");
+//				System.out.println("Finalizou");
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
@@ -84,7 +84,7 @@ public class verificarStatusSolicitacao implements Job {
 						||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short)2))
 						&& now.after(solicitacao.getDataLimite())) 
 				{
-					System.out.println("Resposta negada no sistema");
+//					System.out.println("Resposta negada no sistema");
 					solicitacao.setStatus("Respondida");
 					solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
 					SolicitacaoDAO.saveOrUpdate(solicitacao);

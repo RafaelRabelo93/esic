@@ -62,4 +62,9 @@ public class  ResponsavelDAO {
     	return (Responsavel) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).get(0);
     }
     
+    @SuppressWarnings("unchecked")
+	public static List<Responsavel> list() {		
+        return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();
+    }  
+    
 }
