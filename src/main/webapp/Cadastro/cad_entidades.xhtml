@@ -72,7 +72,7 @@
 						
 						<p:row>
 							<p:column>
-								<p:outputLabel value="É orgão?: " for="orgao" />
+								<p:outputLabel value="Tipo: " for="orgao" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -80,8 +80,8 @@
 								<p:selectOneRadio id="orgao"
 									value="#{entidades.forOrgao}">
 									<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
-									<f:selectItem itemLabel="Sim" itemValue="true" />
-									<f:selectItem itemLabel="Não" itemValue="false" />
+									<f:selectItem itemLabel="Órgão" itemValue="true" />
+									<f:selectItem itemLabel="Entidade" itemValue="false" />
 								</p:selectOneRadio>
 							</p:column>
 						</p:row>

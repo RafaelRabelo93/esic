@@ -38,24 +38,19 @@
 						</f:facet>
 
 						<p:row><p:column> <p:outputLabel value="Nick: " for="nick" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nick" required="true"
-							value="#{responsavel.nick}" maxlength="100" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="nick" required="true" value="#{responsavel.nick}" maxlength="100" /> </p:column></p:row>
 						
 						<p:row><p:column> <p:outputLabel value="Email: " for="email" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="email" required="true"
-							value="#{responsavel.responsavel.email}" maxlength="100" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" maxlength="100" /> </p:column></p:row>
 
 						<p:row><p:column> <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true" /> </p:column></p:row>
-						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}"
-							 style="width:125px" required="true">
+						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}" style="width:125px" required="true">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu> </p:column></p:row>
 
-
 						<p:row><p:column> <p:outputLabel value="Nível: "  for="nivel" /> </p:column></p:row>
-						<p:row><p:column> <p:selectOneRadio id="nivel" required="true"
-							value="#{responsavel.responsavel.nivel}">
+						<p:row><p:column> <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">
 							<f:selectItem itemLabel="Representante" itemValue="1" />
 							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
 							<f:selectItem itemLabel="Gestor" itemValue="3" />

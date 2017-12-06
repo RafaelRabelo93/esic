@@ -12,7 +12,6 @@ import javax.faces.bean.SessionScoped;
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
-import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.PermissaoUsuario;
 
@@ -66,24 +65,12 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() == 2) {
-			Responsavel resp = ((ArrayList<Responsavel>) usuarioBean.getUsuario().getResponsavels()).get(0); 
-			if(resp.getNivel() == 3) {
-				return true;
-			}else {
-				return false;
-			}
+		if(usuarioBean.getUsuario().getPerfil() == 4 || usuarioBean.getUsuario().getPerfil() == 5 ) {
+			return true;
 		}else {
-			if(usuarioBean.getUsuario().getPerfil() == 4 || (usuarioBean.getUsuario().getPerfil() == 2 && 
-					((ArrayList<Responsavel>) usuarioBean.getUsuario().getResponsavels()).get(0).getNivel() == (short) 3)) {
-				return true;
-			}else {
-
-				return false;
-			}
+			return false;
 		}
 	}
 	

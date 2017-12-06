@@ -23,10 +23,10 @@ public class verificarStatusSolicitacao implements Job {
 //		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
-				updateStatusSolicitacao(solicitacao);
-			} catch (Exception e) {
-				e.printStackTrace();
-				}
+				finalizaSolicitacao(solicitacao);
+			} catch (NullPointerException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 
 	}
@@ -61,8 +61,9 @@ public class verificarStatusSolicitacao implements Job {
 	} 
 	
 	
-	public void updateStatusSolicitacao(Solicitacao solicitacao) {
-//		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
+
+	public void finalizaSolicitacao(Solicitacao solicitacao) {
+		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 		
@@ -73,6 +74,8 @@ public class verificarStatusSolicitacao implements Job {
 					&& now.after(solicitacao.getDataLimite()))
 			{
 //				System.out.println("Finalizou");
+			if (now.after(solicitacao.getDataLimite())) {
+				System.out.println("Finalizou");
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
@@ -95,5 +98,6 @@ public class verificarStatusSolicitacao implements Job {
 		}		
 	}
 	
+	}	
 
 }

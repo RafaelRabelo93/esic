@@ -17,8 +17,7 @@
 				<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
 					<p:panelGrid style="margin-bottom:1vw">
 
@@ -38,22 +37,16 @@
 						</f:facet>
 
 
-						<p:row><p:column> <p:outputLabel value="Nick de usuario: " for="nick" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="nick" 
-							value="#{responsavel.nick}" maxlength="100" /> 
-							
-							
-							<p:commandLink class="botaoLinkIcon" actionListener="#{responsavel.selecionarResponsavel}" update=" orgao nivel ativo">
-								<i class="fa fa-search" />
+						<p:row><p:column> <p:outputLabel value="Nick: " for="nick" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="nick" value="#{responsavel.nick}" maxlength="100" /> 
+				
+							<p:commandLink class="botaoLinkIcon" actionListener="#{responsavel.selecionarResponsavel}" update="orgao nivel ativo" style="padding: 4px 8px 4px 4px; margin-left: 10px;">
+								<i class="fa fa-search"/>
 							</p:commandLink>
 						</p:column></p:row>
-							
-	
-						<p:row> <p:separator/> </p:row>
 
-						<p:row><p:column> <p:outputLabel value="Orgão/Entidade relacionado: " for="orgao" /> </p:column></p:row>
-						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.responsavel.entidades}"
-							 style="width:125px">
+						<p:row><p:column> <p:outputLabel value="Orgão/Entidade: " for="orgao" /> </p:column></p:row>
+						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.responsavel.entidades}" style="width:125px">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent}"/>
 						</p:selectOneMenu> </p:column></p:row>

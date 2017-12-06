@@ -90,25 +90,6 @@ public class SolicitacaoBean implements Serializable{
 		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo)));
 		this.solicitacao.setStatus("Aberta");
 		this.solicitacao.setInstancia((short) 1);
-		int cod = 000;
-		switch(this.solicitacao.getTipo()) {
-			case "informacao":
-				cod = 001;
-				break;
-			case "elogio":
-				cod = 002;
-				break;
-			case "sugestao":
-				cod = 003;
-				break;
-			case "reclamacao":
-				cod = 004;
-				break;
-			case "denuncia":
-				cod = 005;
-				break;
-		}
-		this.solicitacao.setProtocolo(LocalDate.now().getYear()+cod+solicitacao.getEntidades().getIdEntidades());
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 		
 		
@@ -186,14 +167,13 @@ public class SolicitacaoBean implements Serializable{
 	
 	
 	private void alterarPrazo(Solicitacao solicitacao) {
-		try {
+		if(solicitacao != null) {
 			solicitacao.setStatus(status);
 			solicitacao.setDataLimite(java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(prazoResposta(solicitacao.getStatus()))));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
-		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
-		}	
+		}
+
 	}
 	
 	
@@ -213,7 +193,7 @@ public class SolicitacaoBean implements Serializable{
 			solicitacao.setInstancia(novaInstancia);
 			alterarPrazo(solicitacao);
 		}else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não está disponível para Recurso.",null));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Não está disponível para Recurso.",null));
 		}
 	}
 
@@ -224,7 +204,7 @@ public class SolicitacaoBean implements Serializable{
 			return constanteAdicionalTempo;
 		case "Prorrogada":
 			return constanteAdicionalTempo;
-		case "Respondida":
+		case "Resposta":
 			return constanteAdicionalTempo;
 		case "Recurso":
 			return 5;

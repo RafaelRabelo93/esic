@@ -24,101 +24,44 @@
 						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
 						style="color:gray; align-self: flex-start; padding-top: 2vw;" />
 
-					<p:panelGrid style="margin-bottom:1vw">
-
-						<f:facet name="header">
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-							<p:row>
-								<p:column colspan="2">
-									<h:outputText value="Alterar Entidades"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-						</f:facet>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel for="entNome" value="Nome: " />
-								<p:selectOneMenu id="entNome" value="#{entidades.idEntidades}" effect="fold" >
-									
-									<p:ajax event= "change" listener="#{entidades.setEntidades}" update="info"/>
-									<f:selectItem itemLabel="Selecione" itemValue="0" />
-									<f:selectItems value="#{entidades.todasEntidades}" var="ent"
-										itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />
-									
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-
-						<p:panelGrid id="info">
-
-							<p:row>
-								<p:column>
-									<p:outputLabel for="nome" value="Nome:" />
-									<p:inplace id="nome">
-										<p:inputText value="#{entidades.entidades.nome}" />
-									</p:inplace>
-								</p:column>
-							</p:row>
-							
-							<p:column>
-								<p:outputLabel for="idOrgao" value="ID Orgão: " />
-							</p:column>
-
-							<p:column>
-								<p:outputLabel for="ativa" value="Status:" />
-							</p:column>
-
-
-
-							<p:row>
-								<p:column>
-									<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}">
-										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-									</p:selectOneMenu>
-								</p:column>
-
-								<p:column>
-									<p:selectOneRadio id="ativa"
-										value="#{entidades.entidades.ativa}">
-										<f:selectItem itemLabel="Ativa" itemValue="true" />
-										<f:selectItem itemLabel="Inativa" itemValue="false" />
-									</p:selectOneRadio>
-								</p:column>
-
-							</p:row>
-
-							<p:row>
-								<p:column>
-									<p:outputLabel for="sigla" value="Sigla:" />
-								</p:column>
-
-								<p:column>
-									<p:inplace id="sigla">
-										<p:inputText value="#{entidades.entidades.sigla}" />
-									</p:inplace>
-								</p:column>
-							</p:row>
-
-						</p:panelGrid>
-
-					</p:panelGrid>
-				
-				
-					<p:row>
-						<p:column>
-							<p:commandLink class="botaoLink" action="#{entidades.edit}" update="@all">
-								<h:outputText value="Alterar" />
-								<i class="fa fa-check" style="color: white; padding-left: 3px" />
-							</p:commandLink>
-						</p:column>
+					<h:panelGroup styleClass="box">
 						
-					</p:row>
+						<h:outputText value="Alterar Entidade" styleClass="tituloBox" />
+
+						<p:outputLabel for="entNome" value="Nome: " />
+						<p:selectOneMenu id="entNome" value="#{entidades.idEntidades}" effect="fold" style="margin-right: 20px">
+							<p:ajax event= "change" listener="#{entidades.setEntidades}" update="nome ativa sigla"/>
+							<f:selectItem itemLabel="Selecione" itemValue="0" />
+							<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />
+						</p:selectOneMenu>
+
+						
+						<p:outputLabel for="nome" value="Nome:" />
+						<p:inplace id="nome">
+							<p:inputText value="#{entidades.entidades.nome}" />
+						</p:inplace>
+					
+<!-- 								<p:outputLabel for="idOrgao" value="ID: " /> -->				
+<!-- 									<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}"> -->
+<!-- 										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/> -->
+<!-- 									</p:selectOneMenu> -->
+					
+						<p:outputLabel for="ativa" value="Status:" />
+						<p:selectOneRadio id="ativa" value="#{entidades.entidades.ativa}">
+							<f:selectItem itemLabel="Ativa" itemValue="true" />
+							<f:selectItem itemLabel="Inativa" itemValue="false" />
+						</p:selectOneRadio>
+					
+						<p:outputLabel for="sigla" value="Sigla:" />
+						<p:inplace id="sigla" label="#{entidades.entidades.sigla}"/>
+
+					</h:panelGroup>
+				
+					<p:commandLink class="botaoLink" action="#{entidades.edit}" update="@all">
+						<h:outputText value="Salvar" />
+						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+					</p:commandLink>
+
 				</div>
 
 			</h:form>

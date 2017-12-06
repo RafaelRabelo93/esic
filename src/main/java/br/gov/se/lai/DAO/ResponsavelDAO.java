@@ -48,13 +48,14 @@ public class  ResponsavelDAO {
         }
     }    
     
-    public static Responsavel findResponsavel(int id){
-    	return em.find(Responsavel.class, id) ;
+    public static Responsavel findResponsavel(String email){
+    	return em.find(Responsavel.class, email) ;
     }
 
     @SuppressWarnings("unchecked")
-	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {
-		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades+" AND nivel = "+nivel,em);
+	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {    	
+		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades
+																	+" AND resp.nivel = "+nivel+" AND resp.ativo = 1",em);
     }
     
     @SuppressWarnings("unchecked")
@@ -65,6 +66,6 @@ public class  ResponsavelDAO {
     @SuppressWarnings("unchecked")
 	public static List<Responsavel> list() {		
         return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();
-    }  
-    
+	
+    }   
 }

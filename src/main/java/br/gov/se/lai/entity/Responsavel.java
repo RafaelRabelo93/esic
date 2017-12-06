@@ -30,15 +30,14 @@ public class Responsavel implements java.io.Serializable {
 	public Responsavel() {
 	}
 
-	public Responsavel(Entidades entidades, Usuario usuario,  boolean ativo, String email) {
+	public Responsavel(Entidades entidades, boolean ativo, Usuario usuario, String email) {
 		this.entidades = entidades;
 		this.usuario = usuario;
 		this.email = email;
 		this.ativo = ativo;
-
 	}
 
-	public Responsavel(Entidades entidades, Usuario usuario,  boolean ativo, Short nivel, String email) {
+	public Responsavel(Entidades entidades, boolean ativo, Usuario usuario, Short nivel, String email) {
 		this.entidades = entidades;
 		this.usuario = usuario;
 		this.nivel = nivel;
@@ -95,15 +94,15 @@ public class Responsavel implements java.io.Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	@Column(name = "ativo", nullable = false)
+
+	@Column(name = "ativo", nullable = false, length = 1 )
 	public boolean isAtivo() {
-		return this.ativo;
+		return ativo;
 	}
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
 
-
+	
 }
