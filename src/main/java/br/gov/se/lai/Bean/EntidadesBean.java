@@ -43,6 +43,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	@PostConstruct
 	public void init() {
 		entidades = new Entidades();
+		todasEntidades = EntidadesDAO.list();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
 	
@@ -152,6 +153,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 	
 
+	public String consultarEntidades() {
+		todasEntidades = EntidadesDAO.list();
+		return "/Consulta/consulta_entidades";
+	}
 //GETTERS E SETTERS ==============================================	
 	
 	
@@ -210,7 +215,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 
 	public List<Entidades> getTodasEntidades() {
-		todasEntidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		return todasEntidades;
 	}
 
