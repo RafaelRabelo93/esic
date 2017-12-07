@@ -12,8 +12,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
@@ -26,13 +28,14 @@ import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
+import br.gov.se.lai.utils.PermissaoUsuario;
 
 
 
 
 @ManagedBean(name = "mensagem")
 @SessionScoped
-public class MensagemBean implements Serializable{
+public class MensagemBean implements Serializable, PermissaoUsuario{
 	
 
 	private static final long serialVersionUID = -353994363743436917L;
@@ -56,6 +59,8 @@ public class MensagemBean implements Serializable{
 
 	public String save() {
 
+		if(verificaPermissao()) {
+			
 			mensagem.setUsuario(usuario);
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
@@ -63,13 +68,18 @@ public class MensagemBean implements Serializable{
 			MensagemDAO.saveOrUpdate(mensagem);
 			NotificacaoEmail.enviarEmail(solicitacao, usuario);
 			
-			if (file != null) {
+			if (file.getContents().length != 0) {
 				System.out.println(anexo.toString());
 				AnexoBean anx = new AnexoBean();
 				anx.save(anexo, mensagem, file);
 			}
 		mensagem = new Mensagem();	
-		return "consulta";
+		return "/Consulta/consulta";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuário sem permissão..",null));
+
+			return null;
+		}
 	}
 	
 	public void verificaMensagem() {
@@ -157,6 +167,15 @@ public class MensagemBean implements Serializable{
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	@Override
+	public boolean verificaPermissao() {
+		if(usuario.getPerfil() == 4 || usuario.getPerfil() == 1) {
+			return false;
+		}else {
+			return true;
+		}
 	}	
 	
 	

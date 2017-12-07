@@ -60,8 +60,12 @@ public class SolicitacaoDAO {
 			if(usuarioBean.getUsuario().getPerfil() == 3) {
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			} else {
+				String query = "FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades();
 				if(usuarioBean.getUsuario().getPerfil() == 2) {
-					return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades(),em);
+//					for (int i = 0 ;  i < usuarioBean.getResponsavel().getNivel(); i++) {
+//						query = query+" AND slt.instancia = "+ ++i;
+//					}
+					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
 				}else {
 					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
 				}
