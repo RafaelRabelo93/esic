@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0' }">
+
+				<div class="ficha">
+
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+
+					<p:panelGrid columns="1" style="margin-bottom:1vh; padding:0 1vh 1vw 1vw;">
+
+						<f:facet name="header">
+							<br />
+							<h:outputText value="Alterar Senha" style="color:#1a568c; font-size:25px; padding: 0 7vw;" />
+							<br /><br />
+						</f:facet>
+						
+						<p:outputLabel value="Senha atual:" for="senha3" />
+						<p:password id="senha3" required="true" placeholder="Digite senha atual" value="#{usuario.usuario.senha}" />
+
+						<p:outputLabel value="Nova senha:" for="senha1" />
+						<p:password id="senha1" match="senha2" required="true" placeholder="Digite nova senha" value="#{usuario.usuario.senha}" />
+						
+						<p:outputLabel value="Confirmar nova senha:" for="senha2" />
+						<p:password id="senha2" required="true" placeholder="Digite nova senha" />
+
+					
+					</p:panelGrid>
+					
+					<p:commandLink action="#{usuario.edit}" class="botaoLink">
+	
+						<h:outputText value="Salvar senha" />
+						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+	
+	
+						<f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
+						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
+							 
+						<f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
+						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> 
+	
+					</p:commandLink>					
+
+
+				</div>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<h:form id="cad_responsavel" styleClass="cad_form">
+
+				<div class="ficha">
+
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+
+					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2" />
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<h:outputText value="Cadastro de Responsável"
+										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2" />
+							</p:row>
+						</f:facet>
+
+						<p:row><p:column> <p:outputLabel value="Nick: " for="nick" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="nick" required="true" value="#{responsavel.nick}" maxlength="100" /> </p:column></p:row>
+						
+						<p:row><p:column> <p:outputLabel value="Email: " for="email" /> </p:column></p:row>
+						<p:row><p:column> <p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" maxlength="100" /> </p:column></p:row>
+
+						<p:row><p:column> <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true" /> </p:column></p:row>
+						<p:row><p:column> <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}" style="width:125px" required="true">
+							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+						</p:selectOneMenu> </p:column></p:row>
+
+						<p:row><p:column> <p:outputLabel value="Nível: "  for="nivel" /> </p:column></p:row>
+						<p:row><p:column> <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">
+							<f:selectItem itemLabel="Representante" itemValue="1" />
+							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
+							<f:selectItem itemLabel="Gestor" itemValue="3" />
+							<f:selectItem itemLabel="Comissão Mista" itemValue="4" />
+						</p:selectOneRadio> </p:column></p:row>
+
+					</p:panelGrid>
+					
+					 
+					<p:commandLink class="botaoLink" action="#{responsavel.save}" update="nivel orgao email nick" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' }">
+						<h:outputText value="Cadastrar" />
+						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+					</p:commandLink>
+
+				</div>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

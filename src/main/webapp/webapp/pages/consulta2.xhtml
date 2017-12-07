@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<div class="ficha">
+
+				<!--		Mensagens de Erro		-->
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+				<h:outputText value="Consulta de solicitações"
+					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
+ 
+				<p:dataTable id= "datatable" widget="solicitacoes" var="slt"   
+					 	emptyMessage="Nenhuma Solicitação encontrada nesses parâmetros" sortBy="#{slt.status}" 
+					 	expandableRowGroups="true" value="#{solicitacao.solicitacoes}" style="margin-bottom:1vw" >
+					 	<p:ajax event="rowEdit" oncomplete="PF('solicitacoes').filter()" />
+
+				
+					<p:column colspan="2" >
+						<h:outputText value="#{slt.status}" />
+					</p:column>
+					<p:column headerText="Protocolo">
+						<h:outputText value="#{slt.idSolicitacao}" />
+					</p:column>
+					<p:column headerText="Órgão/Entidade:">
+						<h:outputText value="#{slt.entidades.nome}" />
+					</p:column>
+					<p:column headerText="Tipo:">
+						<h:outputText value="#{slt.tipo}" />
+					</p:column>
+					<p:column headerText="Usuario:">
+						<h:outputText value="#{slt.cidadao.usuario.nome}" />
+					</p:column>
+					
+					<p:column style="width:32px; text-align: center">
+						<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
+							onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+							<i class="fa fa-search" />
+							<f:setPropertyActionListener value="#{slt}"
+								target="#{solicitacao.solicitacao}" />
+						</p:commandLink>
+					</p:column>
+					
+				</p:dataTable>
+			</div>
+
+			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true" header="Título da solicação" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onHide="PF('detalheDialog').toggleMaximize();" style="box-shadow: none">
+				<p:outputPanel id="solicitacaoDetalhe"  style="display:flex; flex-flow: column">
+					<p:panelGrid columns="2" layout="grid" style="border:none; width: 100%;">
+					
+							<h:outputText value="Nª protocolo:" style="color:#1a568c; font-size:18px"/>
+							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+							
+							<h:outputText value="Órgão / Entidade:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.entidades.nome}"  />
+							
+							<h:outputText value="Tipo de solicitação:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}"  />
+						
+							<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.status}"  />
+						
+							<h:outputText value="Data:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.dataIni}"  />
+											
+							<h:outputText value="Anexo:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="blabla.png" />
+												
+							<h:outputText value="Mensagens:" style="color:#1a568c; font-size:18px" />
+					</p:panelGrid>
+
+					<p:dataScroller value="#{solicitacao.solicitacao.mensagems}" var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
+
+						<f:facet name="loader">
+							<p:commandLink id="outrasMsgs">
+								<h:outputText value="Outras Mensagens" />
+								<br />
+								<i class="fa fa-caret-down" />
+							</p:commandLink>
+							<p:tooltip id="toolTipOutrasMsgs"
+								value="Visualizar mensagens anteriores" for="outrasMsgs"
+								position="top" style="box-shadow:none" />
+						</f:facet>
+					
+						<p:outputPanel style="margin-top: 1vw;">
+							<div class="mensagem">
+								<h:outputText value="#{msg.usuario.nome}"  style="color:#1a568c" />
+								<h:outputText value="#{msg.data}" style="color:#1a568c" />
+							</div>
+							<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
+						</p:outputPanel>
+
+					</p:dataScroller>
+
+					<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="margin-bottom:1vw; align-self:flex-end">
+							<h:outputText value="Realizar Recurso" />
+							<i class="fa fa-hand-o-up"/>
+			         </p:commandLink>
+			         
+			         <p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil ne '2' and solicitacao.solicitacao.status ne 'finalizada'}" action="#{solicitacao.finalizarSolicitacao}"  style="margin-bottom:1vw; align-self:flex-end">
+							<h:outputText value="Finalizar solicitação" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao.idSolicitacao}" target="#{solicitacao.idSolicitacao}" />
+							<i class="fa fa-hand-o-up"/>
+			         </p:commandLink>
+
+				<h:form>
+					<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' and solicitacao.solicitacao.status ne 'finalizada'}" style="display:flex; flex-flow: column">
+						<p:panelGrid columns="1" style="width:100%">
+							<p:outputLabel value="Mensagem de resposta: " for="mensagem" />
+							<p:inputText id="mensagem"
+								rendered="#{usuario.usuario.perfil eq '2'}" 
+								value="#{mensagem.mensagem.texto}" style="width:100%" />
+
+							<p:outputLabel value="Anexo:" />
+							<p:outputLabel value="Descrição:" for="descricao" />
+							<p:inputTextarea id="descricao" counter="display" maxlength="200"
+								autoResize="false" style="width:100%"
+								counterTemplate="{0} caracteres restantes." value="#{mensagem.anexo.descricao}" />
+							<h:outputText id="display" />
+
+							<p:fileUpload mode="simple" label="Anexar arquivo"
+								skinSimple="true" style="display: flex;  align-items: center;"
+								allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|doc|xls|csv|xml)$/"
+								invalidFileMessage="São permitidas somente arquivos do tipo gif, jpeg, png, txt, doc, xls, csv e xml"
+								sizeLimit="1048576"
+								invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
+						</p:panelGrid>
+
+						<p:commandLink class="botaoLink"  action="#{mensagem.save}" style="margin:1vw 0">
+							<h:outputText value="Responder" />
+							<i class="fa fa-hand-o-up" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
+							<f:setPropertyActionListener value="#{mensagem.mensagem}" target="#{mensagem.anexo.mensagem}" />
+						</p:commandLink>
+
+					</p:outputPanel>
+				</h:form>	
+
+				</p:outputPanel>
+			</p:dialog>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

@@ -30,12 +30,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private static final long serialVersionUID = -1964244964778917209L;
 	private Competencias competencias;
 	private List<Entidades> entidades;
-<<<<<<< HEAD
-	private List<Competencias> listCompetencias;
-=======
 	public static List<Entidades> listEntidades;
 	public static List<Competencias> listCompetencias;
->>>>>>> hotfix
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	private int idAcoes;
@@ -77,8 +73,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}
 		
 	}	
-<<<<<<< HEAD
-=======
 	
 	public void filtraEntidades(AjaxBehaviorEvent e){
 		if(idEntidade != 0) {
@@ -88,7 +82,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
->>>>>>> hotfix
 
 	public void addLista() {
 		competencias.setEntidades(ent);
@@ -267,8 +260,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		this.listCompetenciasExcluir = listCompetenciasExcluir;
 	}
 
-<<<<<<< HEAD
-=======
 	public List<Entidades> getListEntidades() {
 		return listEntidades;
 	}
@@ -279,5 +270,4 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	
 
->>>>>>> hotfix
 }

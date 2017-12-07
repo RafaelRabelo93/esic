@@ -1,5 +1,7 @@
 package br.gov.se.lai.utils;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -21,7 +23,7 @@ public class verificarStatusSolicitacao implements Job {
 //		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
 			try {
-				finalizaSolicitacao(solicitacao);
+				updateStatusSolicitacao(solicitacao);
 			} catch (NullPointerException e) {
 				System.out.println(e.getMessage());
 			}
@@ -57,55 +59,25 @@ public class verificarStatusSolicitacao implements Job {
 			}
 		}		
 	} 
-	
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
-	public void finalizaSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
-=======
-	public void finalizaSolicitacao(Solicitacao solicitacao) {
-		System.out.println("Entrou no metodo finalizaSolicitacao às" + new Date());
-=======
 	public void updateStatusSolicitacao(Solicitacao solicitacao) {
 //		System.out.println("Entrou no metodo finalizaSolicitacao às " + new Date());
->>>>>>> origin/master
->>>>>>> hotfix
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
 		
 			Date now = new Date();
-			
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 			if (now.after(solicitacao.getDataLimite())) {
 				System.out.println("Finalizou");
->>>>>>> hotfix
-=======
 			if ((solicitacao.getStatus().equals("Respondida") 
 					||( solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short)2)) ) 
 					&& now.after(solicitacao.getDataLimite()))
 			{
 //				System.out.println("Finalizou");
-<<<<<<< HEAD
->>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
 			if (now.after(solicitacao.getDataLimite())) {
 				System.out.println("Finalizou");
-=======
->>>>>>> origin/master
->>>>>>> hotfix
 				solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 				solicitacao.setStatus("Finalizada");
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
 				MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 				
 			}else {
 				if((solicitacao.getStatus().equals("Aberta") 
@@ -120,20 +92,11 @@ public class verificarStatusSolicitacao implements Job {
 					MensagemBean.salvarStatus(solicitacao, "Negada");
 	
 				}
->>>>>>> origin/master
->>>>>>> hotfix
 			}
 		}		
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
 	
-=======
 	}	
->>>>>>> d012a0c2e37b068f46023447d8af5dac9ab09c0d
-=======
-	
->>>>>>> hotfix
-
+}
 }

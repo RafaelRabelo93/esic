@@ -90,7 +90,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 			this.entidades = new Entidades();
 		}
 		return "/Consulta/consulta_entidades";
-<<<<<<< HEAD
 	}
 	
 
@@ -100,8 +99,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		}else {
 			listEntidades = null;
 		}
-=======
->>>>>>> hotfix
 	}
 	
 
@@ -188,7 +185,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		this.nome = nome;
 	}
 
-<<<<<<< HEAD
 	public List<Entidades> getListEntidades() {
 		return listEntidades;
 	}
@@ -196,8 +192,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setListEntidades(List<Entidades> listEntidades) {
 		this.listEntidades = listEntidades;
 	}
-=======
->>>>>>> hotfix
 
 	public int getIdEntidades() {
 		return idEntidades;

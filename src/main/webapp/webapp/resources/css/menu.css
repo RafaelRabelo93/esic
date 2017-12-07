@@ -1,0 +1,283 @@
+/* <-- Menu Principal --> */
+
+.mainMenu { 
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+	
+  -moz-flex-flow: column wrap;
+  -ms-flex-flow: column wrap;
+  -o-flex-flow: column wrap;
+  -webkit-flex-flow: column wrap;
+  flex-flow: column wrap;
+  
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  -webkit-align-items: center;
+  align-items: center;
+  
+  padding: 5% 0;
+}
+
+#title{	
+	text-align: center;
+	color: #1a568c;
+  	font-size: 60px;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+}
+
+.menu {
+	list-style: none;
+	  
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: column wrap;
+	-ms-flex-flow: column wrap;
+	-o-flex-flow: column wrap;
+	-webkit-flex-flow: column wrap;
+	flex-flow: column wrap;
+	
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	width: 100%;
+	margin-top: 5vh;
+}
+
+.menuBtn {
+	list-style: none;
+	  
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	-o-flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+	
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	width: 100%;
+}
+
+.botao{
+	list-style: none;
+	margin: 1vh 2vw;
+	
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	-o-flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+	
+  	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	width: 220px;
+	
+/* 	Estilo do link */
+	text-decoration: none;
+	color: #1b4882;
+	text-decoration: none;	
+	font-size: 25px;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: center;
+    text-align-last: center;
+}
+
+.botao a{
+	color: #1b4882;
+	text-decoration: none;	
+	font-size: 25px;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: center;
+    text-align-last: center;
+    text-decoration: none;
+}
+
+.link{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+
+.icone:hover {
+	opacity: 0.8;
+}
+
+.titulo:hover {
+	color: #1d72cf;
+	font-weight: 700;
+}
+
+/* <-- Menu Secundário --> */
+
+.menuSec{
+	background-color: white;
+	
+	padding-top: 1%;
+	list-style: none;
+	  
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	-o-flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+  
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+		
+	clear: both;
+    position: relative;
+		
+	width: 100% !important;
+	height: 100%;
+	
+	border-top: 7px solid #c0c0c0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.menuAcesso{
+	background-color: white;
+	
+	padding: 1%;
+	list-style: none;
+	  
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	-o-flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+  
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+		
+	clear: both;
+    position: relative;
+		
+	width: 100%;
+	
+	border-top: 1px solid #d7d7d7;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.botaoFoot{
+	list-style: none;
+	padding: 1vw;
+	margin: 2vw;
+	
+/* 	display: -ms-flexbox; */
+/* 	display: -moz-flexbox; */
+/* 	display: -webkit-flex; */
+/* 	display: -o-flex; */
+/* 	display: flex; */
+  
+/* 	-moz-flex-flow: row wrap; */
+/* 	-ms-flex-flow: row wrap; */
+/* 	-o-flex-flow: row wrap; */
+/* 	-webkit-flex-flow: row wrap; */
+/* 	flex-flow: column wrap; */
+	
+/*   	-moz-justify-content: space-evenly; */
+/* 	-ms-justify-content: space-evenly; */
+/* 	-o-justify-content: space-evenly; */
+/* 	-webkit-justify-content: space-evenly; */
+/* 	justify-content: space-evenly; */
+	
+/* 	-moz-align-items: flex-start; */
+/* 	-ms-align-items: flex-start; */
+/* 	-o-align-items: flex-start; */
+/* 	-webkit-align-items: flex-start; */
+/* 	align-items: flex-start; */
+	
+	width: 300px;
+	border: 1px solid #ebebeb;
+	border-radius: 10px;
+}
+
+
+.botaoFoot a{
+	color: #1b4882;
+	text-decoration: none;	
+	font-size: 200%;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: center;
+    text-align-last: center;
+}
+
+
+.botaoFoot a:hover{
+	text-decoration: underline;
+}
+
+.form-group{
+	padding: 1%;
+	margin-bottom: 0px !important;
+}
+
+.form-control{
+	border-radius: 0px !important;
+	padding-right: 0 !important;
+	margin-bottom: 5px;
+}
+
+.ui-carousel-header{
+	border: none;
+	background: none;
+}
