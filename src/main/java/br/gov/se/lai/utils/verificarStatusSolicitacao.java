@@ -21,7 +21,7 @@ public class verificarStatusSolicitacao implements Job {
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 //		System.out.println("Entrou em verificacoes");
-		for (Solicitacao solicitacao : SolicitacaoDAO.listar()) {
+		for (Solicitacao solicitacao : SolicitacaoDAO.listarGeral()) {
 			try {
 				updateStatusSolicitacao(solicitacao);
 			} catch (NullPointerException e) {

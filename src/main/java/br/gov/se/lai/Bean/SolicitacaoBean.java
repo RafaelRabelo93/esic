@@ -162,7 +162,7 @@ public class SolicitacaoBean implements Serializable{
 		if(status == "Todas") {
 			filteredSolicitacoes = SolicitacaoDAO.list();
 		}else {
-			filteredSolicitacoes = SolicitacaoDAO.listPersonalizada(status);
+			filteredSolicitacoes = SolicitacaoDAO.listPorStatus(status);
 		}
 	}
 
@@ -252,6 +252,16 @@ public class SolicitacaoBean implements Serializable{
 		}
 		
 		return retorno;
+	}
+	
+	public String consultarSolicitacao() {
+		if(getIdEntidades() == 0) {
+			this.filteredSolicitacoes = SolicitacaoDAO.list();
+		}else {
+			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+		}
+		
+		return "/Consulta/consulta";
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -371,7 +381,6 @@ public class SolicitacaoBean implements Serializable{
 
 
 	public List<Solicitacao> getFilteredSolicitacoes() {
-		this.filteredSolicitacoes =  new ArrayList<Solicitacao>(SolicitacaoDAO.list());
 		return filteredSolicitacoes;
 	}
 

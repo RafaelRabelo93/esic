@@ -73,12 +73,17 @@ public class SolicitacaoDAO {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listPersonalizada(String status) {
+	public static List<Solicitacao> listPorStatus(String status) {
 			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status,em)); 
 	}	
 		
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listar() {
+	public static List<Solicitacao> listarPorEntidade(int idEntidade) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade,em)); 
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarGeral() {
 			return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
 
 	}

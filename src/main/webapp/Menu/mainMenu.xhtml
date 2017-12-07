@@ -99,7 +99,8 @@
 
 					<!-- Consulta (Representante) -->
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4' }">
-						<h:commandLink styleClass="link" action="Consulta/consulta">
+						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
+							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/monitor.png']}" width="80%" />
 
