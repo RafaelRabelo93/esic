@@ -76,7 +76,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	public void filtraEntidades(AjaxBehaviorEvent e){
 		if(idEntidade != 0) {
-			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidade);
+			listEntidades = EntidadesDAO.listPersonalizada(idEntidade);
 		}else {
 			listEntidades = null;
 		}

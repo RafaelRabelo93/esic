@@ -94,14 +94,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 	
 
-	public void filtraEntidades(AjaxBehaviorEvent e){
-		if(idEntidades != 0) {
-			this.listEntidades = EntidadesDAO.listPersonalizada(idEntidades);
-		}else {
-			listEntidades = null;
-		}
-	}
-	
 
 
 	public void listarOrgaos(AjaxBehaviorEvent e) {

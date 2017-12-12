@@ -19,7 +19,8 @@ public class Consultas {
     
     public static List<?> buscaSQL(String query, EntityManager em) {        
         List<?> list = null;        
-		try {        	
+		try {      
+			em.clear();
         	list  = em.createNativeQuery(query).getResultList();        	
         } catch (Exception e) {
             e.printStackTrace();
