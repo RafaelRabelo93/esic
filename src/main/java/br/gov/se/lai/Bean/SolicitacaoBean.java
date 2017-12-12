@@ -52,10 +52,11 @@ public class SolicitacaoBean implements Serializable{
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
 	private List<Solicitacao> filteredSolicitacoes;
+	private static List<Mensagem> mensagensSolicitacao;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
 	private Anexo anexo ;
-	private Cidadao cidadao;;
+	private Cidadao cidadao;
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
@@ -91,21 +92,26 @@ public class SolicitacaoBean implements Serializable{
 		this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo)));
 		this.solicitacao.setStatus("Aberta");
 		this.solicitacao.setInstancia((short) 1);
-		SolicitacaoDAO.saveOrUpdate(solicitacao);
-		
-		
-		//Salvar Mensagem
-		this.mensagem.setUsuario(usuarioBean.getUsuario()); 
-		this.mensagem.setData(new Date(System.currentTimeMillis()));	
-		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short)1);
-		MensagemDAO.saveOrUpdate(mensagem);
-		
-		if (!(file.getContents().length == 0)) {
-			AnexoBean anx = new AnexoBean();
-			anx.save(anexo, mensagem,file);
+		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+			
+			//Salvar Mensagem
+			this.mensagem.setUsuario(usuarioBean.getUsuario()); 
+			this.mensagem.setData(new Date(System.currentTimeMillis()));	
+			this.mensagem.setSolicitacao(solicitacao);
+			this.mensagem.setTipo((short)1);
+			if(MensagemDAO.saveOrUpdate(mensagem)) {
+				
+				if (!(file.getContents().length == 0)) {
+					AnexoBean anx = new AnexoBean();
+					anx.save(anexo, mensagem,file);
+				}
+				
+				mensagensSolicitacao.add(mensagem);
+			}
+			
 		}
-        
+		
+		
 		//Salvar Alteração de Status
 		//MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
 		
@@ -151,12 +157,23 @@ public class SolicitacaoBean implements Serializable{
 	public String verificaCidadaoConsulta() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if(usuarioBean.getUsuario().getPerfil() == 3) {
+			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "Consulta/consulta";
 		}else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário sem permissão.", "Tente outro login."));
 				return null;
 			}
 	}	
+	
+	public String consultarSolicitacao() {
+		if(getIdEntidades() == 0) {
+			this.filteredSolicitacoes = SolicitacaoDAO.list();
+		}else {
+			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+		}
+		
+		return "/Consulta/consulta";
+	}
 
 	public void listPersonalizada(AjaxBehaviorEvent e){
 		if(status == "Todas") {
@@ -165,8 +182,15 @@ public class SolicitacaoBean implements Serializable{
 			filteredSolicitacoes = SolicitacaoDAO.listPorStatus(status);
 		}
 	}
-
 	
+	public static void attMensagens(Mensagem mensagem) {
+		mensagensSolicitacao.add(mensagem);
+	}
+
+	public List<Mensagem> popularMensagens() {
+		mensagensSolicitacao = new ArrayList<>(solicitacao.getMensagems());
+		return mensagensSolicitacao;
+	}
 	
 ///////// Verificação dos Status em relação ao Tempo
 	
@@ -254,20 +278,13 @@ public class SolicitacaoBean implements Serializable{
 		return retorno;
 	}
 	
-	public String consultarSolicitacao() {
-		if(getIdEntidades() == 0) {
-			this.filteredSolicitacoes = SolicitacaoDAO.list();
-		}else {
-			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
-		}
-		
-		return "/Consulta/consulta";
-	}
+
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 	
 	public Solicitacao getSolicitacao() {
+		popularMensagens();
 		return solicitacao;
 	}
 
@@ -410,4 +427,10 @@ public class SolicitacaoBean implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
+
+
+	public List<Mensagem> getMensagensSolicitacao() {
+		return mensagensSolicitacao;
+	}
+
 }

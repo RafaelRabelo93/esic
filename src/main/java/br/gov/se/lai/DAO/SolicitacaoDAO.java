@@ -15,7 +15,7 @@ public class SolicitacaoDAO {
 	
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
-    public static void saveOrUpdate(Solicitacao solicitacao) {     	        
+    public static boolean saveOrUpdate(Solicitacao solicitacao) {     	        
         try {
         	if(!em.getTransaction().isActive()) em.getTransaction().begin();
         	if(solicitacao.getIdSolicitacao() ==  null) {
@@ -25,10 +25,12 @@ public class SolicitacaoDAO {
     		}
             em.getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Solicitacao salvo(a) com sucesso!"));
+            return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar solicitacao "));
         	System.out.println(e);
             em.getTransaction().rollback();
+            return false;
         }
     }
     public static void delete(Solicitacao solicitacao) {        
@@ -60,11 +62,11 @@ public class SolicitacaoDAO {
 			if(usuarioBean.getUsuario().getPerfil() == 3) {
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			} else {
-				String query = "FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades();
-				if(usuarioBean.getUsuario().getPerfil() == 2) {
-//					for (int i = 0 ;  i < usuarioBean.getResponsavel().getNivel(); i++) {
-//						query = query+" AND slt.instancia = "+ ++i;
-//					}
+				if(usuarioBean.getUsuario().getPerfil() == 2 ) {
+					String query = "FROM Solicitacao as slt WHERE slt.entidades.idEntidades= "+usuarioBean.getResponsavel().getEntidades().getIdEntidades()+" AND slt.instancia = 1";
+					for (int i = 1 ;  i < usuarioBean.getResponsavel().getNivel(); i++) {
+						query = query+" OR slt.instancia = "+ ++i;
+					}
 					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
 				}else {
 					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();

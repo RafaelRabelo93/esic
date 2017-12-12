@@ -13,7 +13,7 @@ public class MensagemDAO {
 	
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
-    public static void saveOrUpdate(Mensagem mensagem) {     	        
+    public static boolean saveOrUpdate(Mensagem mensagem) {     	        
         try {
         	if(!em.getTransaction().isActive()) em.getTransaction().begin();
         	if(mensagem.getIdMensagem() ==  null) {
@@ -21,12 +21,15 @@ public class MensagemDAO {
     		}else {
     			em.merge(mensagem);
     		}
+        	em.flush();
             em.getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Mensagem salvo(a) com sucesso!"));
+            return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar mensagem "));
         	System.out.println(e);
             em.getTransaction().rollback();
+            return false;
         }
     }
     public static void delete(Mensagem mensagem) {        
@@ -54,5 +57,6 @@ public class MensagemDAO {
 	public static List<Mensagem> list(int idSolicitacao) {
 		//return em.createNativeQuery("SELECT * FROM esic.mensagem", Mensagem.class).getResultList();
 		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao,em);
-    }  
+    }
+	
 }

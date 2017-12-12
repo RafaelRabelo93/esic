@@ -8,14 +8,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.UploadedFile;
 
@@ -42,6 +45,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private static Mensagem mensagem;
 	private Calendar data;
 	private Solicitacao solicitacao;
+	private List<Mensagem> mensagensSolicitacao;
 	private Anexo anexo;
 	private final int constanteTempo = 10;
 	private Usuario usuario;
@@ -54,7 +58,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		anexo = new Anexo();
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		AnexoBean.listarFiles();
-		
 	}
 
 	public String save() {
@@ -65,14 +68,17 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
 			verificaMensagem();
-			MensagemDAO.saveOrUpdate(mensagem);
-			NotificacaoEmail.enviarEmail(solicitacao, usuario);
-			
-			if (file.getContents().length != 0) {
-				System.out.println(anexo.toString());
-				AnexoBean anx = new AnexoBean();
-				anx.save(anexo, mensagem, file);
+			if(MensagemDAO.saveOrUpdate(mensagem)) {
+				NotificacaoEmail.enviarEmail(solicitacao, usuario);
+				
+				if (file.getContents().length != 0) {
+					System.out.println(anexo.toString());
+					AnexoBean anx = new AnexoBean();
+					anx.save(anexo, mensagem, file);
+				}
+				//mensagensSolicitacao.add(mensagem);
 			}
+			
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta";
 		}else {
@@ -87,8 +93,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			solicitacao.setStatus("Respondida");
 			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
-			mensagem.setTipo((short)2);
 		}
+		mensagem.setTipo((short)2);
 	}
 	
 	public int tipoMensagem() {
@@ -125,6 +131,15 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
 
+	
+	public void carregaMensagens() {
+		if (solicitacao != null) {
+			mensagensSolicitacao = MensagemDAO.list(solicitacao.getIdSolicitacao());
+		}else {
+				mensagensSolicitacao = null;
+		}
+	}
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 
@@ -150,7 +165,11 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	}
 
 	public void setSolicitacao(Solicitacao solicitacao) {
-		this.solicitacao = solicitacao;
+		if(this.solicitacao != solicitacao) {
+			mensagensSolicitacao = null;
+			this.solicitacao = solicitacao;
+			carregaMensagens();
+		}
 	}
 
 	public Anexo getAnexo() {
@@ -176,6 +195,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}else {
 			return true;
 		}
+	}
+
+	public List<Mensagem> getMensagensSolicitacao() {
+		return mensagensSolicitacao;
+	}
+
+	public void setMensagensSolicitacao(List<Mensagem> mensagensSolicitacao) {
+		this.mensagensSolicitacao = mensagensSolicitacao;
 	}	
 	
 	

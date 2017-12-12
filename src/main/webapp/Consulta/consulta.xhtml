@@ -93,6 +93,7 @@
 								<i class="fa fa-search" />
 								<f:setPropertyActionListener value="#{slt}"
 									target="#{solicitacao.solicitacao}" />
+								<f:setPropertyActionListener value="#{slt}" target="#{mensagem.solicitacao}" />
 							</p:commandLink>
 						</p:column>
 
@@ -150,9 +151,9 @@
 
 					</p:panelGrid>
 
-					<p:dataScroller value="#{solicitacao.solicitacao.mensagems}"
+					<p:dataScroller value="#{mensagem.mensagensSolicitacao}"
 						var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
-
+ 
 						<f:facet name="loader">
 							<p:commandLink id="outrasMsgs">
 								<h:outputText value="Outras Mensagens" />
@@ -227,7 +228,7 @@
 							</p:panelGrid>
 
 							<p:commandLink class="botaoLink" action="#{mensagem.save}"
-								ajax="false" style="margin:1vw 0" update="solicitacao_panel">
+								ajax="false" style="margin:1vw 0" update="solicitacao_panel detalheDialog">
 								<h:outputText value="Responder" />
 								<i class="fa fa-hand-o-up" />
 								<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
