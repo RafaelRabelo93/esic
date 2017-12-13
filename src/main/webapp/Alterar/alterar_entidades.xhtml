@@ -60,6 +60,7 @@
 					<p:commandLink class="botaoLink" action="#{entidades.edit}" update="@all">
 						<h:outputText value="Salvar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						<f:setPropertyActionListener value="#{entidades.entidades}" target="#{competencias.ent}" />
 					</p:commandLink>
 
 				</div>

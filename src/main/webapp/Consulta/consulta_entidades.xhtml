@@ -23,8 +23,8 @@
 					rendered="#{usuario.usuario.perfil eq '4' }" />
 
 				<h:form id="form">
-					<p:dataTable id="entidades" widget="solicitacoes" var="orgaos"
-						emptyMessage="Nao há solicitação"
+					<p:dataTable id="entidades" widget="orgaos" var="orgaos"
+						emptyMessage="Nao há órgãos"
 						filteredValue="#{entidades.todasEntidades}"
 						sortBy="#{orgaos.sigla}" expandableRowGroups="false"
 						value="#{entidades.todasEntidades}"
@@ -57,8 +57,7 @@
 
 						<p:column headerText="Editar" width="45"
 							style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info"
-								onclick="PF('editDialog').show();">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{orgaos}"
 									target="#{entidades.entidades}" />
@@ -92,10 +91,10 @@
 							<p:panelGrid id="info" columns="2" layout="grid"
 								style="border: none; width: 100%;">
 								<p:outputLabel for="nome" value="Nome:" />
-								<p:inputText id="nome" value="#{entidades.entidades.nome}" />
+								<p:inplace emptyLabel=" ... "><p:inputText id="nome" value="#{entidades.entidades.nome}" /></p:inplace>
 
 								<p:outputLabel for="sigla" value="Sigla:" />
-								<p:inputText id="sigla" value="#{entidades.entidades.sigla}" />
+								<p:inplace emptyLabel=" ... "><p:inputText id="sigla" value="#{entidades.entidades.sigla}" /></p:inplace>
 
 								<p:outputLabel for="ativa" value="Status:" />
 								<p:selectOneRadio id="ativa"
@@ -108,7 +107,7 @@
 
 							<p:commandLink class="botaoLink" action="#{entidades.edit}"
 								oncomplete="PF('editDialog').hide();" update="form:entidades">
-								<h:outputText value="Alterar" />
+								<h:outputText value="Salvar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
 							</p:commandLink>
 

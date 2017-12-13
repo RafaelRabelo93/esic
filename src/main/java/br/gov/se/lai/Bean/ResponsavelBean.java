@@ -43,6 +43,7 @@ public class ResponsavelBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		this.responsavel = new Responsavel();
+		todosResponsaveis = ResponsavelDAO.list();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
@@ -74,6 +75,27 @@ public class ResponsavelBean implements Serializable{
 		}	
 		
 		return "/index";
+	}
+	
+	public String alterarVinculo() {
+		if(verificaAcesso()) {
+			this.usuario = UsuarioDAO.buscarUsuario(nick);
+			this.responsavel.setUsuario(this.usuario);
+			ResponsavelDAO.saveOrUpdate(responsavel);
+		}	
+		return "Consulta/consultar_responsavel";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void selecionarResponsavel() {
+		Usuario usuarioResponsavel = UsuarioDAO.buscarUsuario(nick);
+		List<Responsavel> resp =new ArrayList<Responsavel>(usuarioResponsavel.getResponsavels());
+		this.responsavel =  resp.get(0);		
+	}
+	
+	public String alterarDadosUsuario() {
+		ResponsavelDAO.saveOrUpdate(responsavel);
+		return "Consulta/consultar_responsavel";
 	}
 	
 	public boolean verificaAcesso() {
@@ -160,7 +182,6 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public List<Responsavel> getTodosResponsaveis() {
-		todosResponsaveis = new ArrayList<Responsavel>(ResponsavelDAO.list());
 		return todosResponsaveis;
 	}
 	

@@ -11,38 +11,39 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+			<ul class="breadcrumbs">
+                <li><p:commandLink action="../../esic/index.xhtml"> <i class="fa fa-home"/> <br/> </p:commandLink></li>
+                <li><p:commandLink value="Gerir Responsável" styleClass="current"  /></li>
+            </ul>
 
 				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '4' }" >
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-					<h:outputText value="Consulta de responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
+					<h:outputText value="Gerir Responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 					
 					<h:form id="form">
 					<div style="display: flex; flex-flow: row nowrap; align-items: flex-end; align-self: flex-start" >
 						<p:panelGrid columns="4" id="painel" styleClass="blank" layout="grid">
 			    			<p:panelGrid columns="1" styleClass="blank">
 								<p:outputLabel value="Nome: " for="nome" />
-								<p:inputText id="nome" />
+								<p:inputText id="nome">
+									<p:ajax event="valueChange" update="nick" />
+								</p:inputText>
 							</p:panelGrid>
 						
 							<p:panelGrid columns="1" styleClass="blank">
 								<p:outputLabel value="Apelido: " for="nick" />
-								<p:inputText id="nick" />
+								<p:inputText id="nick">
+									<p:ajax event="valueChange" update="nome" />
+								</p:inputText>
 							</p:panelGrid>
 							
 							<p:panelGrid columns="1" styleClass="blank">
 								<p:outputLabel value="E-mail: " for="email" />
 								<p:inputText id="email" />
-							</p:panelGrid>
-							
-							<p:panelGrid columns="1" styleClass="blank">	
-								<p:outputLabel value="Orgão/Entidade: " for="orgao" />
-								<p:selectOneMenu id="orgao"   value="#{responsavel.responsavel.entidades}" style="width:125px">
-									 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-									 <f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent}"/>
-								</p:selectOneMenu>
 							</p:panelGrid>
 						
 						</p:panelGrid>
@@ -53,59 +54,98 @@
 					
 					</div>
 
-					<p:dataTable id="responsaveis" var="responsavel" editable="false" editMode="row" emptyMessage="Não há entidades" value="#{responsavel.todosResponsaveis}"
-					paginator="true" rowsPerPageTemplate="5,10,15">
-           				
-           				<p:column headerText="Nome" sortBy="#{responsavel.usuario.nome}" width="70">
-							<h:outputText value="#{responsavel.usuario.nome}" />
+					<p:dataTable id="responsaveis" var="resp"
+						emptyMessage="Não há entidades"
+						filteredValue="#{responsavel.todosResponsaveis}"
+						sortBy="#{resp.entidades.nome}" expandableRowGroups="false"
+						value="#{responsavel.todosResponsaveis}"
+						rowStyleClass="#{resp.entidades.nome}" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" rowKey="#{resp.idResponsavel}"
+						style="margin-bottom:1vw">
+
+						<p:column headerText="Órgão" sortBy="#{resp.entidades.sigla}" width="20">
+							<h:outputText value="#{resp.entidades.sigla}" />
+						</p:column>
+
+						<p:column headerText="Nome" sortBy="#{resp.usuario.nome}" filterBy="#{resp.usuario.nome}" filterMatchMode="contains" width="70">
+							<h:outputText value="#{resp.usuario.nome}" />
+						</p:column>
+
+						<p:column headerText="Nick" sortBy="#{resp.usuario.nick}" width="70">
+							<h:outputText value="#{resp.usuario.nick}" />
+						</p:column>
+
+						<p:column headerText="E-mail" sortBy="#{resp.email}" width="120">
+							<h:outputText value="#{resp.email}" />
+						</p:column>
+
+						<p:column headerText="Tipo" sortBy="#{resp.nivel}" width="50">
+							<h:outputText value="Representante"
+								rendered="#{resp.nivel eq '1' }" />
+							<h:outputText value="Autoridade 1"
+								rendered="#{resp.nivel eq '2' }" />
+							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' }" />
+							<h:outputText value="Comissão Mista"
+								rendered="#{resp.nivel eq '4' }" />
+						</p:column>
+
+						<p:column headerText="Status" sortBy="#{resp.ativo}" width="20">
+							<h:outputText value="Ativo" rendered="#{resp.ativo}" />
+							<h:outputText value="Inativo" rendered="#{!resp.ativo}" />
 						</p:column>
 						
-						<p:column headerText="Nick" sortBy="#{responsavel.usuario.nick}" width="70">
-							<h:outputText value="#{responsavel.usuario.nick}" />
-						</p:column>
-						
-						<p:column headerText="E-mail" sortBy="#{responsavel.email}" width="70">
-							<h:outputText value="#{responsavel.email}" />
-						</p:column>
-						
-						<p:column headerText="Órgão" sortBy="#{responsavel.entidades.nome}" width="70">
-							<h:outputText value="#{responsavel.entidades.nome}" />
-						</p:column>
-						
-						<p:column headerText="Tipo" sortBy="#{responsavel.nivel}" width="70">
-							<h:outputText value="Representante" rendered="#{responsavel.nivel eq '1' }"/>
-							<h:outputText value="Autoridade 1" rendered="#{responsavel.nivel eq '2' }"/>
-							<h:outputText value="Gestor" rendered="#{responsavel.nivel eq '3' }"/>
-							<h:outputText value="Comissão Mista" rendered="#{responsavel.nivel eq '4' }"/>
-						</p:column>
-						
-						<p:column headerText="Status" sortBy="#{responsavel.ativo}" width="50">
-							<h:outputText value="Ativo" rendered="#{responsavel.ativo}"/>
-							<h:outputText value="Inativo" rendered="#{!responsavel.ativo}"/>
-						</p:column>
-						
-						<p:column headerText="Editar" width="45" style="text-align: center">
+						<p:column headerText="Editar" width="10" style="text-align: center">
 							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
-								<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
+								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
 							</p:commandLink>
 						</p:column>
-           				
-           			</p:dataTable>
-           			
-           			<h:commandLink action="/Cadastro/cad_respnsavel" style="display: flex; margin-top: 10px" styleClass="botaoLink">
+
+					</p:dataTable>
+
+					<h:commandLink action="/Cadastro/cad_responsavel" style="display: flex; margin-top: 10px" styleClass="botaoLink">
 					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 					<h:outputText value="Novo Responsável" />
 				</h:commandLink>
 					
 					</h:form>
 					
-					<p:dialog widgetVar="editDialog" header="Editar Órgão / Entidade" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<p:dialog widgetVar="editDialog" header="Editar Representante" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 						<h:form id="dialog">
 						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
-							
+								<p:outputLabel value="Nome: " for="nome" />
+								<p:inplace emptyLabel=" ... "><p:inputText id="nome" value="#{responsavel.responsavel.usuario.nome}" maxlength="100" /></p:inplace>
+						
+								<p:outputLabel value="Email: " for="email" />
+								<p:inplace emptyLabel=" ... "><p:inputText id="email" value="#{responsavel.responsavel.email}" maxlength="100" /></p:inplace>
+
+								<p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true" />
+								<p:inplace emptyLabel=" ... " label="#{responsavel.responsavel.entidades.nome}" ><p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" style="width:125px">
+									 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+								</p:selectOneMenu></p:inplace>
+
+								<p:outputLabel value="Nível: "  for="nivel" />
+								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}">
+									<f:selectItem itemLabel="Representante" itemValue="1" />
+									<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
+									<f:selectItem itemLabel="Gestor" itemValue="3" />
+									<f:selectItem itemLabel="Comissão Mista" itemValue="4" />
+								</p:selectOneRadio>
+								
+								<p:outputLabel value="Atividade: " for="ativo" />
+								<p:selectOneRadio id="ativo" value="#{responsavel.responsavel.ativo}">
+									<f:selectItem itemLabel="Ativo" itemValue="true" />
+									<f:selectItem itemLabel="Inativo" itemValue="false" />
+								</p:selectOneRadio>
 							</p:panelGrid>
+							
+							<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" 
+							oncomplete="PF('editDialog').hide();" update="form:responsaveis">
+								<h:outputText value="Salvar" />
+								<i class="fa fa-check" style="color: white; padding-left: 3px" />
+							</p:commandLink>
 						</p:outputPanel>
 						</h:form>
 					</p:dialog>

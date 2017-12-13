@@ -11,6 +11,11 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+			<ul class="breadcrumbs">
+				<li><p:commandLink action=" ../../esic/index.xhtml"> <i class="fa fa-home"/> <br/> </p:commandLink></li>
+				<li><p:commandLink value="Cadastro de Ação" styleClass="current"  /></li>
+            </ul>
 
 			<h:form id="cad_acao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
 

@@ -31,14 +31,11 @@
 
 						<p:outputLabel value="Título: " for="titulo" />
 						
-						<p:selectOneMenu id="titulo" value="#{acoes.idAcao}" effect="fold" >
-									
-									<p:ajax event= "change" listener="#{acoes.setAcao}" update="descricao" />
-									<f:selectItem itemLabel="Selecione" itemValue="0" />
-									<f:selectItems value="#{acoes.acoes}" var="ac"
-										itemLabel="#{ac.titulo}" itemValue="#{ac.idAcoes}" />
-									
-								</p:selectOneMenu>
+						<p:selectOneMenu id="titulo" value="#{acoes.idAcao}" effect="fold" >	
+							<p:ajax event= "change" listener="#{acoes.setAcao}" update="descricao" />
+							<f:selectItem itemLabel="Selecione" itemValue="0" />
+							<f:selectItems value="#{acoes.acoes}" var="ac" itemLabel="#{ac.titulo}" itemValue="#{ac.idAcoes}" />
+						</p:selectOneMenu>
 
 <!-- 						<p:inputText id="titulo" required="true" size="60" -->
 <!-- 							value="#{acoes.acao.titulo}" /> -->

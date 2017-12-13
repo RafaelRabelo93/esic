@@ -12,10 +12,16 @@
 
 		<ui:define name="content">
 
+			<ul class="breadcrumbs">
+                <li><p:commandLink action="../../esic/index.xhtml"> <i class="fa fa-home"/> <br/> </p:commandLink></li>
+                <li><p:commandLink action="../Consulta/consulta_entidades" value="Gerir entidades" /></li>
+                <li><p:commandLink value="Alterar competências" styleClass="current"  /></li>
+            </ul>
+            
 			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
-
+            
 				<div class="ficha">
-
+			
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
@@ -34,21 +40,12 @@
 						<p:outputLabel value="Órgão/Entidade:" for="org_ent" />
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="org_ent" value="#{competencias.idEntidade}" >
-								<p:ajax event="change" update="competencias_panel" listener="#{competencias.filtrarCompetenciasEntidade}"/>
-									<f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />
-									<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.nome}" itemValue="#{ent.idEntidades}" />
-								</p:selectOneMenu>
+								<h:outputText id="org_ent" value="#{competencias.competencias.entidades.nome}" />
 							</p:column>
 						</p:row>
 
-<!-- 						<p:separator /> -->
-
-<!-- 						<p:outputLabel value="Órgão / Entidade:" /> -->
-
 						<h:panelGroup id="competencias_panel">
-							<p:dataTable style="width:720px" var="comp"	value="#{competencias.listCompetencias}" selection="#{competencias.listCompetenciasExcluir}"
-								rowKey="#{comp.idCompetencias}">
+							<p:dataTable var="comp"	value="#{competencias.listCompetencias}" selection="#{competencias.listCompetenciasExcluir}" rowKey="#{comp.idCompetencias}"  style="width:720px">
 								<f:facet name="header">
 						           Competências
 						        </f:facet>
@@ -80,20 +77,20 @@
 						</h:panelGroup>						
 					</p:panelGrid>
 
-					<h:panelGroup styleClass="divBtn">	
+					<h:panelGroup styleClass="divBtn">
+						<p:commandLink class="botaoLink" action="../Cadastro/cad_competencias1" >
+							<h:outputText value="Nova Competencia" />
+							<i class="fa fa-plus" style="color: white; padding-left: 3px" />
+						</p:commandLink>
+						
 						<p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
-							<h:outputText value="Excluir "  />
-							<i class="fa fa-trash" />
+							<h:outputText value="Excluir"  />
+							<i class="fa fa-trash" style="color: white; padding-left: 3px" />
 						</p:commandLink>
 	
 						<p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
-							<h:outputText value="Atualizar " />
-							<i class="fa fa-pencil" />
-						</p:commandLink>
-	
-						<p:commandLink class="botaoLink" action="cad_competencias1" >
-							<h:outputText value="Nova Competencia " />
-							<i class="fa fa-plus-square" />
+							<h:outputText value="Salvar" />
+							<i class="fa fa-pencil" style="color: white; padding-left: 3px" />
 						</p:commandLink>
 					</h:panelGroup>
 
