@@ -1,6 +1,10 @@
 package br.gov.se.lai.Bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,8 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import br.gov.se.lai.DAO.CidadaoDAO;
+import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Responsavel;
@@ -45,12 +51,21 @@ public class UsuarioBean implements Serializable{
 	private String nome;
 	private String nomeCompleto;
 	private String email;
+	private String emailRedirect;
 	private String tipoString;
 	private int veioDeSolicitacao;
 	private String escolaridade;
 	private Date dataHoje = new Date();
+	public boolean alterarSenha = false;
+	private String codigoRedefSenha;
+	private String codigoURLTemporaria;
 	
-	@SuppressWarnings("unchecked")
+    
+
+
+	/*
+ * Instanciar objeto, iniciar verificação constante dos status de solicitações do banco de dados	
+ */
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
@@ -69,6 +84,28 @@ public class UsuarioBean implements Serializable{
 		}
 	}
 	
+	public void redirectPages(String pageUrl) throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext().redirect(pageUrl);
+	}
+	
+	public void Data() throws ParseException{
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	    String dataStr = "10/10/2017 10:40:20";
+	    java.sql.Date data = new java.sql.Date(format.parse(dataStr).getTime());
+	    
+	    System.out.println(data);
+	}
+	
+/*
+ * Operações:
+ * 
+ *  save() - Salvar novo usuário
+ *  edit() - edita valores do usuário 
+ *  delete() - apagar usuario
+ *  sugestaoNick() - Sugerir nick para o usuário na hora de preencher o cadastro de usuário	
+ *  verificaExistenciaNick(String nick) - Verifica se o nick digitado/sugerido já existe, retorno booleano.
+ *  verificaSeVazio(String campo) - retorna valor booleano se determinado campo estiver vazio
+ */
 	public String save() {		
 		
 		if(!verificaSeVazio(usuario.getNome()) == true && !verificaSeVazio(usuario.getSenha()) == true && !verificaSeVazio(usuario.getNick()) == true) {			
@@ -101,8 +138,8 @@ public class UsuarioBean implements Serializable{
 
 	}
 	
-	public boolean verificaSeVazio(String palavra) {
-		String verificacao = palavra.replaceAll(" ", "");
+	public boolean verificaSeVazio(String campo) {
+		String verificacao = campo.replaceAll(" ", "");
 		if(verificacao.equals("")) {
 			return true;
 		}else {
@@ -149,46 +186,6 @@ public class UsuarioBean implements Serializable{
 		
 	}
 	
-    public String login(){
-    	//this.logout();
-    	this.usuario = UsuarioDAO.buscarUsuario(this.nick);
-    	if(this.usuario == null) {    		
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));    
-    		logout();
-    	}else {
-    		if(!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())){    		
-    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
-    			logout();
-    		}else {
-    			loadEmail();
-    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
-    		}    		
-    	}
-    	return "/index";   	
-    }
-    
-    public String logout(){
-		FacesContext fc = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-		session.invalidate(); 
-		this.usuario = null;		
-    	return "/index";
-    }
-    
-    public void loadEmail() {
-		if(usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
-			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			setEmail(listCidadao.get(0).getEmail());
-		}else {
-			if(usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty() ) {
-				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-				setEmail(listResponsavel.get(0).getEmail());
-			}else {
-				setEmail("Não cadastrado");
-			}
-		}		
-    }
-    
     private boolean verificaExistenciaNick(String nick) {
     	if(UsuarioDAO.buscarUsuario(nick) != null) {
     		return true;
@@ -196,6 +193,7 @@ public class UsuarioBean implements Serializable{
     		return false;
     	}
     }
+    
     
     public void sugestaoNick() {
     	int cont = 1;
@@ -217,6 +215,210 @@ public class UsuarioBean implements Serializable{
 		}
 
     }
+	
+	
+    /*
+     * login() - Login do usuario no sistema.
+     * logout() - Logout do usuario no sistema. 
+     * loadEmail() - Buscar email daquele usuario, retorna string.
+     */
+	
+	
+    public String login(){
+    	//this.logout();
+    	this.usuario = UsuarioDAO.buscarUsuario(this.nick);
+    	if(this.usuario == null) {    		
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));    
+    		logout();
+    	}else {
+    		if(!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())){    		
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+    			logout();
+    		}else {
+    			loadEmail();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+    		}    		
+    	}
+    	return "/index";   	
+    }
+    
+    public void loadEmail() {
+		if(usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
+			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+			setEmail(listCidadao.get(0).getEmail());
+		}else {
+			if(usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty() ) {
+				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
+				setEmail(listResponsavel.get(0).getEmail());
+			}else {
+				setEmail("Não cadastrado");
+			}
+		}		
+    }
+    
+    
+    public String logout(){
+		FacesContext fc = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+		session.invalidate(); 
+		this.usuario = null;		
+    	return "/index";
+    }
+    
+    
+    /*
+     * emailRedefinirSenha() - Gera access_key e chama método para enviar email para o usuario solicitado
+     * pegaParamURL() - Pega o access_key da URL que está referenciando a um usuario
+     * tratarEmail() - Verifica se o email digitado pertence a algum órgão do governo do estado de Sergipe
+     */
+    
+    public String redirectRedefSenha() {
+    	if(pegarParamURL() == null) {
+    		return "/Alterar/redefinir_senha_email.xhtml";
+    	}else {
+    		return "/Alterar/redefinir_senha.xhtml";
+    	}
+    }
+    
+    public void redefinirSenha() {
+    	if(!verificarParamURL()) {
+    		try {
+    			emailRedefinirSenha();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	}else {
+    		pegarUsuarioURL(codigoRedefSenha);
+    		if(!verificaSeVazio(senha)) {
+    			String senhaCrip = Criptografia.Criptografar(senha); 
+    				if (senhaCrip !=  usuario.getSenha()) {
+    					usuario.setSenha(senhaCrip);
+    					UsuarioDAO.saveOrUpdate(usuario);
+    					usuario = new Usuario();
+    					try {
+    						redirectPages("/esic");
+    					}catch (Exception e) {
+    						e.printStackTrace();
+    					}
+    					
+    				}else {
+    					FacesContext.getCurrentInstance().addMessage(null, 
+    							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
+
+    				}
+    		}
+    	}
+    }
+    
+    public boolean tratarEmail(String email){
+    		int retorno = 0;
+    		String[] emailSplit = email.split("@");
+    		String dominios = emailSplit[1].replace(".", "_");
+    		String[] dominiosArray = dominios.split("_");
+    		for (String dominio : dominiosArray) {
+    			if(dominio.equals("br") || dominio.equals("se")) {
+    				retorno += 1;
+    			}
+    		}
+    		
+    		if(retorno >= 2) {
+    			return true;
+    		}else {
+    			return false;
+    		}
+    	
+    }
+    
+	public void emailRedefinirSenha() {
+		if (!verificaSeVazio(email)) {
+			if (tratarEmail(emailRedirect)) {
+				Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelEmail(emailRedirect);
+				if (!resp.equals(null)) {
+					// Aqui criptografa o access_key com base no email
+					String accessKey = resp.getEmail();
+					String datekey = LocalDate.now().toString();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, datekey, emailRedirect);
+				}
+				
+			} else {
+				Cidadao cid = CidadaoDAO.findCidadaoEmail(email);
+				if (!cid.equals(null)) {
+					// Aqui criptografa o access_key com base no email
+					String accessKey = cid.getEmail();
+					String datekey = LocalDate.now().toString();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey,  datekey, emailRedirect);
+					usuario = new Usuario();
+				}
+				
+			}
+			
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo vazio", null));
+
+		}
+		
+	}
+    
+	public String pegarParamURL() {
+    	codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("access_key");
+    	codigoURLTemporaria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("date_key");
+    	return codigoRedefSenha;
+    }
+    
+    public boolean verificarParamURL() {
+    	if(codigoRedefSenha != null) {
+    		return true;
+		}else {
+			return false;
+		}
+    }
+    
+    public boolean verificarValidadeURL() {
+    	boolean retorno = false;
+    	String dataStr = codigoURLTemporaria;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		java.sql.Date data;
+		try {
+			data = new java.sql.Date(format.parse(dataStr).getTime());
+			if(data.compareTo(new Date(System.currentTimeMillis())) == 0) {
+				retorno = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return retorno;
+    }
+    
+	public void pegarUsuarioURL(String codigoRedefSenha) {
+		this.email = codigoRedefSenha;
+		
+		// Aqui descriptografa o access_key e pega o email e data
+		
+		
+		if (tratarEmail(email)) {
+			Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelEmail(email);
+			if (!resp.equals(null)) {
+				this.usuario = resp.getUsuario();
+			}
+			;
+		} else {
+			Cidadao cid = CidadaoDAO.findCidadaoEmail(email);
+			if (!cid.equals(null)) {
+				this.usuario = cid.getUsuario();
+			}
+			;
+		}
+
+    }
+    
+
+    /*
+     * getGeneroString() - Formatar saída de dados Gênero do banco de dados para exibição no sistema
+     * getEscolaridade() -  Formatar saída dos dados Escolaridade do banco de dados para exibição no sistema
+     * getTipoString() - Formatar saída de dados Tipo de Pessoa do banco de dados para exibição no sistema
+     */
+
     
 	public String getGeneroString() {
 		if (getCidadao().getSexo().equals("F")) {
@@ -250,6 +452,15 @@ public class UsuarioBean implements Serializable{
 			System.out.println(e.getMessage());
 			return "...";
 		}
+	}
+	
+	public String getTipoString() {
+		if (getCidadao().getTipo() == true) {;
+			return "Física";
+		}else {
+			return "Jurídica";
+		}
+		
 	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -330,14 +541,6 @@ public class UsuarioBean implements Serializable{
 		this.email = email;
 	}
 	
-	public String getTipoString() {
-		if (getCidadao().getTipo() == true) {;
-			return "Física";
-		}else {
-			return "Jurídica";
-		}
-		
-	}
 
 	public void setTipoString(Boolean tipo) {
 		getCidadao().setTipo(tipo);
@@ -349,6 +552,38 @@ public class UsuarioBean implements Serializable{
 
 	public void setDataHoje(Date hoje) {
 		this.dataHoje= hoje;
+	}
+
+	public boolean isAlterarSenha() {
+		return alterarSenha;
+	}
+
+	public void setAlterarSenha(boolean alterarSenha) {
+		this.alterarSenha = alterarSenha;
+	}
+
+	public String getCodigoRedefSenha() {
+		return codigoRedefSenha;
+	}
+
+	public void setCodigoRedefSenha(String codigoRedefSenha) {
+		this.codigoRedefSenha = codigoRedefSenha;
+	}
+
+	public String getEmailRedirect() {
+		return emailRedirect;
+	}
+
+	public void setEmailRedirect(String emailRedirect) {
+		this.emailRedirect = emailRedirect;
+	}
+
+	public String getCodigoURLTemporaria() {
+		return codigoURLTemporaria;
+	}
+
+	public void setCodigoURLTemporaria(String codigoURLTemporaria) {
+		this.codigoURLTemporaria = codigoURLTemporaria;
 	}
 	
 

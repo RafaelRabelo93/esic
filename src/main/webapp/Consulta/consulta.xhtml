@@ -239,7 +239,7 @@
 					</h:form>
 					<p:commandLink class="botaoLink"
 						rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada'}"
-						action="#{solicitacao.prorrogar(solicitacao.solicitacao)}"
+						action="#{solicitacao.prorrogar()}"
 						update="solicitacao_panel" style="margin:1vw 0">
 						<h:outputText value="Prorrogar Resposta" />
 						<i class="fa fa-clock-o" />

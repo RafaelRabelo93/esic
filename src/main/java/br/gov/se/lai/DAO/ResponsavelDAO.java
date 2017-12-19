@@ -4,7 +4,9 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
+import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
@@ -48,8 +50,8 @@ public class  ResponsavelDAO {
         }
     }    
     
-    public static Responsavel findResponsavel(String email){
-    	return em.find(Responsavel.class, email) ;
+    public static Responsavel findResponsavel(int idResponsavel){
+    	return em.find(Responsavel.class, idResponsavel) ;
     }
 
     @SuppressWarnings("unchecked")
@@ -59,9 +61,20 @@ public class  ResponsavelDAO {
     }
     
     
+    public static boolean verificaResponsavelEmail(String email) {
+    	 if(Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).size() > 0) {
+    		 return true;
+    	 }else {
+    		 return false;
+    	 }
+    }
     @SuppressWarnings("unchecked")
-    public static Responsavel findResponsavelEmail(String email) {
-    	return (Responsavel) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.email = "+email,em).get(0);
+	public static Responsavel findResponsavelEmail(String email) {
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.email = :emailParam");
+    	query.setParameter("emailParam", email);  
+
+    	List<Responsavel> results = query.getResultList();
+  	 	return results.get(0);
     }
     
     

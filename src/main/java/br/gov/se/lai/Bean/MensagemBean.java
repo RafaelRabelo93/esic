@@ -69,7 +69,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setSolicitacao(solicitacao);
 			verificaMensagem();
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
-				NotificacaoEmail.enviarEmail(solicitacao, usuario);
+				NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
 				
 				if (file.getContents().length != 0) {
 					System.out.println(anexo.toString());
@@ -128,7 +128,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
-		NotificacaoEmail.enviarEmail(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 	}
 
 	

@@ -119,6 +119,7 @@
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
 								<p:password placeholder="Senha" value="#{usuario.senha}" />
+								<p:commandLink value="Esqueci minha senha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}"/>
 								<p:commandButton value="Login" action="#{usuario.login}" update="@all"/>
 							</h:panelGrid>
 						</p:overlayPanel>
@@ -137,12 +138,12 @@
 							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
 						<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="pages/alterar_usuario" update="@all">
+							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_usuario" update="@all">
 								<h:outputText value="Visualisar Perfil" />
 								<i class="fa fa-address-card" style="color: white; padding-right: 5px" />
 							</p:commandLink>
 							
-							<p:commandLink styleClass="botaoLink" action="pages/alterar_senha" update="@all">
+							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all">
 								<h:outputText value="Alterar Senha" />
 								<i class="fa fa-unlock-alt" style="color: white; padding-right: 5px" />
 							</p:commandLink>

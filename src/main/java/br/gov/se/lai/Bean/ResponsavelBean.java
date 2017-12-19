@@ -61,7 +61,7 @@ public class ResponsavelBean implements Serializable{
 	public void delete() {
 		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
 		if(verificaAcesso()) {
-			this.responsavel = ResponsavelDAO.findResponsavel(email);
+			this.responsavel = ResponsavelDAO.findResponsavelEmail(email);
 			this.responsavel.getUsuario().setPerfil((short)-1);
 			ResponsavelDAO.saveOrUpdate(responsavel);
 		}

@@ -4,8 +4,12 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.gov.se.lai.entity.Cidadao;
+import br.gov.se.lai.entity.Responsavel;
+import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class CidadaoDAO {
@@ -47,6 +51,16 @@ public class CidadaoDAO {
     public static Cidadao findCidadao(int id){
     	return em.find(Cidadao.class, id) ;
     }
+    
+    @SuppressWarnings("unchecked")
+	public static Cidadao findCidadaoEmail(String email) {
+       	Query query = em.createQuery("FROM Cidadao as cid WHERE cid.email= :emailParam");
+    	query.setParameter("emailParam", email);  
+
+    	List<Cidadao> results = query.getResultList();
+  	 	return results.get(0);
+
+   }
 
 	public static List<Cidadao> list() {
 	
