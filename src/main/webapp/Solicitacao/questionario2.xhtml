@@ -73,7 +73,7 @@
 						</h:panelGroup>
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" action="solicitacao">
+					<p:commandLink class="botaoLink" action="#{solicitacao.questionarioParaSolicitacao}">
 						<h:outputText value="Continuar" />
 						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
 						<i class="fa fa-arrow-right" />

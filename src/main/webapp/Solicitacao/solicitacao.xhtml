@@ -52,12 +52,29 @@
 						
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Assunto:" for="assunto" />
+								<p:outputLabel value="Assunto:"  />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<h:outputText id="assunto" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" />
+								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.acoesTemporaria ne null}"/>
+								<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.solicitacao.acoes ne null}"/>
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Forma de recebimento da resposta:"  />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:selectOneMenu id="recResp" value="#{solicitacao.formaRecebimento}">
+									<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+									<f:selectItem itemLabel="Correspondência" itemValue="1"/>
+									<f:selectItem itemLabel="Email" itemValue="2"/>
+									<f:selectItem itemLabel="Email e Correspondência" itemValue="3"/>
+								</p:selectOneMenu>
 							</p:column>
 						</p:row>
 

@@ -49,9 +49,6 @@ public class AcoesDAO {
     	return em.find(Acoes.class, idAcoes) ;
     }
 
-    public static Acoes findAcoesTitulo(String titulo){
-    	return em.find(Acoes.class, titulo) ;
-    }
 
 	@SuppressWarnings("unchecked")
 	public static List<Acoes> list() {

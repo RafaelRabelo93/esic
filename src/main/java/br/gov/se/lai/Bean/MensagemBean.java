@@ -76,7 +76,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 					AnexoBean anx = new AnexoBean();
 					anx.save(anexo, mensagem, file);
 				}
-				//mensagensSolicitacao.add(mensagem);
+				mensagensSolicitacao.add(mensagem);
 			}
 			
 		mensagem = new Mensagem();	
@@ -86,6 +86,16 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 			return null;
 		}
+	}
+	
+	public void saveRecurso() {
+		mensagem.setUsuario(usuario);
+		mensagem.setData(new Date(System.currentTimeMillis()));
+		mensagem.setSolicitacao(solicitacao);
+		if(MensagemDAO.saveOrUpdate(mensagem)) {
+			mensagensSolicitacao.add(mensagem);
+		}
+		mensagem = new Mensagem();	
 	}
 	
 	public void verificaMensagem() {
@@ -120,6 +130,18 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 		case "Finalizada":
 			tipoAux = 4;
+			break;
+			
+		case "Status Denuncia 1":
+			tipoAux = 5;
+			break;
+			
+		case "Status Denuncia 2":
+			tipoAux = 5;
+			break;
+			
+		case "Status Denuncia 3":
+			tipoAux = 5;
 			break;
 			
 		default:
