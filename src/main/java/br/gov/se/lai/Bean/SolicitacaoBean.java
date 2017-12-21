@@ -243,15 +243,48 @@ public class SolicitacaoBean implements Serializable {
 
 	}
 
-	public void prorrogar() {
+	public boolean ehProrrogavel() {
 		if (!verificaSeProrrogada(solicitacao)) {
-			alterarPrazo(solicitacao);
+			return true;
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não está disponível para Prorrogação.", null));
+			return false;
 		}
 	}
 
+	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
+		boolean retorno = false;
+		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		for (Mensagem mensagem : msgs) {
+			if (mensagem.getTipo().equals((short) 4)) {
+				retorno = true;
+				break;
+			}
+		}
+		return retorno;
+	}
+
+	public boolean recursoLiberado() {
+		if(!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public void prorrogar() {
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short)4);
+		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		if(MensagemDAO.saveOrUpdate(mensagem)) {
+			alterarPrazo(solicitacao);
+			attMensagens(mensagem);
+		};
+		mensagem = new Mensagem();
+		
+	}
 	public void recurso() {
 		short novaInstancia = (short) (solicitacao.getInstancia() + 1);
 		solicitacao.setInstancia(novaInstancia);
@@ -262,17 +295,10 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
 		attMensagens(mensagem);
+		mensagem = new Mensagem();
 
 	}
 	
-	public boolean recursoLiberado() {
-		if(!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
@@ -294,17 +320,6 @@ public class SolicitacaoBean implements Serializable {
 
 	}
 
-	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
-		boolean retorno = false;
-		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		for (Mensagem mensagem : msgs) {
-			if (mensagem.getTipo().equals((short) 4)) {
-				retorno = true;
-				break;
-			}
-		}
-		return retorno;
-	}
 
 	private boolean verificaSeRespondida(Solicitacao solicitacao) {
 		boolean retorno = false;

@@ -188,7 +188,8 @@
 
 <!-- 						Botão Realizar recurso -->
 					<p:commandLink class="botaoLink"
-						rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada' and solicitacao.solicitacao.tipo eq 'informacao' and solicitacao.recursoLiberado() eq true}"
+						rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada' 
+						and solicitacao.solicitacao.tipo eq 'informacao' and solicitacao.recursoLiberado() eq true}"
 						style="margin-bottom:1vw; align-self:flex-end"
 						onclick="PF('dlg2').show();" update="solicitacao_panel">
 						<h:outputText value="Realizar Recurso" />
@@ -246,13 +247,15 @@
 						</p:outputPanel>
 					</h:form>
 					<p:commandLink class="botaoLink"
-						rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada' and (solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' )}"
-						action="#{solicitacao.prorrogar()}"
+						rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada' and 
+						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' )
+						 and solicitacao.ehProrrogavel() eq true}"
+						onclick="PF('dlg3').show();"
 						update="solicitacao_panel" style="margin:1vw 0">
 						<h:outputText value="Prorrogar Resposta" />
+						<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+							target="#{solicitacao.solicitacao}" />
 						<i class="fa fa-clock-o" />
-						<f:setPropertyActionListener value="Prorrogada"
-							target="#{solicitacao.status}"></f:setPropertyActionListener>
 					</p:commandLink>
 				</p:outputPanel>
 			</p:dialog>
@@ -265,14 +268,39 @@
 							<p:outputLabel value="Descrição:" for="descr" />
 							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
 								autoResize="false" style="width:100%" required="true"
-								counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"/>
+								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
 							<h:outputText id="display" />
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{mensagem.saveRecurso}"  oncomplete="PF('dlg2').hide();">
+						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
 							<h:outputText value="Salvar" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
+							<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
+							<i class="fa fa-check" style="padding-left: 3px" />
+						</p:commandLink>
+
+					</p:outputPanel>
+				</h:form>
+
+			</p:dialog>
+
+			<p:dialog header="Prorrogar" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" 
+				hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="dialog2">
+					<p:outputPanel id="dlg" style="max-width: 690px">
+						<p:panelGrid columns="1" style="border:none; width: 60%;">
+
+							<p:outputLabel value="Descrição:" for="descr" />
+							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
+								autoResize="false" style="width:100%" required="true"
+								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
+							<h:outputText id="display" />
+
+						</p:panelGrid>
+
+						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="@all" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg2').hide(); PF('dlg3').hide();">
+							<h:outputText value="Salvar" />
+							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
 							<i class="fa fa-check" style="padding-left: 3px" />
 						</p:commandLink>
 

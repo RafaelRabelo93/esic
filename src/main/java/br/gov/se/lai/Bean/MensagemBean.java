@@ -43,6 +43,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	private static final long serialVersionUID = -353994363743436917L;
 	private static Mensagem mensagem;
+	private String status;
 	private Calendar data;
 	private Solicitacao solicitacao;
 	private List<Mensagem> mensagensSolicitacao;
@@ -69,8 +70,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setSolicitacao(solicitacao);
 			verificaMensagem();
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
-				NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
-				
 				if (file.getContents().length != 0) {
 					System.out.println(anexo.toString());
 					AnexoBean anx = new AnexoBean();
@@ -86,16 +85,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 			return null;
 		}
-	}
-	
-	public void saveRecurso() {
-		mensagem.setUsuario(usuario);
-		mensagem.setData(new Date(System.currentTimeMillis()));
-		mensagem.setSolicitacao(solicitacao);
-		if(MensagemDAO.saveOrUpdate(mensagem)) {
-			mensagensSolicitacao.add(mensagem);
-		}
-		mensagem = new Mensagem();	
 	}
 	
 	public void verificaMensagem() {
@@ -225,6 +214,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setMensagensSolicitacao(List<Mensagem> mensagensSolicitacao) {
 		this.mensagensSolicitacao = mensagensSolicitacao;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}	
 	
 	
