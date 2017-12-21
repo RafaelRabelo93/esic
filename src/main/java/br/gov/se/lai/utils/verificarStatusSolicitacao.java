@@ -23,6 +23,7 @@ public class verificarStatusSolicitacao implements Job {
 //		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listarGeral()) {
 			try {
+				updatePrazoTipo(solicitacao);
 				updateStatusSolicitacao(solicitacao);
 				verificaTempoSolicitacao(solicitacao);
 			} catch (NullPointerException e) {
@@ -91,6 +92,29 @@ public class verificarStatusSolicitacao implements Job {
 				}
 			}
 	
-	}	
+	}
+	
+	public static void updatePrazoTipo(Solicitacao solicitacao) {
+		Date diaAtual = new Date(System.currentTimeMillis());
+		short prazoTipo;
+		if (solicitacao.getStatus().equals("Finalizada")) {
+			// Altera para branco se a solicitação for Finalizada
+			prazoTipo = 0;
+		} else if (java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().minusDays(10)).after(diaAtual)) {
+			// Altera para verde se prazo for maior que 10 dias
+			prazoTipo = 3;
+		} else if (java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().minusDays(2)).after(diaAtual) & java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().minusDays(11)).before(diaAtual)) {
+			// Altera para amarel se prazo for menor que 10 dias e maior que 2 dias
+			prazoTipo = 2;
+		} else if (java.sql.Date.valueOf(Instant.ofEpochMilli(solicitacao.getDataLimite().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().minusDays(3)).before(diaAtual)) {
+			// Altera para vermelh se prazo for maior que 2 dias
+			prazoTipo = 1;
+		} else prazoTipo = 0;
+		
+		if (solicitacao.getPrazoTipo() != prazoTipo) {
+			solicitacao.setPrazoTipo(prazoTipo);
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		}
+	}
 }
 

@@ -11,92 +11,167 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-
-			<ul class="breadcrumbs">
-                <li><p:commandLink action="../../esic/index.xhtml"> <i class="fa fa-home"/> <br/> </p:commandLink></li>
-                <li><p:commandLink action="../Consulta/consulta_entidades" value="Gerir entidades" /></li>
-                <li><p:commandLink value="Alterar competências" styleClass="current"  /></li>
-            </ul>
             
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5'}">
-            
+			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '4'}">
+		
+				<!--		Mensagens de Erro		-->
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+					
+				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
+				
 				<div class="ficha">
-			
-					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
+					
+               			<h:panelGroup id="competencias_panel">
+                            <p:dataTable var="comp" value="#{competencias.listCompetencias}"  rowKey="#{comp.idCompetencias}">
+                                <f:facet name="header">
+                                  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+                                </f:facet>
+                                <p:column style="width:25px">
+                                    <p:rowToggler id="t" />
+                                </p:column>
+                                <p:column headerText="Ação">
+                                    <h:outputText value="#{comp.acoes.titulo}" />
+                                </p:column>
+                                
+                                <p:rowExpansion>
+                                    <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
 
-					<p:panelGrid columns="1" style="margin-bottom:1vw">
+                                        <h:outputText value="Descrição da ação:" />
+                                        <h:outputText value="Descrição da competência:" />
 
-						<f:facet name="header">
-							<br />
-							<h:outputText value="Alterar competências de Órgão / Entidade"
-								style="color:#1a568c; font-size:25px; margin: 0 5vw" />
-							<br />
-						</f:facet>
+                                        <p:inplace editor="true">
+                                            <p:inputTextarea id="descricao"
+                                                value="#{comp.acoes.descricao}" />
+                                        </p:inplace>
+                                        <p:inplace>
+                                            <p:inputTextarea value="#{comp.descricao}" />
+                                        </p:inplace>
+                                    </p:panelGrid>
+                                </p:rowExpansion>
 
-						<br />
+                            </p:dataTable>
 
-						<p:outputLabel value="Órgão/Entidade:" for="org_ent" />
-						<p:row>
-							<p:column>
-								<h:outputText id="org_ent" value="#{competencias.competencias.entidades.nome}" />
-							</p:column>
-						</p:row>
+                        </h:panelGroup>
 
-						<h:panelGroup id="competencias_panel">
-							<p:dataTable var="comp"	value="#{competencias.listCompetencias}" selection="#{competencias.listCompetenciasExcluir}" rowKey="#{comp.idCompetencias}"  style="width:720px">
-								<f:facet name="header">
-						           Competências
-						        </f:facet>
-								<p:column style="width:25px">
-									<p:rowToggler id="t" />
-								</p:column>
-								<p:column headerText="Ação">
-									<h:outputText value="#{comp.acoes.titulo}" />
-								</p:column>
-								<p:column selectionMode="multiple"
-									style="width:35px;text-align:center" />
-								<p:rowExpansion>
-									<p:panelGrid columns="1" rowClasses="nome,conteudo" style="width:720px; border: none;">
-
-										<h:outputText value="Descrição da Ação:" styleClass="titulo" />
-										<p:inplace editor="true">
-											<p:inputTextarea id="descricao"	value="#{comp.acoes.descricao}" />
-										</p:inplace>
-										
-										<h:outputText value="Descrição da Competência:" styleClass="titulo" />
-										<p:inplace>
-											<p:inputTextarea value="#{comp.descricao}" />
-										</p:inplace>
-									</p:panelGrid>
-								</p:rowExpansion>
-
-							</p:dataTable>
-
-						</h:panelGroup>						
-					</p:panelGrid>
-
-					<h:panelGroup styleClass="divBtn">
-						<p:commandLink class="botaoLink" action="../Cadastro/cad_competencias1" >
-							<h:outputText value="Nova Competencia" />
-							<i class="fa fa-plus" style="color: white; padding-left: 3px" />
-						</p:commandLink>
-						
-						<p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
-							<h:outputText value="Excluir"  />
-							<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-						</p:commandLink>
-	
-						<p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
-							<h:outputText value="Salvar" />
-							<i class="fa fa-pencil" style="color: white; padding-left: 3px" />
-						</p:commandLink>
+					
+					<h:panelGroup styleClass="divBtn">    
+					    <p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
+					        <h:outputText value="Excluir "  />
+					        <i class="fa fa-trash" />
+					    </p:commandLink>
+					
+					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
+					        <h:outputText value="Atualizar " />
+					        <i class="fa fa-pencil" />
+					    </p:commandLink>
+					
+					    <p:commandLink class="botaoLink" onclick="PF('dlg').show();" >
+					        <h:outputText value="Nova Competencia " />
+					        <i class="fa fa-plus" />
+					    </p:commandLink>
 					</h:panelGroup>
-
+				
 				</div>
-
+			
 			</h:form>
+			
+		<!-- Dialog Nova Competência -->
+			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="dialog">
+				<p:outputPanel id="dlg2" style="max-width: 690px; border:none">
+					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
+						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
+					
+						<h:outputLabel value="Órgão/Entidade:" /> 
+						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+	
+						<h:outputLabel value="Ações: " for="acoes" />
+						<h:panelGroup styleClass="inline">
+							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 0;" >
+								<f:selectItem itemLabel="Selecione" itemValue="0" />
+								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
+							</p:selectOneMenu>
+	
+							<h:outputLabel value="Ou" style="margin: -20px 2vw 0 4vw" />
+							
+							<p:commandLink class="botaoLink" update="alterar_competencias"	onclick="PF('dlg2').show();">
+								<i class="fa fa-plus" />
+								<h:outputLabel value=" Nova ação" />
+							</p:commandLink>
+						</h:panelGroup>
+						
+						<h:outputLabel value="Descrição: " for="descricao" />
+						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
+							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
+						<h:outputText id="display" />
+					
+					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" style="margin: 0;">
+						<h:outputLabel value="Adicionar" />
+						<i class="fa fa-plus" />
+					</p:commandLink>
+	
+					</h:panelGroup>
+					
+					<div class="ficha">
+						<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}" style="width: 100%; margin: 10px">
+							<f:facet name="header">
+								Novas Competências
+							</f:facet>
+							<p:column headerText="Ação">
+									<h:outputLabel value="#{comp.acoes.titulo}" />
+							</p:column>
+							<p:column headerText="Descrição">
+								<p:inplace editor="true">
+									<p:inputTextarea value="#{comp.descricao}" />
+								</p:inplace>
+							</p:column>
+							<p:column style="width:32px;text-align: center">
+								<p:commandLink  class="botaoLinkIcon" update="alterar_competencias"
+									action="#{competencias.listaCompetenciasUpdate}" title="View">
+									<i class=" fa fa-trash" />
+									<f:setPropertyActionListener value="#{comp}"
+										target="#{competencias.competencias}" />
+								</p:commandLink> 
+							</p:column>
+						</p:dataTable>
+					
+					<p:commandLink class="botaoLink" action="#{competencias.save}">
+						<h:outputText value="Salvar" />
+						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+					</p:commandLink>
+					</div>
+					
+					</p:outputPanel>
+					</h:form>
+				</p:dialog>
+				
+			<!-- Sub Dialog Nova Ação -->
+				<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<h:form id="dialog2">
+						<p:outputPanel id="dlg2" style="max-width: 690px">
+							<p:panelGrid columns="1" style="border:none; width: 60%;">
+								<p:outputLabel value="Título:" for="titulo" />
+								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
+	
+								<p:outputLabel value="Descrição:" for="descr" />
+								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
+									autoResize="false" style="width:100%"
+									counterTemplate="{0} caracteres restantes."
+									value="#{acoes.acao.descricao}"  />
+								<h:outputText id="display" />
+	
+							</p:panelGrid>
+	
+							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
+											update="dialog:acoes dialog:descricao dialog2:dlg2">
+								<h:outputText value="Salvar" />
+								<i class="fa fa-check" style="padding-left: 3px" />
+							</p:commandLink>
+	
+						</p:outputPanel>
+					</h:form>
+	
+				</p:dialog>
 
 		</ui:define>
 

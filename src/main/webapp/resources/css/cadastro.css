@@ -152,6 +152,11 @@
 	word-wrap: normal; 
 }
 
+.ui-tooltip {
+	max-width: 300px !important;
+/* 	background-color: red; */
+}
+
 
 /* #tabela{ */
 /* 	display: -ms-flexbox;  */
@@ -512,7 +517,6 @@
     border: 1px solid #a8a8a8 !important;
 }
 
-
 .ui-datascroller-content.ui-widget-content.ui-corner-all {
     border: 1px solid #d3d3d3 !important;
     max-height: 300px;
@@ -638,19 +642,24 @@
 
  /* Cores de prazo */
  
-.Respondida {
-/*     background-color: #c8f5c8; */
+td.prazo.verde {
+    background-color: #c8f5c8;
 	border-bottom: 3px solid #00aa00;
 }
 
-.Aberta {
-/*     background-color: #fff9ae; */
-	border-bottom: 3px solid #f2ce00;
+td.prazo.amarelo {
+    background-color: #fff9ae;
+	border-bottom: 3px solid #d0ad00;
 }
 
-.Finalizada {
-/*     background-color: #ffb9b9; */
-	border-bottom: 3px solid crimson;
+td.prazo.vermelho {
+    background-color: #ffb9b9;
+	border-bottom: 3px solid #dc143c;
+}
+
+td.prazo.branco {
+    background-color: #e4e4e4;
+	border: 1px solid #a8a8a8
 }
 
 /* Mensagens */
