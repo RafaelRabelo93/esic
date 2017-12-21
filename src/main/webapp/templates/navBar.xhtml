@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet name="header.css" library="css" />
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+	
+	<h:form id="formNavbar" class="form" rendered="#{usuario.usuario.perfil ne '0'}">
+	
+		<div id="navBar" class="divMenu">
+			
+		<!-- Solicitação Cidadão -->
+			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
+				<button class="dropbtn" onclick="/Consulta/consulta"> 
+					<h:commandLink value="Solicitações" action="/Consulta/consulta"/>
+				</button>
+				<div class="dropdown-content">
+					<h:commandLink value="Nova Solicitação" action="#{solicitacao.verificaCidadaoSolicitacao}"/>
+					<h:commandLink value="Consultar Solicitações" action="/Consulta/consulta"/>
+				</div>
+			</h:panelGroup>
+			
+		<!-- Solicitação Responsavel -->
+			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+				<button class="dropbtn"> 
+					<h:commandLink value="Solicitações" action="/Consulta/consulta"/>
+				</button>
+			</h:panelGroup>
+			
+			<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '4'}" />
+			
+		<!-- Responsavel -->
+			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '4'}">
+				<button class="dropbtn"> 
+					<h:commandLink value="Responsável" action="#{responsavel.consultarResponsaveis}"/>
+				</button>
+				<div class="dropdown-content">
+					<h:commandLink value="Gerir Responsável" action="/Consulta/consulta_responsavel"/>
+					<h:commandLink value="Cadastrar Responsável" action="/Cadastro/cad_responsavel"/>
+				</div>
+			</h:panelGroup>
+			
+			<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '4'}" />
+			
+		<!-- Entidade -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '4'}">
+			<button class="dropbtn"> 
+				<h:commandLink value="Entidade" action="#{entidades.consultarEntidades}"/>
+			</button>
+			<div class="dropdown-content">
+				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
+				<h:commandLink value="Cadastrar Entidades" action="/Cadastro/cad_entidades"/>
+				<h:commandLink value="Cadastrar Ações" action="/Cadastro/cad_acoes"/>
+			</div>
+		</h:panelGroup>
+		
+		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '4'}" />
+			
+		</div>
+						
+			
+	</h:form>
+		
+	</ui:composition>
+
+</h:body>
+</html>

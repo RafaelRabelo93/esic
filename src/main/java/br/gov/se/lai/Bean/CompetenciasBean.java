@@ -14,6 +14,7 @@ import javax.faces.bean.SessionScoped;
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
+import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
@@ -57,6 +58,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 			}	
 		}
 		return "/index";
+	}
+	
+	public String consultarCompetencias() {
+		listCompetencias = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
+		return "/Alterar/alterar_competencias" ;
 	}
 
 	public void filtrarCompetenciasEntidade(AjaxBehaviorEvent e) {
