@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -202,7 +203,7 @@ public class SolicitacaoBean implements Serializable {
 		mensagensSolicitacao.add(mensagem);
 	}
 
-	public List<Mensagem> popularMensagens() {
+	public List<Mensagem> popularMensagens(AjaxBehaviorEvent e) {
 		mensagensSolicitacao = new ArrayList<>(solicitacao.getMensagems());
 		return mensagensSolicitacao;
 	}
@@ -255,8 +256,8 @@ public class SolicitacaoBean implements Serializable {
 
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
 		boolean retorno = false;
-		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		for (Mensagem mensagem : msgs) {
+//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 4)) {
 				retorno = true;
 				break;
@@ -280,7 +281,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			alterarPrazo(solicitacao);
-			attMensagens(mensagem);
+			MensagemBean.attMensagem(mensagem);
 		};
 		mensagem = new Mensagem();
 		
@@ -354,7 +355,6 @@ public class SolicitacaoBean implements Serializable {
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public Solicitacao getSolicitacao() {
-		popularMensagens();
 		return solicitacao;
 	}
 
@@ -485,8 +485,12 @@ public class SolicitacaoBean implements Serializable {
 		this.file = file;
 	}
 
-	public List<Mensagem> getMensagensSolicitacao() {
+	public static List<Mensagem> getMensagensSolicitacao() {
 		return mensagensSolicitacao;
+	}
+
+	public static void setMensagensSolicitacao(List<Mensagem> mensagensSolicitacao) {
+		SolicitacaoBean.mensagensSolicitacao = mensagensSolicitacao;
 	}
 
 	public int getFormaRecebimento() {

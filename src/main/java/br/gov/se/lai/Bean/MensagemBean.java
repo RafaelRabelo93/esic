@@ -46,7 +46,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private String status;
 	private Calendar data;
 	private Solicitacao solicitacao;
-	private List<Mensagem> mensagensSolicitacao;
+	private static List<Mensagem> mensagensSolicitacao;
 	private Anexo anexo;
 	private final int constanteTempo = 10;
 	private Usuario usuario;
@@ -139,7 +139,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
+		MensagemBean.attMensagem(mensagem);
 		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		mensagem = new Mensagem();
 	}
 
 	
@@ -151,6 +153,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	public static void attMensagem(Mensagem mensagem) {
+		mensagensSolicitacao.add(mensagem);
+	}
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 

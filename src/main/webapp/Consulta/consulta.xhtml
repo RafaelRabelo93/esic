@@ -90,6 +90,7 @@
 						<p:column style="width:32px; text-align: center">
 							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+								<p:ajax listener="#{solicitacao.popularMensagens}"/>
 								<i class="fa fa-search" />
 								<f:setPropertyActionListener value="#{slt}"
 									target="#{solicitacao.solicitacao}" />
@@ -298,7 +299,7 @@
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="@all" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg2').hide(); PF('dlg3').hide();">
+						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
 							<h:outputText value="Salvar" />
 							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
 							<i class="fa fa-check" style="padding-left: 3px" />

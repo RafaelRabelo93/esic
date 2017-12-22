@@ -69,19 +69,19 @@ public class UsuarioBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
-		SchedulerFactory shedFact = new StdSchedulerFactory();
-		try {
-			Scheduler scheduler = shedFact.getScheduler();
-			scheduler.start();
-			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * * * ?")).build();
-			scheduler.scheduleJob(job, trigger);
-//			JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
-//			Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 0/4 * * * ?")).build();
-//			scheduler.scheduleJob(jobEmail, triggerEmail);
-		} catch (SchedulerException e) {
-			System.out.println(e.getMessage());
-		}
+//		SchedulerFactory shedFact = new StdSchedulerFactory();
+//		try {
+//			Scheduler scheduler = shedFact.getScheduler();
+//			scheduler.start();
+//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
+//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * * * ?")).build();
+//			scheduler.scheduleJob(job, trigger);
+////			JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
+////			Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 0/4 * * * ?")).build();
+////			scheduler.scheduleJob(jobEmail, triggerEmail);
+//		} catch (SchedulerException e) {
+//			System.out.println(e.getMessage());
+//		}
 	}
 	
 	public void redirectPages(String pageUrl) throws IOException {
