@@ -50,6 +50,7 @@ public class ResponsavelBean implements Serializable{
 	
 	public String save() {
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
+			this.responsavel.setAtivo(true);
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
 			this.usuario.setPerfil((short)2);
 			this.responsavel.setUsuario(this.usuario);

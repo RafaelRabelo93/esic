@@ -274,7 +274,7 @@
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
+						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="solicitacao_panel" oncomplete="PF('dlg2').hide();">
 							<h:outputText value="Salvar" />
 							<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
 							<i class="fa fa-check" style="padding-left: 3px" />

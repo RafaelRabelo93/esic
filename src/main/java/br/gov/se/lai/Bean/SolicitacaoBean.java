@@ -82,6 +82,7 @@ public class SolicitacaoBean implements Serializable {
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
+		this.mensagensSolicitacao = new ArrayList<Mensagem>();
 	}
 
 	public String save() {
@@ -248,8 +249,6 @@ public class SolicitacaoBean implements Serializable {
 		if (!verificaSeProrrogada(solicitacao)) {
 			return true;
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não está disponível para Prorrogação.", null));
 			return false;
 		}
 	}
@@ -295,7 +294,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
-		attMensagens(mensagem);
+		MensagemBean.attMensagem(mensagem);
 		mensagem = new Mensagem();
 
 	}
@@ -324,8 +323,8 @@ public class SolicitacaoBean implements Serializable {
 
 	private boolean verificaSeRespondida(Solicitacao solicitacao) {
 		boolean retorno = false;
-		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		for (Mensagem mensagem : msgs) {
+//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 2)) {
 				retorno = true;
 				break;
@@ -337,8 +336,8 @@ public class SolicitacaoBean implements Serializable {
 	private boolean verificaSeLimiteRecurso(Solicitacao solicitacao) {
 		int cont = 0;
 		boolean retorno = false;
-		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		for (Mensagem mensagem : msgs) {
+//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 3)) {
 				cont++;
 				if (cont == constanteDeRecurso) {
