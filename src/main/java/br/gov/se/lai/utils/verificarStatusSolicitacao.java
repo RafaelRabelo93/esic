@@ -36,29 +36,37 @@ public class verificarStatusSolicitacao implements Job {
 	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
 		
-		if (!solicitacao.getStatus().equals("Finalizada")) {
+		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Respondida"))) {
 
 			LocalDate now = LocalDate.now();
 
 			int prazo =SolicitacaoBean.prazoResposta(solicitacao.getStatus());
 			//Datas dos prazos para comparações
 			//LocalDate lcSolicitacaoInicio = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate inicioPrazo = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(5);
 			LocalDate metadePrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays((prazo)/2);
 			LocalDate vesperaPrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(1);
+			LocalDate vesperaPrazoGestor = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(5);
 			
 			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
 			
-			if (now.isEqual(metadePrazo)) {
-				String corpoMensagem = "Faltam "+prazo+" dias para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
+			
+			if(now.isEqual(inicioPrazo)) {
+				String corpoMensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
 				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
-			}else {
-				if(now.isEqual(vesperaPrazo)) {
-					String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getIdSolicitacao()+" expirar.";
-					NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
-				}
+			}else if (now.isEqual(metadePrazo)) {
+				String corpoMensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+			}else if(now.isEqual(vesperaPrazoGestor)) {
+				String corpoMensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+			}else if(now.isEqual(vesperaPrazo)) {
+				String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
 			}
 		}		
 	} 
+	
 	public void updateStatusSolicitacao(Solicitacao solicitacao) {
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {

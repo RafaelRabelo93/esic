@@ -52,12 +52,15 @@ import br.gov.se.lai.utils.NotificacaoEmail;
 @SuppressWarnings("unused")
 public class SolicitacaoBean implements Serializable {
 
+	
+	
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
 	private List<Solicitacao> filteredSolicitacoes;
 	private static List<Mensagem> mensagensSolicitacao;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
+	private UsuarioBean userBean;
 	private Anexo anexo;
 	private Cidadao cidadao;
 	private List<Entidades> entidades;
@@ -75,6 +78,9 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
 
+	
+	
+	
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -82,12 +88,12 @@ public class SolicitacaoBean implements Serializable {
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		this.mensagensSolicitacao = new ArrayList<Mensagem>();
+		mensagensSolicitacao = new ArrayList<Mensagem>();
+		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 	}
 
 	public String save() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());
+		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 		
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
@@ -95,8 +101,10 @@ public class SolicitacaoBean implements Serializable {
 			this.solicitacao.setStatus("Finalizada");
 			
 		}else {
-			this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo)));
-			this.solicitacao.setStatus("Aberta");
+			if(LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+3)));
+				this.solicitacao.setStatus("Aberta");
+			}
 			
 		}
 
@@ -105,10 +113,11 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
+		
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 
 			// Salvar Mensagem
-			this.mensagem.setUsuario(usuarioBean.getUsuario());
+			this.mensagem.setUsuario(userBean.getUsuario());
 			this.mensagem.setData(new Date(System.currentTimeMillis()));
 			this.mensagem.setSolicitacao(solicitacao);
 			this.mensagem.setTipo((short) 1);
@@ -119,17 +128,11 @@ public class SolicitacaoBean implements Serializable {
 					anx.save(anexo, mensagem, file);
 				}
 				mensagensSolicitacao.add(mensagem);
-				NotificacaoEmail.enviarNotificacao(solicitacao,usuarioBean.getUsuario());
+				NotificacaoEmail.enviarNotificacao(solicitacao,userBean.getUsuario());
 				enviarMensagemAutomatica();
 			}
 
 		}
-
-		// Salvar Alteração de Status
-		// MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
-
-		// verifique se não está ocorrendo erro
-		// NotificacaoEmail.enviarEmail(solicitacao, usuarioBean.getUsuario());
 
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
@@ -137,23 +140,23 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		return "/index";
 	}
+	
 
 	public String verificaCidadaoSolicitacao() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuarioBean.getUsuario().getCidadaos());
+		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 
-		if (usuarioBean.getUsuario().getPerfil() == 0) {
+		if (userBean.getUsuario().getPerfil() == 0) {
 			// se não tiver cadastro de usuario, vai cadastrar primeiro
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
-			usuarioBean.setVeioDeSolicitacao(1);
+			userBean.setVeioDeSolicitacao(1);
 			return "Cadastro/cad_usuario";
 		} else {
-			if (usuarioBean.getUsuario().getPerfil() == 1 || usuarioBean.getUsuario().getPerfil() != 2) {
+			if (userBean.getUsuario().getPerfil() == 1 || userBean.getUsuario().getPerfil() != 2) {
 				// verifico se há a instancia de um usuario e se este usuario não é um
 				// responsável
 
-				if ((listCidadao.isEmpty()) && (usuarioBean.getUsuario().getPerfil() == 1)) {
+				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
 					// se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa
 					// cadastrar cidadão
 					return "Cadastro/cad_cidadao";
@@ -170,9 +173,21 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
+	public void enviarMensagemAutomatica() {
+		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo()+" recebido com sucesso.");
+	}
+	
+	/*
+	 * Métodos relacionados a consulta de solicitações 
+	 * 
+	 * verificaCidadaoConsulta(): String - retorna a página com a lista populada de solicitações relacionadas ao cidadão.
+	 * consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a entidade passada como parâmetro da tela para o bean.
+	 * listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com base no status passado como parâmetro da tela para o bean.  
+	 * attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante a sessão, na lista de mensagens relacionada àquela solicitacao.
+	 * popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens relacionadas àquela solicitação.
+	 */
 	public String verificaCidadaoConsulta() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (usuarioBean.getUsuario().getPerfil() == 3) {
+		if (userBean.getUsuario().getPerfil() == 3) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "Consulta/consulta";
 		} else {
@@ -209,16 +224,17 @@ public class SolicitacaoBean implements Serializable {
 		return mensagensSolicitacao;
 	}
 
+	
+	
+	
 	/////////// Tipologias das solicitações - Tratamentos específicos
+	
 	public 	String Denuncia() {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
 		solicitacao.setAcoes(AcoesDAO.findAcoes(1));
 		return "/Solicitacao/solicitacao.xhtml";
 	}
 
-	public void enviarMensagemAutomatica() {
-		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo()+" recebido com sucesso.");
-	}
 
 	
 	///////////// Redirecionamento de paginas
@@ -348,6 +364,17 @@ public class SolicitacaoBean implements Serializable {
 		}
 
 		return retorno;
+	}
+	
+	
+	
+	//Reencaminhamento de solicitacao
+	public boolean reencaminhar() {
+		if (LocalDate.now().isBefore(solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1))) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	// GETTERS E SETTERS

@@ -40,6 +40,7 @@ public class Solicitacao implements java.io.Serializable {
 	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private short prazoTipo;
+	private short encaminhamentoTipo;
 
 	public Solicitacao() {
 	}
@@ -50,7 +51,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			Integer protocolo,short instancia, String tipo, Set<Mensagem> mensagems) {
+			Integer protocolo,short instancia, short prazoTipo, short encaminhamentoTipo, String tipo, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
@@ -64,6 +65,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.tipo = tipo;
 		this.mensagems = mensagems;
 		this.prazoTipo = prazoTipo;
+		this.encaminhamentoTipo = encaminhamentoTipo;
 	}
 
 	@Id
@@ -192,6 +194,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.instancia = instancia;
 	}
 
+	@Column(name = "prazoTipo", length = 1)
 	public short getPrazoTipo() {
 		return prazoTipo;
 	}
@@ -199,5 +202,16 @@ public class Solicitacao implements java.io.Serializable {
 	public void setPrazoTipo(short prazoTipo) {
 		this.prazoTipo = prazoTipo;
 	}
+
+	@Column(name = "encaminhamentoTipo", length = 1)
+	public short getEncaminhamentoTipo() {
+		return encaminhamentoTipo;
+	}
+
+	public void setEncaminhamentoTipo(short encaminhamentoTipo) {
+		this.encaminhamentoTipo = encaminhamentoTipo;
+	}
+	
+	
 
 }

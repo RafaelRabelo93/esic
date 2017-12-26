@@ -78,14 +78,40 @@ public class NotificacaoEmail implements Job{
 	
 	public static void enviarEmailAutomatico(Solicitacao solicitacao,String titulo, String mensagem) {
 		Email email = new SimpleEmail();
+		List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1);
 		
 		try {  
 //			System.out.println("Entrou em email");
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","efgh1234");  
-//			email.addTo(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
+//			email.addTo(resp.get(0).getEmail().toString()); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
+			email.setSubject(titulo);  
+			email.setMsg(mensagem);  
+			email.send();  
+		} catch (EmailException e) {  
+//			System.out.println(e.getMessage());  
+		}
+	}
+
+	public static void enviarEmailAutoridades(Solicitacao solicitacao, String titulo, String mensagem) {
+		Email email = new SimpleEmail();
+		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3);
+		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2);
+		
+		try {  
+			email.setDebug(true);  
+			email.setHostName("smtp.expresso.se.gov.br");  
+			email.setAuthentication("mayara.machado","efgh1234");  
+			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+//			email.addTo(respSec.get(0).getEmail().toString()); //pode ser qualquer email  
+//			email.addCc(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
+//			if(respSec.size() > 1) {
+//				email.addCc(respSec.get(1).toString());
+//			}
+//			email.addCc(respDir.get(0).toString());
 			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
 			email.setSubject(titulo);  
 			email.setMsg(mensagem);  
