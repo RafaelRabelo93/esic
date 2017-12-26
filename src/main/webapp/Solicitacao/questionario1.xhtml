@@ -35,52 +35,58 @@
 						<div class="menuBtn">
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-						<h:commandLink styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/question.png']}" width="80vh" />
-							<f:setPropertyActionListener value="informacao" target="#{solicitacao.solicitacao.tipo}" />
+						<h:commandLink id="btnInfo" styleClass="link" action="questionario2">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="80vh" />
+							<f:setPropertyActionListener value="Informação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Informação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipInfo" for="btnInfo" value="Fornece orientação ou esclarecimento sobre assuntos relacionados à administração pública estadual." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-						<h:commandLink styleClass="link" action="questionario2">
+						<h:commandLink id="btnSol" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/question.png']}" width="80vh" />
 							<f:setPropertyActionListener value="solicitacao" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipSol" for="btnSol" value="Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-						<h:commandLink styleClass="link" action="questionario2">
+						<h:commandLink id="btnElogio" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="80vh" />
 							<f:setPropertyActionListener value="elogio" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Elogio" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipElogio" for="btnElogio" value="Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-						<h:commandLink styleClass="link" action="questionario2">
+						<h:commandLink id="btnSugestao" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/speaking.png']}" width="80vh" />
 							<f:setPropertyActionListener value="sugestao" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Sugestão" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipSugestao" for="btnSugestao" value="Proposição de ideia ou formulação de proposta de aprimoramento de políticas e serviços prestados pela Administração Pública Estadual." showEffect="clip" hideEffect="clip" position="bottom"/>
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-						<h:commandLink styleClass="link" action="questionario2">
+						<h:commandLink id="btnReclama" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="80vh" />
 							<f:setPropertyActionListener value="reclamacao" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Reclamação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipReclama" for="btnReclama" value="Demonstração de insatisfação relativa ao serviço público." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						<div class="botao" style="width: 150px; padding: 0">
-						<h:commandLink styleClass="link" action="#{solicitacao.Denuncia()}">
+						<h:commandLink id="btnDenuncia" styleClass="link" action="#{solicitacao.Denuncia()}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="80vh" />
 							<f:setPropertyActionListener value="denuncia" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
+						<p:tooltip id="tooltipDenuncia" for="btnDenuncia" value="Comunicação de prática de ato ilícito cuja solução dependa da atuação de órgãos de controle interno ou externo." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						</div>
 

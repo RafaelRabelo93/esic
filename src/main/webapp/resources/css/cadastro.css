@@ -154,6 +154,7 @@
 
 .ui-tooltip {
 	max-width: 300px !important;
+	text-align: justify;
 /* 	background-color: red; */
 }
 
@@ -507,6 +508,7 @@
     background-color: #c0c0c0;
     color: #fff;
     box-shadow:none;
+    text-align: justify;
 }
 
 .ui-datascroller .ui-datascroller-content {
@@ -658,7 +660,8 @@ td.prazo.vermelho {
 }
 
 td.prazo.branco {
-    background-color: #e4e4e4;
+    background-color: #ffffff;
+    color: #c0c0c0;
 	border: 1px solid #a8a8a8
 }
 

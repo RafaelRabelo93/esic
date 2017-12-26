@@ -22,13 +22,15 @@
 				<div class="ficha">
 					
                			<h:panelGroup id="competencias_panel">
-                            <p:dataTable var="comp" value="#{competencias.listCompetencias}"  rowKey="#{comp.idCompetencias}">
+                            <p:dataTable var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}" selectionMode="multiple" selection="#{competencias.listCompetenciasExcluir}">
                                 <f:facet name="header">
                                   <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
                                 </f:facet>
+                                
                                 <p:column style="width:25px">
                                     <p:rowToggler id="t" />
                                 </p:column>
+                                
                                 <p:column headerText="Ação">
                                     <h:outputText value="#{comp.acoes.titulo}" />
                                 </p:column>
@@ -55,12 +57,12 @@
 
 					
 					<h:panelGroup styleClass="divBtn">    
-					    <p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias">
+					    <p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Excluir "  />
 					        <i class="fa fa-trash" />
 					    </p:commandLink>
 					
-					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias">
+					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Atualizar " />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
@@ -111,35 +113,6 @@
 					</p:commandLink>
 	
 					</h:panelGroup>
-					
-					<div class="ficha">
-						<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}" style="width: 100%; margin: 10px">
-							<f:facet name="header">
-								Novas Competências
-							</f:facet>
-							<p:column headerText="Ação">
-									<h:outputLabel value="#{comp.acoes.titulo}" />
-							</p:column>
-							<p:column headerText="Descrição">
-								<p:inplace editor="true">
-									<p:inputTextarea value="#{comp.descricao}" />
-								</p:inplace>
-							</p:column>
-							<p:column style="width:32px;text-align: center">
-								<p:commandLink  class="botaoLinkIcon" update="alterar_competencias"
-									action="#{competencias.listaCompetenciasUpdate}" title="View">
-									<i class=" fa fa-trash" />
-									<f:setPropertyActionListener value="#{comp}"
-										target="#{competencias.competencias}" />
-								</p:commandLink> 
-							</p:column>
-						</p:dataTable>
-					
-					<p:commandLink class="botaoLink" action="#{competencias.save}">
-						<h:outputText value="Salvar" />
-						<i class="fa fa-check" style="color: white; padding-left: 3px" />
-					</p:commandLink>
-					</div>
 					
 					</p:outputPanel>
 					</h:form>

@@ -27,7 +27,7 @@
 					rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
 						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
-						expandableRowGroups="true" 
+						expandableRowGroups="false" 
 						value="#{solicitacao.filteredSolicitacoes}"
 						rowStyleClass="#{slt.status}" style="margin-bottom:1vw"
 						filteredValue="#{solicitacao.filteredSolicitacoes}"
@@ -35,42 +35,35 @@
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15" rowKey="#{slt.idSolicitacao}">
 
-						<p:headerRow rendered="#{usuario.usuario.perfil eq '2' }">
-							<p:column colspan="6" sortBy="#{slt.status}" priority="1">
-								<h:outputText value="#{slt.status}" />
-							</p:column>
-						</p:headerRow>
+<!-- 						<p:headerRow rendered="#{usuario.usuario.perfil eq '2' }"> -->
+<!-- 							<p:column colspan="6" sortBy="#{slt.status}" priority="1"> -->
+<!-- 								<h:outputText value="#{slt.status}" /> -->
+<!-- 							</p:column> -->
+<!-- 						</p:headerRow> -->
 
-						<p:headerRow>
-							<p:column colspan="8" sortBy="#{slt.status}" priority="1">
-								<h:outputText value="#{slt.status}" />
-							</p:column>
-						</p:headerRow>
+<!-- 						<p:headerRow> -->
+<!-- 							<p:column colspan="8" sortBy="#{slt.status}" priority="1"> -->
+<!-- 								<h:outputText value="#{slt.status}" /> -->
+<!-- 							</p:column> -->
+<!-- 						</p:headerRow> -->
 
-						<p:column headerText="Protocolo" priority="6">
+						<p:column headerText="Protocolo" width="120" priority="6">
 							<h:outputText value="#{slt.idSolicitacao}" />
 						</p:column>
 
-						<p:column headerText="Instância" priority="6">
-							<h:outputText value="#{slt.instancia}" />
-						</p:column>
-
-						<p:column headerText="Orgao/ Entidade"
-							sortBy="#{slt.entidades.nome}" priority="3">
-							<h:outputText value="#{slt.entidades.nome}" />
+						<p:column headerText="Órgão" width="100" sortBy="#{slt.entidades.sigla}" priority="3">
+							<h:outputText value="#{slt.entidades.sigla}" />
 						</p:column>
 
 						<p:column headerText="Título" sortBy="#{slt.titulo}" priority="3">
 							<h:outputText value="#{slt.titulo}" />
 						</p:column>
 
-						<p:column headerText="Tipo" width="120" sortBy="#{slt.tipo}"
-							priority="6">
+						<p:column headerText="Tipo" width="120" sortBy="#{slt.tipo}" priority="6">
 							<h:outputText value="#{slt.tipo}" />
 						</p:column>
 
-						<p:column headerText="Status" width="120" sortBy="#{slt.status}"
-							priority="3">
+						<p:column headerText="Status" width="100" sortBy="#{slt.status}" groupRow="true" priority="3">
 							<h:outputText value="#{slt.status}" />
 						</p:column>
 
@@ -80,9 +73,16 @@
 							<h:outputText value="#{slt.cidadao.usuario.nome}" />
 						</p:column>
 
-						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="120" 
+						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="120" style="text-align:center"
 						styleClass="prazo #{slt.status eq 'Finalizada' ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
 							<h:outputText value="#{slt.dataLimite}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Data final" sortBy="#{slt.datafim}" width="120" style="text-align:center">
+							<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}"/>
+							<h:outputText value="#{slt.datafim}" rendered="#{slt.datafim ne null}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 						</p:column>
@@ -121,14 +121,13 @@
 
 						<h:outputText value="Orgao/ Entidade:"
 							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.entidades.nome}" />
+						<h:outputText value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
 
 						<h:outputText value="Tipo de solicitacao:"
 							style="color:#1a568c; font-size:18px" />
 						<h:outputText value="#{solicitacao.solicitacao.tipo}" />
 
-						<h:outputText value="Status:"
-							style="color:#1a568c; font-size:18px" />
+						<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
 						<h:outputText value="#{solicitacao.solicitacao.status}" />
 
 						<h:outputText value="Instancia:"
@@ -274,7 +273,7 @@
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="solicitacao_panel" oncomplete="PF('dlg2').hide();">
+						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
 							<h:outputText value="Salvar" />
 							<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
 							<i class="fa fa-check" style="padding-left: 3px" />
