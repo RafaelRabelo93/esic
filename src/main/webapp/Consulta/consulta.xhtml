@@ -87,6 +87,7 @@
 						<p:column style="width:32px; text-align: center">
 							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+								<p:ajax listener="#{solicitacao.popularMensagens}"/>
 								<i class="fa fa-search" />
 								<f:setPropertyActionListener value="#{slt}"
 									target="#{solicitacao.solicitacao}" />
@@ -107,7 +108,7 @@
 				maximizable="false" draggable="false" closeOnEscape="true"
 				onHide="PF('detalheDialog').toggleMaximize();"
 				styleClass="solicitacaoDialog">
-				<p:outputPanel id="solicitacaoDetalhe" style="display:flex; flex-flow: row">
+				<p:outputPanel id="solicitacaoDetalhe" style="display:flex; flex-flow: row; overflow-x: hidden;">
 					<h:panelGroup id="conteudo" style="padding: 10px">
 					<p:panelGrid columns="2" layout="grid" style="border: none; width: 100%;">
 
@@ -263,78 +264,101 @@
 							</p:tab>
 						</p:tabView>
 
-
-
-
 					<h:form enctype="multipart/form-data">
-						<p:outputPanel id="responderSolicitacao"
-							rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.tipo ne 'Sugestão' and solicitacao.solicitacao.tipo ne 'elogio' }"
-							style="display:flex; flex-flow: column">
-							<p:panelGrid columns="1" style="width:100%">
-								<p:outputLabel value="Mensagem de resposta: " for="mensagem" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }"/>
-								<p:inputTextarea id="mensagem"
-									value="#{mensagem.mensagem.texto}" maxlength="200"
-									style="width:100%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }"/>
-									
-								<p:outputLabel value="Status da Denúncia" for= "denunciaSelectMenu" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' }" />
-								<p:selectOneMenu value="" id="denunciaSelectMenu" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' }">
-								<f:selectItem itemLabel="Status1" itemValue="Status1"/> 
-								<f:selectItem itemLabel="Status2" itemValue="Status2"/> 
-								<f:selectItem itemLabel="Status3" itemValue="Status3"/> 
+						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
+								<p:outputLabel value="Mensagem de Resposta:" for="mensagem" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="margin-bottom: 5px"/>
+								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }"/>
+								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="solicitacao_panel detalheDialog">
+									<h:outputText value="Enviar" />
+									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
+									<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
+								</p:commandLink>
+							</div>
+							
+							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
+								<p:outputLabel value="Descrição:" for="descr" />
+								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
+									autoResize="false" style="width:100%" 
+									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
+								<h:outputText id="display" />
+		
+								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
+									<h:outputText value="Salvar" />
+									<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
+									<i class="fa fa-check" style="padding-left: 3px" />
+								</p:commandLink>
+							</div>
+							
+							<div id="Recurso" class="box aba" style="display:none; padding: 1vh 1vw">
+								<p:outputLabel value="Descrição:" for="descr2" />
+								<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
+								<h:outputText id="display2" />
+		
+								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
+									<h:outputText value="Salvar" />
+									<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
+									<i class="fa fa-check" style="padding-left: 3px" />
+								</p:commandLink>
+							</div>
+							
+							<div id="Encaminhar" class="box aba" style="display:none; padding: 1vh 1vw">	
+								<p:outputLabel value="órgão/Entidade de destino" for="destino"/>
+								<p:selectOneMenu id="destino"
+										value="#{solicitacao.idSolicitacao}" style="width:125px">
+<!-- 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"/> -->
+										<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
 								</p:selectOneMenu>
-								
-								<p:outputLabel value="Anexo:"  rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação' }"/>
-								<p:outputLabel value="Descrição:" for="descricao" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação' }"/>
-								<p:inputTextarea id="descricao" counter="display"
-									maxlength="200" autoResize="false" style="width:100%"
-									counterTemplate="{0} caracteres restantes."
-									value="#{mensagem.anexo.descricao}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação' }"/>
-								<h:outputText id="display" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação' }"/>
-
-								<p:fileUpload mode="simple" value="#{mensagem.file}"
-									label="Enviar Arquivo" skinSimple="true"
-									style="display: flex;  align-items: center;"
-									allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|zip|rar|docx|doc|xls|xlsx|tar)$/"
-									invalidFileMessage="São permitidos apenas arquivos de imagem (gif, jpeg, jpg, png), office(doc, docx, xls, xlsx), pdf,txt, zip, rar e tar."
-									sizeLimit="1048576" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação' }"
-									invalidSizeMessage="O tamanho máximo permitido é de 1MB." />
-								<p:growl id="msg" />
-							</p:panelGrid>
-
-							<p:commandLink class="botaoLink" action="#{mensagem.save}"
-								ajax="false" style="margin:1vw 0" update="solicitacao_panel detalheDialog">
-								<h:outputText value="Responder" />
-								<i class="fa fa-hand-o-up" />
-								<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-									target="#{mensagem.solicitacao}" />
-							</p:commandLink>
+	
+								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
+								<p:inputTextarea id="justCid" cols="100" rows="8" counter="display3" maxlength="200"
+									autoResize="false" style="width:100%" required="true"
+									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
+								<h:outputText id="display3" />
+	
+								<p:outputLabel value="Justificativa Interna:" for="justInt" />
+								<p:inputTextarea id="justInt" cols="100" rows="8" counter="display4" maxlength="200"
+									autoResize="false" style="width:100%" required="true"
+									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" />
+								<h:outputText id="display4" />
+	
+								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.encaminhar()}" update="solicitacao_panel">
+									<h:outputText value="Salvar" />
+									<i class="fa fa-check" style="padding-left: 3px" />
+								</p:commandLink>
+								</div>
 						</p:outputPanel>
 					</h:form>
 					
 					</h:panelGroup>
 					
-					<!-- 				Barra de ações -->
+<!-- 				Barra de ações -->
 					<h:panelGroup id="barraBtns">
 						
 						<!-- Botão Resposta -->
-						<p:commandLink action="#{solicitacao.recurso}" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
-<!-- 							<h:panelGroup styleClass="blankSquareBtn"> -->
-								<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
-								<h:outputText value="Responder" />
-<!-- 							</h:panelGroup> -->
+						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
+							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
+							<h:outputText value="Responder" />
 						</p:commandLink>
 						
 						<!-- Botão Prorrogar -->
-						<p:commandLink class="botaoLink" styleClass="blankSquareBtn disable" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{!(solicitacao.solicitacao.status ne 'Finalizada' and 
+						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba')" styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and 
 						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 						
+						<!-- Botão Encaminhar -->
+						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disable="#{!(solicitacao.ehProrrogavel() eq true and solicitacao.solicitacao.status eq 'finalizada')}" update="solicitacao_panel" styleClass="blankSquareBtn">
+							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
+							<h:outputText value="Encaminhar" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+						</p:commandLink>
+						
 						<!-- Botão Recurso -->
-						<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'Informação'}" 
-						disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}"  onclick="PF('dlg2').show();" update="solicitacao_panel" styleClass="blankSquareBtn">
+						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso')" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informação'}" disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}" update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />
@@ -345,91 +369,33 @@
 				</p:outputPanel>
 			</p:dialog>
 			
-			<p:dialog header="Recurso" widgetVar="dlgRecurso" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-				<h:form id="dialogRecurso">
-					<p:outputPanel id="dlg" style="max-width: 690px">
-						<p:panelGrid columns="1" style="border:none; width: 60%;">
+<!-- JAVASCRIPT -->
+<script>
+	function abrirAba(aba) {
+	    var i;
+	    var x = document.getElementsByClassName("aba");
+	    for (i = 0; x.length > i ; i++) {
+	    	x[i].style.display = "none";  
+	    }
+	    document.getElementById(aba).style.display = "flex";  	    
+	}
 
-							<p:outputLabel value="Descrição:" for="descr" />
-							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
-								autoResize="false" style="width:100%" required="true"
-								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
-							<h:outputText id="display" />
+	function selecionarAba(abaBtn) {
+		var i;
+	    var x = document.getElementsByClassName("blankSquareBtn");
+	    for (i = 0; x.length > i ; i++) {
+	    	x[i].style.background = "#e4e4e4";
+	    	x[i].style.outline = "none";
+	    	x[i].style.border = "1px solid #e4e4e4";
+	    }
 
-						</p:panelGrid>
+	    if (document.getElementById(abaBtn))
+		document.getElementById(abaBtn).style.outline = "1px solid white";
+		document.getElementById(abaBtn).style.background = "white";
+		document.getElementById(abaBtn).style.border = "none";
+	}
+</script>
 
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
-							<h:outputText value="Salvar" />
-							<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
-							<i class="fa fa-check" style="padding-left: 3px" />
-						</p:commandLink>
-
-					</p:outputPanel>
-				</h:form>
-
-			</p:dialog>
-
-			<p:dialog header="Prorrogar" widgetVar="dlgProrrogar" modal="true" showHeader="true" fitViewport="true" showEffect="fade" 
-				hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-				<h:form id="dialogProrrogar">
-					<p:outputPanel id="dlg" style="max-width: 690px">
-						<p:panelGrid columns="1" style="border:none; width: 60%;">
-
-							<p:outputLabel value="Descrição:" for="descr" />
-							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
-								autoResize="false" style="width:100%" required="true"
-								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
-							<h:outputText id="display" />
-
-						</p:panelGrid>
-
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
-							<h:outputText value="Salvar" />
-							<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
-							<i class="fa fa-check" style="padding-left: 3px" />
-						</p:commandLink>
-
-					</p:outputPanel>
-				</h:form>
-
-			</p:dialog>
-
-			<p:dialog header="Encaminhar" widgetVar="dlgEncaminhar" modal="true" showHeader="true" fitViewport="true" showEffect="fade" 
-				hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-				<h:form id="dialogEncaminhar">
-					<p:outputPanel id="dlg" style="max-width: 690px">
-						<p:panelGrid columns="1" style="border:none; width: 60%;">
-						
-							<p:outputLabel value="órgão/Entidade de destino" for="destino"/>
-							<p:selectOneMenu id="destino" value="#{solicitacao.entReencaminhar}">
-								<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-								<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.nome}" itemValue="#{ent}"/>
-							</p:selectOneMenu>
-
-							<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
-							<p:inputTextarea id="justCid" cols="100" rows="8" counter="display" maxlength="200"
-								autoResize="false" style="width:100%" required="true"
-								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
-							<h:outputText id="display" />
-
-							<p:outputLabel value="Justificativa Interna:" for="justInt" />
-							<p:inputTextarea id="justInt" cols="100" rows="8" counter="display2" maxlength="200"
-								autoResize="false" style="width:100%" required="true"
-								counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}"/>
-							<h:outputText id="display2" />
-
-						</p:panelGrid>
-
-						<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.encaminhar()}"  oncomplete="PF('dlg3').hide();">
-							<h:outputText value="Salvar" />
-							<f:setPropertyActionListener value="Encaminhada" target="#{solicitacao.status}" />
-							<i class="fa fa-check" style="padding-left: 3px" />
-						</p:commandLink>
-
-					</p:outputPanel>
-				</h:form>
-
-			</p:dialog>
 
 		</ui:define>
 
