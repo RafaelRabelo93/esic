@@ -116,6 +116,7 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
+		this.solicitacao.setEncaminhada(false);
 		
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 
@@ -229,6 +230,12 @@ public class SolicitacaoBean implements Serializable {
 		return mensagensSolicitacao;
 	}
 
+	public void alterarEnc() {
+		for (Solicitacao slt : SolicitacaoDAO.listarGeral()) {
+			slt.setEncaminhada(false);
+			SolicitacaoDAO.saveOrUpdate(slt);
+		}
+	}
 	
 	
 	
@@ -437,6 +444,7 @@ public class SolicitacaoBean implements Serializable {
 				MensagemBean.attMensagemTramites(mensagemEncaminhar);
 				MensagemBean.salvarStatus(solicitacao, "Encaminhada", entReencaminhar.getNome(), solicitacao.getEntidades().getNome());
 				solicitacao.setEntidades(entReencaminhar);
+				solicitacao.setEncaminhada(true);
 				if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 					NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
 				};

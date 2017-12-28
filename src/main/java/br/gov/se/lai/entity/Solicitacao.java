@@ -40,6 +40,7 @@ public class Solicitacao implements java.io.Serializable {
 	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private short prazoTipo;
+	private boolean encaminhada;
 
 	public Solicitacao() {
 	}
@@ -200,5 +201,15 @@ public class Solicitacao implements java.io.Serializable {
 	public void setPrazoTipo(short prazoTipo) {
 		this.prazoTipo = prazoTipo;
 	}
+
+	@Column(name = "encaminhada", length = 1)
+	public boolean isEncaminhada() {
+		return encaminhada;
+	}
+
+	public void setEncaminhada(boolean encaminhada) {
+		this.encaminhada = encaminhada;
+	}
+	
 
 }

@@ -265,19 +265,6 @@
 
 
 
-						<!-- 				Botão Realizar recurso -->
-					<p:commandLink class="botaoLink"
-						rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.status ne 'finalizada' 
- 						and solicitacao.solicitacao.tipo eq 'informacao' and solicitacao.recursoLiberado() eq true}"
-						style="margin-bottom:1vw; align-self:flex-end; display: none;"
-						onclick="PF('dlg2').show();" update="solicitacao_panel">
-						<h:outputText value="Realizar Recurso" />
-						<f:setPropertyActionListener value="Recurso"
-							target="#{solicitacao.status}" />
-						<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-							target="#{solicitacao.solicitacao}" />
-						<i class="fa fa-hand-o-up" />
-					</p:commandLink>
 
 					<h:form enctype="multipart/form-data">
 						<p:outputPanel id="responderSolicitacao"
@@ -324,21 +311,37 @@
 						</p:outputPanel>
 					</h:form>
 					
-<!-- 				Botão Prorrogar -->
-					<p:commandLink class="botaoLink"
-						rendered="#{usuario.usuario.perfil ne '3' and solicitacao.solicitacao.status ne 'Finalizada' and 
- 						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' )
- 						 and solicitacao.ehProrrogavel() eq true}"
-						onclick="PF('dlg3').show();"
-						update="solicitacao_panel" style="margin:1vw 0; display:none">
-						<h:outputText value="Prorrogar Resposta" />
-						<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-							target="#{solicitacao.solicitacao}" />
-						<i class="fa fa-clock-o" />
-					</p:commandLink>
 					</h:panelGroup>
 					
-
+					<!-- 				Barra de ações -->
+					<h:panelGroup id="barraBtns">
+						
+						<!-- Botão Resposta -->
+						<p:commandLink action="#{solicitacao.recurso}" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
+<!-- 							<h:panelGroup styleClass="blankSquareBtn"> -->
+								<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
+								<h:outputText value="Responder" />
+<!-- 							</h:panelGroup> -->
+						</p:commandLink>
+						
+						<!-- Botão Prorrogar -->
+						<p:commandLink class="botaoLink" styleClass="blankSquareBtn disable" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{!(solicitacao.solicitacao.status ne 'Finalizada' and 
+						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
+							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
+							<h:outputText value="Prorrogar Resposta" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+						</p:commandLink>
+						
+						<!-- Botão Recurso -->
+						<p:commandLink class="botaoLink" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'Informação'}" 
+						disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}"  onclick="PF('dlg2').show();" update="solicitacao_panel" styleClass="blankSquareBtn">
+							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
+							<h:outputText value="Realizar Recurso" />
+							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+						</p:commandLink>
+					
+					</h:panelGroup>
 				</p:outputPanel>
 			</p:dialog>
 			
