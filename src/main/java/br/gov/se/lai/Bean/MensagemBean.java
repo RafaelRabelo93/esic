@@ -47,6 +47,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private Calendar data;
 	private Solicitacao solicitacao;
 	private static List<Mensagem> mensagensSolicitacao;
+	private static List<Mensagem> mensagensHistorico;
+	private static List<Mensagem> mensagensTramites;
 	private Anexo anexo;
 	private final int constanteTempo = 10;
 	private Usuario usuario;
@@ -70,12 +72,18 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setSolicitacao(solicitacao);
 			verificaMensagem();
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
-				if (file.getContents().length != 0) {
-					System.out.println(anexo.toString());
-					AnexoBean anx = new AnexoBean();
-					anx.save(anexo, mensagem, file);
+				try {
+					if ((file.getContents().length != 0 && !file.equals(null))) {
+						System.out.println(anexo.toString());
+						AnexoBean anx = new AnexoBean();
+						anx.save(anexo, mensagem, file);
+					}
+				}catch (Exception e) {
+					e.getMessage();
+				}finally {
+					
+					mensagensSolicitacao.add(mensagem);
 				}
-				mensagensSolicitacao.add(mensagem);
 			}
 			
 		mensagem = new Mensagem();	
@@ -101,7 +109,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	}
 	
 
-	public static void salvarStatus(Solicitacao solicitacao, String status) {
+	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha) {
 		int tipoAux;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
@@ -121,16 +129,21 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			tipoAux = 4;
 			break;
 			
-		case "Status Denuncia 1":
+		case "Encaminhada":
 			tipoAux = 5;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
+			break;
+			
+		case "Status Denuncia 1":
+			tipoAux = 0;
 			break;
 			
 		case "Status Denuncia 2":
-			tipoAux = 5;
+			tipoAux = 0;
 			break;
 			
 		case "Status Denuncia 3":
-			tipoAux = 5;
+			tipoAux = 0;
 			break;
 			
 		default:
@@ -139,7 +152,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
-		MensagemBean.attMensagem(mensagem);
+		MensagemBean.attMensagemHistorico(mensagem);
 		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		mensagem = new Mensagem();
 	}
@@ -147,14 +160,27 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	
 	public void carregaMensagens() {
 		if (solicitacao != null) {
-			mensagensSolicitacao = MensagemDAO.list(solicitacao.getIdSolicitacao());
+			int idSolicitacao = solicitacao.getIdSolicitacao();
+			mensagensSolicitacao = MensagemDAO.listMensagensSolicitacao(idSolicitacao);
+			mensagensHistorico = MensagemDAO.listMensagensHistorico(idSolicitacao);
+			mensagensTramites = MensagemDAO.listMensagensTramiteInterno(idSolicitacao);
 		}else {
 				mensagensSolicitacao = null;
+				mensagensHistorico = null;
+				mensagensTramites = null;
 		}
 	}
 	
-	public static void attMensagem(Mensagem mensagem) {
+	public static void attMensagemSolicitacao(Mensagem mensagem) {
 		mensagensSolicitacao.add(mensagem);
+	}
+
+	public static void attMensagemHistorico(Mensagem mensagem) {
+		mensagensHistorico.add(mensagem);
+	}
+
+	public static void attMensagemTramites(Mensagem mensagem) {
+		mensagensTramites.add(mensagem);
 	}
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
@@ -218,7 +244,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	}
 
 	public void setMensagensSolicitacao(List<Mensagem> mensagensSolicitacao) {
-		this.mensagensSolicitacao = mensagensSolicitacao;
+		MensagemBean.mensagensSolicitacao = mensagensSolicitacao;
 	}
 
 	public String getStatus() {
@@ -227,6 +253,22 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Mensagem> getMensagensHistorico() {
+		return mensagensHistorico;
+	}
+
+	public void setMensagensHistorico(List<Mensagem> mensagensHistorico) {
+		MensagemBean.mensagensHistorico = mensagensHistorico;
+	}
+
+	public List<Mensagem> getMensagensTramites() {
+		return mensagensTramites;
+	}
+
+	public void setMensagensTramites(List<Mensagem> mensagensTramites) {
+		MensagemBean.mensagensTramites = mensagensTramites;
 	}	
 	
 	

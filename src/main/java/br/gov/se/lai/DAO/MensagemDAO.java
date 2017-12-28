@@ -59,4 +59,20 @@ public class MensagemDAO {
 		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao,em);
     }
 	
+	@SuppressWarnings("unchecked")
+	public static List<Mensagem> listMensagensSolicitacao(int idSolicitacao){
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 1 OR msg.tipo = 2)";
+		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
+	}
+	@SuppressWarnings("unchecked")
+	public static List<Mensagem> listMensagensHistorico(int idSolicitacao){
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 3 OR msg.tipo = 4)";
+		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
+	}
+	@SuppressWarnings("unchecked")
+	public static List<Mensagem> listMensagensTramiteInterno(int idSolicitacao){
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 5)";
+		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
+	}
+	
 }

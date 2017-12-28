@@ -330,6 +330,7 @@
     font-weight: normal;
     box-shadow: none;
     padding: 0;
+    width: -webkit-fill-available;
 }
 
 .ui-inputfield {
@@ -371,6 +372,21 @@
 	height: auto !important;
 	width: auto !important;
 	max-height: 85vh;
+}
+
+.solicitacaoDialog.ui-dialog {
+	height: fit-content !important;
+    width: 90% !important;
+    left: 5% !important;
+    top: 3vh !important;
+    border: 1px solid #395a8c;
+}
+
+.solicitacaoDialog.ui-dialog .ui-dialog-content {
+	height: auto !important;
+	width: auto !important;
+	max-height: 85vh;
+	padding: 0;
 }
 
 .customDialog.ui-dialog{
@@ -680,6 +696,88 @@ td.prazo.branco {
     color: #3a5cad;
     background-color: #d9edf7;
     border-color: #bce8f1;
+}
+
+.solicitacao {
+	padding: 0;
+}
+
+#conteudo {
+	width: -webkit-fill-available;
+}
+
+#barraBtns {
+	width: 100px;
+	margin-left: 5px;
+	border-left: 1px solid silver;
+	
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+  
+	-moz-flex-flow: column nowrap;
+ 	-ms-flex-flow: column nowrap;
+ 	-o-flex-flow: column nowrap;
+ 	-webkit-flex-flow: column nowrap;
+ 	flex-flow: column nowrap;
+}
+
+.blankSquareBtn {
+/* 	background-color: black; */
+	
+	width: 100px;
+	height: 100px;
+	
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+  
+	-moz-flex-flow: column wrap;
+ 	-ms-flex-flow: column wrap;
+ 	-o-flex-flow: column wrap;
+ 	-webkit-flex-flow: column wrap;
+ 	flex-flow: column wrap;
+	
+   	-moz-justify-content: center;
+ 	-ms-justify-content: center;
+ 	-o-justify-content: center;
+ 	-webkit-justify-content: center;
+ 	justify-content: center;
+	
+ 	-moz-align-items: center;
+ 	-ms-align-items: center;
+ 	-o-align-items: center;
+ 	-webkit-align-items: center; 
+ 	align-items: center;
+ 	
+ 	text-decoration: none !important;
+ 	font-size: 15px;
+ 	text-align: center;
+ 	color: gray;
+ 	border-bottom: 1px solid silver;
+ 	outline: 1px solid white;
+}
+
+ a.blankSquareBtn:hover  {
+	text-decoration: none;
+	background-color: #396ba6;
+	color: white;
+}
+
+.active {
+	background-color: white;
+	outline: 1px solid white;
+	color: #4f4f4f;
+}
+
+.blankSquareBtn .ui-state-disabled {
+	background-color: silver;
+	outline: none;
+	color: #9E9E9E;
 }
 
 /* Breadcrumb */

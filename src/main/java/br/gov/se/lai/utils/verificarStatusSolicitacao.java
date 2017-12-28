@@ -82,7 +82,7 @@ public class verificarStatusSolicitacao implements Job {
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 						solicitacao.setStatus("Finalizada");
 						SolicitacaoDAO.saveOrUpdate(solicitacao);
-						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 
 					} else {
 						if ((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada")
@@ -92,7 +92,7 @@ public class verificarStatusSolicitacao implements Job {
 							solicitacao.setStatus("Respondida");
 							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
 							if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-								MensagemBean.salvarStatus(solicitacao, "Negada");
+								MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
 							}
 
 						}

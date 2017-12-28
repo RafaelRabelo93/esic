@@ -60,6 +60,7 @@ public class SolicitacaoBean implements Serializable {
 	private static List<Mensagem> mensagensSolicitacao;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
+	private Entidades entReencaminhar;
 	private UsuarioBean userBean;
 	private Anexo anexo;
 	private Cidadao cidadao;
@@ -71,6 +72,7 @@ public class SolicitacaoBean implements Serializable {
 	private int formaRecebimento;
 	private int idSolicitacao;
 	private Mensagem mensagem;
+	private Mensagem mensagemEncaminhar;
 	private UploadedFile file;
 	private Acoes acoesTemporaria;
 	private final static int constanteTempo = 20;
@@ -85,6 +87,7 @@ public class SolicitacaoBean implements Serializable {
 	public void init() {
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
+		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
@@ -127,7 +130,6 @@ public class SolicitacaoBean implements Serializable {
 					AnexoBean anx = new AnexoBean();
 					anx.save(anexo, mensagem, file);
 				}
-				mensagensSolicitacao.add(mensagem);
 				NotificacaoEmail.enviarNotificacao(solicitacao,userBean.getUsuario());
 				enviarMensagemAutomatica();
 			}
@@ -177,6 +179,7 @@ public class SolicitacaoBean implements Serializable {
 		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo()+" recebido com sucesso.");
 	}
 	
+	
 	/*
 	 * Métodos relacionados a consulta de solicitações 
 	 * 
@@ -186,6 +189,8 @@ public class SolicitacaoBean implements Serializable {
 	 * attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante a sessão, na lista de mensagens relacionada àquela solicitacao.
 	 * popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens relacionadas àquela solicitação.
 	 */
+	
+	
 	public String verificaCidadaoConsulta() {
 		if (userBean.getUsuario().getPerfil() == 3) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -219,7 +224,7 @@ public class SolicitacaoBean implements Serializable {
 		mensagensSolicitacao.add(mensagem);
 	}
 
-	public List<Mensagem> popularMensagens(AjaxBehaviorEvent e) {
+	public List<Mensagem> popularMensagens() {
 		mensagensSolicitacao = new ArrayList<>(solicitacao.getMensagems());
 		return mensagensSolicitacao;
 	}
@@ -238,6 +243,8 @@ public class SolicitacaoBean implements Serializable {
 
 	
 	///////////// Redirecionamento de paginas
+	/////////+++++++++++++++++++++++++++++++++++++++++++
+
 	
 	public String questionarioParaSolicitacao() {
 		if(idAcao == 0) {
@@ -250,13 +257,14 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	///////// Verificação dos Status em relação ao Tempo
-
+	/////////+++++++++++++++++++++++++++++++++++++++++++
+	
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
 			solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(solicitacao.getStatus()))));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
-			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus());
+			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
 
 	}
@@ -272,6 +280,7 @@ public class SolicitacaoBean implements Serializable {
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
 		boolean retorno = false;
 //		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty()) popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 4)) {
 				retorno = true;
@@ -291,12 +300,12 @@ public class SolicitacaoBean implements Serializable {
 
 	public void prorrogar() {
 		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short)4);
+		this.mensagem.setTipo((short)2);
 		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			alterarPrazo(solicitacao);
-			MensagemBean.attMensagem(mensagem);
+			MensagemBean.attMensagemSolicitacao(mensagem);
 		};
 		mensagem = new Mensagem();
 		
@@ -310,7 +319,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
-		MensagemBean.attMensagem(mensagem);
+		MensagemBean.attMensagemSolicitacao(mensagem);
 		mensagem = new Mensagem();
 
 	}
@@ -340,6 +349,7 @@ public class SolicitacaoBean implements Serializable {
 	private boolean verificaSeRespondida(Solicitacao solicitacao) {
 		boolean retorno = false;
 //		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty()) popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 2)) {
 				retorno = true;
@@ -353,6 +363,7 @@ public class SolicitacaoBean implements Serializable {
 		int cont = 0;
 		boolean retorno = false;
 //		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty()) popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 3)) {
 				cont++;
@@ -366,15 +377,74 @@ public class SolicitacaoBean implements Serializable {
 		return retorno;
 	}
 	
-	
-	
 	//Reencaminhamento de solicitacao
-	public boolean reencaminhar() {
-		if (LocalDate.now().isBefore(solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1))) {
+	private boolean verificaSeEncaminhada(Solicitacao solicitacao) {
+		boolean retorno = false;
+		if (mensagensSolicitacao.isEmpty()) popularMensagens();
+		for (Mensagem msg : mensagensSolicitacao) {
+			if(msg.getTipo().equals((short)5)){
+				retorno = true;
+				break;
+			}
+		}
+		return retorno;
+	}
+		
+	private boolean verificaSe24Horas() {
+		boolean retorno = false;
+		Calendar hoje = Calendar.getInstance(); 
+		Calendar limite = Calendar.getInstance(); 
+		limite.setTime(solicitacao.getDataIni());
+		limite.add(Calendar.DATE, +1);
+		if (hoje.before(limite)) {
+			retorno =  true;
+		}
+		return retorno;
+	}
+	
+	public boolean ehEncaminhavel() {
+		if(!verificaSeEncaminhada(solicitacao) && verificaSe24Horas()) {
 			return true;
 		}else {
 			return false;
 		}
+	}
+	
+	/////////Reencaminhar
+	/////////+++++++++++++++++++++++++++++++++++++++++++
+
+
+	public void encaminhar() {
+		
+		this.solicitacao.setEntidades(entReencaminhar);
+		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+
+			this.mensagem.setSolicitacao(solicitacao);
+			this.mensagem.setTipo((short)2);
+			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+			this.mensagem.setUsuario(usuario);
+			this.mensagem.setData(new Date(System.currentTimeMillis()));
+			if(MensagemDAO.saveOrUpdate(mensagem)) {
+				MensagemBean.attMensagemSolicitacao(mensagem);
+			};
+			mensagem = new Mensagem();
+
+			this.mensagemEncaminhar.setSolicitacao(solicitacao);
+			this.mensagemEncaminhar.setTipo((short)5);
+			this.mensagemEncaminhar.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
+			if(MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
+				MensagemBean.attMensagemTramites(mensagemEncaminhar);
+				MensagemBean.salvarStatus(solicitacao, "Encaminhada", entReencaminhar.getNome(), solicitacao.getEntidades().getNome());
+				solicitacao.setEntidades(entReencaminhar);
+				if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+					NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+				};
+			};
+			mensagemEncaminhar = new Mensagem();
+			
+		}
+		
 	}
 
 	// GETTERS E SETTERS
@@ -526,5 +596,22 @@ public class SolicitacaoBean implements Serializable {
 	public void setFormaRecebimento(int formaRecebimento) {
 		this.formaRecebimento = formaRecebimento;
 	}
+
+	public Mensagem getMensagemEncaminhar() {
+		return mensagemEncaminhar;
+	}
+
+	public void setMensagemEncaminhar(Mensagem mensagemEncaminhar) {
+		this.mensagemEncaminhar = mensagemEncaminhar;
+	}
+
+	public Entidades getEntReencaminhar() {
+		return entReencaminhar;
+	}
+
+	public void setEntReencaminhar(Entidades entReencaminhar) {
+		this.entReencaminhar = entReencaminhar;
+	}
+	
 	
 }
