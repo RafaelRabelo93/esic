@@ -130,7 +130,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 			
 		case "Encaminhada":
-			tipoAux = 5;
+			tipoAux = 4;
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
 			break;
 			

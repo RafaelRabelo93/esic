@@ -96,6 +96,25 @@ public class NotificacaoEmail implements Job{
 		}
 	}
 
+	public static void enviarEmailTramites(Solicitacao solicitacao, String mensagem, Responsavel respRemetente, Responsavel respDestinatario ) {
+		Email email = new SimpleEmail();
+		List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1);
+		
+		try {  
+			email.setDebug(true);  
+			email.setHostName("smtp.expresso.se.gov.br");  
+			email.setAuthentication("mayara.machado","efgh1234");  
+//			email.addTo(respDestinatario); //pode ser qualquer email  
+			email.addTo("mayara.machado@cge.se.gov.br");  
+			email.setFrom(respRemetente.getEmail()); 
+			email.setSubject("Trâmite Interno");  
+			email.setMsg(mensagem);  
+			email.send();  
+		} catch (EmailException e) {  
+			e.getMessage();
+		}
+	}
+
 	public static void enviarEmailAutoridades(Solicitacao solicitacao, String titulo, String mensagem) {
 		Email email = new SimpleEmail();
 		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3);

@@ -279,7 +279,7 @@
 							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr" />
 								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
-									autoResize="false" style="width:100%" 
+									autoResize="false" style="width:100%" required="true" disabled="true"
 									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
 								<h:outputText id="display" />
 		
@@ -292,7 +292,7 @@
 							
 							<div id="Recurso" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr2" />
-								<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
+								<p:inputTextarea id="descr2" cols="100" rows="8" disabled="true" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
 								<h:outputText id="display2" />
 		
 								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
@@ -311,15 +311,15 @@
 										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
 								</p:selectOneMenu>
 	
-								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
+								<p:outputLabel value="Justificativa Cidadão:" for="justCid"  />
 								<p:inputTextarea id="justCid" cols="100" rows="8" counter="display3" maxlength="200"
-									autoResize="false" style="width:100%" required="true"
+									autoResize="false" style="width:100%" required="true" disabled="true"
 									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}"/>
 								<h:outputText id="display3" />
 	
 								<p:outputLabel value="Justificativa Interna:" for="justInt" />
 								<p:inputTextarea id="justInt" cols="100" rows="8" counter="display4" maxlength="200"
-									autoResize="false" style="width:100%" required="true"
+									autoResize="false" style="width:100%" required="true" disabled="true"
 									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" />
 								<h:outputText id="display4" />
 	
@@ -337,13 +337,13 @@
 					<h:panelGroup id="barraBtns">
 						
 						<!-- Botão Resposta -->
-						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
+						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
 						</p:commandLink>
 						
 						<!-- Botão Prorrogar -->
-						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba')" styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and 
+						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');" styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and 
 						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
@@ -351,14 +351,14 @@
 						</p:commandLink>
 						
 						<!-- Botão Encaminhar -->
-						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disable="#{!(solicitacao.ehProrrogavel() eq true and solicitacao.solicitacao.status eq 'finalizada')}" update="solicitacao_panel" styleClass="blankSquareBtn">
+						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disable="#{!(solicitacao.ehProrrogavel() eq true and solicitacao.solicitacao.status eq 'finalizada')}" update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 						
 						<!-- Botão Recurso -->
-						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso')" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informação'}" disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}" update="solicitacao_panel" styleClass="blankSquareBtn">
+						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso');" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informação'}" disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}" update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />
@@ -394,6 +394,9 @@
 		document.getElementById(abaBtn).style.background = "white";
 		document.getElementById(abaBtn).style.border = "none";
 	}
+
+
+	
 </script>
 
 

@@ -77,6 +77,15 @@ public class  ResponsavelDAO {
   	 	return results.get(0);
     }
     
+    @SuppressWarnings("unchecked")
+    public static Responsavel findResponsavelUsuario(int idUsuario) {
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam");
+    	query.setParameter("usuarioParam", idUsuario);  
+    	
+    	List<Responsavel> results = query.getResultList();
+    	return results.get(0);
+    }
+    
     
 
     @SuppressWarnings("unchecked")

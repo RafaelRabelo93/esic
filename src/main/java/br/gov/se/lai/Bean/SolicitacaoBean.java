@@ -36,12 +36,14 @@ import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
+import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
+import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
@@ -52,8 +54,6 @@ import br.gov.se.lai.utils.NotificacaoEmail;
 @SuppressWarnings("unused")
 public class SolicitacaoBean implements Serializable {
 
-	
-	
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
 	private List<Solicitacao> filteredSolicitacoes;
@@ -80,12 +80,10 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
 
-	
-	
-	
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
+		this.entReencaminhar = new Entidades();
 		this.mensagem = new Mensagem();
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
@@ -97,18 +95,18 @@ public class SolicitacaoBean implements Serializable {
 
 	public String save() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
-		
+
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
 			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 			this.solicitacao.setStatus("Finalizada");
-			
-		}else {
-			if(LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+3)));
+
+		} else {
+			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
 				this.solicitacao.setStatus("Aberta");
 			}
-			
+
 		}
 
 		// Salvar Solicitação
@@ -117,7 +115,7 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setEncaminhada(false);
-		
+
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 
 			// Salvar Mensagem
@@ -131,7 +129,7 @@ public class SolicitacaoBean implements Serializable {
 					AnexoBean anx = new AnexoBean();
 					anx.save(anexo, mensagem, file);
 				}
-				NotificacaoEmail.enviarNotificacao(solicitacao,userBean.getUsuario());
+				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 				enviarMensagemAutomatica();
 			}
 
@@ -143,7 +141,6 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		return "/index";
 	}
-	
 
 	public String verificaCidadaoSolicitacao() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
@@ -177,21 +174,24 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public void enviarMensagemAutomatica() {
-		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo()+" recebido com sucesso.");
+		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática",
+				solicitacao.getTipo() + " recebido com sucesso.");
 	}
-	
-	
+
 	/*
-	 * Métodos relacionados a consulta de solicitações 
+	 * Métodos relacionados a consulta de solicitações
 	 * 
-	 * verificaCidadaoConsulta(): String - retorna a página com a lista populada de solicitações relacionadas ao cidadão.
-	 * consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a entidade passada como parâmetro da tela para o bean.
-	 * listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com base no status passado como parâmetro da tela para o bean.  
-	 * attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante a sessão, na lista de mensagens relacionada àquela solicitacao.
-	 * popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens relacionadas àquela solicitação.
+	 * verificaCidadaoConsulta(): String - retorna a página com a lista populada de
+	 * solicitações relacionadas ao cidadão. consultarSolicitacao() : String -
+	 * Filtra a lista de solicitações de acordo com a entidade passada como
+	 * parâmetro da tela para o bean. listPersonalizada(AjaxBehaviorEvent e) : void
+	 * - filtra lista de solicitações com base no status passado como parâmetro da
+	 * tela para o bean. attMensagens(Mensagem m) : void - adiciona uma nova
+	 * mensagem, que foi enviada durante a sessão, na lista de mensagens relacionada
+	 * àquela solicitacao. popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> -
+	 * popula a lista de mensagens relacionadas àquela solicitação.
 	 */
-	
-	
+
 	public String verificaCidadaoConsulta() {
 		if (userBean.getUsuario().getPerfil() == 3) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -236,40 +236,36 @@ public class SolicitacaoBean implements Serializable {
 			SolicitacaoDAO.saveOrUpdate(slt);
 		}
 	}
-	
-	
-	
+
 	/////////// Tipologias das solicitações - Tratamentos específicos
-	
-	public 	String Denuncia() {
+
+	public String Denuncia() {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
 		solicitacao.setAcoes(AcoesDAO.findAcoes(1));
 		return "/Solicitacao/solicitacao.xhtml";
 	}
 
-
-	
 	///////////// Redirecionamento de paginas
-	/////////+++++++++++++++++++++++++++++++++++++++++++
+	///////// +++++++++++++++++++++++++++++++++++++++++++
 
-	
 	public String questionarioParaSolicitacao() {
-		if(idAcao == 0) {
+		if (idAcao == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não permite campos vazios.", "Preencha os campos."));
 			return null;
-		}else {
+		} else {
 			return "/Solicitacao/solicitacao.xhtml";
 		}
 	}
-	
+
 	///////// Verificação dos Status em relação ao Tempo
-	/////////+++++++++++++++++++++++++++++++++++++++++++
-	
+	///////// +++++++++++++++++++++++++++++++++++++++++++
+
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(solicitacao.getStatus()))));
+			solicitacao.setDataLimite(
+					java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(solicitacao.getStatus()))));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
@@ -286,8 +282,9 @@ public class SolicitacaoBean implements Serializable {
 
 	private boolean verificaSeProrrogada(Solicitacao solicitacao) {
 		boolean retorno = false;
-//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		if (mensagensSolicitacao.isEmpty()) popularMensagens();
+		// List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty())
+			popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 4)) {
 				retorno = true;
@@ -298,39 +295,41 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public boolean recursoLiberado() {
-		if(!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+		if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
 
 	public void prorrogar() {
 		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short)2);
-		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		this.mensagem.setTipo((short) 2);
+		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
-		if(MensagemDAO.saveOrUpdate(mensagem)) {
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
 			alterarPrazo(solicitacao);
 			MensagemBean.attMensagemSolicitacao(mensagem);
-		};
+		}
+		;
 		mensagem = new Mensagem();
-		
+
 	}
+
 	public void recurso() {
 		short novaInstancia = (short) (solicitacao.getInstancia() + 1);
 		solicitacao.setInstancia(novaInstancia);
 		alterarPrazo(solicitacao);
 		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short)1);
-		this.mensagem.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		this.mensagem.setTipo((short) 1);
+		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		mensagem = new Mensagem();
 
 	}
-	
+
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
@@ -352,11 +351,11 @@ public class SolicitacaoBean implements Serializable {
 
 	}
 
-
 	private boolean verificaSeRespondida(Solicitacao solicitacao) {
 		boolean retorno = false;
-//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		if (mensagensSolicitacao.isEmpty()) popularMensagens();
+		// List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty())
+			popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 2)) {
 				retorno = true;
@@ -369,8 +368,9 @@ public class SolicitacaoBean implements Serializable {
 	private boolean verificaSeLimiteRecurso(Solicitacao solicitacao) {
 		int cont = 0;
 		boolean retorno = false;
-//		List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
-		if (mensagensSolicitacao.isEmpty()) popularMensagens();
+		// List<Mensagem> msgs = new ArrayList<>(solicitacao.getMensagems());
+		if (mensagensSolicitacao.isEmpty())
+			popularMensagens();
 		for (Mensagem mensagem : mensagensSolicitacao) {
 			if (mensagem.getTipo().equals((short) 3)) {
 				cont++;
@@ -383,77 +383,91 @@ public class SolicitacaoBean implements Serializable {
 
 		return retorno;
 	}
-	
-	//Reencaminhamento de solicitacao
+
+	// Reencaminhamento de solicitacao
 	private boolean verificaSeEncaminhada(Solicitacao solicitacao) {
 		boolean retorno = false;
-		if (mensagensSolicitacao.isEmpty()) popularMensagens();
+		if (mensagensSolicitacao.isEmpty())
+			popularMensagens();
 		for (Mensagem msg : mensagensSolicitacao) {
-			if(msg.getTipo().equals((short)5)){
+			if (msg.getTipo().equals((short) 5)) {
 				retorno = true;
 				break;
 			}
 		}
 		return retorno;
 	}
-		
+
 	private boolean verificaSe24Horas() {
 		boolean retorno = false;
-		Calendar hoje = Calendar.getInstance(); 
-		Calendar limite = Calendar.getInstance(); 
+		Calendar hoje = Calendar.getInstance();
+		Calendar limite = Calendar.getInstance();
 		limite.setTime(solicitacao.getDataIni());
 		limite.add(Calendar.DATE, +1);
 		if (hoje.before(limite)) {
-			retorno =  true;
+			retorno = true;
 		}
 		return retorno;
 	}
-	
+
 	public boolean ehEncaminhavel() {
-		if(!verificaSeEncaminhada(solicitacao) && verificaSe24Horas()) {
+		if (!verificaSeEncaminhada(solicitacao) && verificaSe24Horas()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
-	/////////Reencaminhar
-	/////////+++++++++++++++++++++++++++++++++++++++++++
 
+	///////// Reencaminhar
+	///////// +++++++++++++++++++++++++++++++++++++++++++
 
 	public void encaminhar() {
 		
-		this.solicitacao.setEntidades(entReencaminhar);
-		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-
-			this.mensagem.setSolicitacao(solicitacao);
-			this.mensagem.setTipo((short)2);
-			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
-			this.mensagem.setUsuario(usuario);
-			this.mensagem.setData(new Date(System.currentTimeMillis()));
-			if(MensagemDAO.saveOrUpdate(mensagem)) {
-				MensagemBean.attMensagemSolicitacao(mensagem);
-			};
-			mensagem = new Mensagem();
-
-			this.mensagemEncaminhar.setSolicitacao(solicitacao);
-			this.mensagemEncaminhar.setTipo((short)5);
-			this.mensagemEncaminhar.setUsuario( ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
-			this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
-			if(MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
-				MensagemBean.attMensagemTramites(mensagemEncaminhar);
-				MensagemBean.salvarStatus(solicitacao, "Encaminhada", entReencaminhar.getNome(), solicitacao.getEntidades().getNome());
-				solicitacao.setEntidades(entReencaminhar);
-				solicitacao.setEncaminhada(true);
-				if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-					NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
-				};
-			};
-			mensagemEncaminhar = new Mensagem();
-			
-		}
+		entReencaminhar = EntidadesDAO.find(3);
+		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+		Responsavel respDestinatario = (Responsavel) ResponsavelDAO.findResponsavelEntidade(entReencaminhar.getIdEntidades(), 1).get(0);
+		Entidades antigaEnt = solicitacao.getEntidades();
 		
+		// Avisa ao cidadão
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 2);
+		this.mensagem.setUsuario(usuario);
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+			MensagemBean.attMensagemSolicitacao(mensagem);
+			NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+		}
+		;
+		mensagem = new Mensagem();
+
+		// Encaminhar
+		if (!solicitacao.isEncaminhada()){
+			
+			this.solicitacao.setEntidades(entReencaminhar);
+			solicitacao.setEncaminhada(true);
+	
+			if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+				this.mensagemEncaminhar.setSolicitacao(solicitacao);
+				this.mensagemEncaminhar.setTipo((short) 5);
+				this.mensagemEncaminhar.setUsuario(usuario);
+				this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
+				if (MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
+					MensagemBean.attMensagemTramites(mensagemEncaminhar);
+					MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),antigaEnt.getNome());
+					NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente, respDestinatario);
+				}
+			}
+		}
+		mensagemEncaminhar = new Mensagem();
+
 	}
+	
+	public void popularEncaminharEntidade(AjaxBehaviorEvent e) {
+		entReencaminhar = (Entidades) EntidadesDAO.listPersonalizada(idEntidades);
+	}
+
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -622,4 +636,5 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	
+
 }

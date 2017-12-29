@@ -38,16 +38,19 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	public void save() {
 		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);
+			acoes.add(acao);
 			acao = new Acoes();
 		}
 		
 	}
 	
-	public String delete() {
+	public void delete() {
 		if(verificaPermissao() ) {
+			int ind = acoes.indexOf(acao);
+			acoes.remove(ind);
 			AcoesDAO.delete(acao);
+			acao = new Acoes();
 		}
-		return "/Consulta/consulta_acoes";
 	}
 
 	public String filtrarAcoes(List<Competencias> comps){
