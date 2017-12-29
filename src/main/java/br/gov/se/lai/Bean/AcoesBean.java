@@ -47,7 +47,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		if(verificaPermissao() ) {
 			AcoesDAO.delete(acao);
 		}
-		return "/index";
+		return "/Consulta/consulta_acoes";
 	}
 
 	public String filtrarAcoes(List<Competencias> comps){

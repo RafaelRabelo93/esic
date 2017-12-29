@@ -126,13 +126,19 @@
 }
 
 .botaoLink {
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+	
 	background: linear-gradient(to bottom right, #135186, #276eb3);
 	align-self: flex-end;
 	text-decoration: none; 
 	color: white !important;
 	padding: 10px;
 	border-radius: 3px;
-	margin-bottom: 2vw;
+	margin: 0;
     
     width: fit-content;
     height: fit-content;
@@ -561,7 +567,7 @@
     opacity: 0.5;
 }
 
-.ui-panelgrid-cell .ui-outputlabel {
+.ui-panelgrid-cell .ui-outputlabel, .ui-outputlabel {
     color: black;
     font-variant-caps: all-petite-caps;
     font-size: 20px;
@@ -704,12 +710,12 @@ td.prazo.branco {
 
 #conteudo {
 	width: -webkit-fill-available;
+	border-right: 1px solid silver;
 }
 
 #barraBtns {
 	width: 100px;
-	margin-left: 5px;
-	border-left: 1px solid silver;
+/* 	margin-left: 5px; */
 	
 	display: -ms-flexbox; 
  	display: -moz-flexbox;
@@ -722,6 +728,8 @@ td.prazo.branco {
  	-o-flex-flow: column nowrap;
  	-webkit-flex-flow: column nowrap;
  	flex-flow: column nowrap;
+ 	
+ 	background-color: #e4e4e4;
 }
 
 .blankSquareBtn {
@@ -758,13 +766,12 @@ td.prazo.branco {
  	font-size: 15px;
  	text-align: center;
  	color: gray;
- 	border-bottom: 1px solid silver;
- 	outline: 1px solid white;
+ 	border-bottom: 1px solid #e4e4e4;
 }
 
  a.blankSquareBtn:hover  {
 	text-decoration: none;
-	background-color: #396ba6;
+	background-color: #396ba6 !important;
 	color: white;
 }
 
@@ -775,9 +782,9 @@ td.prazo.branco {
 }
 
 .blankSquareBtn .ui-state-disabled {
-	background-color: silver;
+	background-color: #e4e4e4;
 	outline: none;
-	color: #9E9E9E;
+	color: silver;
 }
 
 /* Breadcrumb */
