@@ -34,7 +34,7 @@ public class CidadaoDAO {
         }
     }
     public static void delete(Cidadao cidadao) {        
-        try {            
+        try {             
         	Cidadao usu = em.find(Cidadao.class, cidadao.getIdCidadao());
             if (usu == null) {
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Cidadao não cadastrado."));
@@ -61,6 +61,16 @@ public class CidadaoDAO {
   	 	return results.get(0);
 
    }
+
+    @SuppressWarnings("unchecked")
+    public static Cidadao findCidadaoUsuario(int idUsuario) {
+    	Query query = em.createQuery("FROM Cidadao as cid WHERE cid.usuario.idUsuario= :idUsuarioParam");
+    	query.setParameter("idUsuarioParam", idUsuario);  
+    	
+    	List<Cidadao> results = query.getResultList();
+    	return results.get(0);
+    	
+    }
 
 	public static List<Cidadao> list() {
 	

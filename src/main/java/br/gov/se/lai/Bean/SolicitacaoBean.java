@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -81,7 +82,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
 
 	@PostConstruct
-	public void init() {
+	public void init() { 
 		this.solicitacao = new Solicitacao();
 		this.entReencaminhar = new Entidades();
 		this.mensagem = new Mensagem();
@@ -115,6 +116,7 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setEncaminhada(false);
+		this.solicitacao.setProtocolo(gerarProtocolo());
 
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 
@@ -177,7 +179,30 @@ public class SolicitacaoBean implements Serializable {
 		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática",
 				solicitacao.getTipo() + " recebido com sucesso.");
 	}
-
+	
+	//Gerar números de protocolo para as solicitações
+	public String  gerarProtocolo() {
+		LocalDate now = LocalDate.now();
+		String protocolo = ""+now.getYear()+""+now.getMonth();
+		switch(this.solicitacao.getTipo()) {
+			case "reclamacao":
+				protocolo += "001";
+			case "denuncia":
+				protocolo += "002";
+			case "informacao":
+				protocolo += "003";
+			case "solicitacao":
+				protocolo += "004";
+			case "sugestao":
+				protocolo += "005";
+			case "elogio":
+				protocolo += "006";
+		}
+		
+		return protocolo;
+	}
+	
+	
 	/*
 	 * Métodos relacionados a consulta de solicitações
 	 * 

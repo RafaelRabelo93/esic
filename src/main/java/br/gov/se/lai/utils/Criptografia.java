@@ -23,6 +23,7 @@ public class Criptografia {
 		return hexStringSenhaAdmin.toString();
 	}    
     
+	
     
    
 	public static Boolean Comparar(String senhaDigitada, String senhaCadastrada) {

@@ -25,7 +25,7 @@ public class UsuarioDAO {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuario "+ usuario.getNome()+" salvo(a) com sucesso!"));
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar usuario "+ usuario.getNome()));
-        	System.out.println(e);
+        	System.out.println(e); 
             em.getTransaction().rollback();
         }
     }
@@ -71,6 +71,19 @@ public class UsuarioDAO {
     		return null;
     	}else {    		
     		return results;
+    	}
+    	
+    }
+    @SuppressWarnings("unchecked")
+    public static Usuario buscarSessionIds(String sessionId){
+    	Query query = em.createQuery("FROM Usuario as usu WHERE usu.sessionId LIKE :sessionIdParam");
+    	query.setParameter("sessionIdParam", "%"+sessionId+"%");
+    	List<Usuario> results = query.getResultList();
+    	
+    	if (results.isEmpty()) {
+    		return null;
+    	}else {    		
+    		return results.get(0);
     	}
     	
     }

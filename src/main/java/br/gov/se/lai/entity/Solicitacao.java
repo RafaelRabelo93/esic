@@ -36,7 +36,7 @@ public class Solicitacao implements java.io.Serializable {
 	private Date datafim;
 	private Date dataLimite;
 	private String titulo;
-	private Integer protocolo;
+	private String protocolo;
 	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private short prazoTipo;
@@ -51,7 +51,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			Integer protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems) {
+			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
@@ -148,11 +148,11 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@Column(name = "protocolo")
-	public Integer getProtocolo() {
+	public String getProtocolo() {
 		return this.protocolo;
 	}
 
-	public void setProtocolo(Integer protocolo) {
+	public void setProtocolo(String protocolo) {
 		this.protocolo = protocolo;
 	}
 

@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 	
-			<h:form id="redef_senha2" styleClass="cad_form" rendered="#{usuario.pegarParamURL() ne null }">
+			<h:form id="redef_senha2" styleClass="cad_form" rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}">
 
 				<div class="ficha">
 				
@@ -48,6 +48,10 @@
 					</p:panelGrid>
 				</div>
 
+			</h:form>
+			
+			<h:form rendered="#{usuario.verificarValidadeURL() eq false}">
+				<p> Link expirado</p>
 			</h:form>
 
 		</ui:define>

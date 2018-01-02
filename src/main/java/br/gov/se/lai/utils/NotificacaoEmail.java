@@ -135,7 +135,7 @@ public class NotificacaoEmail implements Job{
 			email.setSubject(titulo);  
 			email.setMsg(mensagem);  
 			email.send();  
-		} catch (EmailException e) {  
+		} catch (EmailException e) {   
 //			System.out.println(e.getMessage());  
 		}
 	}
@@ -160,8 +160,7 @@ public class NotificacaoEmail implements Job{
 		
 	}
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String hashcodeDate, String email) {
-		String mensagem = "Clique no link para redefinir sua senha: \n http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key=" 
-							+ hashcodeUser+"&date_key="+hashcodeDate;
+		String mensagem = "Clique no link para redefinir sua senha:  http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser+"&access_expire_date="+hashcodeDate;
 		try {
 			enviarEmail(email, "mayara.machado@cge.se.gov.br", "Redefinição de senha", mensagem);
 		} catch (EmailException e) {
