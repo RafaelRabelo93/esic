@@ -64,12 +64,12 @@
 
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:"  />
+								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'informacao'}" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="recResp" value="#{solicitacao.formaRecebimento}">
+								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'informacao'}">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 									<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 									<f:selectItem itemLabel="Email" itemValue="2"/>

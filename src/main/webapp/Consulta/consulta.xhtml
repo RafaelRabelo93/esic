@@ -44,13 +44,15 @@
 <!-- 							</p:column> -->
 <!-- 						</p:headerRow> -->
 
-						<p:column headerText="Protocolo" width="120" priority="6">
-							<h:outputText value="#{slt.idSolicitacao}" />
+						<p:column headerText="Protocolo" width="150" priority="6">
+							<h:outputText value="#{slt.protocolo}" />
 						</p:column>
 
 						<p:column headerText="Órgão" width="100" sortBy="#{slt.entidades.sigla}" priority="3">
 							<h:outputText value="#{slt.entidades.sigla}" />
 						</p:column>
+
+						
 
 						<p:column headerText="Título" sortBy="#{slt.titulo}" priority="3">
 							<h:outputText value="#{slt.titulo}" />
@@ -120,6 +122,10 @@
 							style="color:#1a568c; font-size:18px" />
 						<h:outputText value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
 
+						<h:outputText value="Forma de Recebimento da resposta:"
+							style="color:#1a568c; font-size:18px" />
+						<h:outputText value="#{solicitacao.formaRecebimentoString}"/>
+						
 						<h:outputText value="Tipo de solicitacao:"
 							style="color:#1a568c; font-size:18px" />
 						<h:outputText value="#{solicitacao.solicitacao.tipo}" />
@@ -332,28 +338,39 @@
 					<h:panelGroup id="barraBtns">
 						
 						<!-- Botão Resposta -->
-						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" styleClass="blankSquareBtn">
+						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
+								rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" 
+								styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
 						</p:commandLink>
 						
 						<!-- Botão Prorrogar -->
-						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and 
-						(solicitacao.solicitacao.tipo eq 'solicitacao' or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
+						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
+								styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" 
+								disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and (solicitacao.solicitacao.tipo eq 'solicitacao' 
+											or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 						
 						<!-- Botão Encaminhar -->
-						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disable="#{!(solicitacao.ehEncaminhavel() eq false and solicitacao.solicitacao.status eq 'finalizada')}" update="solicitacao_panel" styleClass="blankSquareBtn">
+						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" 
+									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" 
+									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.ehEncaminhavel()}" 
+									update="solicitacao_panel" 
+									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 						
 						<!-- Botão Recurso -->
-						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informação'}" disable="#{solicitacao.recursoLiberado() ne true and solicitacao.solicitacao.status eq 'finalizada'}" update="solicitacao_panel" styleClass="blankSquareBtn">
+						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
+								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informacao'}" 
+								disabled="#{solicitacao.recursoLiberado() ne true or solicitacao.solicitacao.status ne 'Finalizada'}" 
+								update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />

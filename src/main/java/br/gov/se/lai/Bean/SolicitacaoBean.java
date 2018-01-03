@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -68,6 +69,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
+	private String formaRecebimentoString;
 	private Calendar datafim;
 	private int idEntidades;
 	private int formaRecebimento;
@@ -105,6 +107,9 @@ public class SolicitacaoBean implements Serializable {
 		} else {
 			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
 				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+				this.solicitacao.setStatus("Aberta");
+			}else {
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
 				this.solicitacao.setStatus("Aberta");
 			}
 
@@ -182,21 +187,22 @@ public class SolicitacaoBean implements Serializable {
 	
 	//Gerar números de protocolo para as solicitações
 	public String  gerarProtocolo() {
-		LocalDate now = LocalDate.now();
-		String protocolo = ""+now.getYear()+""+now.getMonth();
+		Date now = new Date(System.currentTimeMillis());
+		SimpleDateFormat ft = new SimpleDateFormat("yyyyddssMs");
+		String protocolo = ft.format(now);
 		switch(this.solicitacao.getTipo()) {
 			case "reclamacao":
-				protocolo += "001";
+				protocolo += "1";
 			case "denuncia":
-				protocolo += "002";
+				protocolo += "2";
 			case "informacao":
-				protocolo += "003";
+				protocolo += "3";
 			case "solicitacao":
-				protocolo += "004";
+				protocolo += "4";
 			case "sugestao":
-				protocolo += "005";
+				protocolo += "5";
 			case "elogio":
-				protocolo += "006";
+				protocolo += "6";
 		}
 		
 		return protocolo;
@@ -207,15 +213,22 @@ public class SolicitacaoBean implements Serializable {
 	 * Métodos relacionados a consulta de solicitações
 	 * 
 	 * verificaCidadaoConsulta(): String - retorna a página com a lista populada de
-	 * solicitações relacionadas ao cidadão. consultarSolicitacao() : String -
-	 * Filtra a lista de solicitações de acordo com a entidade passada como
-	 * parâmetro da tela para o bean. listPersonalizada(AjaxBehaviorEvent e) : void
-	 * - filtra lista de solicitações com base no status passado como parâmetro da
-	 * tela para o bean. attMensagens(Mensagem m) : void - adiciona uma nova
-	 * mensagem, que foi enviada durante a sessão, na lista de mensagens relacionada
-	 * àquela solicitacao. popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> -
-	 * popula a lista de mensagens relacionadas àquela solicitação.
-	 */
+	 * solicitações relacionadas ao cidadão. 
+	 * 
+	 * consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a
+	 * entidade passada como parâmetro da tela para o bean. 
+	 * 
+	 * listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com 
+	 * base no status passado como parâmetro da tela para o bean. 
+	 * 
+	 * attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante 
+	 * a sessão, na lista de mensagens relacionada àquela solicitacao. 
+	 * 
+	 * popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens
+	 * relacionadas àquela solicitação.
+	 * 
+	 * alterarEnc() : void - Configura 
+	 *  */
 
 	public String verificaCidadaoConsulta() {
 		if (userBean.getUsuario().getPerfil() == 3) {
@@ -412,8 +425,7 @@ public class SolicitacaoBean implements Serializable {
 	// Reencaminhamento de solicitacao
 	private boolean verificaSeEncaminhada(Solicitacao solicitacao) {
 		boolean retorno = false;
-		if (mensagensSolicitacao.isEmpty())
-			popularMensagens();
+		if (mensagensSolicitacao.isEmpty()) popularMensagens();
 		for (Mensagem msg : mensagensSolicitacao) {
 			if (msg.getTipo().equals((short) 5)) {
 				retorno = true;
@@ -448,45 +460,54 @@ public class SolicitacaoBean implements Serializable {
 
 	public void encaminhar() {
 		
-		entReencaminhar = EntidadesDAO.find(3);
-		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
-		Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
-		Responsavel respDestinatario = (Responsavel) ResponsavelDAO.findResponsavelEntidade(entReencaminhar.getIdEntidades(), 1).get(0);
-		Entidades antigaEnt = solicitacao.getEntidades();
-		
-		// Avisa ao cidadão
-		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short) 2);
-		this.mensagem.setUsuario(usuario);
-		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		if (!solicitacao.isEncaminhada()) {
 
-		if (MensagemDAO.saveOrUpdate(mensagem)) {
-			MensagemBean.attMensagemSolicitacao(mensagem);
-			NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
-		}
-		;
-		mensagem = new Mensagem();
+			entReencaminhar = EntidadesDAO.find(3);
+			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel respDestinatario = (Responsavel) ResponsavelDAO
+					.findResponsavelEntidade(entReencaminhar.getIdEntidades(), 1).get(0);
+			Entidades antigaEnt = solicitacao.getEntidades();
 
-		// Encaminhar
-		if (!solicitacao.isEncaminhada()){
-			
-			this.solicitacao.setEntidades(entReencaminhar);
-			solicitacao.setEncaminhada(true);
-	
-			if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-				this.mensagemEncaminhar.setSolicitacao(solicitacao);
-				this.mensagemEncaminhar.setTipo((short) 5);
-				this.mensagemEncaminhar.setUsuario(usuario);
-				this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
-				if (MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
-					MensagemBean.attMensagemTramites(mensagemEncaminhar);
-					MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),antigaEnt.getNome());
-					NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente, respDestinatario);
+			// Avisa ao cidadão
+			this.mensagem.setSolicitacao(solicitacao);
+			this.mensagem.setTipo((short) 2);
+			this.mensagem.setUsuario(usuario);
+			this.mensagem.setData(new Date(System.currentTimeMillis()));
+
+			if (MensagemDAO.saveOrUpdate(mensagem)) {
+				MensagemBean.attMensagemSolicitacao(mensagem);
+				NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+			}
+			;
+			mensagem = new Mensagem();
+
+			// Encaminhar
+			if (!solicitacao.isEncaminhada()) {
+
+				this.solicitacao.setEntidades(entReencaminhar);
+				solicitacao.setEncaminhada(true);
+
+				if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+					this.mensagemEncaminhar.setSolicitacao(solicitacao);
+					this.mensagemEncaminhar.setTipo((short) 5);
+					this.mensagemEncaminhar.setUsuario(usuario);
+					this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
+					if (MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
+						MensagemBean.attMensagemTramites(mensagemEncaminhar);
+						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),
+								antigaEnt.getNome());
+						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,
+								respDestinatario);
+					}
 				}
 			}
-		}
-		mensagemEncaminhar = new Mensagem();
+			mensagemEncaminhar = new Mensagem();
 
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Solicitação já encaminhada.", "Não é possível executar uma nova encaminhação."));
+		}
 	}
 	
 	public void popularEncaminharEntidade(AjaxBehaviorEvent e) {
@@ -636,14 +657,6 @@ public class SolicitacaoBean implements Serializable {
 		SolicitacaoBean.mensagensSolicitacao = mensagensSolicitacao;
 	}
 
-	public int getFormaRecebimento() {
-		return formaRecebimento;
-	}
-
-	public void setFormaRecebimento(int formaRecebimento) {
-		this.formaRecebimento = formaRecebimento;
-	}
-
 	public Mensagem getMensagemEncaminhar() {
 		return mensagemEncaminhar;
 	}
@@ -660,6 +673,21 @@ public class SolicitacaoBean implements Serializable {
 		this.entReencaminhar = entReencaminhar;
 	}
 	
-	
+	public String getFormaRecebimentoString() {
+		try {
+			switch (solicitacao.getFormaRecebimento()) {
+			case 1:
+				formaRecebimentoString = "Correspondência";
+			case 2:
+				formaRecebimentoString = "Email";
+			case 3:
+				formaRecebimentoString = "Email e Correspondência";
+			}
+			return formaRecebimentoString;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "...";
+		}
+	}
 
 }

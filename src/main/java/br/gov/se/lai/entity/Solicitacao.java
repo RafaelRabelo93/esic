@@ -41,6 +41,7 @@ public class Solicitacao implements java.io.Serializable {
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private short prazoTipo;
 	private boolean encaminhada;
+	private Integer formaRecebimento;
 
 	public Solicitacao() {
 	}
@@ -51,7 +52,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems) {
+			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
@@ -65,6 +66,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.tipo = tipo;
 		this.mensagems = mensagems;
 		this.prazoTipo = prazoTipo;
+		this.formaRecebimento = formaRecebimento;
 	}
 
 	@Id
@@ -147,7 +149,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.titulo = titulo;
 	}
 
-	@Column(name = "protocolo")
+	@Column(name = "protocolo", length = 46)
 	public String getProtocolo() {
 		return this.protocolo;
 	}
@@ -210,6 +212,16 @@ public class Solicitacao implements java.io.Serializable {
 	public void setEncaminhada(boolean encaminhada) {
 		this.encaminhada = encaminhada;
 	}
+
+	@Column(name = "formaRecebimento")
+	public Integer getFormaRecebimento() {
+		return formaRecebimento;
+	}
+
+	public void setFormaRecebimento(Integer formaRecebimento) {
+		this.formaRecebimento = formaRecebimento;
+	}
+	
 	
 
 }
