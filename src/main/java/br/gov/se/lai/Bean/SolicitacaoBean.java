@@ -461,8 +461,10 @@ public class SolicitacaoBean implements Serializable {
 	public void encaminhar() {
 		
 		if (!solicitacao.isEncaminhada()) {
+			
+			popularEncaminharEntidade();
 
-			entReencaminhar = EntidadesDAO.find(3);
+//			entReencaminhar = EntidadesDAO.find(3);
 			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
 			Responsavel respDestinatario = (Responsavel) ResponsavelDAO
@@ -510,8 +512,8 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
-	public void popularEncaminharEntidade(AjaxBehaviorEvent e) {
-		entReencaminhar = (Entidades) EntidadesDAO.listPersonalizada(idEntidades);
+	public void popularEncaminharEntidade() {
+		entReencaminhar = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(idEntidades)).get(0);
 	}
 
 

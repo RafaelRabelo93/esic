@@ -308,10 +308,10 @@
 							
 							<div id="Encaminhar" class="box aba" style="display:none; padding: 1vh 1vw">	
 								<p:outputLabel value="órgão/Entidade de destino" for="destino"/>
-								<p:selectOneMenu id="destino" value="#{solicitacao.idSolicitacao}" style="width:125px" styleClass="abaField encaminharField">
-<!-- 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"/> -->
+								<p:selectOneMenu id="destino" value="#{solicitacao.idEntidades}" style="width:125px" styleClass="abaField encaminharField">
+										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"/>
 										<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-										<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+										<f:selectItems value="#{entidades.todasEntidades}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
 								</p:selectOneMenu>
 	
 								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
@@ -324,7 +324,7 @@
 									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" styleClass="abaField encaminharField"/>
 								<h:outputText id="display4" />
 	
-								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.encaminhar()}" update="solicitacao_panel">
+								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.encaminhar()}" update="@all" oncomplete="PF('dlg2').hide();">
 									<h:outputText value="Salvar" />
 									<i class="fa fa-check" style="padding-left: 3px" />
 								</p:commandLink>
@@ -348,8 +348,8 @@
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
 								styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" 
-								disabled="#{(solicitacao.solicitacao.status ne 'Finalizada' and (solicitacao.solicitacao.tipo eq 'solicitacao' 
-											or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq true)}">
+								disabled="#{(solicitacao.solicitacao.status eq 'Finalizada' or ((solicitacao.solicitacao.tipo eq 'solicitacao' 
+											or solicitacao.solicitacao.tipo eq 'informacao' ) and solicitacao.ehProrrogavel() eq false))}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
@@ -358,8 +358,7 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" 
 									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" 
-									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.ehEncaminhavel()}" 
-									update="solicitacao_panel" 
+									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.ehEncaminhavel() eq false }" 
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />
