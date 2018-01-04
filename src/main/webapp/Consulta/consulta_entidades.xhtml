@@ -11,73 +11,76 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+			
+			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2'}">
 
-			<div class="ficha">
-
-				<!--		Mensagens de Erro		-->
-				<p:messages id="messages" showDetail="true" autoUpdate="true"
-					closable="true" />
-
-				<h:outputText value="Entidades"
-					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"
-					rendered="#{usuario.usuario.perfil eq '4' }" />
-
-				<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2'}">
-					<p:dataTable id="entidades" widget="orgaos" var="orgaos"
-						emptyMessage="Nao há órgãos"
-						filteredValue="#{entidades.todasEntidades}"
-						sortBy="#{orgaos.sigla}" expandableRowGroups="false"
-						value="#{entidades.todasEntidades}"
-						rowStyleClass="#{orgaos.sigla}" paginator="true"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="5,10,15" rowKey="#{orgaos.idEntidades}"
-						style="margin-bottom:1vw">
+				<div class="ficha">
+	
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+	
+					<h:outputText value="Entidades"
+						style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"
+						rendered="#{usuario.usuario.perfil eq '4' }" />
+	
+						<p:dataTable id="entidades" widget="orgaos" var="orgaos"
+							emptyMessage="Nao há órgãos"
+							filteredValue="#{entidades.todasEntidades}"
+							sortBy="#{orgaos.sigla}" expandableRowGroups="false"
+							value="#{entidades.todasEntidades}"
+							rowStyleClass="#{orgaos.sigla}" paginator="true"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" rowKey="#{orgaos.idEntidades}"
+							style="margin-bottom:1vw">
+							
+							<p:column headerText="Sigla" sortBy="#{orgaos.sigla}" width="70">
+								<h:outputText value="#{orgaos.sigla}" />
+							</p:column>
+	
+							<p:column headerText="Nome" sortBy="#{orgaos.nome}">
+								<h:outputText value="#{orgaos.nome}" />
+							</p:column>
+	
+							<p:column headerText="Status" sortBy="#{orgaos.ativa}" width="80">
+								<h:outputText value="Ativo" rendered="#{orgaos.ativa}" />
+								<h:outputText value="Inativo" rendered="#{not orgaos.ativa}" />
+							</p:column>
+	
+							<p:column headerText="Ações" width="50" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon"
+									action="#{competencias.consultarCompetencias}" style="margin:5px">
+									<i class="fa fa-plus" />
+									<f:setPropertyActionListener value="#{orgaos}"
+										target="#{competencias.ent}" />
+								</p:commandLink>
+							</p:column>
+	
+							<p:column headerText="Editar" width="45"
+								style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
+									<i class="fa fa-pencil-square-o" />
+									<f:setPropertyActionListener value="#{orgaos}"
+										target="#{entidades.entidades}" />
+								</p:commandLink>
+							</p:column>
+	
+							<p:column headerText="Solicitações" width="90"
+								style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" action="#{solicitacao.consultarSolicitacao}">
+									<i class="fa fa-list" />
+									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+	
+						<h:commandLink action="/Cadastro/cad_entidades"
+							style="display: flex; margin-top: 10px" styleClass="botaoLink">
+							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+							<h:outputText value="Nova Entidade" />
+						</h:commandLink>
 						
-						<p:column headerText="Sigla" sortBy="#{orgaos.sigla}" width="70">
-							<h:outputText value="#{orgaos.sigla}" />
-						</p:column>
-
-						<p:column headerText="Nome" sortBy="#{orgaos.nome}">
-							<h:outputText value="#{orgaos.nome}" />
-						</p:column>
-
-						<p:column headerText="Status" sortBy="#{orgaos.ativa}" width="80">
-							<h:outputText value="Ativo" rendered="#{orgaos.ativa}" />
-							<h:outputText value="Inativo" rendered="#{not orgaos.ativa}" />
-						</p:column>
-
-						<p:column headerText="Ações" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon"
-								action="#{competencias.consultarCompetencias}" style="margin:5px">
-								<i class="fa fa-plus" />
-								<f:setPropertyActionListener value="#{orgaos}"
-									target="#{competencias.ent}" />
-							</p:commandLink>
-						</p:column>
-
-						<p:column headerText="Editar" width="45"
-							style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
-								<i class="fa fa-pencil-square-o" />
-								<f:setPropertyActionListener value="#{orgaos}"
-									target="#{entidades.entidades}" />
-							</p:commandLink>
-						</p:column>
-
-						<p:column headerText="Solicitações" width="90"
-							style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" action="#{solicitacao.consultarSolicitacao}">
-								<i class="fa fa-list" />
-								<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
-							</p:commandLink>
-						</p:column>
-					</p:dataTable>
-
-					<h:commandLink action="/Cadastro/cad_entidades"
-						style="display: flex; margin-top: 10px" styleClass="botaoLink">
-						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-						<h:outputText value="Nova Entidade" />
-					</h:commandLink>
+						</div>
 
 				</h:form>
 
@@ -115,7 +118,7 @@
 					</h:form>
 				</p:dialog>
 
-			</div>
+			
 
 		</ui:define>
 	</ui:composition>

@@ -358,7 +358,7 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" 
 									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" 
-									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.ehEncaminhavel() eq false }" 
+									disabled="#{solicitacao.solicitacao.status eq 'Finalizada'}" 
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />

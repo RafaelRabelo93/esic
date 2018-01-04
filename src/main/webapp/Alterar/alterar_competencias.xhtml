@@ -22,7 +22,7 @@
 				<div class="ficha">
 					
                			<h:panelGroup id="competencias_panel">
-                            <p:dataTable var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}" selectionMode="multiple" selection="#{competencias.listCompetenciasExcluir}">
+                            <p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
                                 <f:facet name="header">
                                   <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
                                 </f:facet>
@@ -35,40 +35,38 @@
                                     <h:outputText value="#{comp.acoes.titulo}" />
                                 </p:column>
                                 
+                                <p:column headerText="Excluir" width="50" style="text-align: center">
+									<p:commandLink class="botaoLinkIcon" action="#{competencias.delete}" update="alterar_competencias:table">
+										<i class="fa fa-trash" style="color: white; padding-left: 3px" />
+										<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+									</p:commandLink>
+								</p:column>
+                                
                                 <p:rowExpansion>
-                                    <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
-
-                                        <h:outputText value="Descrição da ação:" />
-                                        <h:outputText value="Descrição da competência:" />
-
-                                        <p:inplace editor="true">
-                                            <p:inputTextarea id="descricao"
-                                                value="#{comp.acoes.descricao}" />
-                                        </p:inplace>
-                                        <p:inplace>
-                                            <p:inputTextarea value="#{comp.descricao}" />
-                                        </p:inplace>
-                                    </p:panelGrid>
-                                </p:rowExpansion>
+							        <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
+							            <h:outputLabel value="Descrição da ação:" for="acaoDesc" />
+							            <h:outputLabel value="Descrição da competência:" for="compDesc" />
+							
+							            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
+							            <p:inplace emptyLabel="..." editor="true">
+							            	<p:ajax event="save" listener="#{competencias.save}" update="acaoDesc" />
+							                <p:inputTextarea id="compDesc" value="#{comp.descricao}" />
+							            </p:inplace>
+							        </p:panelGrid>
+							    </p:rowExpansion>
 
                             </p:dataTable>
 
                         </h:panelGroup>
-
 					
-					<h:panelGroup styleClass="divBtn">    
-					    <p:commandLink class="botaoLink" action="#{competencias.delete}" update="alterar_competencias:competencias_panel">
-					        <h:outputText value="Excluir "  />
-					        <i class="fa fa-trash" />
-					    </p:commandLink>
-					
+					<h:panelGroup styleClass="divBtn"> 					
 					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias:competencias_panel">
-					        <h:outputText value="Atualizar " />
+					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
 					
 					    <p:commandLink class="botaoLink" onclick="PF('dlg').show();" >
-					        <h:outputText value="Nova Competencia " />
+					        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
 					        <i class="fa fa-plus" />
 					    </p:commandLink>
 					</h:panelGroup>
@@ -89,7 +87,7 @@
 	
 						<h:outputLabel value="Ações: " for="acoes" />
 						<h:panelGroup styleClass="inline">
-							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 0;" >
+							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
 								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
 							</p:selectOneMenu>
@@ -97,8 +95,8 @@
 							<h:outputLabel value="Ou" style="margin: -20px 2vw 0 4vw" />
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias"	onclick="PF('dlg2').show();">
-								<i class="fa fa-plus" />
-								<h:outputLabel value=" Nova ação" />
+								<i class="fa fa-plus-square" style="margin-right: 5px" />
+								<h:outputText value=" Nova ação" />
 							</p:commandLink>
 						</h:panelGroup>
 						
@@ -108,7 +106,7 @@
 						<h:outputText id="display" />
 					
 					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" style="margin: 0;">
-						<h:outputLabel value="Adicionar" />
+						<h:outputText value="Adicionar"  />
 						<i class="fa fa-plus" />
 					</p:commandLink>
 	
@@ -135,10 +133,9 @@
 	
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
-											update="dialog:acoes dialog:descricao dialog2:dlg2">
-								<h:outputText value="Salvar" />
-								<i class="fa fa-check" style="padding-left: 3px" />
+							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();" update="dialog:acoes dialog:descricao dialog2:dlg2">
+								<h:outputText value="Salvar" style="margin-right: 5px"/>
+								<i class="fa fa-check" />
 							</p:commandLink>
 	
 						</p:outputPanel>
