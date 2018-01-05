@@ -64,12 +64,12 @@
 
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'informacao'}" />
+								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'informacao'}">
+								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 									<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 									<f:selectItem itemLabel="Email" itemValue="2"/>
@@ -104,7 +104,7 @@
 						<p:row>
 							<p:column>
 								<p:fileUpload mode="simple" value="#{solicitacao.file}"
-									label="Enviar Foto" skinSimple="true"
+									label="Enviar Anexo" skinSimple="true"
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
 									invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"

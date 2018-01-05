@@ -358,7 +358,7 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" 
 									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" 
-									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.ehEncaminhavel() eq false }" 
+									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' }" 
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />
@@ -368,7 +368,7 @@
 						<!-- Botão Recurso -->
 						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
 								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informacao'}" 
-								disabled="#{solicitacao.recursoLiberado() ne true or solicitacao.solicitacao.status ne 'Finalizada'}" 
+								disabled="#{solicitacao.recursoLiberado() eq false and solicitacao.solicitacao.status ne 'Finalizada'}" 
 								update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />

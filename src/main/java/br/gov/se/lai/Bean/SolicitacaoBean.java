@@ -94,6 +94,7 @@ public class SolicitacaoBean implements Serializable {
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		
 	}
 
 	public String save() {
@@ -136,7 +137,8 @@ public class SolicitacaoBean implements Serializable {
 					AnexoBean anx = new AnexoBean();
 					anx.save(anexo, mensagem, file);
 				}
-				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
+				
+				NotificacaoEmail.destinatarioEmail(userBean.getUsuario(), solicitacao);
 				enviarMensagemAutomatica();
 			}
 
@@ -157,7 +159,7 @@ public class SolicitacaoBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			userBean.setVeioDeSolicitacao(1);
-			return "Cadastro/cad_usuario";
+			return "/Cadastro/cad_usuario";
 		} else {
 			if (userBean.getUsuario().getPerfil() == 1 || userBean.getUsuario().getPerfil() != 2) {
 				// verifico se há a instancia de um usuario e se este usuario não é um
@@ -166,10 +168,10 @@ public class SolicitacaoBean implements Serializable {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
 					// se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa
 					// cadastrar cidadão
-					return "Cadastro/cad_cidadao";
+					return "/Cadastro/cad_cidadao";
 				} else {
 					// se já for cadastrado usuario e cidadão inicia solicitacao
-					return "Solicitacao/questionario1";
+					return "/Solicitacao/questionario1";
 				}
 			} else {
 				// Se for um responsável não tem autorização para solicitar
@@ -311,7 +313,16 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public boolean ehProrrogavel() {
-		if (!verificaSeProrrogada(solicitacao)) {
+		Calendar hoje = Calendar.getInstance();
+
+		Calendar limiteMin = Calendar.getInstance();
+		limiteMin.setTime(solicitacao.getDataLimite());
+		limiteMin.add(Calendar.DATE, -5);
+		
+		Calendar limite = Calendar.getInstance();
+		limite.setTime(solicitacao.getDataLimite());
+		
+		if (!verificaSeProrrogada(solicitacao) && hoje.after(limite) && hoje.before(limite)) {
 			return true;
 		} else {
 			return false;

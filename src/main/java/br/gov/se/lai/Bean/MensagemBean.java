@@ -70,8 +70,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setUsuario(usuario);
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
-			verificaMensagem();
+			mensagem.setTipo((short)2);
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
+				verificaMensagem();
 				try {
 					if ((file.getContents().length != 0 && !file.equals(null))) {
 						System.out.println(anexo.toString());
@@ -81,7 +82,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 				}catch (Exception e) {
 					e.getMessage();
 				}finally {
-					
 					mensagensSolicitacao.add(mensagem);
 				}
 			}
@@ -99,7 +99,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
 			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
-			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+			}
 		}
 		mensagem.setTipo((short)2);
 	}
@@ -110,44 +112,50 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	
 
 	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha) {
-		int tipoAux;
+		int tipoAux = 4;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
-		mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema.");
 		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Prorrogada":
-			tipoAux = 4;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
 			break;
 
 		case "Finalizada":
-			tipoAux = 4;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Encaminhada":
-			tipoAux = 4;
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
 			break;
 			
 		case "Status Denuncia 1":
 			tipoAux = 0;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 2":
 			tipoAux = 0;
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 3":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
 			tipoAux = 0;
+			break;
+
+		case "Respondida":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			break;
 			
 		default:
-			tipoAux = 1;
+			mensagem.setTexto("Nova solicitacao no sistema.");
 			break;
 		}
 		mensagem.setTipo((short)tipoAux);

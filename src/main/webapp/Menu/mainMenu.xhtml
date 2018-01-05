@@ -45,7 +45,7 @@
 					
 					<!-- Cadastro de usuário -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '4'}">
-						<h:commandLink styleClass="link" action="Cadastro/cad_usuario">
+						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
 								width="80%" />
 
@@ -58,7 +58,7 @@
 					
 					<!-- Alterar dados -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil ne '0'}">
-						<h:commandLink styleClass="link" action="Alterar/alterar_usuario">
+						<h:commandLink styleClass="link" action="/Alterar/alterar_usuario">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
 								width="80%" />
 
@@ -157,7 +157,7 @@
 					
 					<!-- Gerir responsável -->
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
-						<h:commandLink styleClass="link" action="Consulta/consulta_responsavel">
+						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/businessman.png']}" width="80%" />
 
@@ -172,7 +172,7 @@
 					
 <!-- 					Cadastro de responsável -->
 <!-- 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}"> -->
-<!-- 						<h:commandLink styleClass="link" action="Cadastro/cad_acoes"> -->
+<!-- 						<h:commandLink styleClass="link" action="/Cadastro/cad_acoes"> -->
 <!-- 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="80%" /> -->
 
 <!-- 							<h:outputText styleClass="titulo" value="Cadastro de Ação" -->

@@ -17,7 +17,7 @@
 <!--                 <li><p:commandLink value="Gerir Responsável" styleClass="current"  /></li> -->
 <!--             </ul> -->
 
-				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '4' }" >
+				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }" >
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />

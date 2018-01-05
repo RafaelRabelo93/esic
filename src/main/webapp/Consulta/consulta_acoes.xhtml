@@ -17,7 +17,7 @@
 <!--                 <li><p:commandLink value="Gerir Respons�vel" styleClass="current"  /></li> -->
 <!--             </ul> -->
 
-				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '4' }" >
+				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' }" >
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
@@ -38,7 +38,7 @@
 						</p:column>
 						
 						<p:column headerText="Editar" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
 							</p:commandLink>
