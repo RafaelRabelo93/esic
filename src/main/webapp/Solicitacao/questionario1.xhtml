@@ -37,7 +37,7 @@
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnInfo" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="80vh" />
-							<f:setPropertyActionListener value="informacao" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Informação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Informação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
@@ -46,7 +46,7 @@
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnSol" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/question.png']}" width="80vh" />
-							<f:setPropertyActionListener value="solicitacao" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
@@ -55,7 +55,7 @@
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnElogio" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="80vh" />
-							<f:setPropertyActionListener value="elogio" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Elogio" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
@@ -64,7 +64,7 @@
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnSugestao" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/speaking.png']}" width="80vh" />
-							<f:setPropertyActionListener value="sugestao" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Sugestão" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
@@ -73,7 +73,7 @@
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnReclama" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="80vh" />
-							<f:setPropertyActionListener value="reclamacao" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Reclamação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>
@@ -82,7 +82,7 @@
 						<div class="botao" style="width: 150px; padding: 0">
 						<h:commandLink id="btnDenuncia" styleClass="link" action="#{solicitacao.Denuncia()}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="80vh" />
-							<f:setPropertyActionListener value="denuncia" target="#{solicitacao.solicitacao.tipo}" />
+							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
 						</div>

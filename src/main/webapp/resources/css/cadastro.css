@@ -57,6 +57,7 @@
 .box {
 	padding: 1.5em;
 	margin-bottom: 1vh;
+	margin-top: 1vh;
 	
  	display: -ms-flexbox; 
  	display: -moz-flexbox;
@@ -82,14 +83,15 @@
  	-webkit-align-items: flex-start; 
  	align-items: flex-start;
  	
- 	border: 1px solid lightgray;
+ 	border: 1px solid silver;
     background: white;
     
     width: 100%;
-    width: -webkit-fill-available;
+    width: -webkit-fill-available;   
 }
 
 .box label {
+	color: #1a568c;
 	margin-top: 20px;
 }
 
@@ -425,7 +427,7 @@
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border-radius: 0;
-    border-color: #d2d6de;
+    border-color: silver;
     background-color: #ffffff;
     box-shadow: none;
     padding: 5px;
@@ -537,12 +539,12 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    margin-bottom: 2vw;
-    border: 1px solid #a8a8a8 !important;
+/*     margin-bottom: 2vw; */
+/*     border: 1px solid #a8a8a8 !important; */
 }
 
 .ui-datascroller-content.ui-widget-content.ui-corner-all {
-    border: 1px solid #d3d3d3 !important;
+    border: none !important;
     max-height: 300px;
     overflow-y: auto;
 }
@@ -568,9 +570,9 @@
 }
 
 .ui-panelgrid-cell .ui-outputlabel, .ui-outputlabel {
-    color: black;
-    font-variant-caps: all-petite-caps;
-    font-size: 20px;
+    color: #4f4f4f;
+/*     font-variant-caps: all-petite-caps; */
+/*     font-size: 20px; */
 }
 
 .mensagem {
@@ -688,6 +690,26 @@ td.prazo.branco {
 }
 
 /* Mensagens */
+.ui-tabs {
+	border: none;
+}
+
+.ui-tabs.ui-tabs-top>.ui-tabs-nav {
+    padding: .2em .2em 0;
+    background: white !important;
+    border-bottom: 1px solid silver;
+}
+
+.ui-tabs .ui-tabs-panel {
+	padding: .5em 0.5em 0 .5em !important;
+	border: 1px solid silver !important;
+	border-top: none !important;
+	border-radius: 0;
+}
+
+.ui-tabs .ui-tabs-nav li {
+	background: #e4e4e4;
+}
 
 .ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
     border: 1px solid;
