@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 	
-			<h:form id="redef_senha2" styleClass="cad_form" rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}">
+			<h:form id="redef_senha2" styleClass="cad_form" rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}" > <!-- rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}"  -->
 
 				<div class="ficha">
 				
@@ -50,8 +50,12 @@
 
 			</h:form>
 			
-			<h:form rendered="#{usuario.verificarValidadeURL() eq false}">
-				<p> Link expirado</p>
+			<h:form rendered="#{usuario.verificarValidadeURL() eq false}"> <!-- rendered="#{usuario.verificarValidadeURL() eq false}" -->
+				<h:panelGroup styleClass="cad_form">
+					<h:outputText value="Link expirado" style="color: #1a568c;font-size: 40px;margin: 2vh;" />
+					<p:graphicImage value="#{resource['img/icon/alarm-clock.png']}" style="margin-bottom: 2vh; filter: drop-shadow(4px 4px #ffffff) drop-shadow(-4px -4px #ffffff);"/>
+					<p:commandLink styleClass="botaoLink" value="Redefinir senha" action="#{usuario.redirectRedefSenha()}" style="align-self:center;max-width:200px;text-align:center;font-variant:all-petite-caps;font-size:1.5em;padding-bottom: .7em;"/>
+				</h:panelGroup>
 			</h:form>
 
 		</ui:define>

@@ -271,10 +271,10 @@
 						</p:tabView>
 
 					<h:form enctype="multipart/form-data">
-						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4'}">
 							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Mensagem de Resposta:" for="mensagem" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="margin-bottom: 5px"/>
-								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }" styleClass="abaField respostaField"/>
+								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }" styleClass="abaField respostaField"/>
 								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="solicitacao_panel detalheDialog">
 									<h:outputText value="Enviar" />
 									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
@@ -356,7 +356,7 @@
 						</p:commandLink>
 						
 						<!-- Botão Encaminhar -->
-						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');desativarCampos('encaminharField')" 
+						<p:commandLink id="EncaminharAba" onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField');" 
 									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" 
 									disabled="#{solicitacao.solicitacao.status eq 'Finalizada' }" 
 									styleClass="blankSquareBtn">
@@ -366,9 +366,9 @@
 						</p:commandLink>
 						
 						<!-- Botão Recurso -->
-						<p:commandLink class="botaoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
-								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'informacao'}" 
-								disabled="#{solicitacao.recursoLiberado() eq false and solicitacao.solicitacao.status ne 'Finalizada'}" 
+						<p:commandLink id="RecursoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
+								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'Informação'}" 
+								disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}" 
 								update="solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />
@@ -382,6 +382,7 @@
 			
 <!-- JAVASCRIPT -->
 <script>
+
 	function abrirAba(aba) {
 	    var x = document.getElementsByClassName("aba");
 	    for (var i = 0; x.length > i ; i++) {
