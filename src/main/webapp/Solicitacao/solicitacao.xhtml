@@ -6,19 +6,21 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body>
+<h:body onload="#{solicitacao.usuarioModoAnonimo()}">
 
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
-			<h:form id="solicitacao" styleClass="cad_form" enctype="multipart/form-data">
+			<h:form id="solicitacao" styleClass="cad_form"
+				enctype="multipart/form-data">
 
 				<div class="ficha">
-				
-				<!--		Mensagens de Erro		-->
+
+					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+					<p:growl id="msgs" />
 
 					<p:steps activeIndex="2" styleClass="custom" readonly="true">
 						<p:menuitem value="Tipo de solicitação" url="#" />
@@ -29,16 +31,20 @@
 					<p:panelGrid style="margin-bottom:1vw">
 
 						<f:facet name="header">
-						<p:row><p:column/></p:row>
+							<p:row>
+								<p:column />
+							</p:row>
 							<p:row>
 								<p:column>
 									<h:outputText value="Realizar Solicitação"
 										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
 								</p:column>
 							</p:row>
-						<p:row><p:column/></p:row>
+							<p:row>
+								<p:column />
+							</p:row>
 						</f:facet>
-						
+
 						<p:row>
 							<p:column>
 								<p:outputLabel value="Orgão:" for="orgao" />
@@ -46,34 +52,66 @@
 						</p:row>
 						<p:row>
 							<p:column>
-								<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;"/>
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Assunto:"  />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.acoesTemporaria ne null}"/>
-								<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.solicitacao.acoes ne null}"/>
+								<h:outputText id="orgao"
+									value="#{solicitacao.solicitacao.entidades.nome}"
+									style="color:#a8a8a8;" />
 							</p:column>
 						</p:row>
 
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}" />
+								<p:outputLabel value="Assunto:" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}">
-									<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-									<f:selectItem itemLabel="Correspondência" itemValue="1"/>
-									<f:selectItem itemLabel="Email" itemValue="2"/>
-									<f:selectItem itemLabel="Email e Correspondência" itemValue="3"/>
+								<h:outputText id="assunto1"
+									value="#{solicitacao.acoesTemporaria.titulo}"
+									style="color:#a8a8a8;"
+									rendered="#{solicitacao.acoesTemporaria ne null}" />
+								<h:outputText id="assunto2"
+									value="#{solicitacao.solicitacao.acoes.titulo}"
+									style="color:#a8a8a8;"
+									rendered="#{solicitacao.solicitacao.acoes ne null}" />
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Forma de recebimento da resposta:"
+									rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:selectOneMenu id="recResp"
+									value="#{solicitacao.solicitacao.formaRecebimento}"
+									rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+									<f:selectItem itemLabel="Correspondência" itemValue="1" />
+									<f:selectItem itemLabel="Email" itemValue="2" />
+									<f:selectItem itemLabel="Email e Correspondência" itemValue="3" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+
+<!-- 						<p:row> -->
+<!-- 							<p:column> -->
+<!-- 								<h:outputText value="Modo anônimo: " rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}" /> -->
+<!-- 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"> -->
+<!-- 									<p:ajax update="msgs" listener="#{solicitacao.modoAnonimoAtivado()}" /> -->
+<!-- 								</p:selectBooleanCheckbox> -->
+<!-- 							</p:column> -->
+<!-- 						</p:row> -->
+
+						<p:row>
+							<p:column>
+								<h:outputText value="Assunto: " rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}" />
+								<p:selectOneMenu id="assDen"
+									value="#{solicitacao.idAcao}"
+									rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+									<f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}" />
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>
@@ -85,7 +123,8 @@
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:inputText id="titulo" size="78" value= "#{solicitacao.solicitacao.titulo}"/>
+								<p:inputText id="titulo" size="78"
+									value="#{solicitacao.solicitacao.titulo}" />
 							</p:column>
 						</p:row>
 
@@ -96,8 +135,8 @@
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" 
-								value="#{solicitacao.mensagem.texto}" />
+								<p:inputTextarea id="mensagem" rows="10" cols="80"
+									autoResize="true" value="#{solicitacao.mensagem.texto}" />
 							</p:column>
 						</p:row>
 
@@ -115,13 +154,17 @@
 							</p:column>
 						</p:row>
 
-						<p:row><p:column/></p:row>
+						<p:row>
+							<p:column />
+						</p:row>
 
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" ajax="false" action="#{solicitacao.save}">
+					<p:commandLink class="botaoLink" ajax="false"
+						action="#{solicitacao.save}">
 						<h:outputText value="Enviar" />
-						<i class="fa fa-share-square-o" style="color: white; padding-left: 3px" /> 
+						<i class="fa fa-share-square-o"
+							style="color: white; padding-left: 3px" />
 					</p:commandLink>
 
 				</div>
