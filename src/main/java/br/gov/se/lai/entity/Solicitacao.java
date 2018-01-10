@@ -158,7 +158,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.protocolo = protocolo;
 	}
 
-	@Column(name = "tipo", length = 25)
+	@Column(name = "tipo", length = 30)
 	public String getTipo() {
 		return this.tipo;
 	}

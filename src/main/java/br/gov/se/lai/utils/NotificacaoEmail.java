@@ -151,8 +151,8 @@ public class NotificacaoEmail implements Job{
 		
 		email.setDebug(true);  
 		email.setHostName("smtp.expresso.se.gov.br");  
-		email.setAuthentication("mayara.machado","efgh1234");  
-		email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+		email.setAuthentication("michael.mendonca","potter0159");  
+		email.addTo("michael.mendonca@cge.se.gov.br"); //pode ser qualquer email  
 		email.setFrom(remetente); //será passado o email que você fará a autenticação 
 		email.setSubject(titulo);  
 		email.setMsg(mensagem);  
@@ -162,7 +162,7 @@ public class NotificacaoEmail implements Job{
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String hashcodeDate, String email) {
 		String mensagem = "Clique no link para redefinir sua senha:  http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser+"&access_expire_date="+hashcodeDate;
 		try {
-			enviarEmail(email, "mayara.machado@cge.se.gov.br", "Redefinição de senha", mensagem);
+			enviarEmail(email, "michael.mendonca@cge.se.gov.br", "Redefinição de senha", mensagem);
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

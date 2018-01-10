@@ -5,183 +5,119 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
-
 <h:body>
 
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
-			<h:form id="cad_cidadao" styleClass="cad_form" >
+			<h:form id="cad_cidadao" styleClass="cad_form">
 
 				<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
+					
+					<h:panelGroup styleClass="box" style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '5'}">
 
-					<p:panelGrid style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '5'}" >
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; align-self: center;" />
 
-						<f:facet name="header">
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-							<p:row>
-								<p:column colspan="2">
-									<h:outputText value="Dados Pessoais"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-						</f:facet>
-						
-
-						<p:row><p:column> <p:outputLabel value="Email:" for="email" /> </p:column></p:row>
-						<p:row><p:column> <p:inputText id="email" value="#{cidadao.cidadao.email}"
-							size="50" /> </p:column></p:row>
-
-						<p:row>
-							<p:column>
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Email:" for="email" />
+								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="30" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
-							</p:column>
-							<p:column>
-								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
 								<p:calendar styleClass="date" id="datanasc"
 									value="#{cidadao.cidadao.datanasc}" showOn="button"
 									locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd/MM/yyyy" mask="true" yearRange="c-100:c"/>
-							</p:column>
-							<p:column>
+									pattern="dd/MM/yyyy" mask="true" yearRange="c-100:c" />
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
 								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
 									style="width:125px">
 									<f:selectItem itemLabel="Física" itemValue="true" />
 									<f:selectItem itemLabel="Jurídica" itemValue="false" />
 								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Gênero: " for="sexo" />
-							</p:column>
-							<p:column>
-								<p:outputLabel value="Telefone: " for="telefone" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
 								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
 									layout="pageDirection">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
-							</p:column>
-
-							<p:column>
-								<p:inputMask id="telefone" value="#{cidadao.cidadao.tel}"
-									mask="(99)99999-9999" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="RG: " for="rg" />
-							</p:column>
-							<p:column>
+							</h:panelGroup>
+						</h:panelGroup>
+							
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
 								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"
-									mask="?9999999999999999" />
-							</p:column>
-							<p:column>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}"
-									mask="999.999.999-99" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Orgao Expedidor: " for="orgao" />
-							</p:column>
-							<p:column>
+								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column"  style="margin-left: 2vw">
+								<p:outputLabel value="RG: " for="rg" />
+								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"	mask="?9999999999999999" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Órgão Expedidor: " for="orgao" />
+								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}" style="width:125px" />
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Escolaridade: " for="escolaridade" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}"
-									style="width:125px" />
-							</p:column>
-
-							<p:column>
-								<p:selectOneMenu id="escolaridade"
-									value="#{cidadao.cidadao.escolaridade}" style="width:125px">
+								<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
-									<f:selectItem itemLabel="Semi-Analfabeto"
-										itemValue="2" />
+									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
 									<f:selectItem itemLabel="Fundamental" itemValue="3" />
-									<f:selectItem itemLabel="Medio" itemValue="4" />
-									<f:selectItem itemLabel="Superior" itemValue="5" />
+									<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
+									<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
+									<f:selectItem itemLabel="Ensino Superior Incompleto" itemValue="6" />
+									<f:selectItem itemLabel="Ensino Superior Completo" itemValue="7" />
 								</p:selectOneMenu>
-							</p:column>
-						</p:row>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Renda:" for="renda" />
+								<p:selectOneMenu id="renda" value="#{cidadao.cidadao.renda}">
+									<f:selectItem itemLabel="Selecionar" itemValue="" />
+									<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
+									<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
+									<f:selectItem itemLabel="De 4 a 10 SM*" itemValue="3" />
+									<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
+									<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
+								</p:selectOneMenu>
+								<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0"/>
+							</h:panelGroup>
+						</h:panelGroup>
 
-						<p:row>
-							<p:column></p:column>
-							<p:column></p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<h:outputText value="Endereço:"
-									style="color:#1a568c; font-size:20px;" />
-							</p:column>
-							<p:column></p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="CEP: " for="cep" />
-							</p:column>
-							<p:column></p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:inputText id="cep" value="#{cidadao.cidadao.cep}"
-									maxlength="10" />
-							</p:column>
-							<p:column></p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Estado: " for="estado" />
-							</p:column>
-							<p:column>
-								<p:outputLabel value="Cidade: " for="cidade" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="estado" value="#{cidadao.cidadao.estado}"
-									style="width:125px">
+						<h:outputText value="Endereço" style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+										
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="CEP:" for="cep" />
+								<p:inputMask id="cep" value="#{cidadao.cidadao.cep}" mask="99999-999" onblur="pesquisacep(#{cidadao.cidadao.cep})" />
+							</h:panelGroup>
+						
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Cidade:" for="cidade" />
+								<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Estado: " for="uf" />
+								<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" style="width:125px">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
 									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -210,63 +146,45 @@
 									<f:selectItem itemLabel="Sergipe" itemValue="SE" />
 									<f:selectItem itemLabel="Tocantins" itemValue="TO" />
 								</p:selectOneMenu>
-							</p:column>
-							<p:column>
-								<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Logradouro: " for="logradouro" />
-							</p:column>
-							<p:column>
-								<p:outputLabel value="Numero: " for="numero" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
-								<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="30" />
-							</p:column>
-							<p:column>
-								<p:inputNumber id="numero"  size="10" value="#{cidadao.cidadao.numero}"/>
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Logradouro:" for="logradouro" />
+								<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="40" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Bairro: " for="bairro" />
-							</p:column>
-							<p:column>
-								<p:outputLabel value="Complemento: " for="complemento" />
-							</p:column>
-						</p:row>
-
-						<p:row>
-							<p:column>
 								<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" />
-							</p:column>
-							<p:column>
-								<p:inputText id="complemento"  value="#{cidadao.cidadao.complemento}"/>
-							</p:column>
-						</p:row>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Número:" for="numero" />
+								<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" />
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Complemento: " for="complemento" />
+						<p:inputText id="complemento" value="#{cidadao.cidadao.complemento}" size="40" />
+							</h:panelGroup>
+						</h:panelGroup>						
+						
 
-						<p:row>
-							<p:column colspan="2">
-								<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-									style="font-size:14px; color:gray" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
+<!-- 						<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" /> -->
 
+					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" action="#{cidadao.save}" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}">
+					<p:commandLink class="botaoLink" action="#{cidadao.save}"
+						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
-						 
-						<f:setPropertyActionListener value="#{cidadao.cidadao}" target="#{solicitacao.solicitacao.cidadao}" /> 
-						
+
+						<f:setPropertyActionListener value="#{cidadao.cidadao}"
+							target="#{solicitacao.solicitacao.cidadao}" />
 					</p:commandLink>
 
 				</div>

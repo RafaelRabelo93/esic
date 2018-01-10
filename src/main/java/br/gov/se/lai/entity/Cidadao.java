@@ -43,11 +43,11 @@ public class Cidadao implements java.io.Serializable {
 	private String estado;
 	private String cidade;
 	private String cep;
-	private String tel;
 	private String bairro;
 	private String complemento;
-	private int numero;
 	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
+	private Short renda;
+	private String numero;
 
 	public Cidadao() {
 	}
@@ -59,7 +59,7 @@ public class Cidadao implements java.io.Serializable {
 
 	public Cidadao(Usuario usuario, String email, String cpf, Boolean tipo, String rg, String orgaexp, Date datanasc,
 			String sexo, Short escolaridade, String profissao, String endereco, String estado, String cidade,
-			String cep, String tel, Set<Solicitacao> solicitacaos) {
+			String cep, String tel, Set<Solicitacao> solicitacaos, Short renda) {
 		this.usuario = usuario;
 		this.email = email;
 		this.cpf = cpf;
@@ -74,8 +74,8 @@ public class Cidadao implements java.io.Serializable {
 		this.estado = estado;
 		this.cidade = cidade;
 		this.cep = cep;
-		this.tel = tel;
 		this.solicitacaos = solicitacaos;
+		this.renda = renda;
 	}
 
 	@Id
@@ -218,15 +218,6 @@ public class Cidadao implements java.io.Serializable {
 		this.cep = cep;
 	}
 
-	@Column(name = "tel", length = 15)
-	public String getTel() {
-		return this.tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cidadao")
 	public Set<Solicitacao> getSolicitacaos() {
 		return this.solicitacaos;
@@ -253,13 +244,22 @@ public class Cidadao implements java.io.Serializable {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+	
+	@Column(name = "renda")
+	public Short getRenda() {
+		return renda;
+	}
 
-	@Column(name = "numero", length = 11)
-	public int getNumero() {
+	public void setRenda(Short renda) {
+		this.renda = renda;
+	}
+
+	@Column(name = "numero", length = 5)
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 	

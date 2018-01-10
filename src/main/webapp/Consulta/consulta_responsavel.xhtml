@@ -116,15 +116,15 @@
 						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
 								<p:outputLabel value="Nome: " for="nome" />
-								<p:inplace emptyLabel=" ... "><p:inputText id="nome" value="#{responsavel.responsavel.usuario.nome}" maxlength="100" /></p:inplace>
+								<p:inputText id="nome" value="#{responsavel.responsavel.usuario.nome}" maxlength="100" />
 						
 								<p:outputLabel value="Email: " for="email" />
-								<p:inplace emptyLabel=" ... "><p:inputText id="email" value="#{responsavel.responsavel.email}" maxlength="100" /></p:inplace>
+							<p:inputText id="email" value="#{responsavel.responsavel.email}" maxlength="100" />
 
 								<p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true" />
-								<p:inplace emptyLabel=" ... " label="#{responsavel.responsavel.entidades.nome}" ><p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" style="width:125px">
+								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" style="width:125px">
 									 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent.idEntidades}"/>
-								</p:selectOneMenu></p:inplace>
+								</p:selectOneMenu>
 
 								<p:outputLabel value="Nível: "  for="nivel" />
 								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}">

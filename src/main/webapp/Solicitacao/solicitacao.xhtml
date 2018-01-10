@@ -17,8 +17,6 @@
 				<div class="ficha">
 				
 				<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
 
 					<p:steps activeIndex="2" styleClass="custom" readonly="true">
 						<p:menuitem value="Tipo de solicitação" url="#" />
@@ -32,8 +30,7 @@
 						<p:row><p:column/></p:row>
 							<p:row>
 								<p:column>
-									<h:outputText value="Realizar Solicitação"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
+									<h:outputText value="Realizar Solicitação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
 								</p:column>
 							</p:row>
 						<p:row><p:column/></p:row>
@@ -41,35 +38,35 @@
 						
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Orgão:" for="orgao" />
+								<p:outputLabel value="Orgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;"/>
+								<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;"/>
 							</p:column>
 						</p:row>
 						
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Assunto:"  />
+								<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.acoesTemporaria ne null}"/>
-								<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.solicitacao.acoes ne null}"/>
+								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.acoesTemporaria ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
+								<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" rendered="#{solicitacao.solicitacao.acoes ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
 							</p:column>
 						</p:row>
 
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}" />
+								<p:outputLabel value="Forma de recebimento da resposta:"  rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column>
-								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'solicitacao'}">
+								<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 									<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 									<f:selectItem itemLabel="Email" itemValue="2"/>
