@@ -129,23 +129,7 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setProtocolo(gerarProtocolo());
 
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-
-			// Salvar Mensagem
-			this.mensagem.setUsuario(userBean.getUsuario());
-			this.mensagem.setData(new Date(System.currentTimeMillis()));
-			this.mensagem.setSolicitacao(solicitacao);
-			this.mensagem.setTipo((short) 1);
-			if (MensagemDAO.saveOrUpdate(mensagem)) {
-
-				if (!(file.getContents().length == 0)) {
-					AnexoBean anx = new AnexoBean();
-					anx.save(anexo, mensagem, file);
-				}
-				
-				NotificacaoEmail.enviarNotificacao(solicitacao, ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1).get(0).getUsuario());
-				enviarMensagemAutomatica();
-			}
-
+			salvarMensagem();
 		}
 
 		this.solicitacao = new Solicitacao();
@@ -154,44 +138,77 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		return "/index";
 	}
+	
+	/*
+	 * salvarMensagem() void : void
+	 */
+	public void salvarMensagem() {
+		this.mensagem.setUsuario(userBean.getUsuario());
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 1);
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+
+			if (!(file.getContents().length == 0)) {
+				AnexoBean anx = new AnexoBean();
+				anx.save(anexo, mensagem, file);
+			}
+			
+			NotificacaoEmail.enviarNotificacao(solicitacao, ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1).get(0).getUsuario());
+			enviarMensagemAutomatica();
+		}
+	}
+	
+	public void salvarDenuncia() {
+		
+	}
+	
+	/*
+	 * verificaCidadaoSolicitacao void : String 
+	 * 
+	 * Verifica o tipo de usuário que está solicitando acesso e redireciona para ação uma condizente com a situação.
+	 * Se não tiver cadastro de usuario, vai cadastrar primeiro.
+	 * Verifica se há a instancia de um usuario e se este usuario não é um  responsável.
+	 * Se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa cadastrar cidadão.
+	 * Se o usuário já for cadastrado como usuario e cidadão a solicitacao é iniciada.
+	 * Se for um responsável não tem autorização para solicitar.
+	 */
 
 	public String verificaCidadaoSolicitacao() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 
 		if (userBean.getUsuario().getPerfil() == 0) {
-			// se não tiver cadastro de usuario, vai cadastrar primeiro
+			
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			userBean.setVeioDeSolicitacao(1);
 			return "/Cadastro/cad_usuario";
 		} else {
 			if (userBean.getUsuario().getPerfil() == 1 || userBean.getUsuario().getPerfil() != 2) {
-				// verifico se há a instancia de um usuario e se este usuario não é um
-				// responsável
-
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
-					// se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa
-					// cadastrar cidadão
 					return "/Cadastro/cad_cidadao";
 				} else {
-					// se já for cadastrado usuario e cidadão inicia solicitacao
 					return "/Solicitacao/questionario1";
 				}
 			} else {
-				// Se for um responsável não tem autorização para solicitar
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário sem permissão.", "Tente outro login."));
 				return null;
 			}
 		}
 	}
+	/*
+	 * enviarMensagemAutomatica void : void - Envia notificação para o cidadão informando que a solicitação dele foi recebida.
+	 */
 
 	public void enviarMensagemAutomatica() {
 		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática",
 				solicitacao.getTipo() + " recebido com sucesso.");
 	}
 	
-	//Gerar números de protocolo para as solicitações
+	/*
+	 * gerarProtocolo void : String - Gerar números de protocolo para as solicitações
+	 */
 	public String  gerarProtocolo() {
 		Date now = new Date(System.currentTimeMillis());
 		SimpleDateFormat ft = new SimpleDateFormat("yyyyddssMs");
@@ -214,28 +231,12 @@ public class SolicitacaoBean implements Serializable {
 		return protocolo;
 	}
 	
-	
-	/*
-	 * Métodos relacionados a consulta de solicitações
-	 * 
-	 * verificaCidadaoConsulta(): String - retorna a página com a lista populada de
-	 * solicitações relacionadas ao cidadão. 
-	 * 
-	 * consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a
-	 * entidade passada como parâmetro da tela para o bean. 
-	 * 
-	 * listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com 
-	 * base no status passado como parâmetro da tela para o bean. 
-	 * 
-	 * attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante 
-	 * a sessão, na lista de mensagens relacionada àquela solicitacao. 
-	 * 
-	 * popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens
-	 * relacionadas àquela solicitação.
-	 * 
-	 * alterarEnc() : void - Configura 
-	 *  */
 
+	
+
+	/* verificaCidadaoConsulta(): String - retorna a página com a lista populada de
+	 * solicitações relacionadas ao cidadão. 
+	 */
 	public String verificaCidadaoConsulta() {
 		if (userBean.getUsuario().getPerfil() == 3) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -247,6 +248,10 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
+	/*consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a
+	 * entidade passada como parâmetro da tela para o bean. 
+	 * 
+	 */
 	public String consultarSolicitacao() {
 		if (getIdEntidades() == 0) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -257,6 +262,9 @@ public class SolicitacaoBean implements Serializable {
 		return "/Consulta/consulta";
 	}
 
+	/*listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com 
+	 * base no status passado como parâmetro da tela para o bean. 
+	 */
 	public void listPersonalizada(AjaxBehaviorEvent e) {
 		if (status == "Todas") {
 			filteredSolicitacoes = SolicitacaoDAO.list();
@@ -265,14 +273,23 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
+	/*attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante 
+	 * a sessão, na lista de mensagens relacionada àquela solicitacao. 
+	 */
 	public static void attMensagens(Mensagem mensagem) {
 		mensagensSolicitacao.add(mensagem);
 	}
 
+	/*popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens
+	 * relacionadas àquela solicitação.
+	 */
 	public List<Mensagem> popularMensagens() {
 		mensagensSolicitacao = new ArrayList<>(solicitacao.getMensagems());
 		return mensagensSolicitacao;
 	}
+	
+	/*alterarEnc() : void - Configura status de encaminhada da solicitacação
+	 */
 
 	public void alterarEnc() {
 		for (Solicitacao slt : SolicitacaoDAO.listarGeral()) {
@@ -281,7 +298,7 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	/////////// Tipologias das solicitações - Tratamentos específicos
+	// +++++++++++++++++++++++++++ Tipologias das solicitações - Tratamentos específicos
 
 	public String Denuncia() {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
@@ -309,8 +326,7 @@ public class SolicitacaoBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(escolha));
     }
 
-	///////////// Redirecionamento de paginas
-	///////// +++++++++++++++++++++++++++++++++++++++++++
+	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
 	public String questionarioParaSolicitacao() {
 		if (idAcao == 0) {
@@ -322,8 +338,7 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	///////// Verificação dos Status em relação ao Tempo
-	///////// +++++++++++++++++++++++++++++++++++++++++++
+	// +++++++++++++++++++++++++++ Verificação dos Status em relação ao Tempo
 
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
@@ -490,8 +505,7 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	///////// Reencaminhar
-	///////// +++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++ Reencaminhar
 
 	public void encaminhar() {
 		
