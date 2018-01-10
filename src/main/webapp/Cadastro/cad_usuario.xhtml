@@ -35,13 +35,9 @@
 						<p:message for="nome" display="text"/>
 						
 						<p:outputLabel value="Nome de usuário: " for="nick" />
-						<p:inputText id="nick" required="true"
+						<p:inputText id="nick" required="true" readonly="true"
 							value="#{usuario.usuario.nick}" maxlength="50" />
 						<p:message for="nick" display="text"/>
-						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText id="email" value="#{cidadao.cidadao.email}"
-							size="50" required="true"/>
 						
 						<p:outputLabel value="Senha:" for="senha1" />
 						<p:password id="senha1" match="senha2"

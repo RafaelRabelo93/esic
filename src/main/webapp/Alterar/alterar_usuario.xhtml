@@ -94,7 +94,7 @@
 								<p:outputLabel value="Gênero: " for="sexo" />
 							</p:column>
 							<p:column>
-								<p:outputLabel value="Telefone: " for="telefone" />
+
 							</p:column>
 						</p:row>
 
@@ -109,12 +109,7 @@
 							</p:inplace>
 							</p:column>
 
-							<p:column>
-							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:inputMask id="telefone" value="#{usuario.cidadao.tel}"
-									mask="(99)99999-9999" />
-							</p:inplace>
-							</p:column>
+						
 						</p:row>
 
 						<p:row>
@@ -261,7 +256,7 @@
 								<p:outputLabel value="Logradouro: " for="logradouro" />
 							</p:column>
 							<p:column>
-								<p:outputLabel value="Numero: " for="numero" />
+
 							</p:column>
 						</p:row>
 
@@ -271,11 +266,7 @@
 								<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="30" />
 							</p:inplace>
 							</p:column>
-							<p:column>
-							<p:inplace editor="true" emptyLabel=" ... ">
-								<p:inputText id="numero" value="#{usuario.cidadao.numero}"  size="10" />
-							</p:inplace>
-							</p:column>
+							
 						</p:row>
 
 						<p:row>

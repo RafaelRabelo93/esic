@@ -120,7 +120,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+(solicitacao.getInstancia()-1) +"º"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Prorrogada":
@@ -151,7 +151,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 
 		case "Respondida":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu uma resposta.");
 			break;
 			
 		default:

@@ -32,13 +32,14 @@ public class NotificacaoEmail implements Job{
 		String[] envio = destinatarioEmail(usuario, solicitacao);
 		String remetente = envio[0];
 		String destinatario = envio[1];
-		String titulo = solicitacao.getTitulo().toString();
+		String titulo = "Solicitação "+solicitacao.getProtocolo() + " - " + solicitacao.getTitulo().toString();
 
-		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
-		String mensagem = mensagens.get(mensagens.size()-1).getTexto();
+//		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
+//		String mensagem = mensagens.get(mensagens.size()-1).getTexto();
+		String mensagem = "Há uma nova mensagem de "+remetente + " na solicitação de protocolo "+ solicitacao.getProtocolo() + "acesse o portal do esic para visualizar. \n\n\n\n Acesse: http://localhost:8080/esic";
 		
 		try {  
-			enviarEmail(destinatario, remetente, titulo, mensagem);
+			enviarEmail(destinatario, titulo, mensagem);
 			
 		} catch (EmailException e) {  
 			
@@ -53,13 +54,14 @@ public class NotificacaoEmail implements Job{
 		String[] envio = new String[2];
 		if(usuario.getPerfil() == 3) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());	
-			envio[0] = listCidadao.get(0).getEmail().toString();
+			envio[0] = listCidadao.get(0).getUsuario().getNome();
 			if(solicitacao.getInstancia().equals((short)1)) {
 				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1);
 				envio[1] = resp.get(0).getEmail().toString();
 			}else if (solicitacao.getInstancia().equals((short)2)){
 					List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2);
 					envio[1] = resp.get(0).getEmail().toString();
+					
 			} else if (solicitacao.getInstancia().equals((short)3)) {
 				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3);
 				envio[1] = resp.get(0).getEmail().toString();
@@ -68,12 +70,34 @@ public class NotificacaoEmail implements Job{
 			if(usuario.getPerfil() == 2) {
 				@SuppressWarnings("unchecked")
 				List<Responsavel> r = new ArrayList<Responsavel>(usuario.getResponsavels());
-				envio[0] = r.get(0).getEmail().toString();
+				for (Responsavel resp : r) {
+					if(resp.isAtivo()) {
+						envio[0] = resp.getUsuario().getNome();
+						break;
+					}
+				}
 				envio[1] = solicitacao.getCidadao().getEmail();
 			}
 		}
 		
 		return envio;
+	}
+
+	public static void enviarEmail(String destinatario, String titulo, String mensagem) throws EmailException {
+		
+		Email email = new SimpleEmail();
+		EmailAttachment attachment = new EmailAttachment();
+		
+		email.setDebug(true);  
+		email.setHostName("smtp.expresso.se.gov.br");  
+		email.setAuthentication("mayara.machado","efgh1234");  
+		email.addTo("mayara.machado@cge.se.gov.br"); 
+//		email.addTo(destinatario);  
+		email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
+		email.setSubject(titulo);  
+		email.setMsg(mensagem+"\n\n\n\n\n\n destinatario: "+destinatario);  // só para teste  
+		email.send();  
+		
 	}
 	
 	public static void enviarEmailAutomatico(Solicitacao solicitacao,String titulo, String mensagem) {
@@ -140,29 +164,10 @@ public class NotificacaoEmail implements Job{
 		}
 	}
 	
-	public static void enviarEmail(String destinatario, String remetente, String titulo, String mensagem) throws EmailException {
-		
-		//System.out.println("Entrou em email");
-		//System.out.println(remetente + " - "+destinatario);
-		
-		
-		Email email = new SimpleEmail();
-		EmailAttachment attachment = new EmailAttachment();
-		
-		email.setDebug(true);  
-		email.setHostName("smtp.expresso.se.gov.br");  
-		email.setAuthentication("mayara.machado","efgh1234");  
-		email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
-		email.setFrom(remetente); //será passado o email que você fará a autenticação 
-		email.setSubject(titulo);  
-		email.setMsg(mensagem);  
-		email.send();  
-		
-	}
-	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String hashcodeDate, String email) {
-		String mensagem = "Clique no link para redefinir sua senha:  http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser+"&access_expire_date="+hashcodeDate;
+	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String email) {
+		String mensagem = "Clique no link para redefinir sua senha:  http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
 		try {
-			enviarEmail(email, "mayara.machado@cge.se.gov.br", "Redefinição de senha", mensagem);
+			enviarEmail(email, "Redefinição de senha", mensagem);
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

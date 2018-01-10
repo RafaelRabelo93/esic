@@ -3,6 +3,7 @@ package br.gov.se.lai.Bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -221,9 +223,9 @@ public class UsuarioBean implements Serializable {
 			System.out.println(e.getMessage());
 		} finally {
 			if (cont == 1) {
-				this.nick = ((getNomeCompleto().replace(" ", ".")).toLowerCase());
+				this.nick = (deAccent((getNomeCompleto().replace(" ", ".")).toLowerCase()));
 			} else {
-				this.nick = ((getNomeCompleto().replace(" ", ".") + cont).toLowerCase());
+				this.nick = (deAccent((getNomeCompleto().replace(" ", ".") + cont).toLowerCase()));
 			}
 			this.usuario.setNick(this.nick);
 
@@ -333,7 +335,7 @@ public class UsuarioBean implements Serializable {
 					String senhaCrip = Criptografia.Criptografar(senha); 
 						if (senhaCrip !=  usuario.getSenha()) {
 							usuario.setSenha(senhaCrip);
-							UsuarioDAO.saveOrUpdate(usuario);
+							acessoUsuario(usuario);
 							usuario = new Usuario();
     						try {
     							redirectPages("/esic");
@@ -380,8 +382,7 @@ public class UsuarioBean implements Serializable {
 				if (!resp.equals(null)) {
 					acessoUsuario(resp.getUsuario());
 					String accessKey = resp.getUsuario().getSessionId();
-					String datekey = LocalDate.now().plusDays(1).toString().replaceAll(":", "-").replaceAll(" ", "_");
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, datekey, emailRedirect);
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
 				}
 
@@ -390,8 +391,7 @@ public class UsuarioBean implements Serializable {
 				if (!cid.equals(null)) {
 					acessoUsuario(cid.getUsuario());
 					String accessKey = cid.getUsuario().getSessionId();
-					String datekey = LocalDate.now().plusDays(1).toString().replaceAll(":", "-").replaceAll(" ", "_");
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, datekey, emailRedirect);
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
 				}
 
@@ -408,8 +408,8 @@ public class UsuarioBean implements Serializable {
 	public String pegarParamURL() {
 		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("access_key");
-		codigoURLTemporaria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("access_expire_date");
+//		codigoURLTemporaria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+//				.get("access_expire_date");
 		return codigoRedefSenha;
 	}
 
@@ -421,19 +421,24 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("finally")
 	public boolean verificarValidadeURL() {
 		boolean retorno = false;
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Usuario usuario = UsuarioDAO.buscarSessionIds(codigoRedefSenha);
 		try {
-			Date dataExpiracao = df.parse(codigoURLTemporaria.replace("_", " "));
-			if (new Date(System.currentTimeMillis()).compareTo(dataExpiracao) < 0) {
+			Calendar hoje = Calendar.getInstance();
+			Calendar limite = Calendar.getInstance();
+			limite.setTime(usuario.getLastLogged());
+			limite.add(Calendar.DAY_OF_WEEK, +1);
+			if (hoje.before(limite)) {
 				retorno = true;
 			}
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (NullPointerException e) {
+			usuario = new Usuario();
+		}finally {
+			return retorno;
 		}
 
-		return retorno;
 	}
 
 	public void pegarUsuarioURL(String codigoRedefSenha) throws EmailException {
@@ -445,7 +450,7 @@ public class UsuarioBean implements Serializable {
 			Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
-				NotificacaoEmail.enviarEmail(resp.getEmail(), "no_replay@cge.se.gov.br", "Alteração de Email",
+				NotificacaoEmail.enviarEmail(resp.getEmail(), "Alteração de Email",
 						"Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
@@ -453,7 +458,7 @@ public class UsuarioBean implements Serializable {
 			Cidadao cid = CidadaoDAO.findCidadaoUsuario(usuario.getIdUsuario());
 			if (!cid.equals(null)) {
 				this.usuario = cid.getUsuario();
-				NotificacaoEmail.enviarEmail(cid.getEmail(), "no_replay@cge.se.gov.br", "Alteração de Email",
+				NotificacaoEmail.enviarEmail(cid.getEmail(), "Alteração de Email",
 						"Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
@@ -510,6 +515,12 @@ public class UsuarioBean implements Serializable {
 			return "Jurídica";
 		}
 
+	}
+	
+	public static String deAccent(String str) {
+	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 
 	// GETTERS E SETTERS

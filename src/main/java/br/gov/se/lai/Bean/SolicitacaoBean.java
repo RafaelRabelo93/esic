@@ -36,6 +36,7 @@ import org.primefaces.model.UploadedFile;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.AnexoDAO;
+import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -78,6 +79,7 @@ public class SolicitacaoBean implements Serializable {
 	private Mensagem mensagemEncaminhar;
 	private UploadedFile file;
 	private Acoes acoesTemporaria;
+	private boolean modoAnonimo;
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
@@ -99,13 +101,15 @@ public class SolicitacaoBean implements Serializable {
 
 	public String save() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
-
-		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("elogio")) {
+		
+		//Salvar como instancia automaticamente finalizada
+		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
 			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 			this.solicitacao.setStatus("Finalizada");
 
 		} else {
+			//Contar com final de semana
 			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
 				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
 				this.solicitacao.setStatus("Aberta");
@@ -138,7 +142,7 @@ public class SolicitacaoBean implements Serializable {
 					anx.save(anexo, mensagem, file);
 				}
 				
-				NotificacaoEmail.destinatarioEmail(userBean.getUsuario(), solicitacao);
+				NotificacaoEmail.enviarNotificacao(solicitacao, ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1).get(0).getUsuario());
 				enviarMensagemAutomatica();
 			}
 
@@ -193,17 +197,17 @@ public class SolicitacaoBean implements Serializable {
 		SimpleDateFormat ft = new SimpleDateFormat("yyyyddssMs");
 		String protocolo = ft.format(now);
 		switch(this.solicitacao.getTipo()) {
-			case "reclamacao":
+			case "Reclamacao":
 				protocolo += "1";
-			case "denuncia":
+			case "Denuncia":
 				protocolo += "2";
-			case "informacao":
+			case "Informacao":
 				protocolo += "3";
-			case "solicitacao":
+			case "Solicitacao":
 				protocolo += "4";
-			case "sugestao":
+			case "Sugestao":
 				protocolo += "5";
-			case "elogio":
+			case "Elogio":
 				protocolo += "6";
 		}
 		
@@ -281,9 +285,29 @@ public class SolicitacaoBean implements Serializable {
 
 	public String Denuncia() {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
-		solicitacao.setAcoes(AcoesDAO.findAcoes(1));
 		return "/Solicitacao/solicitacao.xhtml";
 	}
+	
+	public boolean estaUsuarioLogado() {
+		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		if (usuarioBean != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void modoAnonimoEscolha() {
+		String escolha;
+        if(modoAnonimo) {
+        	escolha = "Modo Anônimo ativado"; 
+        	solicitacao.setCidadao(CidadaoDAO.findCidadao(7)); 
+        }else {
+        	escolha = "Modo Anônimo desativado";
+        	
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(escolha));
+    }
 
 	///////////// Redirecionamento de paginas
 	///////// +++++++++++++++++++++++++++++++++++++++++++
@@ -612,11 +636,10 @@ public class SolicitacaoBean implements Serializable {
 		return (Set<Mensagem>) MensagemDAO.list(getIdEntidades());
 	}
 
-	// public int getIdAcao() {
-	// return idAcao;
-	// }
-	//
-	//
+	 public int getIdAcao() {
+	 return idAcao;
+	 }
+	
 	public void setIdAcao(int idAcao) {
 		this.idAcao = idAcao;
 		setAcoesTemporaria(idAcao);
@@ -703,4 +726,15 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
+	public boolean isModoAnonimo() {
+		return modoAnonimo;
+	}
+
+	public void setModoAnonimo(boolean modoAnonimo) {
+		this.modoAnonimo = modoAnonimo;
+	}
+
+
+
+	
 }
