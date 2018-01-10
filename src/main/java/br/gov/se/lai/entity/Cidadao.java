@@ -45,9 +45,8 @@ public class Cidadao implements java.io.Serializable {
 	private String cep;
 	private String bairro;
 	private String complemento;
+	private int numero;
 	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
-	private Short renda;
-	private String numero;
 
 	public Cidadao() {
 	}
@@ -59,7 +58,7 @@ public class Cidadao implements java.io.Serializable {
 
 	public Cidadao(Usuario usuario, String email, String cpf, Boolean tipo, String rg, String orgaexp, Date datanasc,
 			String sexo, Short escolaridade, String profissao, String endereco, String estado, String cidade,
-			String cep, String tel, Set<Solicitacao> solicitacaos, Short renda) {
+			String cep, Set<Solicitacao> solicitacaos) {
 		this.usuario = usuario;
 		this.email = email;
 		this.cpf = cpf;
@@ -75,7 +74,6 @@ public class Cidadao implements java.io.Serializable {
 		this.cidade = cidade;
 		this.cep = cep;
 		this.solicitacaos = solicitacaos;
-		this.renda = renda;
 	}
 
 	@Id
@@ -218,6 +216,7 @@ public class Cidadao implements java.io.Serializable {
 		this.cep = cep;
 	}
 
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cidadao")
 	public Set<Solicitacao> getSolicitacaos() {
 		return this.solicitacaos;
@@ -244,22 +243,13 @@ public class Cidadao implements java.io.Serializable {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
-	
-	@Column(name = "renda")
-	public Short getRenda() {
-		return renda;
-	}
 
-	public void setRenda(Short renda) {
-		this.renda = renda;
-	}
-
-	@Column(name = "numero", length = 5)
-	public String getNumero() {
+	@Column(name = "numero", length = 11)
+	public int getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 	

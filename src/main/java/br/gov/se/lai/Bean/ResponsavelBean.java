@@ -116,6 +116,152 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades(), instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+		}
+		
+		if(busca ==false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades(), instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+		}
+		
+		if(busca ==false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades(), instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+		}
+		
+		if(busca ==false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades(), instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+		}
+		
+		if(busca ==false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades(), instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidade);
+				}
+		}
+		
+		if(busca ==false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
+	public int responsavelDisponivel(int instancia, Entidades entidade) {
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {
