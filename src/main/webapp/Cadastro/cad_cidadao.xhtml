@@ -14,8 +14,6 @@
 			<h:form id="cad_cidadao" styleClass="cad_form">
 
 				<div class="ficha">
-
-					<!--		Mensagens de Erro		-->
 					
 					<h:panelGroup styleClass="box" style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '5'}">
 
@@ -76,7 +74,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Escolaridade: " for="escolaridade" />
-								<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}">
+								<p:selectOneMenu id="escolaridade" value="#{cidadao.cidadao.escolaridade}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />

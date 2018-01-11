@@ -45,7 +45,8 @@ public class Cidadao implements java.io.Serializable {
 	private String cep;
 	private String bairro;
 	private String complemento;
-	private int numero;
+	private String numero;
+	private Short renda;
 	private Set<Solicitacao> solicitacaos = new HashSet<Solicitacao>(0);
 
 	public Cidadao() {
@@ -58,7 +59,7 @@ public class Cidadao implements java.io.Serializable {
 
 	public Cidadao(Usuario usuario, String email, String cpf, Boolean tipo, String rg, String orgaexp, Date datanasc,
 			String sexo, Short escolaridade, String profissao, String endereco, String estado, String cidade,
-			String cep, Set<Solicitacao> solicitacaos) {
+			String cep, Set<Solicitacao> solicitacaos, String numero) {
 		this.usuario = usuario;
 		this.email = email;
 		this.cpf = cpf;
@@ -74,6 +75,7 @@ public class Cidadao implements java.io.Serializable {
 		this.cidade = cidade;
 		this.cep = cep;
 		this.solicitacaos = solicitacaos;
+		this.numero = numero;
 	}
 
 	@Id
@@ -244,15 +246,22 @@ public class Cidadao implements java.io.Serializable {
 		this.complemento = complemento;
 	}
 
-	@Column(name = "numero", length = 11)
-	public int getNumero() {
+	@Column(name = "numero", length = 5)
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 	
-	
+	@Column(name = "renda")
+	public Short getRenda() {
+		return renda;
+	}
+
+	public void setRenda(Short renda) {
+		this.renda = renda;
+	}
 
 }
