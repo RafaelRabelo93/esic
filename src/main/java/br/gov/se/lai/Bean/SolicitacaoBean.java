@@ -102,23 +102,8 @@ public class SolicitacaoBean implements Serializable {
 	public String save() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 		
-		//Salvar como instancia automaticamente finalizada
-		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
-			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
-			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-			this.solicitacao.setStatus("Finalizada");
-
-		} else {
-			//Contar com final de semana
-			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
-				this.solicitacao.setStatus("Aberta");
-			}else {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
-				this.solicitacao.setStatus("Aberta");
-			}
-
-		}
+		gerarDataLimite();
+		gerarDataFim(); // caso seja Elogio/Sugestão
 
 		// Salvar Solicitação
 		this.solicitacao.setCidadao(listCidadao.get(0));
@@ -137,6 +122,40 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
 		return "/index";
+	}
+	
+	
+	
+	public void gerarDataLimite() {
+		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
+			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
+			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+			this.solicitacao.setStatus("Finalizada");
+
+		} else {
+			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+			}else {
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
+			}
+			this.solicitacao.setStatus("Aberta");
+		}
+	}
+	
+	public void gerarDataFim() {
+		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
+			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+			this.solicitacao.setStatus("Finalizada");
+		}
+	}
+	
+	public void settarCidadao(){
+		if(solicitacao.getTipo().equals("Denúncia")) {
+        	solicitacao.setCidadao(CidadaoDAO.findCidadao(7)); 
+		}else {
+			
+		}
+			
 	}
 	
 	/*
@@ -314,17 +333,6 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
-	public void modoAnonimoEscolha() {
-		String escolha;
-        if(modoAnonimo) {
-        	escolha = "Modo Anônimo ativado"; 
-        	solicitacao.setCidadao(CidadaoDAO.findCidadao(7)); 
-        }else {
-        	escolha = "Modo Anônimo desativado";
-        	
-        }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(escolha));
-    }
 
 	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
