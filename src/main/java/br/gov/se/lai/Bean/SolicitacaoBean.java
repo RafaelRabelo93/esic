@@ -173,7 +173,7 @@ public class SolicitacaoBean implements Serializable {
 				anx.save(anexo, mensagem, file);
 			}
 			
-			NotificacaoEmail.enviarNotificacao(solicitacao, ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1).get(0).getUsuario());
+			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
 		}
 	}
@@ -216,6 +216,7 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 	}
+	
 	/*
 	 * enviarMensagemAutomatica void : void - Envia notificação para o cidadão informando que a solicitação dele foi recebida.
 	 */
@@ -273,13 +274,30 @@ public class SolicitacaoBean implements Serializable {
 	 */
 	public String consultarSolicitacao() {
 		if (getIdEntidades() == 0) {
-			this.filteredSolicitacoes = SolicitacaoDAO.list();
-		} else {
-			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
-		}
-
-		return "/Consulta/consulta";
+				this.filteredSolicitacoes = SolicitacaoDAO.list();
+			} else {
+				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+			}
+			
+			return "/Consulta/consulta";
+		
 	}
+	public String consultarSolicitacaoGestor() {
+		if((EntidadesDAO.find(getIdEntidades()).getIdOrgaos() == userBean.getResponsavel().getEntidades().getIdOrgaos() ) || 
+				userBean.getResponsavel().getEntidades().getIdEntidades().equals(1)) {
+			
+			if (getIdEntidades() == 0) {
+				this.filteredSolicitacoes = SolicitacaoDAO.list();
+			} else {
+				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+			}
+			
+			return "/Consulta/consulta";
+		}else {
+			return null;
+		}
+	}
+	
 
 	/*listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com 
 	 * base no status passado como parâmetro da tela para o bean. 

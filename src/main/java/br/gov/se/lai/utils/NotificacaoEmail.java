@@ -12,9 +12,12 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import br.gov.se.lai.Bean.ResponsavelBean;
+import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.entity.Cidadao;
+import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
@@ -36,7 +39,9 @@ public class NotificacaoEmail implements Job{
 
 //		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
 //		String mensagem = mensagens.get(mensagens.size()-1).getTexto();
-		String mensagem = "Há uma nova mensagem de "+remetente + " na solicitação de protocolo "+ solicitacao.getProtocolo() + "acesse o portal do esic para visualizar. \n\n\n\n Acesse: http://localhost:8080/esic";
+		String mensagem = "Há uma nova mensagem de "+remetente + " para "+solicitacao.getEntidades().getSigla()+" na solicitação de protocolo "+ 
+						solicitacao.getProtocolo() + " acesse o portal do esic para visualizar. \n Acesse: http://localhost:8080/esic" + "\n"+envio[2]; 
+
 		
 		try {  
 			enviarEmail(destinatario, titulo, mensagem);
@@ -51,21 +56,34 @@ public class NotificacaoEmail implements Job{
 	
 	
 	public static String[] destinatarioEmail(Usuario usuario, Solicitacao solicitacao) {
-		String[] envio = new String[2];
+		String[] envio = new String[3];
 		if(usuario.getPerfil() == 3) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());	
 			envio[0] = listCidadao.get(0).getUsuario().getNome();
-			if(solicitacao.getInstancia().equals((short)1)) {
-				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1);
-				envio[1] = resp.get(0).getEmail().toString();
-			}else if (solicitacao.getInstancia().equals((short)2)){
-					List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2);
-					envio[1] = resp.get(0).getEmail().toString();
+			int respId = ResponsavelBean.responsavelDisponivel(solicitacao.getInstancia(), solicitacao.getEntidades().getIdEntidades());
+			if(respId != -1) {
+				envio[1] = ResponsavelDAO.findResponsavel(respId).getEmail();
+				envio[2] = "";
+			}else {
+				Entidades orgaoEntidade = EntidadesDAO.find(solicitacao.getEntidades().getIdOrgaos());
+				respId = ResponsavelBean.responsavelDisponivel(solicitacao.getInstancia(), orgaoEntidade.getIdEntidades());
+				if(respId != -1) {
+					envio[1] = ResponsavelDAO.findResponsavel(respId).getEmail();
+					envio[2] = "Mensagem automática: Não há responsáveis cadastrados e/ou ativos no sistema para a entidade "+solicitacao.getEntidades().getNome()+
+							   " ("+ solicitacao.getEntidades().getSigla()+") para a instância "+solicitacao.getInstancia() +".\n A solicitação "+solicitacao.getProtocolo()+
+							   " efetuada pela(o) cidadã(o)"+ solicitacao.getCidadao().getUsuario().getNome()+"("+solicitacao.getCidadao().getEmail()+
+							   ") direcionada para esta entidade não pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+".";
+
+				}else {
+					envio[1] = ResponsavelDAO.findResponsavelEntidade(1, 3).get(0).getEmail();
+					envio[2] = "Mensagem automática: Não há responsáveis cadastrados e/ou ativos no sistema para a entidade "+solicitacao.getEntidades().getNome()+
+							" ("+ solicitacao.getEntidades().getSigla()+") para a instância "+solicitacao.getInstancia() +".\n A solicitação "+solicitacao.getProtocolo()+" efetuada pela(o) cidadã(o)"+
+							solicitacao.getCidadao().getUsuario().getNome()+"("+solicitacao.getCidadao().getEmail()+") direcionada para esta entidade não "+ 
+							"pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+".";
 					
-			} else if (solicitacao.getInstancia().equals((short)3)) {
-				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3);
-				envio[1] = resp.get(0).getEmail().toString();
+				}
 			}
+				
 		}else {
 			if(usuario.getPerfil() == 2) {
 				@SuppressWarnings("unchecked")

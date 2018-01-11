@@ -59,14 +59,14 @@
 						</p:row>
 
 
-						<p:row>
-							<p:column>
-								<h:outputText value="Modo Anônimo: " />
-								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}">
-									<p:ajax update="msg" listener="#{selectBooleanView.addMessage}" />
-								</p:selectBooleanCheckbox>
-							</p:column>
-						</p:row>
+<!-- 						<p:row> -->
+<!-- 							<p:column> -->
+<!-- 								<h:outputText value="Modo Anônimo: " /> -->
+<!-- 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"> -->
+<!-- 									<p:ajax update="msg" listener="#{selectBooleanView.addMessage}" /> -->
+<!-- 								</p:selectBooleanCheckbox> -->
+<!-- 							</p:column> -->
+<!-- 						</p:row> -->
 
 
 						<p:row>
@@ -105,15 +105,6 @@
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>
-
-<!-- 						<p:row> -->
-<!-- 							<p:column> -->
-<!-- 								<h:outputText value="Modo anônimo: " rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}" /> -->
-<!-- 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"> -->
-<!-- 									<p:ajax update="msgs" listener="#{solicitacao.modoAnonimoAtivado()}" /> -->
-<!-- 								</p:selectBooleanCheckbox> -->
-<!-- 							</p:column> -->
-<!-- 						</p:row> -->
 
 
 						<p:row>

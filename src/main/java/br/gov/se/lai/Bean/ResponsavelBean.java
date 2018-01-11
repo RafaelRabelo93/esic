@@ -115,9 +115,36 @@ public class ResponsavelBean implements Serializable{
 			return false;			
 		}
 	}
-
 	
-
+	public static int responsavelDisponivel(int instancia, int entidadeId) {
+		boolean busca = false;
+		Responsavel respBusca =  new Responsavel();
+		if(instancia <= 3) {			
+			try{
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidadeId, instancia);
+				for (Responsavel r : resp) {
+					if(r.isAtivo()) {
+						busca = true;
+						respBusca = r;
+						break;
+					}
+				}
+				if(busca == false) {
+					responsavelDisponivel(instancia+1, entidadeId);
+				}
+			}catch (NullPointerException e) {
+					responsavelDisponivel(instancia+1, entidadeId);
+				}
+		}
+		
+		if(busca == false) {
+			return -1;
+		}else {
+			return respBusca.getIdResponsavel();
+		}
+	}
+	
+	
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 

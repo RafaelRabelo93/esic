@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 			
-			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2'}">
+			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or (usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3')}">
 
 				<div class="ficha">
 	
@@ -67,7 +67,7 @@
 	
 							<p:column headerText="Solicitações" width="90"
 								style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" action="#{solicitacao.consultarSolicitacao}">
+								<p:commandLink class="botaoLinkIcon" action="#{solicitacao.consultarSolicitacaoGestor()}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
 								</p:commandLink>
