@@ -120,12 +120,18 @@
  	-webkit-flex-flow: row nowrap;
  	flex-flow: row nowrap;
  	
-    -moz-align-items: baseline;
- 	-ms-align-items: baseline;
- 	-o-align-items: baseline;
- 	-webkit-align-items: baseline; 
- 	align-items: baseline;
+/*     -moz-align-items: baseline; */
+/*  	-ms-align-items: baseline; */
+/*  	-o-align-items: baseline; */
+/*  	-webkit-align-items: baseline;  */
+/*  	align-items: baseline; */
  	
+    -moz-align-items: center;
+ 	-ms-align-items: center;
+ 	-o-align-items: center;
+ 	-webkit-align-items: center; 
+ 	align-items: center;
+
 /*  	-moz-justify-content: space-between; */
 /*  	-ms-justify-content: space-between; */
 /*  	-o-justify-content: space-between; */

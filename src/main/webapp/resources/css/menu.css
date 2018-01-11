@@ -146,6 +146,85 @@
 	font-weight: 700;
 }
 
+.subTitulo {
+	font-size: 20px;
+	color: #333;
+}
+
+.btnConsulta {
+	list-style: none;
+	margin: 1vh 2vw;
+	
+	display: -ms-flexbox;
+	display: -moz-flexbox;
+	display: -webkit-flex;
+	display: -o-flex;
+	display: flex;
+  
+	-moz-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	-o-flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+	
+  	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	-moz-align-self: center;
+ 	-ms-align-self: center;
+ 	-o-align-self: center;
+ 	-webkit-align-self: center; 
+ 	align-self: center;
+	
+	width: 500px;
+	
+/*	Estilo do botão */
+	background-color: #ffffff;
+	border: 1px solid #c0c0c0;
+    border-radius: 7px;
+    
+	
+/* 	Estilo do link */
+	text-decoration: none;
+	color: #1b4882;
+	text-decoration: none;	
+	font-size: 25px;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: left;
+}
+
+.btnConsulta > .column {
+    margin-left: 1.7em;
+}
+
+.btnConsulta > img {
+    background-color: #165389;
+    padding: 15px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+a.btnConsulta.inline:hover {
+    color: white !important;
+    background: #165389;
+     /* Firefox */
+    -moz-transition: all 1s linear;
+    /* WebKit */
+    -webkit-transition: all 1s linear;
+    /* Opera */
+    -o-transition: all 1s linear;
+    /* Standard */
+    transition: all 1s linear;
+}
+
+.btnConsulta.inline:hover > .subTitulo {
+	color: white !important;
+}
+
 /* <-- Menu Secundário --> */
 
 .menuSec{

@@ -186,8 +186,8 @@
     color: black;
 }
 
-.dropbtn:hover a,  a:hover {
-    color: white;
+.dropbtn:hover a {
+    color: white !important;
 }
 
 #navbar a:hover, .dropdown:hover .dropbtn {
@@ -229,21 +229,21 @@
 	z-index: 2000;
 }
 
-.dropdown span {
-  max-width: 0;
-  transition-delay: 0;
-  display: inline-block;
-  vertical-align: top;
-  white-space: nowrap;
-  overflow: hidden;
-}
+/* .dropdown span { */
+/*   max-width: 0; */
+/*   transition-delay: 0; */
+/*   display: inline-block; */
+/*   vertical-align: top; */
+/*   white-space: nowrap; */
+/*   overflow: hidden; */
+/* } */
 
-.dropdown:hover span {
-  max-width: 15em;
-  -webkit-transition: max-width 1s;
-  transition: max-width 1s;
-/*   max-width: max-content; */
-}
+/* .dropdown:hover span { */
+/*   max-width: 15em; */
+/*   -webkit-transition: max-width 1s; */
+/*   transition: max-width 1s; */
+/* /*   max-width: max-content; */ */
+/* } */
 
 .dropdown-submenu {
     position:relative;
