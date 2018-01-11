@@ -72,6 +72,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setSolicitacao(solicitacao);
 			mensagem.setTipo((short)2);
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
+				mensagensSolicitacao.add(mensagem);
 				verificaMensagem();
 				try {
 					if ((file.getContents().length != 0 && !file.equals(null))) {
@@ -81,9 +82,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 					}
 				}catch (Exception e) {
 					e.getMessage();
-				}finally {
-					mensagensSolicitacao.add(mensagem);
 				}
+				
 			}
 			
 		mensagem = new Mensagem();	

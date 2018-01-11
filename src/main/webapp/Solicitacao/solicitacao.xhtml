@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body>
+<h:body onload="#{solicitacao.usuarioModoAnonimo()}">
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -20,6 +20,7 @@
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+					<p:growl id="msgs" />
 
 					<p:steps activeIndex="2" styleClass="custom" readonly="true">
 						<p:menuitem value="Tipo de solicitação" url="#" />
@@ -67,6 +68,7 @@
 							</p:column>
 						</p:row>
 
+
 						<p:row>
 							<p:column>
 								<p:outputLabel value="Assunto:" />
@@ -103,6 +105,16 @@
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>
+
+<!-- 						<p:row> -->
+<!-- 							<p:column> -->
+<!-- 								<h:outputText value="Modo anônimo: " rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}" /> -->
+<!-- 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"> -->
+<!-- 									<p:ajax update="msgs" listener="#{solicitacao.modoAnonimoAtivado()}" /> -->
+<!-- 								</p:selectBooleanCheckbox> -->
+<!-- 							</p:column> -->
+<!-- 						</p:row> -->
+
 
 						<p:row>
 							<p:column>

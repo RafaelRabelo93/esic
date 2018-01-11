@@ -65,15 +65,10 @@
 						<p:outputPanel id="acaoEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
 								<p:outputLabel value="Titulo: " for="titulo" />
-								<p:inplace emptyLabel=" ... " editor="true">
-									<p:inputText id="titulo" value="#{acoes.acao.titulo}" maxlength="100" />
-								</p:inplace>
+								<p:inputText id="titulo" value="#{acoes.acao.titulo}" maxlength="100" />
 						
 								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inplace emptyLabel=" ... " editor="true">
-									<p:inputTextarea id="descricao" rows="10" cols="62"
-									autoResize="true" value="#{acoes.acao.descricao}" />
-								</p:inplace>
+								<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" value="#{acoes.acao.descricao}" />
 						
 							</p:panelGrid>
 							

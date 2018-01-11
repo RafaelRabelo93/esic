@@ -57,7 +57,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 				CompetenciasDAO.saveOrUpdate(comp);
 			}	
 		}
-		return "/index";
+		return "/Consulta/consulta_entidades";
 	}
 	
 	public String consultarCompetencias() {

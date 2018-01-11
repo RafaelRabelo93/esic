@@ -38,9 +38,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private String cep;
 	private String tel;
 	private UsuarioBean usuarioBean;
-
-	
-	
+	private int renda;
+	private String numero;
 	
 	@PostConstruct
 	public void init() {
@@ -213,6 +212,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 
 	public void setTel(String tel) {
 		this.tel = tel;
+	}
+
+	public int getRenda() {
+		return renda;
+	}
+
+	public void setRenda(int renda) {
+		this.renda = renda;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 

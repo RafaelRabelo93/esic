@@ -15,27 +15,19 @@
 			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0' }">
 
 					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
 
 				<div class="ficha">
 
-					<p:panelGrid columns="1" style="margin-bottom:1vw">
+					<h:panelGroup styleClass="box" style="margin-bottom:1vw">
 
-						<f:facet name="header">
-							<br />
-							<h:outputText value="Dados do Usuário" style="color:#1a568c; font-size:25px; padding: 0 7vw;" />
-							<br /><br />
-						</f:facet>
+							<h:outputText value="Dados do Usuário" style="color:#1a568c; font-size:25px; align-self: center;" />
 
-						<p:outputLabel value="Nome completo: " for="nome" />
-						<p:inplace editor="true" emptyLabel=" ... ">							
-							<p:inputText id="nome" value="#{usuario.usuario.nome}" size="50" />
-						</p:inplace>
-
+						<p:outputLabel value="Nome completo: " for="nome" />						
+						<p:inputText id="nome" value="#{usuario.usuario.nome}" size="60" />
+				
 						<p:outputLabel value="Nome de usuário: " for="nick" />
 						<h:outputText id="nick" required="true" value="#{usuario.usuario.nick}" size="50" />
-
+									
 						<p:outputLabel value="Email:" for="email" />
 						<p:inplace editor="true" emptyLabel=" ... ">
 							<p:inputText id="email" value="#{usuario.email}" size="50" />
@@ -293,22 +285,163 @@
 						
 					</p:panelGrid>
 					
-						<p:row> <p:column colspan="2"> <h:outputText value="Clique nos campos para editar." style="font-size:14px; color:gray"/> </p:column> </p:row>
-					</p:panelGrid>
+						<h:panelGroup rendered="#{usuario.usuario.perfil eq '3' }">
+
+								<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; align-self: center; margin-top: 2em" />
+							
+							<p:outputLabel value="Data de Nascimento: " for="datanasc" />
+							<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
+								 showOn="button" value="#{usuario.cidadao.datanasc}"
+								locale="pt_BR" effect="slideDown" navigator="true"
+								pattern="dd/MM/yyyy" mask="true" timeInput="false"  >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+								</p:calendar>
+							
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="Tipo Pessoa: " for="tipo" />
+									<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
+										style="width:125px">
+										<f:selectItem itemLabel="Física" itemValue="true" />
+										<f:selectItem itemLabel="Jurídica" itemValue="false" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Gênero: " for="sexo" />
+									<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
+										layout="pageDirection">
+										<f:selectItem itemLabel="Masculino" itemValue="M" />
+										<f:selectItem itemLabel="Feminino" itemValue="F" />
+									</p:selectOneRadio>
+								</h:panelGroup>
+							</h:panelGroup>
+								
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="CPF/CNPJ: " for="cpf" />
+									<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" />
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column"  style="margin-left: 2vw">
+									<p:outputLabel value="RG: " for="rg" />
+									<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"	mask="?9999999999999999" />
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Órgão Expedidor: " for="orgao" />
+									<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}" style="width:125px" />
+								</h:panelGroup>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="Escolaridade: " for="escolaridade" />
+									<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}">
+										<f:selectItem itemLabel="Selecionar" itemValue="" />
+										<f:selectItem itemLabel="Analfabeto" itemValue="1" />
+										<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
+										<f:selectItem itemLabel="Fundamental" itemValue="3" />
+										<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
+										<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
+										<f:selectItem itemLabel="Ensino Superior Incompleto" itemValue="6" />
+										<f:selectItem itemLabel="Ensino Superior Completo" itemValue="7" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Renda:" for="renda" />
+									<p:selectOneMenu id="renda" value="#{cidadao.cidadao.renda}">
+										<f:selectItem itemLabel="Selecionar" itemValue="" />
+										<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
+										<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
+										<f:selectItem itemLabel="De 4 a 10 SM*" itemValue="3" />
+										<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
+										<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
+									</p:selectOneMenu>
+									<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0"/>
+								</h:panelGroup>
+							</h:panelGroup>
+	
+							<h:outputText value="Endereço" style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+											
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="CEP:" for="cep" />
+									<p:inputMask id="cep" value="#{cidadao.cidadao.cep}" mask="99999-999" onblur="pesquisacep(#{cidadao.cidadao.cep})" />
+								</h:panelGroup>
+							
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Cidade:" for="cidade" />
+									<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Estado: " for="uf" />
+									<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" style="width:125px">
+										<f:selectItem itemLabel="Selecionar" itemValue="" />
+										<f:selectItem itemLabel="Acre" itemValue="AC" />
+										<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+										<f:selectItem itemLabel="Amapá" itemValue="AP" />
+										<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+										<f:selectItem itemLabel="Bahia" itemValue="BA" />
+										<f:selectItem itemLabel="Ceará" itemValue="CE" />
+										<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+										<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+										<f:selectItem itemLabel="Goiás" itemValue="GO" />
+										<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+										<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+										<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+										<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+										<f:selectItem itemLabel="Pará" itemValue="PA" />
+										<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+										<f:selectItem itemLabel="Paraná" itemValue="PR" />
+										<f:selectItem itemLabel="Piauí" itemValue="PI" />
+										<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+										<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+										<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+										<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+										<f:selectItem itemLabel="Roraima" itemValue="RR" />
+										<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+										<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+										<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="Logradouro:" for="logradouro" />
+									<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="40" />
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Bairro: " for="bairro" />
+									<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" />
+								</h:panelGroup>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="inline">
+								<h:panelGroup styleClass="column">
+									<p:outputLabel value="Número:" for="numero" />
+									<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" />
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" style="margin-left: 2vw">
+									<p:outputLabel value="Complemento: " for="complemento" />
+							<p:inputText id="complemento" value="#{cidadao.cidadao.complemento}" size="40" />
+								</h:panelGroup>
+							</h:panelGroup>
+							
+						</h:panelGroup>
+					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" onclick="PF('dlg2').show();">
-
 						<h:outputText value="Salvar alterações" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>
-					
-					<p:commandLink rendered="false" action="#{usuario.delete}" class="botaoLink">
 
-						<h:outputText value="Excluir" />
-						<i class="fa fa-arrow-right"
-							style="color: white; padding-left: 3px" />
-					</p:commandLink>
-					
 					</div>
 
 			</h:form>

@@ -125,6 +125,32 @@
  	-o-align-items: baseline;
  	-webkit-align-items: baseline; 
  	align-items: baseline;
+ 	
+/*  	-moz-justify-content: space-between; */
+/*  	-ms-justify-content: space-between; */
+/*  	-o-justify-content: space-between; */
+/*  	-webkit-justify-content: space-between;  */
+/*  	justify-content: space-between; */
+}
+
+.column {
+	display: -ms-inline-flexbox; 
+ 	display: -moz-inline-flexbox;
+ 	display: -webkit-inline-flex;
+ 	display: -o-inline-flex;
+ 	display: inline-flex;
+ 	
+	-moz-flex-flow: column nowrap;
+ 	-ms-flex-flow: column nowrap;
+ 	-o-flex-flow: column nowrap;
+ 	-webkit-flex-flow: column nowrap;
+ 	flex-flow: column nowrap;
+ 	
+    -moz-align-items: baseline;
+ 	-ms-align-items: baseline;
+ 	-o-align-items: baseline;
+ 	-webkit-align-items: baseline; 
+ 	align-items: baseline;
 }
 
 .botaoLink {
@@ -451,9 +477,14 @@
 .ui-selectonemenu .ui-selectonemenu-trigger {
     border: 1px solid #d2d6de !important;
     cursor: pointer !important;
-    right: -24px !important;
+    right: -1px !important;
     top: -1px !important;
     padding: 0 3px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    white-space: normal !important;
+    max-width: 50vw !important;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
@@ -483,6 +514,10 @@
 .ui-radiobutton-icon {
     margin-left: -3px !important;
     margin-top: -4px;
+}
+
+span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
+	filter: none !important;
 }
 
 .ui-overlaypanel {
@@ -522,6 +557,7 @@
 
 .ui-selectonemenu-label.ui-inputfield.ui-corner-all {
 	box-shadow: none;
+	width: 93%;
 }
 
 .ui-selectonemenu {
@@ -533,6 +569,13 @@
     color: #fff;
     box-shadow:none;
     text-align: justify;
+}
+
+.ui-outputlabel.ui-state-error {
+    border: 0 none;
+    text-decoration: underline #cd0a0a;
+    background: none;
+    color: #cd0a0a;
 }
 
 .ui-datascroller .ui-datascroller-content {
