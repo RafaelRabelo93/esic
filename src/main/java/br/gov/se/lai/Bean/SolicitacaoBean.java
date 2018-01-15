@@ -139,7 +139,7 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
 		acoesTemporaria = null;
-		return "/index";
+		return "/index?faces-redirect=true";
 	}
 	
 	
