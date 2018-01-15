@@ -24,9 +24,112 @@
 				<div class="menu" >
 				
 					
-			<!-- Menu cidadao -->
+			<!-- MENU CIDADÃO -->
+			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3'}">
+			
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.Denuncia()}">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar denúncia" />
+							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Comunicação de prática de ato ilícito cuja solução dependa da atuação de órgãos de controle interno ou externo</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
 				
-				<h:panelGroup class="menuBtn">		
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnInfo" styleClass="link card" action="Solicitacao/questionario2">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Informação" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar pedido de informação" />
+							<f:setPropertyActionListener value="Informação" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Fornece orientação ou esclarecimento sobre assuntos relacionados à administração pública estadual</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnSol" styleClass="link card" action="Solicitacao/questionario2">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/chat.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar solicitação" />
+							<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnElogio" styleClass="link card" action="Solicitacao/questionario2">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Elogio" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar elogio" />
+							<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnSugestao" styleClass="link card" action="Solicitacao/questionario2">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/sugestion.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Sugestão" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar sugestão" />
+							<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Proposição de ideia ou formulação de proposta de aprimoramento de políticas e serviços prestados pela Administração Pública Estadual</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<h:panelGroup class="botao container">
+					<h:commandLink id="btnReclama" styleClass="link card" action="Solicitacao/questionario2">
+						<div class="face front link">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="60%" />
+							<h:outputText styleClass="titulo" value="Reclamação" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText style="font-size:20px; color:#333" value="Realizar reclamação" />
+							<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
+						</div>
+						
+						<div class="face back">
+							<p>Demonstração de insatisfação relativa ao serviço público</p>
+						</div>
+					</h:commandLink>
+				</h:panelGroup>
+						
+			</h:panelGroup>
+			
+				<!-- Consulta (Cidadão) -->
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="#{usuario.usuario.perfil eq '3'}">
+					<p:graphicImage styleClass="icone" value="#{resource['img/icon/search.png']}" width="150px"/>
+					
+					<h:panelGroup styleClass="column">
+						<h:outputText styleClass="titulo" value="Consulta" style="font-size:35px; padding: 2% 0;"/>
+						<h:outputText styleClass="subTitulo" value="Acompanhar andamento da solicitação realizada" />
+					</h:panelGroup>
+				</h:commandLink>
+				
+				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil ne '3'}">		
 					
 					<!-- LAI -->
 					<h:panelGroup class="botao">
@@ -67,21 +170,9 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<!-- Consulta (Cidadão) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '3' }">
-						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoConsulta}"  >
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/loupe.png']}"
-								width="80%"/>
-
-							<h:outputText styleClass="titulo" value="Consulta" style="font-size:35px; padding: 2% 0;"/>
-
-							<h:outputText style="font-size:20px; color:#333"
-								value="Acompanhar andamento da solicitação realizada" />
-						</h:commandLink>
-					</h:panelGroup>
 
 					<!-- Solicitação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
 
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"

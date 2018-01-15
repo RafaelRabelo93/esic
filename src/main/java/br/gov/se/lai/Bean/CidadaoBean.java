@@ -230,7 +230,4 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		this.numero = numero;
 	}
 
-
-	
-		
 }

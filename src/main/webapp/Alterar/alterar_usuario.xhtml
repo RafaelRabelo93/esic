@@ -14,8 +14,6 @@
 
 			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0' }">
 
-					<!--		Mensagens de Erro		-->
-
 				<div class="ficha">
 
 
@@ -34,7 +32,7 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-									<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
+									<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
 										style="width:125px">
 										<f:selectItem itemLabel="Física" itemValue="true" />
 										<f:selectItem itemLabel="Jurídica" itemValue="false" />
@@ -43,7 +41,7 @@
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Gênero: " for="sexo" />
-									<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
+									<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"
 										layout="pageDirection">
 										<f:selectItem itemLabel="Masculino" itemValue="M" />
 										<f:selectItem itemLabel="Feminino" itemValue="F" />
@@ -54,17 +52,17 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-									<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" />
+									<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}" mask="999.999.999-99" />
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column"  style="margin-left: 2vw">
 									<p:outputLabel value="RG: " for="rg" />
-									<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"	mask="?9999999999999999" />
+									<p:inputMask id="rg" value="#{usuario.cidadao.rg}"	mask="?9999999999999999" />
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-									<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}" style="width:125px" />
+									<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" style="width:125px" />
 								</h:panelGroup>
 							</h:panelGroup>
 							
@@ -85,7 +83,7 @@
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Renda:" for="renda" />
-									<p:selectOneMenu id="renda" value="#{cidadao.cidadao.renda}">
+									<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}">
 										<f:selectItem itemLabel="Selecionar" itemValue="" />
 										<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
 										<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
@@ -102,17 +100,17 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="CEP:" for="cep" />
-									<p:inputMask id="cep" value="#{cidadao.cidadao.cep}" mask="99999-999" onblur="pesquisacep(#{cidadao.cidadao.cep})" />
+									<p:inputMask id="cep" value="#{usuario.cidadao.cep}" mask="99999-999" onblur="pesquisacep(#{usuario.cidadao.cep})" />
 								</h:panelGroup>
 							
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Cidade:" for="cidade" />
-									<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" />
+									<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" />
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Estado: " for="uf" />
-									<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" style="width:125px">
+									<p:selectOneMenu id="uf" value="#{usuario.cidadao.estado}" style="width:125px">
 										<f:selectItem itemLabel="Selecionar" itemValue="" />
 										<f:selectItem itemLabel="Acre" itemValue="AC" />
 										<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -147,24 +145,24 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Logradouro:" for="logradouro" />
-									<p:inputText id="logradouro" value="#{cidadao.cidadao.endereco}" size="40" />
+									<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="40" />
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Bairro: " for="bairro" />
-									<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" />
+									<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" />
 								</h:panelGroup>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Número:" for="numero" />
-									<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" />
+									<p:inputText id="numero" value="#{usuario.cidadao.numero}" size="10" />
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Complemento: " for="complemento" />
-							<p:inputText id="complemento" value="#{cidadao.cidadao.complemento}" size="40" />
+							<p:inputText id="complemento" value="#{usuario.cidadao.complemento}" size="40" />
 								</h:panelGroup>
 							</h:panelGroup>
 							
