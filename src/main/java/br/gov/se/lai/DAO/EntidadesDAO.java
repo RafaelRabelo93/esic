@@ -103,4 +103,8 @@ public class  EntidadesDAO {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idEntidades = "+idEntidades,em)); 
 		//return (List<Entidades>) (Consultas.buscaPersonalizada("SELECT * FROM esic.entidades as ent INNER JOIN esic.competencias as comp ON ent.idEntidades = "+idAcoes,em));
 	}
+	@SuppressWarnings("unchecked")
+	public static List<Entidades> listOrgaoEntidade(int idOrgao) {
+		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idOrgaos = "+idOrgao,em)); 
+	}
 }

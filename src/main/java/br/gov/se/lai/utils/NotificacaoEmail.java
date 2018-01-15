@@ -72,14 +72,15 @@ public class NotificacaoEmail implements Job{
 					envio[2] = "Mensagem automática: Não há responsáveis cadastrados e/ou ativos no sistema para a entidade "+solicitacao.getEntidades().getNome()+
 							   " ("+ solicitacao.getEntidades().getSigla()+") para a instância "+solicitacao.getInstancia() +".\n A solicitação "+solicitacao.getProtocolo()+
 							   " efetuada pela(o) cidadã(o)"+ solicitacao.getCidadao().getUsuario().getNome()+"("+solicitacao.getCidadao().getEmail()+
-							   ") direcionada para esta entidade não pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+".";
+							   ") direcionada para esta entidade não pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+
+							   ".\nNotificamos o órgão responsável.";
 
 				}else {
 					envio[1] = ResponsavelDAO.findResponsavelEntidade(1, 3).get(0).getEmail();
 					envio[2] = "Mensagem automática: Não há responsáveis cadastrados e/ou ativos no sistema para a entidade "+solicitacao.getEntidades().getNome()+
 							" ("+ solicitacao.getEntidades().getSigla()+") para a instância "+solicitacao.getInstancia() +".\n A solicitação "+solicitacao.getProtocolo()+" efetuada pela(o) cidadã(o)"+
 							solicitacao.getCidadao().getUsuario().getNome()+"("+solicitacao.getCidadao().getEmail()+") direcionada para esta entidade não "+ 
-							"pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+".";
+							"pode ser notificada a nenhum responsável ligado a/ao " + solicitacao.getEntidades().getSigla()+".\nNotificamos a CGE.";
 					
 				}
 			}

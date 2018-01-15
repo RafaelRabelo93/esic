@@ -112,7 +112,7 @@
 					</h:panelGroup>
 					
 					<!-- Consulta órgão/entidade -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'  or usuario.usuario.perfil eq '4' }">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/office.png']}" width="80%" />

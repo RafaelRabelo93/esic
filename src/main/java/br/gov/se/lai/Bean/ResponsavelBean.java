@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -56,6 +57,7 @@ public class ResponsavelBean implements Serializable{
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			UsuarioDAO.saveOrUpdate(usuario);	
+			todosResponsaveis.add(responsavel);
 		return "/index";
 	}
 	
@@ -69,7 +71,7 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String edit() {
-		if(usuarioBean.getUsuario().getIdUsuario() == 0 || usuarioBean.getUsuario().getIdUsuario() == 4 ) {
+		if(verificaAcesso() ) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
@@ -100,10 +102,26 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public boolean verificaAcesso() {
-		if(usuarioBean.getUsuario().getPerfil() == 4 || usuarioBean.getUsuario().getPerfil() == 5 ) {
+		if(verificaGestor() || verificaAdmin()) {
 			return true;
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
+			return false;
+		}
+	}
+	
+	public boolean verificaGestor() {
+		if ((usuarioBean.getUsuario().getPerfil() == 2 && (new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels()).get(0).getNivel().equals((short)3)))){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean verificaAdmin() {
+		if ( usuarioBean.getUsuario().getPerfil() == 4 ){
+			return true;
+		}else {
 			return false;
 		}
 	}
@@ -144,7 +162,30 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	public String cadResponsavel() {
+		List<Responsavel> resp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
+		String retorno = null;
+		for (Responsavel r : resp) {
+			if(r.isAtivo() && verificaAcesso()) {
+				popularListaEntidadesParaCadastro(r);
+				retorno = "/Cadastro/cad_responsavel";
+				break;
+			}
+		}
+		return retorno;
+	}
 	
+	public void popularListaEntidadesParaCadastro(Responsavel r) {
+			if(r.getEntidades().isAtiva() ) {
+				if(r.getEntidades().getIdEntidades().equals(1)) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+				}else if(!(r.getEntidades().isOrgao())) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(r.getEntidades().getIdEntidades()));
+				}else if (r.getEntidades().isOrgao()) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listOrgaoEntidade(r.getEntidades().getIdEntidades()));
+				}
+			}
+	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 

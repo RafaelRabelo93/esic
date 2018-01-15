@@ -523,6 +523,7 @@ public class UsuarioBean implements Serializable {
 	    return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 
+
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

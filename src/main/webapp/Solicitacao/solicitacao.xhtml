@@ -59,19 +59,18 @@
 						</p:row>
 
 
-<!-- 						<p:row> -->
-<!-- 							<p:column> -->
-<!-- 								<h:outputText value="Modo Anônimo: " /> -->
-<!-- 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"> -->
-<!-- 									<p:ajax update="msg" listener="#{selectBooleanView.addMessage}" /> -->
-<!-- 								</p:selectBooleanCheckbox> -->
-<!-- 							</p:column> -->
-<!-- 						</p:row> -->
+						<p:row>
+							<p:column>
+								<h:outputText value="Modo Anônimo: " />
+								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}">
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:row>
 
 
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Assunto:" />
+								<p:outputLabel value="Assunto:" rendered="#{solicitacao.acoesTemporaria ne null}" />
 							</p:column>
 						</p:row>
 						<p:row>

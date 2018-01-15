@@ -12,12 +12,12 @@
 
 		<ui:define name="content">
             
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
 		
 				<!--		Mensagens de Erro		-->
 				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 					
-				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
+				<h:outputText value="Alterar competï¿½ncias de ï¿½rgï¿½o / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
 				
 				<div class="ficha">
 					
@@ -27,18 +27,18 @@
                             <p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
 
                                 <f:facet name="header">
-                                  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+                                  <h:outputText value="Competï¿½ncias #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
                                 </f:facet>
                                 
                                 <p:column style="width:25px">
                                     <p:rowToggler id="t" />
                                 </p:column>
                                 
-                                <p:column headerText="Ação">
+                                <p:column headerText="AÃ§Ãµes">
                                     <h:outputText value="#{comp.acoes.titulo}" />
                                 </p:column>
                                 
-                                <p:column headerText="Excluir" width="50" style="text-align: center">
+                                <p:column headerText="Excluir" width="50" style="text-align: center" rendered="#{usuario.responsavel.nivel eq '3' }">
 									<p:commandLink class="botaoLinkIcon" action="#{competencias.delete}" update="alterar_competencias:table">
 										<i class="fa fa-trash" style="color: white; padding-left: 3px" />
 										<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
@@ -47,8 +47,8 @@
                                 
                                 <p:rowExpansion>
 							        <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
-							            <h:outputLabel value="Descrição da ação:" for="acaoDesc" />
-							            <h:outputLabel value="Descrição da competência:" for="compDesc" />
+							            <h:outputLabel value="Descriï¿½ï¿½o da aï¿½ï¿½o:" for="acaoDesc" />
+							            <h:outputLabel value="Descriï¿½ï¿½o da competï¿½ncia:" for="compDesc" />
 							
 							            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
 							            <p:inplace emptyLabel="..." editor="true">
@@ -62,9 +62,9 @@
 
                         </h:panelGroup>
 					
-					<h:panelGroup styleClass="divBtn"> 					
+					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel eq '3' }"> 					
 					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias:competencias_panel">
-					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
+					        <h:outputText value="Salvar Alteraï¿½ï¿½es" style="margin-right: 5px" />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
 					
@@ -78,17 +78,17 @@
 			
 			</h:form>
 			
-		<!-- Dialog Nova Competência -->
-			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+		<!-- Dialog Nova Competï¿½ncia -->
+			<p:dialog header="Cadastrar Competï¿½ncia" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 690px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
-						<h:outputText value="Adicionar Competênncia" styleClass="tituloBox" />
+						<h:outputText value="Adicionar Competï¿½nncia" styleClass="tituloBox" />
 					
-						<h:outputLabel value="Órgão/Entidade:" /> 
+						<h:outputLabel value="ï¿½rgï¿½o/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 	
-						<h:outputLabel value="Ações: " for="acoes" />
+						<h:outputLabel value="Aï¿½ï¿½es: " for="acoes" />
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -99,11 +99,11 @@
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias"	onclick="PF('dlg2').show();">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova Ação" />
+								<h:outputText value=" Nova Aï¿½ï¿½o" />
 							</p:commandLink>
 						</h:panelGroup>
 						
-						<h:outputLabel value="Descrição: " for="descricao" />
+						<h:outputLabel value="Descriï¿½ï¿½o: " for="descricao" />
 						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
 							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
 						<h:outputText id="display" />
@@ -119,15 +119,15 @@
 					</h:form>
 				</p:dialog>
 				
-			<!-- Sub Dialog Nova Ação -->
-				<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+			<!-- Sub Dialog Nova Aï¿½ï¿½o -->
+				<p:dialog header="Cadastrar Nova Aï¿½ï¿½o" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog2">
 						<p:outputPanel id="dlg2" style="max-width: 690px">
 							<p:panelGrid columns="1" style="border:none; width: 60%;">
-								<p:outputLabel value="Título:" for="titulo" />
+								<p:outputLabel value="Tï¿½tulo:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
-								<p:outputLabel value="Descrição:" for="descr" />
+								<p:outputLabel value="Descriï¿½ï¿½o:" for="descr" />
 								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
 									autoResize="false" style="width:100%"
 									counterTemplate="{0} caracteres restantes."

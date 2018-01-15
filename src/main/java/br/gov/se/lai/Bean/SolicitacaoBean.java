@@ -41,6 +41,7 @@ import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
+import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
@@ -100,13 +101,16 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public String save() {
-		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 		
 		gerarDataLimite();
 		gerarDataFim(); // caso seja Elogio/Sugestão
+		if(solicitacao.getTipo().equals("Denúncia")) {
+			settarCidadaoDenuncia(); // Caso específico para Denuncia
+		}else {
+			settarCidadao(); 
+		}
 
 		// Salvar Solicitação
-		this.solicitacao.setCidadao(listCidadao.get(0));
 		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
@@ -114,7 +118,20 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setProtocolo(gerarProtocolo());
 
 		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-			salvarMensagem();
+			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+			this.mensagem.setData(new Date(System.currentTimeMillis()));
+			this.mensagem.setSolicitacao(solicitacao);
+			this.mensagem.setTipo((short) 1);
+			if (MensagemDAO.saveOrUpdate(mensagem)) {
+
+				if (!(file.getContents().length == 0)) {
+					AnexoBean anx = new AnexoBean();
+					anx.save(anexo, mensagem, file);
+				}
+				
+				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
+				enviarMensagemAutomatica();
+			}
 		}
 
 		this.solicitacao = new Solicitacao();
@@ -150,37 +167,23 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	public void settarCidadao(){
-		if(solicitacao.getTipo().equals("Denúncia")) {
-        	solicitacao.setCidadao(CidadaoDAO.findCidadao(7)); 
-		}else {
-			
-		}
-			
+			List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
+			this.solicitacao.setCidadao(listCidadao.get(0));
 	}
 	
-	/*
-	 * salvarMensagem() void : void
-	 */
-	public void salvarMensagem() {
-		this.mensagem.setUsuario(userBean.getUsuario());
-		this.mensagem.setData(new Date(System.currentTimeMillis()));
-		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short) 1);
-		if (MensagemDAO.saveOrUpdate(mensagem)) {
-
-			if (!(file.getContents().length == 0)) {
-				AnexoBean anx = new AnexoBean();
-				anx.save(anexo, mensagem, file);
+	public void settarCidadaoDenuncia() {
+		try {
+			if (modoAnonimo) {
+				solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
+			}else {
+				solicitacao.setCidadao(userBean.getCidadao());
 			}
-			
-			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
-			enviarMensagemAutomatica();
+		}catch (NullPointerException e) {
+			solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
 		}
 	}
 	
-	public void salvarDenuncia() {
-		
-	}
+	
 	
 	/*
 	 * verificaCidadaoSolicitacao void : String 
@@ -294,6 +297,8 @@ public class SolicitacaoBean implements Serializable {
 			
 			return "/Consulta/consulta";
 		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário sem permissão.", "Tente outro login."));
 			return null;
 		}
 	}

@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 			
-			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or (usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3')}">
+			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2' }">
 
 				<div class="ficha">
 	
@@ -47,7 +47,7 @@
 								<h:outputText value="Inativo" rendered="#{not orgaos.ativa}" />
 							</p:column>
 	
-							<p:column headerText="Ações" width="50" style="text-align: center">
+							<p:column headerText="Ações" width="50" style="text-align: center" >
 								<p:commandLink class="botaoLinkIcon"
 									action="#{competencias.consultarCompetencias}" style="margin:5px">
 									<i class="fa fa-plus" />
@@ -56,9 +56,9 @@
 								</p:commandLink>
 							</p:column>
 	
-							<p:column headerText="Editar" width="45"
+							<p:column headerText="Editar" width="45"  rendered="usuario.responsavel.nivel eq '3'"
 								style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
+								<p:commandLink class="botaoLinkIcon"  update="dialog:info" onclick="PF('editDialog').show();">
 									<i class="fa fa-pencil-square-o" />
 									<f:setPropertyActionListener value="#{orgaos}"
 										target="#{entidades.entidades}" />
