@@ -138,6 +138,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem = new Mensagem();
 		CompetenciasBean.listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
+		acoesTemporaria = null;
 		return "/index";
 	}
 	
@@ -194,8 +195,8 @@ public class SolicitacaoBean implements Serializable {
 	 * Se tiver cadastro de usuario mas não tiver de cidadão, primeiro precisa cadastrar cidadão.
 	 * Se o usuário já for cadastrado como usuario e cidadão a solicitacao é iniciada.
 	 * Se for um responsável não tem autorização para solicitar.
-	 */
-
+	 */ 
+ 
 	public String verificaCidadaoSolicitacao() {
 		List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 
@@ -204,11 +205,11 @@ public class SolicitacaoBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			userBean.setVeioDeSolicitacao(1);
-			return "/Cadastro/cad_usuario";
+			return "/Menu/login";
 		} else {
 			if (userBean.getUsuario().getPerfil() == 1 || userBean.getUsuario().getPerfil() != 2) {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
-					return "/Cadastro/cad_cidadao";
+					return "/Menu/login";
 				} else {
 					return "/Solicitacao/questionario1";
 				}
@@ -344,9 +345,12 @@ public class SolicitacaoBean implements Serializable {
 
 	public String Denuncia() {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
+		solicitacao.setTipo("Denúncia");
+		setModoAnonimo(true);
 		return "/Solicitacao/solicitacao.xhtml";
 	}
 	
+
 	public boolean estaUsuarioLogado() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if (usuarioBean != null) {

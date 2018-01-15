@@ -32,6 +32,7 @@ public class MensagemDAO {
             return false;
         }
     }
+    
     public static void delete(Mensagem mensagem) {        
         try {            
         	Mensagem msg = em.find(Mensagem.class, mensagem.getIdMensagem());

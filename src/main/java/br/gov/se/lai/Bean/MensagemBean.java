@@ -54,7 +54,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private Usuario usuario;
 	private UploadedFile file;
 
-
+ 
 	@PostConstruct
 	public void init() {
 		mensagem = new Mensagem();		
@@ -87,7 +87,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			}
 			
 		mensagem = new Mensagem();	
-		return "/Consulta/consulta";
+		return "/Consulta/consulta?faces-redirect=true";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuário sem permissão..",null));
 
@@ -120,7 +120,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+(solicitacao.getInstancia()-1) +"º"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Prorrogada":
@@ -151,7 +151,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 
 		case "Respondida":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu uma resposta.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			break;
 			
 		default:

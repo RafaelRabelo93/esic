@@ -273,7 +273,7 @@
 							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Mensagem de Resposta:" for="mensagem" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="margin-bottom: 5px"/>
 								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }" styleClass="abaField respostaField"/>
-								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="solicitacao_panel detalheDialog">
+								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="solicitacao_panel ">
 									<h:outputText value="Enviar" />
 									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
 									<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
