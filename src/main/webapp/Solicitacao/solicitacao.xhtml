@@ -18,13 +18,11 @@
 				<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
-					<p:growl id="msgs" />
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-					<p:steps activeIndex="2" styleClass="custom" readonly="true">
-						<p:menuitem value="Tipo de solicitação" url="#" />
-						<p:menuitem value="Determinar órgão / Entidade" url="#" />
+					<p:steps activeIndex="2" styleClass="custom" readonly="false">
+						<p:menuitem value="Tipo de solicitação" url="../index.xhtml" />
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#" />
 					</p:steps>
 
@@ -59,7 +57,7 @@
 						</p:row>
 
 
-						<p:row>
+						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
 							<p:column>
 								<h:outputText value="Modo Anônimo: " />
 								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}">
@@ -68,28 +66,22 @@
 						</p:row>
 
 
-						<p:row>
+						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
 							<p:column>
-								<p:outputLabel value="Assunto:" rendered="#{solicitacao.acoesTemporaria ne null}" />
+								<p:outputLabel value="Assunto:" />
 							</p:column>
 						</p:row>
-						<p:row>
+						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
 							<p:column>
-								<h:outputText id="assunto1"
-									value="#{solicitacao.acoesTemporaria.titulo}"
-									style="color:#a8a8a8;"
-									rendered="#{solicitacao.acoesTemporaria ne null}" />
+								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" />
 								<h:outputText id="assunto2"
-									value="#{solicitacao.solicitacao.acoes.titulo}"
-									style="color:#a8a8a8;"
-									rendered="#{solicitacao.solicitacao.acoes ne null}" />
+									value="#{solicitacao.solicitacao.acoes.titulo}"	style="color:#a8a8a8;"/>
 							</p:column>
 						</p:row>
 
-						<p:row>
+						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
 							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}" />
+								<p:outputLabel value="Forma de recebimento da resposta:" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -106,17 +98,15 @@
 						</p:row>
 
 
-						<p:row>
+						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
 							<p:column>
-								<p:outputLabel value="Assunto:" for="assDen"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}" />
+								<p:outputLabel value="Assunto:" for="assDen" />
 							</p:column>
 						</p:row>
-						<p:row>
+						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
 							<p:column>
 								<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
-									disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+									disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 									<f:selectItems value="#{acoes.acoes}" var="acoesDen"
 										itemLabel="#{acoesDen.titulo}" itemValue="#{acoesDen.idAcoes}" />

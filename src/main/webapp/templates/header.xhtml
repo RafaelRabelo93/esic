@@ -92,21 +92,27 @@
 		<div id="header">				
 				
 				<div id="menuAcess" class="menuAcess">
-					<ul style="padding:0px;	margin:0px;	list-style:none;">					
-						<li><p:commandLink value="Acessibilidade"/></li>						
-						<li><p:commandLink onclick="aumentaTamanho();" value="A+"/></li>
-						<li><p:commandLink onclick="normalTamanho();" value="A"/></li>
-						<li><p:commandLink onclick="diminuiTamanho();" value="A-"/></li>
-						<li><p:commandLink onclick="mudarContraste();" value="Contraste"/></li>
+					<ul style="padding:0px;	margin:0px;	list-style:none;">
+						<li><p:commandLink value="Acessibilidade"/></li>
+						<li><p:commandLink onclick="aumentaTamanho()" value="A+"/></li>
+						<li><p:commandLink onclick="normalTamanho()" value="A"/></li>
+						<li><p:commandLink onclick="diminuiTamanho()" value="A-"/></li>
+						<li><p:commandLink onclick="mudarContraste()" value="Contraste"/></li>
 					</ul>
 				</div>
 
 
 				<div id="barraNav" class="barraNav">
-					<h:outputLink value="../../esic/index.xhtml">
-						<h:graphicImage value="#{resource['img/logoGovSerg.png']}"
-						style="padding: 0.5vw" width="140" height="50" /></h:outputLink>
-
+					<h:panelGroup styleClass="inline">
+						<h:outputLink value="../../esic/index.xhtml">
+							<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5vw" width="140" height="50" />
+						</h:outputLink>
+	
+						<h:outputLink value="../../esic/index.xhtml">
+							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50"/>
+						</h:outputLink>
+					</h:panelGroup>
+					
 					<ul id="menuSM">
 						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
 						
