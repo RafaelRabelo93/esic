@@ -9,12 +9,20 @@
 <h:head>
 	<h:outputStylesheet name="header.css" library="css" />		
 	
-    <script language="javascript">  
+    
+
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+	
+	<script language="javascript">  
 	    var tam=15;       
 	    var cont=0;
 	
 	    function normalTamanho(){
-	        tam=13;
+	        tam=15;
 	        modificarFonte(tam);
 	    }
 	
@@ -29,14 +37,14 @@
 	    }
 	
 	    function modificarFonte(tamanho){
-	        var seletor = '.ui-widget';
+	    	var seletor = '#page, .link, span, a, p, label, .titulo';
 	        var css = 'font-size: '+ tamanho+'px !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
 	        else if(S.addRule)S.addRule(seletor,css,r.length);
 	        
-	        var seletor = 'body';
+	        var seletor = '#page, .link, span, a, p, label, .titulo';
 	        var css = 'font-size: '+ tamanho+'px !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
@@ -45,9 +53,8 @@
 	    }
 	    
 	    function mudarContraste(){
-	    	if(cont==0)
-	    	{
-	     	var seletor = '.page, .header, .mainMenu, #title';
+	    	if(cont==0)	{
+	     	var seletor = '#page, #header, .mainMenu, #title, a, .titulo, span, .barraNav, .menuSec, .footer, .menuAcesso, p, label';
 	     	var css = 'background: black !important; color: yellow !important; background-image: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)) !important;';
 	         S= document.styleSheets[document.styleSheets.length-1];
 	         var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
@@ -80,12 +87,6 @@
 	    };
 
 	</script>
-
-</h:head>
-
-<h:body>
-
-	<ui:composition>
 	
 	<h:form id="formHeader" class="form">
 	
@@ -101,15 +102,15 @@
 					</ul>
 				</div>
 
-
 				<div id="barraNav" class="barraNav">
 					<h:panelGroup styleClass="inline">
 						<h:outputLink value="../../esic/index.xhtml">
 							<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5vw" width="140" height="50" />
 						</h:outputLink>
 	
-						<h:outputLink value="../../esic/index.xhtml">
-							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50"/>
+						<h:outputLink value="../../esic/index.xhtml" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
+							<h:outputText value="e-SIC" />
+<!-- 							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50"/> -->
 						</h:outputLink>
 					</h:panelGroup>
 					
@@ -118,19 +119,19 @@
 						
 						<li><h:outputLink value="">Sobre</h:outputLink></li>
 
-						<li><p:commandButton id="Login" value="Login"
+						<li><p:commandButton id="Login" value="Login" 
 								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
-								 rendered="#{usuario.usuario.perfil eq '0'}" /></li>
+								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
-								<p:password placeholder="Senha" value="#{usuario.senha}" />
-								<p:commandLink value="Esqueci minha senha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}"/>
-								<p:commandButton value="Login" action="#{usuario.login}" update="@all"/>
+								<p:password id="senha" placeholder="Senha" value="#{usuario.senha}" />
+								<p:commandLink value="Esqueci minha senha" type="button" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}"/>
+								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all"/>
 							</h:panelGrid>
 						</p:overlayPanel>
 
-						<li><p:commandButton id="userInfo" value="#{usuario.nomeCompleto}" rendered="#{usuario.usuario.perfil ne '0'}" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
+						<li><p:commandButton id="userInfo" value="#{usuario.nomeCompleto}" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
 	
 					</ul>
 					
@@ -144,19 +145,19 @@
 							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
 						<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_usuario" update="@all">
-								<h:outputText value="Visualisar Perfil" />
-								<i class="fa fa-address-card" style="color: white; padding-right: 5px" />
+							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_usuario" update="@all" type="button">
+								<h:outputText value="Visualizar Perfil" />
+								<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 							</p:commandLink>
 							
-							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all">
+							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button">
 								<h:outputText value="Alterar Senha" />
-								<i class="fa fa-unlock-alt" style="color: white; padding-right: 5px" />
+								<i class="fa fa-unlock-alt" style="color: white; padding-left: 5px" />
 							</p:commandLink>
 							
-							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all">
+							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all" type="button">
 								<h:outputText value="Sair" />
-								<i class="fa fa-sign-out" style="color: white; padding-right: 5px" />
+								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
 							</p:commandLink>						
 						</h:panelGrid>
 					</p:overlayPanel>

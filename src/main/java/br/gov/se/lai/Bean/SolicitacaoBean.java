@@ -209,7 +209,7 @@ public class SolicitacaoBean implements Serializable {
 		} else {
 			if (userBean.getUsuario().getPerfil() == 1 || userBean.getUsuario().getPerfil() != 2) {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
-					return "/Menu/login";
+					return "/Cadastro/cad_cidadao";
 				} else {
 					return "/Solicitacao/questionario1";
 				}
@@ -238,15 +238,15 @@ public class SolicitacaoBean implements Serializable {
 		SimpleDateFormat ft = new SimpleDateFormat("yyyyddssMs");
 		String protocolo = ft.format(now);
 		switch(this.solicitacao.getTipo()) {
-			case "Reclamacao":
+			case "Reclamação":
 				protocolo += "1";
-			case "Denuncia":
+			case "Denúncia":
 				protocolo += "2";
-			case "Informacao":
+			case "Informação":
 				protocolo += "3";
-			case "Solicitacao":
+			case "Solicitação":
 				protocolo += "4";
-			case "Sugestao":
+			case "Sugestão":
 				protocolo += "5";
 			case "Elogio":
 				protocolo += "6";

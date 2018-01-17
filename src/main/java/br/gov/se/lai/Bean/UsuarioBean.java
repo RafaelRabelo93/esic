@@ -134,7 +134,7 @@ public class UsuarioBean implements Serializable {
 				if (veioDeSolicitacao == 0) {
 					nick = usuario.getNick();
 					login();
-					return "/index";
+					return "../index";
 				} else {
 					nick = usuario.getNick();
 					login();
