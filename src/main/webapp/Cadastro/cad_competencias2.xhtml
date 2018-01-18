@@ -11,6 +11,9 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '4'}">
 
@@ -52,7 +55,9 @@
 						
 						<h:outputLabel value="Descrição: " for="descricao" />
 						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
-							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
+							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" >
+							<f:validateLength maximum="200"/>
+						</p:inputTextarea>
 						<h:outputText id="display" />
 
 					</h:panelGroup>
@@ -79,7 +84,9 @@
 								</p:column>
 								<p:column headerText="Descrição">
 									<p:inplace editor="true">
-										<p:inputTextarea value="#{comp.descricao}" />
+										<p:inputTextarea value="#{comp.descricao}" maxlength="200">
+											<f:validateLength maximum="200"/>
+										</p:inputTextarea>
 									</p:inplace>
 								</p:column>
 								<p:column style="width:32px;text-align: center">
@@ -105,13 +112,14 @@
 					<p:outputPanel id="dlg" style="max-width: 690px">
 						<p:panelGrid columns="1" style="border:none; width: 60%;">
 							<p:outputLabel value="Título:" for="titulo" />
-							<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
+							<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" maxlength="80" >
+								<f:validateLength maximum="80"/>
+							</p:inputText>
 
 							<p:outputLabel value="Descrição:" for="descr" />
-							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
-								autoResize="false" style="width:100%"
-								counterTemplate="{0} caracteres restantes."
-								value="#{acoes.acao.descricao}"  />
+							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" autoResize="false" style="width:100%"	counterTemplate="{0} caracteres restantes."	value="#{acoes.acao.descricao}" >
+								<f:validateLength maximum="200"/>
+							</p:inputTextarea>
 							<h:outputText id="display" />
 
 						</p:panelGrid>

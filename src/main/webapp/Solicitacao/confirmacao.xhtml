@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content"> 
+
+			<div class="ficha" style="height:80vh">
+				<h:panelGroup styleClass="box" style="width: 50vw; align-items: center; align-self: center">
+					
+					<p:graphicImage styleClass="icone" value="#{resource['img/icon/confirm.png']}" width="100px"/>
+					<h:outputText value="SUA SOLICITAÇÃO FOI ENVIADA COM SUCESSO!" styleClass="tituloBox" style="margin-top: 15px" />
+					<p>Em breve você receberá uma notificação em caso de resposta.</p>
+							
+				</h:panelGroup>
+			</div>	
+		
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

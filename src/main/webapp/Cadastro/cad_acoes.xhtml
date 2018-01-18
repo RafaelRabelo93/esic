@@ -11,6 +11,9 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 			<h:form id="cad_acao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 
@@ -26,17 +29,15 @@
 								style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
 						</f:facet>
 
-
 						<p:outputLabel value="Título: " for="titulo" />
-
-						<p:inputText id="titulo" required="true" size="60"
-							value="#{acoes.acao.titulo}" />
-
+						<p:inputText id="titulo" required="true" size="60" value="#{acoes.acao.titulo}" maxlength="80" >
+							<f:validateLength minimum="3" maximum="80" />
+						</p:inputText>
 
 						<p:outputLabel value="Descrição:" for="descricao" />
-
-						<p:inputTextarea id="descricao" rows="10" cols="62"
-							autoResize="true" required="true" value="#{acoes.acao.descricao}" />
+						<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{acoes.acao.descricao}" maxlength="200">
+							<f:validateLength maximum="200" />
+						</p:inputTextarea>
 
 						<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
 

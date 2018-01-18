@@ -11,6 +11,9 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 			<div class="ficha">
 
@@ -270,7 +273,9 @@
 						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4'}">
 							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Mensagem de Resposta:" for="mensagem" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="margin-bottom: 5px"/>
-								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }" styleClass="abaField respostaField"/>
+								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' }" styleClass="abaField respostaField">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
 								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="solicitacao_panel ">
 									<h:outputText value="Enviar" />
 									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
@@ -280,7 +285,9 @@
 							
 							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" autoResize="false" style="width:100%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField"/>
+								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" autoResize="false" style="width:100%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
 								<h:outputText id="display" />
 		
 								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
@@ -292,7 +299,9 @@
 							
 							<div id="Recurso" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr2" />
-								<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField"/>
+								<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
 								<h:outputText id="display2" />
 		
 								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
@@ -312,12 +321,16 @@
 	
 								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
 								<p:inputTextarea id="justCid" cols="100" rows="8" counter="display3" maxlength="200" autoResize="false" style="width:100%" required="true"
-									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField encaminharField"/>
+									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField encaminharField">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
 								<h:outputText id="display3" />
 	
 								<p:outputLabel value="Justificativa Interna:" for="justInt" />
 								<p:inputTextarea id="justInt" cols="100" rows="8" counter="display4" maxlength="200" autoResize="false" style="width:100%" required="true"
-									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" styleClass="abaField encaminharField"/>
+									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" styleClass="abaField encaminharField">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
 								<h:outputText id="display4" />
 	
 								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.encaminhar()}" update="@all" oncomplete="PF('dlg2').hide();">
