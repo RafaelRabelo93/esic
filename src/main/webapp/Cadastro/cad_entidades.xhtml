@@ -11,97 +11,48 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 			<h:form id="cad_entidades" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
 
 				<div class="ficha">
-
-					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
-					
+			
 					<p:steps activeIndex="0" styleClass="custom dois" readonly="true">
 						<p:menuitem value="Entidade" url="#" />
 						<p:menuitem value="Competências" url="#" />
 					</p:steps>
 
-					<h:outputText
-						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-						style="color:gray; align-self: flex-start; padding-top: 2vw;" />
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="color:gray; align-self: flex-start; padding-top: 2vw;" />
 
-					<p:panelGrid style="margin-bottom:1vw">
+					<h:panelGroup id="dataPanel" styleClass="box">
+						<h:outputText value="Cadastro de Entidades"	style="color:#1a568c; font-size:25px; padding-bottom: 2vw; align-self: center" />
 
-						<f:facet name="header">
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-							<p:row>
-								<p:column colspan="2">
-									<h:outputText value="Cadastro de Entidades"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column colspan="2" />
-							</p:row>
-						</f:facet>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Nome: " for="nome" />
-							</p:column>
-						</p:row>
+						<p:outputLabel value="Nome: " for="nome" />
+						<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" maxlength="200" >
+							<f:validateLength maximum="200"/>
+						</p:inputText> 
 						
-						<p:row><p:column> 
-							<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" /> 
-						</p:column></p:row>
-
-
-												
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Sigla: " for="sigla" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputText id="sigla" required="true" size="10"
-									value="#{entidades.entidades.sigla}" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Tipo: " for="orgao" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneRadio id="orgao"
-									value="#{entidades.forOrgao}">
-									<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
-									<f:selectItem itemLabel="Órgão" itemValue="true" />
-									<f:selectItem itemLabel="Entidade" itemValue="false" />
-								</p:selectOneRadio>
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="idOrgao"
-									value="#{entidades.entidades.idOrgaos}" style="width:125px">
-									<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-									<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-
-					</p:panelGrid>
+						<p:outputLabel value="Sigla: " for="sigla" />
+						<p:inputText id="sigla" required="true" size="10" value="#{entidades.entidades.sigla}" maxlength="10" >
+							<f:validateLength maximum="10"/>
+						</p:inputText>
+					
+						<p:outputLabel value="Tipo: " for="orgao" />
+						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}">
+							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
+							<f:selectItem itemLabel="Órgão" itemValue="true" />
+							<f:selectItem itemLabel="Entidade" itemValue="false" />
+						</p:selectOneRadio>
+					
+						<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
+						<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}">
+							<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+							<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+						</p:selectOneMenu>
+							
+					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" action="#{entidades.save}" update="@all">
 						<h:outputText value="Cadastrar" />

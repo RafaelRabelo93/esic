@@ -12,37 +12,35 @@
 
 		<ui:define name="content">
 
-			<h:form id="cad_usuario" styleClass="cad_form">
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-<!-- 							Mensagens de Erro		 -->
+			<h:form id="cad_usuario" styleClass="cad_form">
 
 				<div class="ficha">
 
-					<h:outputText
-						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-						style="color:gray; align-self: flex-start;" />
-
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="color:gray; align-self: flex-start;" />
 
 					<h:panelGroup styleClass="box">
 							
 						<h:outputText value="Dados do Usuário" styleClass="tituloBox" />
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
-						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="55"> 
-							<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" /></p:inputText>
+						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
+							<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" />
+							<f:validateLength maximum="65"/>
+						</p:inputText>
 						<p:message for="nome" display="text"/>
 						
 						<p:outputLabel value="Nome de usuário: " for="nick" />
-						<p:inputText id="nick" required="true" readonly="true"
-							value="#{usuario.usuario.nick}" maxlength="50" />
-<!-- 						<h:outputText id="nick" value="#{usuario.usuario.nick}" /> -->
+						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" />
 						<p:message for="nick" display="text"/>
 						
 						<p:outputLabel value="Senha:" for="senha1" />
 						<p:password id="senha1" match="senha2"
 							placeholder="Digite sua senha" required="true" value="#{usuario.usuario.senha}" maxlength="20"
 							promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
-								<f:validateLength minimum="6" ></f:validateLength>
+								<f:validateLength minimum="6" maximum="64" />
 						</p:password>
 						<p:message for="senha1" display="text"/>
 

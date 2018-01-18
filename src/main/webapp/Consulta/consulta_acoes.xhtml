@@ -7,105 +7,109 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:body>
-
 	<ui:composition template="/templates/template.xhtml">
-
 		<ui:define name="content">
-		
-<!-- 			<ul class="breadcrumbs"> -->
-<!--                 <li><p:commandLink action="../../esic/index.xhtml"> <i class="fa fa-home"/> <br/> </p:commandLink></li> -->
-<!--                 <li><p:commandLink value="Gerir Respons�vel" styleClass="current"  /></li> -->
-<!--             </ul> -->
-
-				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' }" >
-
-					<h:outputText value="Gerir Ações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '2' }" />
-					
-					<h:form id="form" styleClass="ficha">
-
-					<p:dataTable id="acoes" emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
-					paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
-							<h:outputText value="#{ac.titulo}" />
-						</p:column>
-
-						<p:column headerText="Descrição">
-							<h:outputText value="#{ac.descricao}" />
-						</p:column>
-						
-						<p:column headerText="Editar" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
-								<i class="fa fa-pencil-square-o" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-							</p:commandLink>
-						</p:column>
-						
-						<p:column headerText="Excluir" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
-								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-							</p:commandLink>
-						</p:column>
-						
-					</p:dataTable>
-					
-					<p:commandLink class="botaoLink" update="dialog2:info2" onclick="PF('newDialog').show();" style="margin-top: 10px;">
-						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-						<h:outputText value="Nova Ação" />
-					</p:commandLink>
-					
-					</h:form>
-					
-					<p:dialog widgetVar="editDialog" header="Editar Ação" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-						<h:form id="dialog">
-						<p:outputPanel id="acaoEdit" style="display:flex; flex-flow: column">
-							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
-								<p:outputLabel value="Titulo: " for="titulo" />
-								<p:inputText id="titulo" value="#{acoes.acao.titulo}" maxlength="100" />
-						
-								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" value="#{acoes.acao.descricao}" />
-						
-							</p:panelGrid>
-							
-							<p:commandLink class="botaoLink" action="#{acoes.save}" oncomplete="PF('editDialog').hide();" update="form:acoes">
-								<h:outputText value="Salvar" />
-								<i class="fa fa-check" style="color: white; padding-left: 3px" />
-							</p:commandLink>
-							
-						</p:outputPanel>
-						</h:form>
-					</p:dialog>
-					
-					<p:dialog widgetVar="newDialog" header="Cadastrar Ação" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-						<h:form id="dialog2">
-						<p:outputPanel id="acaoCad" style="display:flex; flex-flow: column">
-							<p:panelGrid id="info2" columns="1" style="border: none; width: 100%;">
-								<f:facet name="header">
-									<br />
-									<h:outputText value="Cadastro de Ação"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</f:facet>
-		
-								<p:outputLabel value="Título: " for="titulo" />
-								<p:inputText id="titulo" required="true" size="60" value="#{acoes.acao.titulo}" />
-		
-								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{acoes.acao.descricao}" />
-		
-								<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
-		
-							</p:panelGrid>
-		
-							<p:commandLink class="botaoLink" action="#{acoes.save}" update="form:acoes" oncomplete="PF('newDialog').hide();" >
-								<h:outputText value="Cadastrar" />
-								<i class="fa fa-check" style="color: white; padding-left: 3px" />
-							</p:commandLink>
-						</p:outputPanel>
-						</h:form>
-					</p:dialog>
 			
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+
+			<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' }" >
+
+				<h:outputText value="Gerir Ações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '2' }" />
+				
+				<h:form id="form" styleClass="ficha">
+
+				<p:dataTable id="acoes" emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
+				paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+					<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+						<h:outputText value="#{ac.titulo}" />
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputText value="#{ac.descricao}" />
+					</p:column>
+					
+					<p:column headerText="Editar" width="50" style="text-align: center">
+						<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
+							<i class="fa fa-pencil-square-o" />
+							<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column headerText="Excluir" width="50" style="text-align: center">
+						<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
+							<i class="fa fa-trash" style="color: white; padding-left: 3px" />
+							<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+						</p:commandLink>
+					</p:column>
+					
+				</p:dataTable>
+				
+				<p:commandLink class="botaoLink" update="dialog2:info2" onclick="PF('newDialog').show();" style="margin-top: 10px;">
+					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+					<h:outputText value="Nova Ação" />
+				</p:commandLink>
+				
+				</h:form>
+				
+				<p:dialog widgetVar="editDialog" header="Editar Ação" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<h:form id="dialog">
+					<p:outputPanel id="acaoEdit" style="display:flex; flex-flow: column">
+						<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
+							<p:outputLabel value="Titulo: " for="titulo" />
+							<p:inputText id="titulo" value="#{acoes.acao.titulo}" maxlength="80" >
+								<f:validateLength minimum="3" maximum="80" />
+							</p:inputText>
+					
+							<p:outputLabel value="Descrição:" for="descricao" />
+							<p:inputTextarea id="descricao" rows="10" cols="62" maxlength="200" autoResize="true" value="#{acoes.acao.descricao}" >
+								<f:validateLength maximum="200" />
+							</p:inputTextarea>
+					
+						</p:panelGrid>
+						
+						<p:commandLink class="botaoLink" action="#{acoes.save}" oncomplete="PF('editDialog').hide();" update="form:acoes">
+							<h:outputText value="Salvar" />
+							<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						</p:commandLink>
+						
+					</p:outputPanel>
+					</h:form>
+				</p:dialog>
+				
+				<p:dialog widgetVar="newDialog" header="Cadastrar Ação" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<h:form id="dialog2">
+					<p:outputPanel id="acaoCad" style="display:flex; flex-flow: column">
+						<p:panelGrid id="info2" columns="1" style="border: none; width: 100%;">
+							<f:facet name="header">
+								<br />
+								<h:outputText value="Cadastro de Ação"
+									style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
+							</f:facet>
+	
+							<p:outputLabel value="Título: " for="titulo" />
+							<p:inputText id="titulo" required="true" size="60" maxlength="80" value="#{acoes.acao.titulo}">
+								<f:validateLength maximum="80" />
+							</p:inputText>
+	
+							<p:outputLabel value="Descrição:" for="descricao" />
+							<p:inputTextarea id="descricao" rows="10" cols="62" maxlength="200"	autoResize="true" required="true" value="#{acoes.acao.descricao}" >
+								<f:validateLength maximum="200" />
+							</p:inputTextarea>
+	
+							<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
+	
+						</p:panelGrid>
+	
+						<p:commandLink class="botaoLink" action="#{acoes.save}" update="form:acoes" oncomplete="PF('newDialog').hide();" >
+							<h:outputText value="Cadastrar" />
+							<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						</p:commandLink>
+					</p:outputPanel>
+					</h:form>
+				</p:dialog>
+		
 			</h:panelGroup>
 
 		</ui:define>

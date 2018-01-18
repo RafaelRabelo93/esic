@@ -12,6 +12,9 @@
 
 		<ui:define name="content">
 		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+		
 			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0' }">
 
 				<div class="ficha">
@@ -25,20 +28,24 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Nome: " for="nome" />
-									<p:inputText id="nome" size="40" value="#{usuario.usuario.nome}" />
+									<p:inputText id="nome" size="40" maxlength="65" value="#{usuario.usuario.nome}" >
+										<f:validateLength minimum="5" maximum="65"/>
+									</p:inputText>
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="E-mail: " for="email" />
-									<p:inputText  id="email" size="25" value="#{usuario.cidadao.email}" />
+									<p:inputText id="email" size="25" maxlength="100" value="#{usuario.cidadao.email}" validatorMessage="E-mail inválido">
+										<f:validateLength minimum="5" maximum="100"/>
+										<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
+									</p:inputText>
 								</h:panelGroup>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-									<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
-										style="width:125px">
+									<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}" style="width:125px">
 										<f:selectItem itemLabel="Física" itemValue="true" />
 										<f:selectItem itemLabel="Jurídica" itemValue="false" />
 									</p:selectOneMenu>
@@ -76,7 +83,9 @@
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-									<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" style="width:125px" />
+									<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" size="15">
+										<f:validateLength maximum="45"/>
+									</p:inputText>
 								</h:panelGroup>
 							</h:panelGroup>
 							
@@ -120,7 +129,9 @@
 							
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Cidade:" for="cidade" />
-									<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" />
+									<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" maxlength="45">
+										<f:validateLength minimum="3" maximum="45"/>
+									</p:inputText>
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
@@ -160,30 +171,39 @@
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Logradouro:" for="logradouro" />
-									<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="40" />
+									<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="40" maxlength="100">
+										<f:validateLength minimum="2" maximum="100"/>
+									</p:inputText>
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Bairro: " for="bairro" />
-									<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" />
+									<p:outputLabel value="Bairro:" for="bairro" />
+									<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" maxlength="45">
+										<f:validateLength minimum="3" maximum="45"/>
+									</p:inputText>
 								</h:panelGroup>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="inline">
 								<h:panelGroup styleClass="column">
 									<p:outputLabel value="Número:" for="numero" />
-									<p:inputText id="numero" value="#{usuario.cidadao.numero}" size="10" />
+									<p:inputText id="numero" value="#{usuario.cidadao.numero}" size="10" maxlength="5" >
+										<f:validateLength maximum="5" />
+									</p:inputText>
+									
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="column" style="margin-left: 2vw">
 									<p:outputLabel value="Complemento: " for="complemento" />
-							<p:inputText id="complemento" value="#{usuario.cidadao.complemento}" size="40" />
+									<p:inputText id="complemento" value="#{usuario.cidadao.complemento}" maxlength="200" size="40" >
+										<f:validateLength maximum="200"/>
+									</p:inputText>
 								</h:panelGroup>
 							</h:panelGroup>
 							
 						</h:panelGroup>
 
-					<p:commandLink class="botaoLink" onclick="PF('dlg2').show();">
+					<p:commandLink class="botaoLink" onclick="PF('dlg2').show();" type="submit">
 						<h:outputText value="Salvar alterações" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>
@@ -198,7 +218,7 @@
 							<p:outputLabel value="Confirmar senha:" for="senha1" />
 							<p:password id="senha1" required="true"	placeholder="Digite sua senha" value="#{usuario.senha}" />
 
-							<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" update="@all">
+							<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" update="@all" type="submit">
 								<h:outputText value="Confirmar" />
 								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 	
