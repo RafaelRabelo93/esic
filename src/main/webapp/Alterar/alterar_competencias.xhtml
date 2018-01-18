@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -13,11 +13,8 @@
 		<ui:define name="content">
             
 			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
-		
-				<!--		Mensagens de Erro		-->
-				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 					
-				<h:outputText value="Alterar compet�ncias de �rg�o / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
+				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
 				
 				<div class="ficha">
 					
@@ -27,7 +24,7 @@
                             <p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
 
                                 <f:facet name="header">
-                                  <h:outputText value="Compet�ncias #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+                                  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
                                 </f:facet>
                                 
                                 <p:column style="width:25px">
@@ -47,8 +44,8 @@
                                 
                                 <p:rowExpansion>
 							        <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
-							            <h:outputLabel value="Descri��o da a��o:" for="acaoDesc" />
-							            <h:outputLabel value="Descri��o da compet�ncia:" for="compDesc" />
+							            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" />
+							            <h:outputLabel value="Descrição da competência:" for="compDesc" />
 							
 							            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
 							            <p:inplace emptyLabel="..." editor="true">
@@ -65,7 +62,7 @@
 					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel eq '3' }"> 					
 					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
 						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
-					        <h:outputText value="Salvar Altera��es" style="margin-right: 5px" />
+					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
 					
@@ -80,17 +77,17 @@
 			
 			</h:form>
 			
-		<!-- Dialog Nova Compet�ncia -->
-			<p:dialog header="Cadastrar Compet�ncia" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+		<!-- Dialog Nova Competï¿½ncia -->
+			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 690px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
-						<h:outputText value="Adicionar Compet�nncia" styleClass="tituloBox" />
+						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
 					
-						<h:outputLabel value="�rg�o/Entidade:" /> 
+						<h:outputLabel value="ï¿½rgï¿½o/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 	
-						<h:outputLabel value="A��es: " for="acoes" />
+						<h:outputLabel value="Aï¿½ï¿½es: " for="acoes" />
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -101,16 +98,16 @@
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias"	onclick="PF('dlg2').show();">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova A��o" />
+								<h:outputText value=" Nova Ação" />
 							</p:commandLink>
 						</h:panelGroup>
 						
-						<h:outputLabel value="Descri��o: " for="descricao" />
+						<h:outputLabel value="Descrição: " for="descricao" />
 						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
 							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
 						<h:outputText id="display" />
 					
-					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" oncomplete="PF('dlg2').hide();" style="margin: 0;">
+					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
 						<h:outputText value="Adicionar"  />
 						<i class="fa fa-plus" />
 					</p:commandLink>
@@ -121,15 +118,15 @@
 					</h:form>
 				</p:dialog>
 				
-			<!-- Sub Dialog Nova A��o -->
-				<p:dialog header="Cadastrar Nova A��o" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+			<!-- Sub Dialog Nova Ação -->
+				<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog2">
 						<p:outputPanel id="dlg2" style="max-width: 690px">
 							<p:panelGrid columns="1" style="border:none; width: 60%;">
-								<p:outputLabel value="T�tulo:" for="titulo" />
+								<p:outputLabel value="Tï¿½tulo:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
-								<p:outputLabel value="Descri��o:" for="descr" />
+								<p:outputLabel value="Descrição:" for="descr" />
 								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200"
 									autoResize="false" style="width:100%"
 									counterTemplate="{0} caracteres restantes."
@@ -138,7 +135,7 @@
 	
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();" update="dialog:acoes dialog:descricao dialog2:dlg2">
+							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" type="submit" oncomplete="PF('dlg2').hide();" update="dialog:acoes dialog:descricao dialog2:dlg2">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
 							</p:commandLink>

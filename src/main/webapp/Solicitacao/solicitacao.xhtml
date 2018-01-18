@@ -20,13 +20,11 @@
 				<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
-					<p:growl id="msgs" />
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-					<p:steps activeIndex="2" styleClass="custom" readonly="true">
-						<p:menuitem value="Tipo de solicitação" url="#" />
-						<p:menuitem value="Determinar órgão / Entidade" url="#" />
+					<p:steps activeIndex="2" styleClass="custom" readonly="false">
+						<p:menuitem value="Tipo de solicitação" url="../index.xhtml" />
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#" />
 					</p:steps>
 
@@ -108,6 +106,29 @@
 								</p:column>
 							</p:row>
 						</h:panelGroup>
+						
+						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+							<p:column>
+								<h:outputText value="Modo Anônimo: " />
+								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}">
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:row>
+
+
+						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
+							<p:column>
+								<p:outputLabel value="Assunto:" />
+							</p:column>
+						</p:row>
+						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
+							<p:column>
+								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" />
+								<h:outputText id="assunto2"
+									value="#{solicitacao.solicitacao.acoes.titulo}"	style="color:#a8a8a8;"/>
+							</p:column>
+						</p:row>
+
 
 						<h:panelGroup
 							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
@@ -140,7 +161,6 @@
 								</p:column>
 							</p:row>
 						</h:panelGroup>
-
 
 						<p:row>
 							<p:column>

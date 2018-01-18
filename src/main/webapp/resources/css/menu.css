@@ -151,6 +151,7 @@
 .subTitulo {
 	font-size: 20px;
 	color: #333;
+	padding-right: 20px
 }
 
 .btnConsulta {
@@ -181,7 +182,7 @@
  	-webkit-align-self: center; 
  	align-self: center;
 	
-	width: 500px;
+	width: 400px;
 	
 /*	Estilo do botão */
 	
@@ -216,13 +217,22 @@
 }
 
 .btnConsulta:hover {
-    color: white !important;
     background-position: -100% 0;
 }
 
-.btnConsulta.inline:hover > .subTitulo {
+.btnConsulta:hover .titulo {
 	color: white !important;
+	-webkit-transition: color 1s;
+    -moz-transition: color 1s;
+    transition: color 1s;
 }
+
+ .btnConsulta:hover .subTitulo {
+	color: #cfdff1 !important;
+	-webkit-transition: color 1s;
+    -moz-transition: color 1s;
+    transition: color 1s;
+ }
 
 /* <-- Menu Secundário --> */
 
