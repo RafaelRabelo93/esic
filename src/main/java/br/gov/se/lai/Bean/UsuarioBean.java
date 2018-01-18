@@ -222,9 +222,7 @@ public class UsuarioBean implements Serializable {
 			List<Usuario> usuarios = UsuarioDAO.buscarNicks(usuario.getNome().split(" ", 2)[0]);
 			cont += (usuarios.size());
 		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(e.getMessage());
 		} finally {
 			if (cont == 1) {
 				this.nick = (deAccent((getNomeCompleto().replace(" ", ".")).toLowerCase()));
@@ -249,19 +247,21 @@ public class UsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 			logout();
+			return null;
 		} else {
 			if (!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Login ou Senha Incorretos.", "Tente novamente."));
 				logout();
+				return null;
 			} else {
 				loadEmail();
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
+				return "/index?faces-redirect=true";
 			}
 		}
-		return "/index";
 	}
 
 	public void loadEmail() {
@@ -358,6 +358,16 @@ public class UsuarioBean implements Serializable {
 			e1.printStackTrace();
 		}
     }
+	}
+	
+	public String alterarDadosUsuario() {
+		if (usuario.getPerfil() == (short)2 || usuario.getPerfil() == (short)3 || usuario.getPerfil() == (short)4 ) {
+			return "Alterar/alterar_usuario";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário básico.", "Por favor complete seu cadastro."));
+			return null;
+		}
 	}
 
 	public boolean tratarEmail(String email) {

@@ -132,23 +132,20 @@ public class SolicitacaoBean implements Serializable {
 				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 				enviarMensagemAutomatica();
 				
+				this.solicitacao = new Solicitacao();
+				this.mensagem = new Mensagem();
+				CompetenciasBean.listCompetencias = null;
+				CompetenciasBean.listEntidades = null;
+				CompetenciasBean.idAcoes = 0;
+				acoesTemporaria = null;
 				
 			}
+			return "/index?faces-redirect=true";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
-			
+			return null;
 		}
-
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
-		this.solicitacao = new Solicitacao();
-		this.mensagem = new Mensagem();
-		CompetenciasBean.listCompetencias = null;
-		CompetenciasBean.listEntidades = null;
-		CompetenciasBean.idAcoes = 0;
-		acoesTemporaria = null;
-		return "/index?faces-redirect=true";
 	}
 	
 	
@@ -517,28 +514,39 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	// Reencaminhamento de solicitacao
+	@SuppressWarnings("finally")
 	private boolean verificaSeEncaminhada(Solicitacao solicitacao) {
 		boolean retorno = false;
-		if (mensagensSolicitacao.isEmpty()) popularMensagens();
-		for (Mensagem msg : mensagensSolicitacao) {
-			if (msg.getTipo().equals((short) 5)) {
-				retorno = true;
-				break;
+		try {
+			if (mensagensSolicitacao.isEmpty())
+				popularMensagens();
+			for (Mensagem msg : mensagensSolicitacao) {
+				if (msg.getTipo().equals((short) 5)) {
+					retorno = true;
+					break;
+				}
 			}
+		} catch (Exception e) {
+		} finally {
+			return retorno;
 		}
-		return retorno;
 	}
 
+	@SuppressWarnings("finally")
 	private boolean verificaSe24Horas() {
 		boolean retorno = false;
-		Calendar hoje = Calendar.getInstance();
-		Calendar limite = Calendar.getInstance();
-		limite.setTime(solicitacao.getDataIni());
-		limite.add(Calendar.DATE, +1);
-		if (hoje.before(limite)) {
-			retorno = true;
+		try {
+			Calendar hoje = Calendar.getInstance();
+			Calendar limite = Calendar.getInstance();
+			limite.setTime(solicitacao.getDataIni());
+			limite.add(Calendar.DATE, +1);
+			if (hoje.before(limite)) {
+				retorno = true;
+			}
+		} catch (NullPointerException e) {
+		}finally {
+			return retorno;
 		}
-		return retorno;
 	}
 
 	public boolean ehEncaminhavel() {
@@ -560,8 +568,13 @@ public class SolicitacaoBean implements Serializable {
 //			entReencaminhar = EntidadesDAO.find(3);
 			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
-			Responsavel respDestinatario = (Responsavel) ResponsavelDAO
-					.findResponsavelEntidade(entReencaminhar.getIdEntidades(), 1).get(0);
+			int idResp = ResponsavelBean.responsavelDisponivel(1, entReencaminhar.getIdEntidades()) ; 
+			Responsavel respDestinatario = new Responsavel();
+			if( idResp == -1) {
+				respDestinatario = ResponsavelDAO.findResponsavel(ResponsavelBean.responsavelDisponivel(1,1));
+			}else {
+				respDestinatario = ResponsavelDAO.findResponsavel(idResp);
+			}
 			Entidades antigaEnt = solicitacao.getEntidades();
 
 			// Avisa ao cidadão
@@ -779,7 +792,6 @@ public class SolicitacaoBean implements Serializable {
 			}
 			return formaRecebimentoString;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return "...";
 		}
 	}

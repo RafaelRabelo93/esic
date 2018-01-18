@@ -57,13 +57,11 @@
 									style="color:#a8a8a8;" />
 							</p:column>
 						</p:row>
-
+						
+						<p:row>
+							<p:column>
 						<p:outputLabel value="Assunto:" />
 						<h:panelGroup rendered="#{solicitacao.acoesTemporaria ne null}">
-							<p:row>
-								<p:column>
-								</p:column>
-							</p:row>
 							<p:row>
 								<p:column>
 									<h:outputText id="assunto1"
@@ -85,6 +83,8 @@
 								</p:column>
 							</p:row>
 						</h:panelGroup>
+							</p:column>
+						</p:row>
 
 						<h:panelGroup
 							rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
@@ -107,28 +107,6 @@
 							</p:row>
 						</h:panelGroup>
 						
-						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
-							<p:column>
-								<h:outputText value="Modo Anônimo: " />
-								<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}">
-								</p:selectBooleanCheckbox>
-							</p:column>
-						</p:row>
-
-
-						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
-							<p:column>
-								<p:outputLabel value="Assunto:" />
-							</p:column>
-						</p:row>
-						<p:row rendered="#{solicitacao.acoesTemporaria ne null}">
-							<p:column>
-								<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" style="color:#a8a8a8;" />
-								<h:outputText id="assunto2"
-									value="#{solicitacao.solicitacao.acoes.titulo}"	style="color:#a8a8a8;"/>
-							</p:column>
-						</p:row>
-
 
 						<h:panelGroup
 							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
@@ -207,7 +185,7 @@
 					</p:panelGrid>
 
 					<p:commandLink class="botaoLink" ajax="false"
-						action="#{solicitacao.save}">
+						action="#{solicitacao.save}" update="mainMenu">
 						<h:outputText value="Enviar" />
 						<i class="fa fa-share-square-o"
 							style="color: white; padding-left: 3px" />

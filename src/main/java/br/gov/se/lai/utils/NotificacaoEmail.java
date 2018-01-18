@@ -48,7 +48,6 @@ public class NotificacaoEmail implements Job{
 			
 		} catch (EmailException e) {  
 			
-//			System.out.println(e.getMessage());  
 			
 		}   
 		
@@ -76,7 +75,7 @@ public class NotificacaoEmail implements Job{
 							   ".\nNotificamos o órgão responsável.";
 
 				}else {
-					respId = ResponsavelBean.responsavelDisponivel(1, 3);
+					respId = ResponsavelBean.responsavelDisponivel(1, 1);
 					if(respId != -1) {
 						envio[1] = ResponsavelDAO.findResponsavel(respId).getEmail();
 						envio[2] = "Mensagem automática: Não há responsáveis cadastrados e/ou ativos no sistema para a entidade "+solicitacao.getEntidades().getNome()+
@@ -158,7 +157,7 @@ public class NotificacaoEmail implements Job{
 			email.addTo("mayara.machado@cge.se.gov.br");  
 			email.setFrom(respRemetente.getEmail()); 
 			email.setSubject("Trâmite Interno");  
-			email.setMsg(mensagem);  
+			email.setMsg(mensagem+" >"+respDestinatario.getEmail());  
 			email.send();  
 		} catch (EmailException e) {  
 			e.getMessage();

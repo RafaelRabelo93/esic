@@ -159,7 +159,7 @@
 					
 					<!-- Alterar dados -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil ne '0'}">
-						<h:commandLink styleClass="link" action="/Alterar/alterar_usuario">
+						<h:commandLink styleClass="link" action="#{usuario.alterarDadosUsuario()}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
 								width="80%" />
 
