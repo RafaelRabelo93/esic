@@ -44,7 +44,8 @@
 
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" action="#{acoes.save}" update="@all">
+					<p:commandLink class="botaoLink" id="novaAcao" action="#{acoes.save}" update="@all"
+						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>

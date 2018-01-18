@@ -24,17 +24,23 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private Acoes acao;
 	private UsuarioBean usuarioBean ;
 	private int idAcao;
-	private List<Acoes> acoes;
+	public static List<Acoes> acoes;
 	private String titulo;
 	
 	
 	@PostConstruct
 	public void init() {
 		acao = new Acoes();
-		acoes = new ArrayList<Acoes>(AcoesDAO.list());
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
+	public void carregarLista() {
+		if(CompetenciasBean.idAcoes == 0) {
+			acoes = new ArrayList<Acoes>(AcoesDAO.list());
+		}else {
+			acoes = null;
+		}
+	}
 	public void save() {
 		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);

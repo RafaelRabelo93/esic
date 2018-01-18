@@ -19,7 +19,7 @@
 
 						<h:panelGroup rendered="#{usuario.usuario.perfil eq '3' }">
 
-								<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; align-self: center; margin-top: 2em" />
+							<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; align-self: center; margin-top: 2em" />
 							
 							<p:outputLabel value="Data de Nascimento: " for="datanasc" />
 							<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
@@ -168,8 +168,8 @@
 							
 						</h:panelGroup>
 
-					<p:commandLink class="botaoLink" onclick="PF('dlg2').show();">
-						<h:outputText value="Salvar alterações" />
+					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();">
+						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>
 
@@ -183,7 +183,8 @@
 							<p:outputLabel value="Confirmar senha:" for="senha1" />
 							<p:password id="senha1" required="true"	placeholder="Digite sua senha" value="#{usuario.senha}" />
 
-							<p:commandLink class="botaoLink" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" update="@all">
+							<p:commandLink class="botaoLink" id="confSenha" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" 
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('confSenha').click();}" update="@all">
 								<h:outputText value="Confirmar" />
 								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 	

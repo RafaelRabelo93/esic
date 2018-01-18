@@ -40,7 +40,8 @@
 					
 					</p:panelGrid>
 					
-					<p:commandLink action="#{usuario.edit}" class="botaoLink">
+					<p:commandLink action="#{usuario.edit}" id="altSenha"
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altSenha').click();}" class="botaoLink">
 	
 						<h:outputText value="Salvar senha" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />

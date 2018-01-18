@@ -35,7 +35,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public static List<Competencias> listCompetencias;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
-	private int idAcoes;
+	public static int idAcoes;
 	private int idEntidade;
 	private Entidades ent;
 	private String novaAcao;

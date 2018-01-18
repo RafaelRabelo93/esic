@@ -37,7 +37,8 @@
 						<p:password id="senha2" required="true" placeholder="Digite nova senha" />
 				
 					
-					<p:commandLink action="#{usuario.redefinirSenha}" class="botaoLink">
+					<p:commandLink action="#{usuario.redefinirSenha}" id="redefSenha" class="botaoLink"
+						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefSenha').click();}">
 	
 						<h:outputText value="Redefinir senha" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />

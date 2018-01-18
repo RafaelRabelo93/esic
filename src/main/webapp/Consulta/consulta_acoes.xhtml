@@ -50,7 +50,8 @@
 						
 					</p:dataTable>
 					
-					<p:commandLink class="botaoLink" update="dialog2:info2" onclick="PF('newDialog').show();" style="margin-top: 10px;">
+					<p:commandLink class="botaoLink" update="dialog2:info2" id="novaAcao" onclick="PF('newDialog').show();" style="margin-top: 10px;"
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}">
 						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 						<h:outputText value="Nova Ação" />
 					</p:commandLink>
@@ -69,7 +70,8 @@
 						
 							</p:panelGrid>
 							
-							<p:commandLink class="botaoLink" action="#{acoes.save}" oncomplete="PF('editDialog').hide();" update="form:acoes">
+							<p:commandLink class="botaoLink" action="#{acoes.save}" id="editarAcoes" oncomplete="PF('editDialog').hide();" update="form:acoes"
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarAcoes').click();}">
 								<h:outputText value="Salvar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
 							</p:commandLink>
@@ -98,7 +100,8 @@
 		
 							</p:panelGrid>
 		
-							<p:commandLink class="botaoLink" action="#{acoes.save}" update="form:acoes" oncomplete="PF('newDialog').hide();" >
+							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:acoes" oncomplete="PF('newDialog').hide();" 
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('salvarAcao').click();}">
 								<h:outputText value="Cadastrar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
 							</p:commandLink>

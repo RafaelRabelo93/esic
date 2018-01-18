@@ -59,8 +59,22 @@ public class CidadaoDAO {
 
     	List<Cidadao> results = query.getResultList();
   	 	return results.get(0);
+    }
+   
+  	 	
+    @SuppressWarnings("unchecked")
+    public static List<Cidadao> findCPFs() {
+    	Query query = em.createQuery("SELECT cid.cpf FROM Cidadao as cid ");
+    	List<Cidadao> results = query.getResultList();
+  	 	return results;
+     }
+    @SuppressWarnings("unchecked")
+    public static List<Cidadao> findRGs() {
+    	Query query = em.createQuery("SELECT cid.rg FROM Cidadao as cid ");
+    	List<Cidadao> results = query.getResultList();
+    	return results;
+    }
 
-   }
 
     @SuppressWarnings("unchecked")
     public static Cidadao findCidadaoUsuario(int idUsuario) {

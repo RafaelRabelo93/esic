@@ -138,7 +138,7 @@ public class UsuarioBean implements Serializable {
 				} else {
 					nick = usuario.getNick();
 					login();
-					return "cad_cidadao";
+					return "/Cadastro/cad_cidadao";
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -153,6 +153,10 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public void cadastrarCidadao() {
+		save();
 	}
 
 	public boolean verificaSeVazio(String campo) {

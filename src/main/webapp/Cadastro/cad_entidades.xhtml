@@ -103,7 +103,8 @@
 
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" action="#{entidades.save}" update="@all">
+					<p:commandLink class="botaoLink" action="#{entidades.save}" id="novaEntidade" update="@all"
+							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaEntidade').click();}" >
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 						<f:setPropertyActionListener value="#{entidades.entidades}" target="#{competencias.ent}" />

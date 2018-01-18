@@ -63,12 +63,14 @@
                         </h:panelGroup>
 					
 					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel eq '3' }"> 					
-					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias:competencias_panel">
+					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
+						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Salvar Altera��es" style="margin-right: 5px" />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
 					
-					    <p:commandLink class="botaoLink" onclick="PF('dlg').show();" >
+					    <p:commandLink class="botaoLink" id="novaComp" onclick="PF('dlg').show();" 
+					    onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaComp').click();}">
 					        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
 					        <i class="fa fa-plus" />
 					    </p:commandLink>
