@@ -17,6 +17,54 @@
 			<h:form id="cad_cidadao" styleClass="cad_form">
 
 				<div class="ficha">
+
+					<h:panelGroup styleClass="box" style="margin-bottom:1vw"
+						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '4'}">
+
+						<h:outputText value="Dados Pessoais"
+							style="color:#1a568c; font-size:25px; align-self: center;" />
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Email:" for="email" />
+								<p:inputText id="email" value="#{cidadao.cidadao.email}"
+									size="30" />
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
+								<p:calendar styleClass="date" id="datanasc"
+									value="#{cidadao.cidadao.datanasc}" showOn="button"
+									locale="pt_BR" effect="slideDown" navigator="true"
+									pattern="dd/MM/yyyy" mask="true" yearRange="c-100:c" />
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
+								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}"
+									style="width:125px">
+									<f:selectItem itemLabel="Física" itemValue="true" />
+									<f:selectItem itemLabel="Jurídica" itemValue="false" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Gênero: " for="sexo" />
+								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
+									layout="pageDirection">
+									<f:selectItem itemLabel="Masculino" itemValue="M" />
+									<f:selectItem itemLabel="Feminino" itemValue="F" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+			
+
+						</h:panelGroup>
+					</h:panelGroup>
+
+
+					<!-- 						<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" /> -->
 					
 					<h:panelGroup styleClass="box">
 							
@@ -201,10 +249,12 @@
 							</h:panelGroup>
 							
 						</h:panelGroup>
+>>>>>>> 0d8693e761e3b3faf96f50fcd4d94585af343b11
 
 
-					<p:commandLink class="botaoLink" action="#{cidadao.save}"
-						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}">
+					<p:commandLink class="botaoLink" action="#{cidadao.save}" id="novoCidadao"
+						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}"
+						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoCidadao').click();}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 

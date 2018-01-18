@@ -11,15 +11,18 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-		
-		<!-- Mensagem de Erro -->
-		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
 			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2' }">
 
 				<div class="ficha">
 	
-					<h:outputText value="Entidades"	style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"	rendered="#{usuario.usuario.perfil eq '4' }" />
+					<!--		Mensagens de Erro		-->
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+	
+					<h:outputText value="Entidades"
+						style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"
+						rendered="#{usuario.usuario.perfil eq '4' }" />
 	
 						<p:dataTable id="entidades" widget="orgaos" var="orgaos"
 							emptyMessage="Nao há órgãos"
@@ -45,8 +48,9 @@
 							</p:column>
 	
 							<p:column headerText="Ações" width="50" style="text-align: center" >
-								<p:commandLink class="botaoLinkIcon"
-									action="#{competencias.consultarCompetencias}" style="margin:5px">
+								<p:commandLink class="botaoLinkIcon" id="consComp"
+									action="#{competencias.consultarCompetencias}" style="margin:5px"
+									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consComp').click();}">
 									<i class="fa fa-plus" />
 									<f:setPropertyActionListener value="#{orgaos}"
 										target="#{competencias.ent}" />
@@ -55,23 +59,27 @@
 	
 							<p:column headerText="Editar" width="45"  rendered="usuario.responsavel.nivel eq '3'"
 								style="text-align: center">
-								<p:commandLink class="botaoLinkIcon"  update="dialog:info" onclick="PF('editDialog').show();">
+								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog:info" onclick="PF('editDialog').show();"
+										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">
 									<i class="fa fa-pencil-square-o" />
 									<f:setPropertyActionListener value="#{orgaos}"
 										target="#{entidades.entidades}" />
 								</p:commandLink>
 							</p:column>
 	
-							<p:column headerText="Solicitações" width="90" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" action="#{solicitacao.consultarSolicitacaoGestor()}">
+							<p:column headerText="Solicitações" width="90"
+								style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{solicitacao.consultarSolicitacaoGestor()}"
+										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>
 	
-						<h:commandLink action="/Cadastro/cad_entidades"
-							style="display: flex; margin-top: 10px" styleClass="botaoLink">
+						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade"
+							style="display: flex; margin-top: 10px" styleClass="botaoLink"
+							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaEntidade').click();}">
 							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 							<h:outputText value="Nova Entidade" />
 						</h:commandLink>
@@ -85,28 +93,26 @@
 					hideEffect="fade" resizable="false" maximizable="false"
 					draggable="false" closeOnEscape="true">
 					<h:form id="dialog">
-						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
+						<p:outputPanel id="entidadeEdit"
+							style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid"
 								style="border: none; width: 100%;">
 								<p:outputLabel for="nome" value="Nome:" />
-								<p:inputText id="nome" value="#{entidades.entidades.nome}" maxlength="200" >
-									<f:validateLength maximum="200"/>
-								</p:inputText>
+								<p:inputText id="nome" value="#{entidades.entidades.nome}" />
 
 								<p:outputLabel for="sigla" value="Sigla:" />
-								<p:inputText id="sigla" value="#{entidades.entidades.sigla}" maxlength="10" >
-									<f:validateLength maximum="10"/>
-								</p:inputText>
+								<p:inputText id="sigla" value="#{entidades.entidades.sigla}" />
 
 								<p:outputLabel for="ativa" value="Status:" />
-								<p:selectOneRadio id="ativa" value="#{entidades.entidades.ativa}">
+								<p:selectOneRadio id="ativa"
+									value="#{entidades.entidades.ativa}">
 									<f:selectItem itemLabel="Ativa" itemValue="true" />
 									<f:selectItem itemLabel="Inativa" itemValue="false" />
 								</p:selectOneRadio>
 
 							</p:panelGrid>
 
-							<p:commandLink class="botaoLink" action="#{entidades.edit}"
+							<p:commandLink class="botaoLink"  action="#{entidades.edit}"
 								oncomplete="PF('editDialog').hide();" update="form:entidades">
 								<h:outputText value="Salvar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />

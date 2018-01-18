@@ -131,19 +131,28 @@ public class SolicitacaoBean implements Serializable {
 				
 				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 				enviarMensagemAutomatica();
+				
+				
 			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
+			
 		}
 
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
 		CompetenciasBean.listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
+		CompetenciasBean.idAcoes = 0;
 		acoesTemporaria = null;
 		return "/index?faces-redirect=true";
 	}
 	
 	
-	
+
 	public void gerarDataLimite() {
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));

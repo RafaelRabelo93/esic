@@ -11,9 +11,6 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-		
-		<!-- Mensagem de Erro -->
-		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
             
 			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
 					
@@ -63,12 +60,14 @@
                         </h:panelGroup>
 					
 					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel eq '3' }"> 					
-					    <p:commandLink class="botaoLink" action="#{competencias.save}" update="alterar_competencias:competencias_panel">
+					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
+						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
 					        <i class="fa fa-pencil" />
 					    </p:commandLink>
 					
-					    <p:commandLink class="botaoLink" onclick="PF('dlg').show();" >
+					    <p:commandLink class="botaoLink" id="novaComp" onclick="PF('dlg').show();" 
+					    onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaComp').click();}">
 					        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
 					        <i class="fa fa-plus" />
 					    </p:commandLink>
@@ -78,17 +77,17 @@
 			
 			</h:form>
 			
-		<!-- Dialog Nova Competência -->
+		<!-- Dialog Nova Competï¿½ncia -->
 			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 690px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
 						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
 					
-						<h:outputLabel value="Ógão/Entidade:" /> 
+						<h:outputLabel value="ï¿½rgï¿½o/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 	
-						<h:outputLabel value="Ações: " for="acoes" />
+						<h:outputLabel value="Aï¿½ï¿½es: " for="acoes" />
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -124,7 +123,7 @@
 					<h:form id="dialog2">
 						<p:outputPanel id="dlg2" style="max-width: 690px">
 							<p:panelGrid columns="1" style="border:none; width: 60%;">
-								<p:outputLabel value="Título:" for="titulo" />
+								<p:outputLabel value="Tï¿½tulo:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
 								<p:outputLabel value="Descrição:" for="descr" />

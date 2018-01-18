@@ -46,7 +46,8 @@
 					</h:panelGroup>
 					
 					 
-					<p:commandLink class="botaoLink" action="#{responsavel.save}" update="nivel orgao email nick" >
+					<p:commandLink class="botaoLink" action="#{responsavel.save}" id="novoResponsavel" update="nivel orgao email nick" 
+									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoResponsavel').click();}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>

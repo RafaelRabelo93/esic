@@ -6,14 +6,16 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{solicitacao.usuarioModoAnonimo()}">
+<h:body onload="#{solicitacao.usuarioModoAnonimo() }">
 
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
 			<h:form id="solicitacao" styleClass="cad_form"
-				enctype="multipart/form-data">
+				rendered="#{usuario.usuario.perfil eq '3' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
+				enctype="multipart/form-data" onmouseover="#{acoes.carregarLista()}">
+
 
 				<div class="ficha">
 
@@ -56,7 +58,55 @@
 							</p:column>
 						</p:row>
 
+						<p:outputLabel value="Assunto:" />
+						<h:panelGroup rendered="#{solicitacao.acoesTemporaria ne null}">
+							<p:row>
+								<p:column>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputText id="assunto1"
+										value="#{solicitacao.acoesTemporaria.titulo}"
+										style="color:#a8a8a8;" />
+								</p:column>
+							</p:row>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{solicitacao.solicitacao.acoes ne null}">
+							<p:row>
+								<p:column>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputText id="assunto2"
+										value="#{solicitacao.solicitacao.acoes.titulo}"
+										style="color:#a8a8a8;" />
+								</p:column>
+							</p:row>
+						</h:panelGroup>
 
+						<h:panelGroup
+							rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+							<p:row>
+								<p:column>
+									<p:outputLabel value="Forma de recebimento da resposta:" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:selectOneMenu id="recResp"
+										value="#{solicitacao.solicitacao.formaRecebimento}">
+										<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+										<f:selectItem itemLabel="Correspondência" itemValue="1" />
+										<f:selectItem itemLabel="Email" itemValue="2" />
+										<f:selectItem itemLabel="Email e Correspondência"
+											itemValue="3" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+						</h:panelGroup>
+						
 						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
 							<p:column>
 								<h:outputText value="Modo Anônimo: " />
@@ -79,40 +129,38 @@
 							</p:column>
 						</p:row>
 
-						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
-							<p:column>
-								<p:outputLabel value="Forma de recebimento da resposta:" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="recResp"
-									value="#{solicitacao.solicitacao.formaRecebimento}"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
-									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-									<f:selectItem itemLabel="Correspondência" itemValue="1" />
-									<f:selectItem itemLabel="Email" itemValue="2" />
-									<f:selectItem itemLabel="Email e Correspondência" itemValue="3" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
 
-
-						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
-							<p:column>
-								<p:outputLabel value="Assunto:" for="assDen" />
-							</p:column>
-						</p:row>
-						<p:row rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
-							<p:column>
-								<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
-									disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}">
-									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-									<f:selectItems value="#{acoes.acoes}" var="acoesDen"
-										itemLabel="#{acoesDen.titulo}" itemValue="#{acoesDen.idAcoes}" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
+						<h:panelGroup
+							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
+							<p:row>
+								<p:column>
+									<h:outputText value="Modo Anônimo: " />
+									<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"
+										disabled="#{usuario.usuario.nick eq 'null'}">
+									</p:selectBooleanCheckbox>
+								</p:column>
+							</p:row>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+							<p:row>
+								<p:column>
+									<p:outputLabel value="Assunto:" for="assDen" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
+										disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
+										rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+										<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+										<f:selectItems value="#{acoes.acoes}" var="acoesDen"
+											itemLabel="#{acoesDen.titulo}"
+											itemValue="#{acoesDen.idAcoes}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+						</h:panelGroup>
 
 						<p:row>
 							<p:column>
@@ -145,7 +193,7 @@
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
 									invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
-									sizeLimit="1048576"
+									sizeLimit="1048576" 
 									invalidSizeMessage="O tamanho máximo permitido de 1MB." />
 								<p:growl id="msg" />
 

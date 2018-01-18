@@ -62,7 +62,8 @@
 
 					</h:panelGroup>
 					
-						<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="cad_competencias2" style="margin: 0;">
+						<p:commandLink styleClass="botaoLink" id="selecAcao" action="#{competencias.addLista}" update="cad_competencias2" 
+							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('selecAcao').click();}" style="margin: 0;">
 							<h:outputLabel value="Adicionar" />
 							<i class="fa fa-plus" />
 						</p:commandLink>

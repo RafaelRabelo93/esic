@@ -1,11 +1,15 @@
 package br.gov.se.lai.Bean;
 
+import java.util.List;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
@@ -40,6 +44,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private UsuarioBean usuarioBean;
 	private int renda;
 	private String numero;
+	private String mensagemErro;
 	
 	@PostConstruct
 	public void init() {
@@ -48,10 +53,17 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao()) {
+		if (verificaPermissao() && !cpfCadastrado(cpf) && !rgCadastrado(rg)) {
 			this.usuario = usuarioBean.getUsuario();
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
+			}
+			cidadao.setCpf(cpf);
+			cidadao.setRg(rg);
+			if(getNumero().isEmpty()) {
+				cidadao.setNumero(null) ;
+			}else {
+				cidadao.setNumero(numero);
 			}
 			cidadao.setUsuario(this.usuario);
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
@@ -62,7 +74,37 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			}
 			return "/index";
 		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					mensagemErro, null));
 			return null;
+		}
+	}
+	
+	public boolean cpfCadastrado(String cpf) {
+		if(!cpf.equals("")) {
+			List<Cidadao> cpfLista = new ArrayList<Cidadao>(CidadaoDAO.findCPFs());
+			if(cpfLista.contains(cpf)) {
+				mensagemErro = "CPF já existente no sistema.";
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean rgCadastrado(String rg) {
+		if (!rg.equals("")) {
+			List<Cidadao> rgLista = new ArrayList<Cidadao>(CidadaoDAO.findRGs());
+			if (rgLista.contains(rg) && !rg.equals("")) {
+				mensagemErro = "RG já existente no sistema.";
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
 	}
 	
