@@ -60,11 +60,9 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			}
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
-			if(getNumero().isEmpty()) {
-				cidadao.setNumero(null) ;
-			}else {
-				cidadao.setNumero(numero);
-			}
+			try {
+				if (getNumero().isEmpty()) { cidadao.setNumero(numero);}
+			}catch (NullPointerException e) { cidadao.setNumero(null);} 
 			cidadao.setUsuario(this.usuario);
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
 				usuarioBean.setEmail(cidadao.getEmail());
@@ -81,29 +79,39 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public boolean cpfCadastrado(String cpf) {
-		if(!cpf.equals("")) {
-			List<Cidadao> cpfLista = new ArrayList<Cidadao>(CidadaoDAO.findCPFs());
-			if(cpfLista.contains(cpf)) {
-				mensagemErro = "CPF já existente no sistema.";
-				return true;
-			}else {
+		try {
+			if (!cpf.equals("") ) {
+				List<Cidadao> cpfLista = new ArrayList<Cidadao>(CidadaoDAO.findCPFs());
+				if (cpfLista.contains(cpf)) {
+					mensagemErro = "CPF já existente no sistema.";
+					return true;
+				} else {
+					return false;
+				}
+			} else {
 				return false;
 			}
-		}else {
+		} catch (Exception e) {
+		} finally {
 			return false;
 		}
 	}
 	
 	public boolean rgCadastrado(String rg) {
-		if (!rg.equals("")) {
-			List<Cidadao> rgLista = new ArrayList<Cidadao>(CidadaoDAO.findRGs());
-			if (rgLista.contains(rg) && !rg.equals("")) {
-				mensagemErro = "RG já existente no sistema.";
-				return true;
+		try {
+			if (!rg.equals("")) {
+				List<Cidadao> rgLista = new ArrayList<Cidadao>(CidadaoDAO.findRGs());
+				if (rgLista.contains(rg) && !rg.equals("")) {
+					mensagemErro = "RG já existente no sistema.";
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
-		} else {
+		} catch (Exception e) {
+		} finally {
 			return false;
 		}
 	}
