@@ -26,7 +26,7 @@ public class SolicitacaoDAO {
     			em.merge(solicitacao);
     		}
             em.getTransaction().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Solicitacao salvo(a) com sucesso!"));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Solicitacao salvo(a) com sucesso!"));
             return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar solicitacao "));
@@ -44,7 +44,7 @@ public class SolicitacaoDAO {
 				em.getTransaction().begin();
 				em.remove(soli);
 	            em.getTransaction().commit();
-	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Solicitacao  excluída com sucesso!"));
+//	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Solicitacao  excluída com sucesso!"));
 			}            
         } catch (Exception e) {
             em.getTransaction().rollback();

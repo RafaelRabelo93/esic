@@ -102,6 +102,7 @@ public class SolicitacaoBean implements Serializable {
 
 	public String save() {
 		
+		String page = null;
 		gerarDataLimite();
 		gerarDataFim(); // caso seja Elogio/Sugestão
 		if(solicitacao.getTipo().equals("Denúncia")) {
@@ -139,13 +140,18 @@ public class SolicitacaoBean implements Serializable {
 				CompetenciasBean.idAcoes = 0;
 				acoesTemporaria = null;
 				
+				page = "/Solicitacao/confirmacao";
+			}else {
+				SolicitacaoDAO.delete(solicitacao);
+				String teste = solicitacao.getTitulo();
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
 			}
-			return "/index?faces-redirect=true";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
-			return null;
 		}
+		return page;
 	}
 	
 	
@@ -565,7 +571,7 @@ public class SolicitacaoBean implements Serializable {
 			
 			popularEncaminharEntidade();
 
-//			entReencaminhar = EntidadesDAO.find(3);
+			entReencaminhar = EntidadesDAO.find(idEntidades);
 			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
 			int idResp = ResponsavelBean.responsavelDisponivel(1, entReencaminhar.getIdEntidades()) ; 
@@ -585,7 +591,7 @@ public class SolicitacaoBean implements Serializable {
 
 			if (MensagemDAO.saveOrUpdate(mensagem)) {
 				MensagemBean.attMensagemSolicitacao(mensagem);
-				NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+//				NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
 			}
 			;
 			mensagem = new Mensagem();

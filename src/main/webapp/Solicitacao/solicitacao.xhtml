@@ -166,20 +166,21 @@
 
 						<p:row>
 							<p:column>
-								<p:fileUpload mode="simple" value="#{solicitacao.file}"
-									label="Enviar Anexo" skinSimple="true"
+								<p:fileUpload value="#{solicitacao.file}"
+									label="Enviar Anexo" 
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
 									invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
 									sizeLimit="1048576" 
 									invalidSizeMessage="O tamanho máximo permitido de 1MB." />
-								<p:growl id="msg" />
 
 							</p:column>
 						</p:row>
 
 						<p:row>
-							<p:column />
+							<p:column>
+								<p:growl id="msg" />
+							</p:column>
 						</p:row>
 
 					</p:panelGrid>

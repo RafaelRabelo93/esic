@@ -137,7 +137,7 @@ public class ResponsavelBean implements Serializable{
 	public static int responsavelDisponivel(int instancia, int entidadeId) {
 		boolean busca = false;
 		Responsavel respBusca =  new Responsavel();
-		if(instancia <= 3) {			
+		while(instancia <= 3) {			
 			try{
 				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidadeId, instancia);
 				for (Responsavel r : resp) {
@@ -147,8 +147,10 @@ public class ResponsavelBean implements Serializable{
 						break;
 					}
 				}
-				if(busca == false) {
-					responsavelDisponivel(instancia+1, entidadeId);
+				if(busca == true) {
+					break;
+				}else {
+					instancia++;
 				}
 			}catch (NullPointerException e) {
 					responsavelDisponivel(instancia+1, entidadeId);

@@ -82,7 +82,7 @@ public class AnexoBean implements Serializable {
 				break;
 			}
 		}
-		
+		listarFiles();
 		String retorno = null;
 		String msgKeyStr = ""+msgKey;
 		for (File file : filesInFolder) {
