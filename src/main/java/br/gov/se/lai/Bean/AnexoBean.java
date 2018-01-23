@@ -44,7 +44,7 @@ public class AnexoBean implements Serializable {
 		anexo = new Anexo();
 	}
 
-	public void save(Anexo anexo, Mensagem mensagem, UploadedFile file) {
+	public void save(Anexo anexo, Mensagem mensagem, UploadedFile file) throws IOException, NullPointerException{
 		Path folder = Paths.get(filesPath);
 		//Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + "resources\\arquivos");   
 		try (InputStream input = file.getInputstream()) {
@@ -65,12 +65,8 @@ public class AnexoBean implements Serializable {
 			} else {
 				this.anexo.setNome("anexopadrao.png");
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-		AnexoDAO.saveOrUpdate(anexo);
+			AnexoDAO.saveOrUpdate(anexo);
+		} 
 	}
 	
 	public String downloadAnexo(Mensagem mensagem) {

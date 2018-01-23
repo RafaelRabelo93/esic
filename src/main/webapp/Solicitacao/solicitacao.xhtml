@@ -167,11 +167,11 @@
 						<p:row>
 							<p:column>
 								<p:fileUpload value="#{solicitacao.file}"
-									label="Enviar Anexo" 
+									label="Enviar Anexo" mode="simple"
 									style="display: flex;  align-items: center;"
 									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
 									invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
-									sizeLimit="1048576" 
+									sizeLimit="512" 
 									invalidSizeMessage="O tamanho máximo permitido de 1MB." />
 
 							</p:column>
