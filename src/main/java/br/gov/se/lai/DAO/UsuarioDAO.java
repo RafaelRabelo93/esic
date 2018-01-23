@@ -62,9 +62,9 @@ public class UsuarioDAO {
     
     
     @SuppressWarnings("unchecked")
-	public static List<Usuario> buscarNicks(String primeiroNome){
+	public static List<Usuario> buscarNicks(String nick){
     	Query query = em.createQuery("FROM Usuario as usu WHERE usu.nick LIKE :nickParam");
-    	query.setParameter("nickParam", "%"+primeiroNome+"%");
+    	query.setParameter("nickParam", nick+"%");
     	List<Usuario> results = query.getResultList();
     	
     	if (results.isEmpty()) {

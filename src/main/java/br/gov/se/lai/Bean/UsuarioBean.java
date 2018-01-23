@@ -218,16 +218,18 @@ public class UsuarioBean implements Serializable {
 
 	public void sugestaoNick() {
 		int cont = 1;
+		String nck = "";
 		try {
-			List<Usuario> usuarios = UsuarioDAO.buscarNicks(usuario.getNome().split(" ", 2)[0]);
+			nck = deAccent((getNomeCompleto().replace(" ", ".")).toLowerCase());
+			List<Usuario> usuarios = UsuarioDAO.buscarNicks(nck);
 			cont += (usuarios.size());
 		} catch (NullPointerException e) {
 		} catch (ArrayIndexOutOfBoundsException e) {
 		} finally {
 			if (cont == 1) {
-				this.nick = (deAccent((getNomeCompleto().replace(" ", ".")).toLowerCase()));
+				this.nick = nck;
 			} else {
-				this.nick = (deAccent((getNomeCompleto().replace(" ", ".") + cont).toLowerCase()));
+				this.nick = nck+cont;
 			}
 			this.usuario.setNick(this.nick);
 
