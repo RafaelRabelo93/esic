@@ -38,18 +38,21 @@ public class ResponsavelBean implements Serializable{
 	private String email;
 	private String nick;
 	private boolean ativo;
+	private boolean permissao;
 	private List<Responsavel> todosResponsaveis;
 
 	
 	@PostConstruct
 	public void init() {
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		perfilCGE();
 		this.responsavel = new Responsavel();
 		todosResponsaveis = ResponsavelDAO.list();
-		this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
 	public String save() {
+		try {
+			
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
 			this.responsavel.setAtivo(true);
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
@@ -58,7 +61,14 @@ public class ResponsavelBean implements Serializable{
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			UsuarioDAO.saveOrUpdate(usuario);	
 			todosResponsaveis.add(responsavel);
-		return "/index";
+			responsavel = new Responsavel();
+			idEntidade = 0;
+			nick = null;
+			return "/Consulta/consulta_responsavel.xhtml?faces-redirect=true";
+		}catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuario não encontrado!", null));
+			return null;
+		}
 	}
 	
 	public void delete() {
@@ -97,7 +107,10 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String alterarDadosUsuario() {
+		responsavel.setEntidades(EntidadesDAO.find(idEntidade));
 		ResponsavelDAO.saveOrUpdate(responsavel);
+		responsavel = new Responsavel();
+		idEntidade = 0;
 		return "Consulta/consultar_responsavel";
 	}
 	
@@ -166,7 +179,7 @@ public class ResponsavelBean implements Serializable{
 	
 	public String cadResponsavel() {
 		List<Responsavel> resp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
-		String retorno = null;
+		String retorno = "";
 		for (Responsavel r : resp) {
 			if(r.isAtivo() && verificaAcesso()) {
 				popularListaEntidadesParaCadastro(r);
@@ -174,7 +187,13 @@ public class ResponsavelBean implements Serializable{
 				break;
 			}
 		}
-		return retorno;
+		
+		if(retorno.length() > 0) {
+			return retorno;
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
+			return null;
+		}
 	}
 	
 	public void popularListaEntidadesParaCadastro(Responsavel r) {
@@ -187,6 +206,19 @@ public class ResponsavelBean implements Serializable{
 					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listOrgaoEntidade(r.getEntidades().getIdEntidades()));
 				}
 			}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void perfilCGE() {
+		responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+		if(responsavel.getEntidades().getIdEntidades().equals(1)) {
+			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+			permissao = true;
+		}else {
+			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+			permissao = false;
+		}
+		responsavel= new Responsavel();
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -262,5 +294,14 @@ public class ResponsavelBean implements Serializable{
 	public void setTodosResponsaveis(List<Responsavel> todosResponsaveis) {
 		this.todosResponsaveis = todosResponsaveis;
 	}
+
+	public boolean isPermissao() {
+		return permissao;
+	}
+
+	public void setPermissao(boolean permissao) {
+		this.permissao = permissao;
+	}
+	
 	
 }
