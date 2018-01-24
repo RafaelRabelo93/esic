@@ -14,186 +14,215 @@
 		
 			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' }">
 				<p:growl id="growl" showDetail="true" sticky="true" /> 	
-	
+
 				<div class="ficha">
 
-						<h:panelGroup id="dataPanel" styleClass="box">
-						
-							<h:outputText value="Alterar dados" style="color:#1a568c; font-size:35px; align-self: center; margin-bottom: 1em" />
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
-						<h:panelGroup rendered="#{usuario.usuario.perfil eq '3' }">
+					<h:panelGroup styleClass="box">
 
-							<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px; align-self: center; margin-top: 2em" />
-							
-							
-							<h:panelGroup styleClass="inline">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="Nome: " for="nome" />
-									<p:inputText id="nome" size="40" value="#{usuario.usuario.nome}" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="E-mail: " for="email" />
-									<p:inputText  id="email" size="25" value="#{usuario.cidadao.email}" />
-								</h:panelGroup>
+						<h:outputText value="Alterar Dados" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
+
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" />
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Nome: " for="nome" />
+								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+									<f:validateLength minimum="5" maximum="65" />
+								</p:inputText>
 							</h:panelGroup>
-							
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-									<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
-										style="width:125px">
-										<f:selectItem itemLabel="Física" itemValue="true" />
-										<f:selectItem itemLabel="Jurídica" itemValue="false" />
-									</p:selectOneMenu>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Data de Nascimento: " for="datanasc" />
-									<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
-										showOn="button" value="#{usuario.cidadao.datanasc}"
-										locale="pt_BR" effect="slideDown" navigator="true"
-										pattern="dd/MM/yyyy" mask="true" timeInput="false">
-										<f:convertDateTime pattern="dd/MM/yyyy"/>
-									</p:calendar>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Gênero: " for="sexo" />
-									<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"	layout="pageDirection">
-										<f:selectItem itemLabel="Masculino" itemValue="M" />
-										<f:selectItem itemLabel="Feminino" itemValue="F" />
-									</p:selectOneRadio>
-								</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="E-mail: " for="email" />
+								<p:inputText id="email" value="#{usuario.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" requiredMessage="Email não pode ser vazio">
+									<f:validateLength minimum="5" maximum="100" />
+									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
+								</p:inputText>
 							</h:panelGroup>
-								
-							<h:panelGroup styleClass="inline">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-									<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}" mask="999.999.999-99" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column"  style="margin-left: 2vw">
-									<p:outputLabel value="RG: " for="rg" />
-									<p:inputMask id="rg" value="#{usuario.cidadao.rg}"	mask="?9999999999999999" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-									<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" style="width:125px" />
-								</h:panelGroup>
-							</h:panelGroup>
-							
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="Escolaridade: " for="escolaridade" />
-									<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}">
-										<f:selectItem itemLabel="Selecionar" itemValue="" />
-										<f:selectItem itemLabel="Analfabeto" itemValue="1" />
-										<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
-										<f:selectItem itemLabel="Fundamental" itemValue="3" />
-										<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
-										<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
-										<f:selectItem itemLabel="Ensino Superior Incompleto" itemValue="6" />
-										<f:selectItem itemLabel="Ensino Superior Completo" itemValue="7" />
-									</p:selectOneMenu>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Renda:" for="renda" />
-									<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}">
-										<f:selectItem itemLabel="Selecionar" itemValue="" />
-										<f:selectItem itemLabel="Sem renda" itemValue="0" />
-										<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
-										<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
-										<f:selectItem itemLabel="De 4 a 10 SM*" itemValue="3" />
-										<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
-										<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
-									</p:selectOneMenu>
-									<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0"/>
-								</h:panelGroup>
-							</h:panelGroup>
-	
-							<h:outputText value="Endereço" style="color:#1a568c; font-size:25px; margin-top: 1em;" />
-											
-							<h:panelGroup styleClass="inline">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="CEP:" for="cep" />
-									<p:inputMask id="cep" value="#{usuario.cidadao.cep}" mask="99999-999" onblur="pesquisacep(#{usuario.cidadao.cep})" />
-								</h:panelGroup>
-							
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Cidade:" for="cidade" />
-									<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Estado: " for="uf" />
-									<p:selectOneMenu id="uf" value="#{usuario.cidadao.estado}" style="width:125px">
-										<f:selectItem itemLabel="Selecionar" itemValue="" />
-										<f:selectItem itemLabel="Acre" itemValue="AC" />
-										<f:selectItem itemLabel="Alagoas" itemValue="AL" />
-										<f:selectItem itemLabel="Amapá" itemValue="AP" />
-										<f:selectItem itemLabel="Amazonas" itemValue="AM" />
-										<f:selectItem itemLabel="Bahia" itemValue="BA" />
-										<f:selectItem itemLabel="Ceará" itemValue="CE" />
-										<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
-										<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
-										<f:selectItem itemLabel="Goiás" itemValue="GO" />
-										<f:selectItem itemLabel="Maranhão" itemValue="MA" />
-										<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
-										<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
-										<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
-										<f:selectItem itemLabel="Pará" itemValue="PA" />
-										<f:selectItem itemLabel="Paraíba" itemValue="PB" />
-										<f:selectItem itemLabel="Paraná" itemValue="PR" />
-										<f:selectItem itemLabel="Piauí" itemValue="PI" />
-										<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
-										<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
-										<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
-										<f:selectItem itemLabel="Rondônia" itemValue="RO" />
-										<f:selectItem itemLabel="Roraima" itemValue="RR" />
-										<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
-										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
-										<f:selectItem itemLabel="Sergipe" itemValue="SE" />
-										<f:selectItem itemLabel="Tocantins" itemValue="TO" />
-									</p:selectOneMenu>
-								</h:panelGroup>
-							</h:panelGroup>
-							
-							<h:panelGroup styleClass="inline">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="Logradouro:" for="logradouro" />
-									<p:inputText id="logradouro" value="#{usuario.cidadao.endereco}" size="40" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Bairro: " for="bairro" />
-									<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" />
-								</h:panelGroup>
-							</h:panelGroup>
-							
-							<h:panelGroup styleClass="inline">
-								<h:panelGroup styleClass="column">
-									<p:outputLabel value="Número:" for="numero" />
-									<p:inputText id="numero" value="#{usuario.cidadao.numero}" size="10" />
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="column" style="margin-left: 2vw">
-									<p:outputLabel value="Complemento: " for="complemento" />
-							<p:inputText id="complemento" value="#{usuario.cidadao.complemento}" size="40" />
-								</h:panelGroup>
-							</h:panelGroup>
-							
 						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
+								<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}"
+									style="width:125px">
+									<f:selectItem itemLabel="Física" itemValue="true" />
+									<f:selectItem itemLabel="Jurídica" itemValue="false" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
+								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
+									showOn="button" value="#{usuario.cidadao.datanasc}"
+									locale="pt_BR" effect="slideDown" navigator="true"
+									pattern="dd/MM/yyyy" mask="true" timeInput="false">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Gênero: " for="sexo" />
+								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"
+									layout="pageDirection">
+									<f:selectItem itemLabel="Masculino" itemValue="M" />
+									<f:selectItem itemLabel="Feminino" itemValue="F" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
+								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}"
+									mask="999.999.999-99" />
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="RG: " for="rg" />
+								<p:inputMask id="rg" value="#{usuario.cidadao.rg}"
+									mask="?9999999999999999" />
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Órgão Expedidor: " for="orgao" />
+								<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}"
+									size="15">
+									<f:validateLength maximum="45" />
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Escolaridade: " for="escolaridade" />
+								<p:selectOneMenu id="escolaridade"
+									value="#{usuario.cidadao.escolaridade}">
+									<f:selectItem itemLabel="Selecionar" itemValue="" />
+									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
+									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
+									<f:selectItem itemLabel="Fundamental" itemValue="3" />
+									<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
+									<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
+									<f:selectItem itemLabel="Ensino Superior Incompleto"
+										itemValue="6" />
+									<f:selectItem itemLabel="Ensino Superior Completo"
+										itemValue="7" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Renda:" for="renda" />
+								<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}">
+									<f:selectItem itemLabel="Selecionar" itemValue="" />
+									<f:selectItem itemLabel="Sem renda" itemValue="0" />
+									<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
+									<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
+									<f:selectItem itemLabel="De 4 a 10 SM*" itemValue="3" />
+									<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
+									<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
+								</p:selectOneMenu>
+								<p:outputLabel value="* SM = Salário Mínimo"
+									style="color:gray; font-size:12px; margin: 0" />
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:outputText value="Endereço"
+							style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="CEP:" />
+								<p:inputMask id="cep" value="#{usuario.cidadao.cep}" mask="99999-999" />
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Cidade:" />
+								<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" maxlength="45">
+									<f:validateLength maximum="45"/>
+								</p:inputText>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Estado: " for="uf" />
+								<p:selectOneMenu id="uf" value="#{usuario.cidadao.estado}" widgetVar="estado" style="width:125px">
+									<f:selectItem itemLabel="Selecionar" itemValue="" />
+									<f:selectItem itemLabel="Acre" itemValue="AC" />
+									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+									<f:selectItem itemLabel="Amapá" itemValue="AP" />
+									<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+									<f:selectItem itemLabel="Bahia" itemValue="BA" />
+									<f:selectItem itemLabel="Ceará" itemValue="CE" />
+									<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+									<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+									<f:selectItem itemLabel="Goiás" itemValue="GO" />
+									<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+									<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+									<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+									<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+									<f:selectItem itemLabel="Pará" itemValue="PA" />
+									<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+									<f:selectItem itemLabel="Paraná" itemValue="PR" />
+									<f:selectItem itemLabel="Piauí" itemValue="PI" />
+									<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+									<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+									<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+									<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+									<f:selectItem itemLabel="Roraima" itemValue="RR" />
+									<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+									<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+									<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+									<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Logradouro:" />
+								<p:inputText id="rua" value="#{usuario.cidadao.endereco}"
+									size="40" maxlength="100">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Bairro:" />
+								<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" maxlength="45">
+									<f:validateLength maximum="45"/>
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Número:" for="numero" />
+								<p:inputText id="numero" value="#{usuario.cidadao.numero}"
+									size="10" maxlength="5">
+									<f:validateLength maximum="5" />
+								</p:inputText>
+
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Complemento: " for="complemento" />
+								<p:inputText id="complemento"
+									value="#{usuario.cidadao.complemento}" maxlength="200"
+									size="40">
+									<f:validateLength maximum="200" />
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGroup>
+
+					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();">
 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>
 
-	</h:panelGroup>
-					</div>
+				</div>
 
 			</h:form>
 			
@@ -220,6 +249,80 @@
 				</h:form>
 
 			</p:dialog>
+
+<!-- =========================== -->
+		<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
+		<!-- =========================== -->
+	
+		<script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#cep").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#rua").val("");
+                PF('estado').selectValue("");
+            }
+            
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#rua").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#rua").val(dados.logradouro);
+                                PF('estado').selectValue(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+
+    </script>
+
+	<!-- =========================== -->
+	<!-- =========================== -->
+	<!-- =========================== -->
+
 
 		</ui:define>
 
