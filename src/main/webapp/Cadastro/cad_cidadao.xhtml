@@ -16,40 +16,33 @@
 		<ui:define name="content">
 
 			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true"
-				redisplay="false" life="5000" severity="info,warn,error" />
+			<p:growl id="growl" showDetail="true" autoUpdate="true"	redisplay="false" life="5000" severity="info,warn,error" />
 
 			<h:form id="cad_cidadao" styleClass="cad_form" prependId="false">
 
 				<div class="ficha">
 
-					<!-- 						<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" /> -->
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
 					<h:panelGroup styleClass="box">
 
-						<h:outputText value="Cadastro de Cidadão"
-							style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
+						<h:outputText value="Cadastro de Cidadão" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 
-						<h:outputText value="Dados Pessoais"
-							style="color:#1a568c; font-size:25px;" />
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" />
 
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Nome: " for="nome" />
-								<p:inputText id="nome" size="40" maxlength="65"
-									value="#{usuario.usuario.nome}">
+								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" size="25" maxlength="100"
-									value="#{cidadao.cidadao.email}"
-									validatorMessage="E-mail inválido">
+								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
-									<f:validateRegex
-										pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
+									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -158,38 +151,35 @@
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Estado: " for="uf" />
-								<p:inputText id="uf" value="#{cidadao.cidadao.estado}" maxlength="45">
-									<f:validateLength maximum="2"/>
-								</p:inputText>
-<!-- 								<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" style="width:125px"> -->
-<!-- 									<f:selectItem itemLabel="Selecionar" itemValue="" /> -->
-<!-- 									<f:selectItem itemLabel="Acre" itemValue="AC" /> -->
-<!-- 									<f:selectItem itemLabel="Alagoas" itemValue="AL" /> -->
-<!-- 									<f:selectItem itemLabel="Amapá" itemValue="AP" /> -->
-<!-- 									<f:selectItem itemLabel="Amazonas" itemValue="AM" /> -->
-<!-- 									<f:selectItem itemLabel="Bahia" itemValue="BA" /> -->
-<!-- 									<f:selectItem itemLabel="Ceará" itemValue="CE" /> -->
-<!-- 									<f:selectItem itemLabel="Distrito Federal" itemValue="DF" /> -->
-<!-- 									<f:selectItem itemLabel="Espirito Santo" itemValue="ES" /> -->
-<!-- 									<f:selectItem itemLabel="Goiás" itemValue="GO" /> -->
-<!-- 									<f:selectItem itemLabel="Maranhão" itemValue="MA" /> -->
-<!-- 									<f:selectItem itemLabel="Mato Grosso" itemValue="MT" /> -->
-<!-- 									<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" /> -->
-<!-- 									<f:selectItem itemLabel="Minas Gerais" itemValue="MG" /> -->
-<!-- 									<f:selectItem itemLabel="Pará" itemValue="PA" /> -->
-<!-- 									<f:selectItem itemLabel="Paraíba" itemValue="PB" /> -->
-<!-- 									<f:selectItem itemLabel="Paraná" itemValue="PR" /> -->
-<!-- 									<f:selectItem itemLabel="Piauí" itemValue="PI" /> -->
-<!-- 									<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" /> -->
-<!-- 									<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" /> -->
-<!-- 									<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" /> -->
-<!-- 									<f:selectItem itemLabel="Rondônia" itemValue="RO" /> -->
-<!-- 									<f:selectItem itemLabel="Roraima" itemValue="RR" /> -->
-<!-- 									<f:selectItem itemLabel="Santa Catarina" itemValue="SC" /> -->
-<!-- 									<f:selectItem itemLabel="São Paulo" itemValue="SP" /> -->
-<!-- 									<f:selectItem itemLabel="Sergipe" itemValue="SE" /> -->
-<!-- 									<f:selectItem itemLabel="Tocantins" itemValue="TO" /> -->
-<!-- 								</p:selectOneMenu> -->
+								<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" widgetVar="estado" style="width:125px">
+									<f:selectItem itemLabel="Selecionar" itemValue="" />
+									<f:selectItem itemLabel="Acre" itemValue="AC" />
+									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+									<f:selectItem itemLabel="Amapá" itemValue="AP" />
+									<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+									<f:selectItem itemLabel="Bahia" itemValue="BA" />
+									<f:selectItem itemLabel="Ceará" itemValue="CE" />
+									<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+									<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+									<f:selectItem itemLabel="Goiás" itemValue="GO" />
+									<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+									<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+									<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+									<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+									<f:selectItem itemLabel="Pará" itemValue="PA" />
+									<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+									<f:selectItem itemLabel="Paraná" itemValue="PR" />
+									<f:selectItem itemLabel="Piauí" itemValue="PI" />
+									<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+									<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+									<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+									<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+									<f:selectItem itemLabel="Roraima" itemValue="RR" />
+									<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+									<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+									<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+									<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+								</p:selectOneMenu>
 							</h:panelGroup>
 						</h:panelGroup>
 
@@ -250,22 +240,18 @@
 		<!-- =========================== -->
 		<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
 		<!-- =========================== -->
-
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-			crossorigin="anonymous"></script>
-
-		<!-- Adicionando Javascript -->
+	
 		<script type="text/javascript">
 
         $(document).ready(function() {
 
             function limpa_formulário_cep() {
                 // Limpa valores do formulário de cep.
+                $("#cep").val("");
                 $("#bairro").val("");
                 $("#cidade").val("");
-                $("#uf").val("");
                 $("#rua").val("");
+                PF('estado').selectValue("");
             }
             
             //Quando o campo cep perde o foco.
@@ -286,7 +272,6 @@
                         //Preenche os campos com "..." enquanto consulta webservice.
                         $("#bairro").val("...");
                         $("#cidade").val("...");
-                        $("#uf").val("...");
                         $("#rua").val("...");
 
                         //Consulta o webservice viacep.com.br/
@@ -296,8 +281,8 @@
                                 //Atualiza os campos com os valores da consulta.
                                 $("#bairro").val(dados.bairro);
                                 $("#cidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
                                 $("#rua").val(dados.logradouro);
+                                PF('estado').selectValue(dados.uf);
                             } //end if.
                             else {
                                 //CEP pesquisado não foi encontrado.
