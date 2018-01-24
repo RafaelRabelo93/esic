@@ -1,5 +1,5 @@
 #content {
-    min-height: 86.4vh;
+    min-height: 80vh;
 }
 
 .cad_form {
@@ -304,7 +304,7 @@
 .ui-steps.custom {
 	margin-top: 0;
     margin-bottom: 5vw;
-    width: 100%;
+/*     width: 100%; */
 }
  
 .ui-steps.custom .ui-steps-item .ui-menuitem-link {
@@ -494,7 +494,7 @@
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
-    border: 1px solid #d2d6de !important;
+    border: 1px solid #c0c0c0 !important;
     cursor: pointer !important;
     right: -1px !important;
     top: -1px !important;
@@ -512,6 +512,7 @@
 
 .ui-button-icon-only{
 	padding: 0 !important;
+	left: -1px;
 }
 
 .ui-selectonemenu-item.ui-selectonemenu-list-item.ui-state-highlight {
@@ -557,7 +558,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 .ui-selectonemenu-panel {
 	box-shadow: none !important;
     border: 1px solid lightgray;
-    border-top: none;
+    margin-top: -1px;
 }
 
 .ui-datalist .ui-datalist-header, .ui-datalist .ui-datalist-footer {
@@ -576,11 +577,8 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 
 .ui-selectonemenu-label.ui-inputfield.ui-corner-all {
 	box-shadow: none;
+	padding: 0;
 /* 	width: 93%; */
-}
-
-.ui-selectonemenu {
-	padding-right: 0 !important;
 }
 
 .ui-tooltip .ui-tooltip-text {
@@ -1133,4 +1131,9 @@ i.fa.fa-home {
 
 .anexo:hover {
 	text-decoration: underline;
+}
+
+.ui-chkbox {
+    margin-bottom: -20px;
+    margin-left: 5px;
 }

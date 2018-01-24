@@ -16,165 +16,70 @@
 				rendered="#{usuario.usuario.perfil eq '3' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
 				enctype="multipart/form-data" onmouseover="#{acoes.carregarLista()}">
 
-
-				<div class="ficha">
+<div class="ficha">
 
 					<!--		Mensagens de Erro		-->
 					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
 					<p:steps activeIndex="2" styleClass="custom" readonly="false">
-						<p:menuitem value="Tipo de solicitação" url="../index.xhtml" />
-						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
+						<p:menuitem value="Tipo de solicitação" url="/index.xhtml"/> 
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
 						<p:menuitem value="Realizar Solicitação" url="#" />
 					</p:steps>
 
-					<p:panelGrid style="margin-bottom:1vw">
+					<h:panelGroup styleClass="box">
 
-						<f:facet name="header">
-							<p:row>
-								<p:column />
-							</p:row>
-							<p:row>
-								<p:column>
-									<h:outputText value="Realizar Solicitação"
-										style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column />
-							</p:row>
-						</f:facet>
-
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Orgão:" for="orgao" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<h:outputText id="orgao"
-									value="#{solicitacao.solicitacao.entidades.nome}"
-									style="color:#a8a8a8;" />
-							</p:column>
-						</p:row>
+						<h:outputText value="Realizar Solicitação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
 						
-						<p:row>
-							<p:column>
+						<p:outputLabel value="Orgão:" for="orgao" />
+						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />
+
 						<p:outputLabel value="Assunto:" />
-						<h:panelGroup rendered="#{solicitacao.acoesTemporaria ne null}">
-							<p:row>
-								<p:column>
-									<h:outputText id="assunto1"
-										value="#{solicitacao.acoesTemporaria.titulo}"
-										style="color:#a8a8a8;" />
-								</p:column>
-							</p:row>
-						</h:panelGroup>
-						<h:panelGroup rendered="#{solicitacao.solicitacao.acoes ne null}">
-							<p:row>
-								<p:column>
-									<h:outputText id="assunto2"
-										value="#{solicitacao.solicitacao.acoes.titulo}"
-										style="color:#a8a8a8;" />
-								</p:column>
-							</p:row>
-						</h:panelGroup>
-						<h:panelGroup
+						<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" rendered="#{solicitacao.acoesTemporaria ne null}" style="color:#a8a8a8;" />
+						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null}"	style="color:#a8a8a8;" />
+						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
+							disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
-							<p:row>
-								<p:column>
-									<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
-										disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
-										rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
-										<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-										<f:selectItems value="#{acoes.acoes}" var="acoesDen"
-											itemLabel="#{acoesDen.titulo}"
-											itemValue="#{acoesDen.idAcoes}" />
-									</p:selectOneMenu>
-								</p:column>
-							</p:row>
-						</h:panelGroup>
-							</p:column>
-						</p:row>
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{acoes.acoes}" var="acoesDen"
+								itemLabel="#{acoesDen.titulo}"
+								itemValue="#{acoesDen.idAcoes}" />
+						</p:selectOneMenu>
 
-						<h:panelGroup
-							rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
-							<p:row>
-								<p:column>
-									<p:outputLabel value="Forma de recebimento da resposta:" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column>
-									<p:selectOneMenu id="recResp"
-										value="#{solicitacao.solicitacao.formaRecebimento}">
-										<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-										<f:selectItem itemLabel="Correspondência" itemValue="1" />
-										<f:selectItem itemLabel="Email" itemValue="2" />
-										<f:selectItem itemLabel="Email e Correspondência"
-											itemValue="3" />
-									</p:selectOneMenu>
-								</p:column>
-							</p:row>
-						</h:panelGroup>
-						
-
-						<h:panelGroup
-							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-							<p:row>
-								<p:column>
-									<h:outputText value="Modo Anônimo: " />
-									<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"
-										disabled="#{usuario.usuario.nick eq null}">
-									</p:selectBooleanCheckbox>
-								</p:column>
-							</p:row>
+						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+							<p:outputLabel value="Forma de recebimento da resposta:" />
+							<p:selectOneMenu id="recResp"
+								value="#{solicitacao.solicitacao.formaRecebimento}"
+								rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+								<f:selectItem itemLabel="Correspondência" itemValue="1" />
+								<f:selectItem itemLabel="Email" itemValue="2" />
+								<f:selectItem itemLabel="Email e Correspondência" itemValue="3" />
+							</p:selectOneMenu>
 						</h:panelGroup>
 
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Título:" for="titulo" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputText id="titulo" size="78"
-									value="#{solicitacao.solicitacao.titulo}" />
-							</p:column>
-						</p:row>
+						<h:panelGroup styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
+							<h:outputLabel value="Realizar denúncia anonimamente: " />
+							<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"
+								disabled="#{usuario.usuario.nick eq null}">
+							</p:selectBooleanCheckbox>
+						</h:panelGroup>
 
-						<p:row>
-							<p:column>
-								<p:outputLabel value="Mensagem:" for="mensagem" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputTextarea id="mensagem" rows="10" cols="80"
-									autoResize="true" value="#{solicitacao.mensagem.texto}" />
-							</p:column>
-						</p:row>
+						<p:outputLabel value="Título:" for="titulo" />
+						<p:inputText id="titulo" size="78" value="#{solicitacao.solicitacao.titulo}" />
 
-						<p:row>
-							<p:column>
-								<p:fileUpload value="#{solicitacao.file}"
-									label="Enviar Anexo" mode="simple"
-									style="display: flex;  align-items: center;"
-									allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
-									invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
-									sizeLimit="512" 
-									invalidSizeMessage="O tamanho máximo permitido de 1MB." />
+						<p:outputLabel value="Mensagem:" for="mensagem" />
+						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
 
-							</p:column>
-						</p:row>
+						<p:fileUpload value="#{solicitacao.file}"
+							label="Enviar Anexo" mode="simple" skinSimple="true"
+							style="display: flex;  align-items: center; margin-top: 15px"
+							allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
+							invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
+							sizeLimit="512" 
+							invalidSizeMessage="O tamanho máximo permitido de 1MB." />
 
-						<p:row>
-							<p:column>
-								<p:growl id="msg" />
-							</p:column>
-						</p:row>
-
-					</p:panelGrid>
+					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" ajax="false"
 						action="#{solicitacao.save}" update="mainMenu">
