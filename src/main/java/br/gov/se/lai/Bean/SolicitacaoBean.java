@@ -117,49 +117,52 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setEncaminhada(false);
 		this.solicitacao.setProtocolo(gerarProtocolo());
-
-		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+	
+		try {
+			
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+	
 			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
 			this.mensagem.setData(new Date(System.currentTimeMillis()));
 			this.mensagem.setSolicitacao(solicitacao);
 			this.mensagem.setTipo((short) 1);
-			if (MensagemDAO.saveOrUpdate(mensagem)) {
-
-				if (!(file.getContents().length == 0)) {
-					AnexoBean anx = new AnexoBean();
-					try {
-						anx.save(anexo, mensagem, file);
-					} catch (Exception e) {
-						FacesContext.getCurrentInstance().addMessage(null,
-								new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-					}
+			MensagemDAO.saveOrUpdate(mensagem);
+	
+			if (!(file.getContents().length == 0)) {
+				AnexoBean anx = new AnexoBean();
+				try {
+					anx.save(anexo, mensagem, file);
+				} catch (Exception e) {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
 				}
-				
-				NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
-				enviarMensagemAutomatica();
-				
-				this.solicitacao = new Solicitacao();
-				this.mensagem = new Mensagem();
-				CompetenciasBean.listCompetencias = null;
-				CompetenciasBean.listEntidades = null;
-				CompetenciasBean.idAcoes = 0;
-				acoesTemporaria = null;
-				
-				page = "/Solicitacao/confirmacao";
-			}else {
-				SolicitacaoDAO.delete(solicitacao);
-				String teste = solicitacao.getTitulo();
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
 			}
-		}else {
+	
+			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
+			enviarMensagemAutomatica();
+			page = "/Solicitacao/confirmacao";
+		}catch (Exception e) {
+			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não efetuada.", "Tente novamente."));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+			page = "/index.xhtml?faces-redirect=true";
+			
+		}finally {
+			finalizarSolicitacao();
 		}
+
 		return page;
 	}
 	
-	
+	public void finalizarSolicitacao() {
+		this.solicitacao = new Solicitacao();
+		this.mensagem = new Mensagem();
+		CompetenciasBean.listCompetencias = null;
+		CompetenciasBean.listEntidades = null;
+		CompetenciasBean.idAcoes = 0;
+		acoesTemporaria = null;
+		idAcao = 0;
+	}
 
 	public void gerarDataLimite() {
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
