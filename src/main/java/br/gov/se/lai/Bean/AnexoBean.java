@@ -49,7 +49,8 @@ public class AnexoBean implements Serializable {
 		//Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + "resources\\arquivos");   
 		try (InputStream input = file.getInputstream()) {
 			if (!file.getFileName().equals("")) {
-				String extensao = "." + file.getContentType().split("/")[1];
+				String[] infoExtensao = file.getContentType().split("/")[1].split("-");
+				String extensao = "." + infoExtensao[infoExtensao.length-1];
 				String anexoNome = mensagem.getSolicitacao().getIdSolicitacao().toString()+"_"+mensagem.getSolicitacao().getMensagems().size()+ "_anexo";
 				
 				Path filePath = Files.createTempFile(folder,anexoNome,extensao);
