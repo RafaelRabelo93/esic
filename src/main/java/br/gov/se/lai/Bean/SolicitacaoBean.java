@@ -161,6 +161,7 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		CompetenciasBean.idAcoes = 0;
 		acoesTemporaria = null;
+		idAcao = 0;
 	}
 
 	public void gerarDataLimite() {
