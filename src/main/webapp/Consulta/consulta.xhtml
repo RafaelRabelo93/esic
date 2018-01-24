@@ -25,7 +25,7 @@
 					rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
 						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
-						expandableRowGroups="false"
+						expandableRowGroups="false" resizableColumns="true" liveResize="true"
 						value="#{solicitacao.filteredSolicitacoes}"
 						rowStyleClass="#{slt.status}" style="margin-bottom:1vw"
 						filteredValue="#{solicitacao.filteredSolicitacoes}"
@@ -337,7 +337,7 @@
 									<h:outputText value="Salvar" />
 									<i class="fa fa-check" style="padding-left: 3px" />
 								</p:commandLink>
-								</div>
+							</div>
 						</p:outputPanel>
 					</h:form>
 					
@@ -348,7 +348,7 @@
 						
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
-								rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
+								rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
 								styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -357,8 +357,8 @@
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
 								styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" 
-								disabled="#{(solicitacao.solicitacao.status eq 'Finalizada' or ((solicitacao.solicitacao.tipo eq 'Solicitação' 
-											or solicitacao.solicitacao.tipo eq 'Informação' ) and solicitacao.ehProrrogavel() eq false))}">
+								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or ((solicitacao.solicitacao.tipo eq 'Solicitação' 
+											or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false) or solicitacao.solicitacao.status eq 'Respondida'}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
@@ -367,7 +367,7 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"  onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
 									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}"
-									disabled="#{solicitacao.ehEncaminhavel() eq false}"
+									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida'}"
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />

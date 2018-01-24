@@ -18,24 +18,31 @@
 			<h:form id="cad_responsavel" styleClass="cad_form">
 
 				<div class="ficha">
+				
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
 					<h:panelGroup id="dataPanel" styleClass="box" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
-						<h:outputText value="Cadastro de Responsável" style="color:#1a568c; font-size:25px; padding-bottom: 2vw;" />
-
-						<p:outputLabel value="Nick: " for="nick" /> 
-						 <p:inputText id="nick" required="true" value="#{responsavel.nick}" maxlength="100" /> 
+						<h:outputText value="Cadastro de Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
-						 <p:outputLabel value="Email: " for="email" /> 
-						 <p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" maxlength="100" >
-						 	<f:validateLength maximum="100"/>
-					 	</p:inputText> 
+						<h:panelGroup styleClass="inline">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Nick: " for="nick" /> 
+								<p:inputText id="nick" required="true" value="#{responsavel.nick}" size="30" maxlength="100" /> 
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Email: " for="email" /> 
+								<p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" size="35" maxlength="100" >
+									<f:validateLength maximum="100"/>
+							 	</p:inputText> 
+							</h:panelGroup>
+						</h:panelGroup>
 					 	
-							 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
-							 <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}" style="width:125px" required="true">
-								 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-								 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.nome}" itemValue= "#{ent.idEntidades}"/>
-							</p:selectOneMenu> 
-					 	
+						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
+						 <p:selectOneMenu id="orgao"   value="#{responsavel.idEntidade}" required="true">
+							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+						</p:selectOneMenu> 
 
 						 <p:outputLabel value="Nível:" for="nivel" /> 
 						 <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">

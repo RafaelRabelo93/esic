@@ -18,34 +18,34 @@
 	<ui:composition>
 	
 	<script language="javascript">  
-	    var tam=15;       
+	    var tam=100;       
 	    var cont=0;
 	
 	    function normalTamanho(){
-	        tam=15;
+	        tam=100;
 	        modificarFonte(tam);
 	    }
 	
 	    function aumentaTamanho(){
-	        tam+=1;
+	        tam+=10;
 	        modificarFonte(tam);
 	    }
 	
 	    function diminuiTamanho(){
-	        tam-=1;
+	        tam-=10;
 	        modificarFonte(tam);
 	    }
 	
 	    function modificarFonte(tamanho){
 	    	var seletor = '#page, .link, span, a, p, label, .titulo';
-	        var css = 'font-size: '+ tamanho+'px !important;';
+	        var css = 'font-size: '+ tamanho +'% !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
 	        else if(S.addRule)S.addRule(seletor,css,r.length);
 	        
 	        var seletor = '#page, .link, span, a, p, label, .titulo';
-	        var css = 'font-size: '+ tamanho+'px !important;';
+	        var css = 'font-size: '+ tamanho+'% !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);

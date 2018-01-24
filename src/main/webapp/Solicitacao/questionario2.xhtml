@@ -19,7 +19,7 @@
 					<!--		Mensagens de Erro		-->
 
 					<p:steps activeIndex="1" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de solicitação" url="../index.xhtml" />
+						<p:menuitem value="Tipo de solicitação" url="/index.xhtml" />
 						<p:menuitem value="Determinar Órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#"/>
 					</p:steps>
@@ -65,7 +65,7 @@
 					<p:commandLink class="botaoLink" action="#{solicitacao.questionarioParaSolicitacao}">
 						<h:outputText value="Continuar" />
 						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
-						<i class="fa fa-arrow-right" />
+						<i class="fa fa-arrow-right" style="margin-left: 5px" />
 					</p:commandLink>
 
 				</div>
