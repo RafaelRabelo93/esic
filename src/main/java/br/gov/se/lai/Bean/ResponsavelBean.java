@@ -210,15 +210,20 @@ public class ResponsavelBean implements Serializable{
 	
 	@SuppressWarnings("unchecked")
 	public void perfilCGE() {
-		responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
-		if(responsavel.getEntidades().getIdEntidades().equals(1)) {
+		try {
+			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
+				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+				permissao = true;
+			} else {
+				this.entidades = new ArrayList<Entidades>(
+						EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+				permissao = false;
+			}
+			responsavel = new Responsavel();
+		} catch (IndexOutOfBoundsException e) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-			permissao = true;
-		}else {
-			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-			permissao = false;
 		}
-		responsavel= new Responsavel();
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	

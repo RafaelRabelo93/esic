@@ -61,7 +61,7 @@
 							<h:outputText value="Inativo" rendered="#{!resp.ativo}" />
 						</p:column>
 						
-						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true}">
+						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}">
 							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
@@ -70,14 +70,14 @@
 
 					</p:dataTable>
 
-					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true}" style="display: flex; margin-top: 10px" styleClass="botaoLink">
+					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}" style="display: flex; margin-top: 10px" styleClass="botaoLink">
 					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 					<h:outputText value="Novo Responsável" />
 				</h:commandLink>
 					
 					</h:form>
 					
-					<p:dialog widgetVar="editDialog" header="Editar Representante" rendered="#{responsavel.verificaGestor() eq true}" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<p:dialog widgetVar="editDialog" header="Editar Representante" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 						<h:form id="dialog">
 						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
