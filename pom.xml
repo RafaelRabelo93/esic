@@ -36,23 +36,10 @@
 											maven-war-plugin
 										</artifactId>
 										<versionRange>
-											[2.2,)
+											[2.2]
 										</versionRange>
 										<goals>
 											<goal>war</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId></groupId>
-										<artifactId></artifactId>
-										<versionRange>[,)</versionRange>
-										<goals>
-											<goal></goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
