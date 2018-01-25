@@ -21,14 +21,14 @@
 		<!-- Solicitação Cidadão -->
 			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
 				<button class="dropbtn"> 
-					<h:commandLink action="/Consulta/consulta" >
+					<h:commandLink action="#{solicitacao.verificaCidadaoConsulta}">
 						<i class="fa fa-stack-exchange"/>
 						<h:outputText value="Solicitações" style="margin-left: 7px"/>
 					</h:commandLink>
 				</button>
 				<div class="dropdown-content">
 					<h:commandLink value="Nova Solicitação" action="#{solicitacao.verificaCidadaoSolicitacao}"/>
-					<h:commandLink value="Consultar Solicitações" action="/Consulta/consulta"/>
+					<h:commandLink value="Consultar Solicitações" action="#{solicitacao.verificaCidadaoConsulta}"/>
 				</div>
 			</h:panelGroup>
 			

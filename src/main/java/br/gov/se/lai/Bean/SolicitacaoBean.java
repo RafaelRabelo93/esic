@@ -284,7 +284,7 @@ public class SolicitacaoBean implements Serializable {
 	public String verificaCidadaoConsulta() {
 		if (userBean.getUsuario().getPerfil() == 3) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
-			return "Consulta/consulta";
+			return "/Consulta/consulta.xhtml?faces-redirect=true";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário sem permissão.", "Tente outro login."));
