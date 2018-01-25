@@ -166,8 +166,7 @@
 		    <version>2.5</version>
 		</dependency>
 
-		
-		<!-- JavaMail API Jar -->
+<!-- JavaMail API Jar -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>
