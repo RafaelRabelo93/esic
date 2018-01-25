@@ -12,9 +12,8 @@
 
 		<ui:define name="content">
 		
-			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' }">
-				<p:growl id="growl" showDetail="true" sticky="true" /> 	
-
+			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' }" prependId="false"> 
+				
 				<div class="ficha">
 
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
@@ -232,7 +231,7 @@
 							<p:password id="senha1" required="true"	placeholder="Digite sua senha" value="#{usuario.senha}" />
 
 							<p:commandLink class="botaoLink" id="confSenha" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" 
-								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('confSenha').click();}" update="@all edit_usuario:growl">
+								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('confSenha').click();}" update="@all">
 								<h:outputText value="Confirmar" />
 								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 	
@@ -249,7 +248,7 @@
 
 			</p:dialog>
 
-<!-- =========================== -->
+		<!-- =========================== -->
 		<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
 		<!-- =========================== -->
 	
