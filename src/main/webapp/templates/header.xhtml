@@ -146,7 +146,7 @@
 						</h:panelGrid>
 
 					<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button">
+							<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq 3}">
 								<h:outputText value="Visualizar Perfil" />
 								<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 							</p:commandLink>

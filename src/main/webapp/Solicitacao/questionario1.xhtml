@@ -34,6 +34,15 @@
 
 						<div class="menuBtn">
 						
+						<div class="botao" style="width: 150px; padding: 0">
+						<h:commandLink id="btnDenuncia" styleClass="link" action="#{solicitacao.Denuncia()}">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="80vh" />
+							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
+							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
+						</h:commandLink>
+						</div>
+						<p:tooltip id="tooltipDenuncia" for="btnDenuncia" value="Comunicação de prática de ato ilícito cuja solução dependa da atuação de órgãos de controle interno ou externo." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
+						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnInfo" styleClass="link" action="questionario2">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="80vh" />
@@ -78,15 +87,6 @@
 						</h:commandLink>
 						</div>
 						<p:tooltip id="tooltipReclama" for="btnReclama" value="Demonstração de insatisfação relativa ao serviço público." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
-						
-						<div class="botao" style="width: 150px; padding: 0">
-						<h:commandLink id="btnDenuncia" styleClass="link" action="#{solicitacao.Denuncia()}">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="80vh" />
-							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
-							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
-						</h:commandLink>
-						</div>
-						<p:tooltip id="tooltipDenuncia" for="btnDenuncia" value="Comunicação de prática de ato ilícito cuja solução dependa da atuação de órgãos de controle interno ou externo." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 						
 						</div>
 

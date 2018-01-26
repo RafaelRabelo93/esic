@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content"> 
+			<h:form>
+	
+				<div class="ficha" style="min-height:82vh">
+					<h:panelGroup styleClass="box" style="width: 50vw; align-items: center; align-self: center">
+						
+						<h:outputText value="USUÁRO CADASTRADO COM SUCESSO" styleClass="tituloBox" />
+						<p:graphicImage styleClass="inline" value="#{resource['img/icon/network.png']}" width="100px"/>
+						<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}" styleClass="inline link" style="text-decoration: none">
+							<p style="width:350px;">Clique aqui para continuar seu cadastro como cidadão e realizar manifestações </p>
+							<i class="fa fa-chevron-right fa-2x" style="color:#255d95; margin-left: 7px"/>
+						</h:commandLink>
+						
+						<p>Caso esteja se cadastrando como representante do sistema, aguarde o gestor responsável registrá-lo.</p>
+					</h:panelGroup>
+				</div>	
+			
+			</h:form>
+		
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>
+
