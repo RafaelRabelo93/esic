@@ -75,29 +75,21 @@ public class UsuarioBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
-		// SchedulerFactory shedFact = new StdSchedulerFactory();
-		// try {
-		// Scheduler scheduler = shedFact.getScheduler();
-		// scheduler.start();
-		// JobDetail job =
-		// JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao",
-		// "grupo01").build();
-		// Trigger trigger =
-		// TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER",
-		// "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * * *
-		// ?")).build();
-		// scheduler.scheduleJob(job, trigger);
-		//// JobDetail jobEmail =
-		// JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico",
-		// "grupo02").build();
-		//// Trigger triggerEmail =
-		// TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2",
-		// "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 0/4 * * *
-		// ?")).build();
-		//// scheduler.scheduleJob(jobEmail, triggerEmail);
-		// } catch (SchedulerException e) {
-		// System.out.println(e.getMessage());
-		// }
+		SchedulerFactory shedFact = new StdSchedulerFactory();
+		try {
+			Scheduler scheduler = shedFact.getScheduler();
+			scheduler.start();
+			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
+			scheduler.scheduleJob(job, trigger);
+			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
+			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
+			 scheduler.scheduleJob(jobEmail, triggerEmail);
+		} catch (SchedulerException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void redirectPages(String pageUrl) throws IOException {
@@ -154,7 +146,7 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
+
 	public void cadastrarCidadao() {
 		save();
 	}
@@ -231,7 +223,7 @@ public class UsuarioBean implements Serializable {
 			if (cont == 1) {
 				this.nick = nck;
 			} else {
-				this.nick = nck+cont;
+				this.nick = nck + cont;
 			}
 			this.usuario.setNick(this.nick);
 
@@ -329,47 +321,47 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public void redefinirSenha() {
-    	if(!verificarParamURL()) {
-    		try {
-    			emailRedefinirSenha();
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    	}else {
-    		try {
+		if (!verificarParamURL()) {
+			try {
+				emailRedefinirSenha();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
 				pegarUsuarioURL(codigoRedefSenha);
-			
-				if(!verificaSeVazio(senha)) {
-					String senhaCrip = Criptografia.Criptografar(senha); 
-						if (senhaCrip !=  usuario.getSenha()) {
-							usuario.setSenha(senhaCrip);
-							acessoUsuario(usuario);
-							usuario = new Usuario();
-    						try {
-    							redirectPages("/esic");
-    						}catch (Exception e) {
-    							e.printStackTrace();
-    						}
-    						
-						}else {
-							FacesContext.getCurrentInstance().addMessage(null, 
-									new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
 
-    				}
-    		}
-    	} catch (EmailException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+				if (!verificaSeVazio(senha)) {
+					String senhaCrip = Criptografia.Criptografar(senha);
+					if (senhaCrip != usuario.getSenha()) {
+						usuario.setSenha(senhaCrip);
+						acessoUsuario(usuario);
+						usuario = new Usuario();
+						try {
+							redirectPages("/esic");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					} else {
+						FacesContext.getCurrentInstance().addMessage(null,
+								new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
+
+					}
+				}
+			} catch (EmailException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-    }
 	}
-	
+
 	public String alterarDadosUsuario() {
-		if (usuario.getPerfil() == (short)2 || usuario.getPerfil() == (short)3 || usuario.getPerfil() == (short)4 ) {
+		if (usuario.getPerfil() == (short) 2 || usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
 			return "Alterar/alterar_usuario";
-		}else {
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário básico.", "Por favor complete seu cadastro."));
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Usuário básico.", "Por favor complete seu cadastro."));
 			return null;
 		}
 	}
@@ -391,7 +383,7 @@ public class UsuarioBean implements Serializable {
 			return false;
 		}
 
-	} 
+	}
 
 	public void emailRedefinirSenha() {
 		if (!verificaSeVazio(email)) {
@@ -426,8 +418,9 @@ public class UsuarioBean implements Serializable {
 	public String pegarParamURL() {
 		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("access_key");
-//		codigoURLTemporaria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-//				.get("access_expire_date");
+		// codigoURLTemporaria =
+		// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+		// .get("access_expire_date");
 		return codigoRedefSenha;
 	}
 
@@ -453,7 +446,7 @@ public class UsuarioBean implements Serializable {
 			}
 		} catch (NullPointerException e) {
 			usuario = new Usuario();
-		}finally {
+		} finally {
 			return retorno;
 		}
 
@@ -534,13 +527,12 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
-	public static String deAccent(String str) {
-	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
-	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-	    return pattern.matcher(nfdNormalizedString).replaceAll("");
-	}
 
+	public static String deAccent(String str) {
+		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -596,12 +588,17 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public Responsavel getResponsavel() {
-		List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-		if (!listResponsavel.isEmpty()) {
-			return listResponsavel.get(0);
-		} else {
-			return null;
-		}
+//		try {
+//			Responsavel listResponsavel = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+//			if (!listResponsavel.equals(null)) {
+//				return listResponsavel;
+//			} else {
+//				return null;
+//			}
+//		}catch (Exception e) {
+//			return null;
+//		}
+		return null;
 	}
 
 	public int getVeioDeSolicitacao() {

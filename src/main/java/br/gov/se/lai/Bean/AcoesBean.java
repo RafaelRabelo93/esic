@@ -31,6 +31,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	@PostConstruct
 	public void init() {
 		acao = new Acoes();
+		carregarLista();
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 	}
 	
