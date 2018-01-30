@@ -59,7 +59,7 @@
 
                         </h:panelGroup>
 					
-					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel eq '3' }"> 					
+					<h:panelGroup styleClass="divBtn" rendered="#{usuario.responsavel.nivel ne '3' }"> 					
 					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
 						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
