@@ -29,21 +29,9 @@
 						value="#{solicitacao.filteredSolicitacoes}"
 						rowStyleClass="#{slt.status}" style="margin-bottom:1vw"
 						filteredValue="#{solicitacao.filteredSolicitacoes}"
-						paginator="true" rows="10"
+						paginator="true" rows="50"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="10,25,50" rowKey="#{slt.idSolicitacao}">
-
-<!-- 						<p:headerRow rendered="#{usuario.usuario.perfil eq '2' }"> -->
-<!-- 							<p:column colspan="6" sortBy="#{slt.status}" priority="1"> -->
-<!-- 								<h:outputText value="#{slt.status}" /> -->
-<!-- 							</p:column> -->
-<!-- 						</p:headerRow> -->
-
-<!-- 						<p:headerRow> -->
-<!-- 							<p:column colspan="8" sortBy="#{slt.status}" priority="1"> -->
-<!-- 								<h:outputText value="#{slt.status}" /> -->
-<!-- 							</p:column> -->
-<!-- 						</p:headerRow> -->
 
 						<p:column headerText="Protocolo" width="150" priority="6">
 							<h:outputText value="#{slt.protocolo}" />
@@ -52,8 +40,6 @@
 						<p:column headerText="Órgão" width="100" sortBy="#{slt.entidades.sigla}" priority="3">
 							<h:outputText value="#{slt.entidades.sigla}" />
 						</p:column>
-
-						
 
 						<p:column headerText="Título" sortBy="#{slt.titulo}" priority="3">
 							<h:outputText value="#{slt.titulo}" />
@@ -75,9 +61,10 @@
 
 						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="120" style="text-align:center"
 						styleClass="prazo #{slt.status eq 'Finalizada' ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
-							<h:outputText value="#{slt.dataLimite}">
+							<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
+							<h:outputText value=" ----------- " rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}"/>
 						</p:column>
 						
 						<p:column headerText="Data final" sortBy="#{slt.datafim}" width="120" style="text-align:center">
@@ -131,8 +118,8 @@
 							style="color:#1a568c; font-size:18px" />
 						<h:outputText value="#{solicitacao.solicitacao.tipo}" />
 
-						<h:outputText value="Status:" style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.status}" />
+						<h:outputText value="Status:" style="color:#1a568c; font-size:18px" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
+						<h:outputText value="#{solicitacao.solicitacao.status}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
 
 						<h:outputText value="Instancia:"
 							style="color:#1a568c; font-size:18px" />
@@ -144,9 +131,8 @@
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</h:outputText>
 
-						<h:outputText value="Data Limite:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.dataLimite}">
+						<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
+						<h:outputText value="#{solicitacao.solicitacao.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</h:outputText>
 
@@ -194,7 +180,7 @@
 
 									</p:dataScroller>
 							</p:tab>
-							<p:tab title="Histórico da Solicitação">
+							<p:tab title="Histórico da Solicitação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">
 								<p:dataScroller value="#{mensagem.mensagensHistorico}"
 										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -231,7 +217,7 @@
 									</p:dataScroller>
 									
 							</p:tab>
-							<p:tab title="Trâmite Interno" rendered="#{usuario.usuario.perfil eq '2'}">
+							<p:tab title="Trâmite Interno" rendered="#{usuario.usuario.perfil eq '2' and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}">
 								<p:dataScroller value="#{mensagem.mensagensTramites}"
 										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -348,7 +334,8 @@
 						
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
-								rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}" disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
+								rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
 								styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -356,9 +343,9 @@
 						
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
-								styleClass="blankSquareBtn" rendered="#{usuario.usuario.perfil ne '3'}" 
-								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or ((solicitacao.solicitacao.tipo eq 'Solicitação' 
-											or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false) or solicitacao.solicitacao.status eq 'Respondida'}">
+								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'
+								 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
@@ -366,8 +353,8 @@
 						
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"  onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-									rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}"
-									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida'}"
+									rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Encaminhar" />

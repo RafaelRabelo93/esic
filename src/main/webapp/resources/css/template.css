@@ -1,5 +1,5 @@
 #content {
-    min-height: 80vh;
+    min-height: 86vh;
 }
 
 .cad_form {
@@ -184,6 +184,27 @@
  	align-items: baseline;
 }
 
+.align {
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
+	-moz-flex-flow: row nowrap;
+ 	-ms-flex-flow: row nowrap;
+ 	-o-flex-flow: row nowrap;
+ 	-webkit-flex-flow: row nowrap;
+ 	flex-flow: row nowrap;
+ 	
+ 	-moz-justify-content: center;
+ 	-ms-justify-content: center;
+ 	-o-justify-content: center;
+ 	-webkit-justify-content: center;
+ 	justify-content: center;
+	
+}
+
 .botaoLink {
 	display: -ms-flexbox; 
  	display: -moz-flexbox;
@@ -316,7 +337,7 @@
 .ui-steps.custom {
 	margin-top: 0;
     margin-bottom: 5vw;
-/*     width: 100%; */
+    width: 100%;
 }
  
 .ui-steps.custom .ui-steps-item .ui-menuitem-link {
@@ -808,7 +829,7 @@ td.prazo.branco {
 }
 
 #barraBtns {
-	width: 100px;
+/* 	width: 100px; */
 /* 	margin-left: 5px; */
 	
 	display: -ms-flexbox; 

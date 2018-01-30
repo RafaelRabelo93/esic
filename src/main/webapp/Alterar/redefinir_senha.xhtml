@@ -12,14 +12,12 @@
 
 		<ui:define name="content">
 	
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+	
 			<h:form id="redef_senha2" styleClass="cad_form" rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}" > <!-- rendered="#{usuario.pegarParamURL() ne null and usuario.verificarValidadeURL() eq true}"  -->
 
 				<div class="ficha">
-				
-					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
-	
 				
 					<p:panelGrid columns="1" style="margin-bottom:1vh; padding:0 1vh 1vw 1vw;" >
 
