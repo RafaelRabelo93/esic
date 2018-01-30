@@ -458,7 +458,7 @@ public class UsuarioBean implements Serializable {
 		// Aqui descriptografa o access_key e pega o email e data
 
 		if (usuario.getPerfil() == 2) {
-			Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
 				NotificacaoEmail.enviarEmail(resp.getEmail(), "Alteração de Email",
