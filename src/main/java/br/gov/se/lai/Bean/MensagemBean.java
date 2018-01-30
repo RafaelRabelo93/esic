@@ -240,7 +240,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuario.getPerfil() == 4 || usuario.getPerfil() == 1) {
+		if(usuario.getPerfil() == 5 || usuario.getPerfil() == 1) {
 			return false;
 		}else {
 			return true;

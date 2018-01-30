@@ -35,6 +35,7 @@
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />
 
 						<p:outputLabel value="Assunto:" />
+						<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" rendered="#{solicitacao.acoesTemporaria ne null}"	style="color:#a8a8a8;" />
 						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null}"	style="color:#a8a8a8;" />
 						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
 							disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
