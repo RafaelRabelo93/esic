@@ -357,7 +357,7 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public String alterarDadosUsuario() {
-		if (usuario.getPerfil() == (short) 2 || usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
+		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
 			return "Alterar/alterar_usuario";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

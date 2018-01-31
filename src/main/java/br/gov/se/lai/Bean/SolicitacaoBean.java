@@ -195,7 +195,7 @@ public class SolicitacaoBean implements Serializable {
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
-				solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
+				solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
 			}else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
@@ -581,7 +581,7 @@ public class SolicitacaoBean implements Serializable {
 
 			entReencaminhar = EntidadesDAO.find(idEntidades);
 			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
-			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			int idResp = ResponsavelBean.responsavelDisponivel(1, entReencaminhar.getIdEntidades()) ; 
 			Responsavel respDestinatario = new Responsavel();
 			if( idResp == -1) {
