@@ -193,12 +193,12 @@ public class SolicitacaoBean implements Serializable {
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
-				solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
+				solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
 			}else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
 		}catch (NullPointerException e) {
-			solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
+			solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
 		}
 	}
 	
