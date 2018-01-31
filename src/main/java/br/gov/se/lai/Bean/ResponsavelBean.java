@@ -211,7 +211,7 @@ public class ResponsavelBean implements Serializable{
 	@SuppressWarnings("unchecked")
 	public void perfilGestorGeral() {
 		try {
-			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()).get(0);
+			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
 			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
 				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 				permissao = true;
