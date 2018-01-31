@@ -34,14 +34,14 @@
 	    }
 	
 	    function modificarFonte(tamanho){
-	    	var seletor = '#page, .link, span, a, p, label, .titulo';
+	    	var seletor = '#page, .link, a, label, .titulo';
 	        var css = 'font-size: '+ tamanho +'em !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
 	        else if(S.addRule)S.addRule(seletor,css,r.length);
 	        
-	        var seletor = '#page, .link, span, a, p, label, .titulo';
+	        var seletor = '#page, .link, a, label, .titulo';
 	        var css = 'font-size: '+ tamanho+'em !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;

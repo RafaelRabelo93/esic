@@ -22,8 +22,6 @@
 
 				<div class="ficha">
 
-					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
-
 					<h:panelGroup styleClass="box">
 
 						<h:outputText value="Cadastro de Cidadão" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
@@ -35,12 +33,13 @@
 								<p:outputLabel value="Nome: " for="nome" />
 								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
+									<p:keyFilter regEx="/[a-z\-\']/i"/>
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
@@ -220,6 +219,8 @@
 						</h:panelGroup>
 
 					</h:panelGroup>
+					
+					<h:outputText value="Os campos acima marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
 
 					<p:commandLink class="botaoLink" action="#{cidadao.save}"
 						id="novoCidadao"

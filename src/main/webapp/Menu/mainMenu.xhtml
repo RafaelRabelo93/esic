@@ -149,15 +149,15 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<!-- Alterar dados -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '3'}">
+					<!-- Continuar Cadastro -->
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
 						<h:commandLink styleClass="link" action="#{usuario.alterarDadosUsuario()}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
 								width="80%" />
 
 							<h:outputText styleClass="tituloMenu" value="Alterar Dados" />
 
-							<p>Editar dados pessoais do usuário</p>
+							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
 						</h:commandLink>
 					</h:panelGroup>
 					

@@ -12,14 +12,13 @@
 
 		<ui:define name="content">
             
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0'or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
+			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
 					
 				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
 				
 				<div class="ficha">
 					
                			<h:panelGroup id="competencias_panel">
-
 
                             <p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
 
@@ -84,10 +83,10 @@
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
 						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
 					
-						<h:outputLabel value="ï¿½rgï¿½o/Entidade:" /> 
+						<h:outputLabel value="Órgão/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 	
-						<h:outputLabel value="Aï¿½ï¿½es: " for="acoes" />
+						<h:outputLabel value="Açõess: " for="acoes" />
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -123,7 +122,7 @@
 					<h:form id="dialog2">
 						<p:outputPanel id="dlg2" style="max-width: 690px">
 							<p:panelGrid columns="1" style="border:none; width: 60%;">
-								<p:outputLabel value="Tï¿½tulo:" for="titulo" />
+								<p:outputLabel value="Título:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
 								<p:outputLabel value="Descrição:" for="descr" />

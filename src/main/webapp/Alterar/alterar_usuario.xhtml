@@ -32,6 +32,7 @@
 								<p:outputLabel value="Nome: " for="nome" />
 								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
+									 <p:keyFilter regEx="/[a-z\-\']/i"/>
 								</p:inputText>
 							</h:panelGroup>
 

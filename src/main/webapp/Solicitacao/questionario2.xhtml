@@ -40,7 +40,8 @@
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 								 <f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue= "#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
-	
+							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
+
 							<p:outputLabel value="Categoria:" for="cat" />
 							<p:selectOneMenu id="cat"  value="#{competencias.idEntidade}" style="max-width: 90%;" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
@@ -62,7 +63,7 @@
 						<p:outputLabel value="Selecione o Órgão/Entidade:" />
 
 						<h:panelGroup id="entidades_panel">
-							<p:dataTable id="entidades" widget="entidades" var="ent" emptyMessage="Selecione Assunto e Categoria" value="#{competencias.listEntidades}" selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" >
+							<p:dataTable id="entidades" widget="entidades" var="ent" disabledSelection="false" emptyMessage="Selecione Assunto e Categoria" value="#{competencias.listEntidades}" selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" >
 						        <p:ajax event="rowEdit" oncomplete="PF('entidades').filter()"/>
 						        <p:column selectionMode="single" width="20"/>
 						        <p:column headerText="Sigla" width="80">
