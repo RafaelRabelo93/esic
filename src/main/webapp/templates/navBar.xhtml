@@ -35,17 +35,17 @@
 		<!-- Solicitação Responsavel -->
 			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 				<button class="dropbtn"> 
-					<h:commandLink action="/Consulta/consulta">
+					<h:commandLink action="#{solicitacao.consultarSolicitacao}">
 						<i class="fa fa-stack-exchange" />
 						<h:outputText value="Solicitações" style="margin-left: 7px"/>
 					</h:commandLink>
 				</button>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '4'}" />
+			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
 			
 		<!-- Responsavel -->
-			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '4'}">
+			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}">
 				<button class="dropbtn"> 
 					<h:commandLink action="Consulta/consulta_responsavel">
 						<i class="fa fa-users" />
@@ -59,10 +59,10 @@
 				</div>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '4'}" />
+			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
 			
 		<!-- Entidade -->
-		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '4'}">
+		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}">
 			<button class="dropbtn"> 
 				<h:commandLink action="#{entidades.consultarEntidades}">
 						<i class="fa fa-building" />

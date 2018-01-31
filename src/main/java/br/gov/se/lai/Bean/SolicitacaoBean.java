@@ -147,8 +147,6 @@ public class SolicitacaoBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
 			page = "/index.xhtml?faces-redirect=true";
 			
-		}finally {
-			finalizarSolicitacao();
 		}
 
 		return page;
