@@ -51,15 +51,16 @@
 						
 						<h:panelGroup styleClass="column" style="border: 1px solid #e3e3e3; padding: 15px; width: 45%">
 							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold" />
-	        				<p:selectOneMenu id="orgao" value="#{entidades.todasEntidades}" style="width:300px" styleClass="field selectField">
+	        				<p:selectOneMenu id="orgao" value="#{competencias.idEntidade}"  style="width:300px" styleClass="field selectField">
+								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
-								<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{solicitacao.solicitacao.entidades}"/>
+								<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
 							</p:selectOneMenu> 
 						</h:panelGroup>
 					</h:panelGroup>
 					
 
-						<p:outputLabel value="Selecione o Órgão/Entidade:" />
+						<p:outputLabel value="Confirme o Órgão/Entidade:" />
 
 						<h:panelGroup id="entidades_panel">
 							<p:dataTable id="entidades" widget="entidades" var="ent" emptyMessage="Selecione Assunto e Categoria" value="#{competencias.listEntidades}" selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" >
