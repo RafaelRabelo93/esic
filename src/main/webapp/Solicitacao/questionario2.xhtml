@@ -73,15 +73,14 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						
-						<h:panelGroup styleClass="column" rendered="#{solicitacao.form}" style="width: 100%; margin-top: 15px">
+						<h:panelGroup styleClass="column" rendered="#{solicitacao.form}" style="margin-top: 15px;">
 							<p style="margin:0">Selecione diretamento o órgão a qual deseja direcionar a manifestação.</p>
-						
-							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold; margin-bottom:10px" />
-                            <p:selectOneMenu id="orgao" value="#{competencias.idEntidade}" disabled="#{!solicitacao.form}" style="width:95%;" styleClass="field selectField">
+							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold" />
+	        				<p:selectOneMenu id="orgao" value="#{competencias.idEntidade}"  style="width:300px" styleClass="field selectField" disabled="#{!solicitacao.form}">
+								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
 								<f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
-							</p:selectOneMenu>
-							
+							</p:selectOneMenu> 
 						</h:panelGroup>
 						
 					</h:panelGroup>
