@@ -85,6 +85,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
+	private boolean form = false;
 
 	@PostConstruct
 	public void init() { 
@@ -816,7 +817,13 @@ public class SolicitacaoBean implements Serializable {
 		this.modoAnonimo = modoAnonimo;
 	}
 
+	public boolean getForm() {
+		return form;
+	}
 
+	public void setForm (boolean form) {
+		this.form = form;
+	}
 
 	
 }
