@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{responsavel.perfilCGE()}">
+<h:body>
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -15,7 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' }" >
+				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3' }" >
 
 					<h:outputText value="Gerir Responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 					
@@ -61,7 +61,7 @@
 							<h:outputText value="Inativo" rendered="#{!resp.ativo}" />
 						</p:column>
 						
-						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}">
+						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or responsavel.verificaAdmin() eq true }" >
 							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
@@ -70,14 +70,14 @@
 
 					</p:dataTable>
 
-					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}" style="display: flex; margin-top: 10px" styleClass="botaoLink">
+					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or responsavel.verificaAdmin() eq true }" style="display: flex; margin-top: 10px" styleClass="botaoLink">
 					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 					<h:outputText value="Novo Responsável" />
 				</h:commandLink>
 					
 					</h:form>
 					
-					<p:dialog widgetVar="editDialog" header="Editar Representante" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '4'}" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<p:dialog widgetVar="editDialog" header="Editar Representante" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or responsavel.verificaAdmin() eq true }"  modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 						<h:form id="dialog">
 						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">

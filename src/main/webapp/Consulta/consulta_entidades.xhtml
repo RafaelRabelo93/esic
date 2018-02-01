@@ -15,7 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
-			<h:form id="form" rendered="#{usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '2' }">
+			<h:form id="form" rendered="#{usuario.usuario.perfil ne '3' or usuario.usuario.perfil ne '1' }">
 
 				<div class="ficha">
 	
@@ -50,34 +50,37 @@
 								<h:outputText value="Inativo" rendered="#{not orgaos.ativa}" />
 							</p:column>
 	
-							<p:column headerText="Ações" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '4' or usuario.responsavel.nivel eq '3'}">
+							<p:column headerText="Ações" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }">
 								<p:commandLink class="botaoLinkIcon" id="consComp"
 									action="#{competencias.consultarCompetencias}" style="margin:5px"
-									rendered="#{usuario.usuario.perfil eq '4' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
+									rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consComp').click();}">
 									<i class="fa fa-plus" />
 									<f:setPropertyActionListener value="#{orgaos}"
 										target="#{competencias.ent}" />
 								</p:commandLink>
+								<p:outputLabel rendered="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}" value="....."/>
 							</p:column>
 	
-							<p:column headerText="Editar" width="45"  rendered="#{usuario.usuario.perfil eq '4' or usuario.responsavel.nivel eq '3'}" style="text-align: center">
+							<p:column headerText="Editar" width="45"  rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog:info" onclick="PF('editDialog').show();"
-									rendered="#{usuario.usuario.perfil eq '4' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
+									rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">
 									<i class="fa fa-pencil-square-o" />
 									<f:setPropertyActionListener value="#{orgaos}"
 										target="#{entidades.entidades}" />
 								</p:commandLink>
+								<p:outputLabel rendered="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}" value="....."/>
 							</p:column>
 	
 							<p:column headerText="Solicitações" width="90" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{solicitacao.consultarSolicitacaoGestor()}"
-										rendered="#{usuario.usuario.perfil eq '4' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
+										rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos}"
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
 								</p:commandLink>
+								<p:outputLabel rendered="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}" value="....."/>
 							</p:column>
 						</p:dataTable>
 	

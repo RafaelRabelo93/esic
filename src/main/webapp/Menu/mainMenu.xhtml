@@ -175,9 +175,11 @@
 
 						</h:commandLink>
 					</h:panelGroup>
+					
+<!-- 					MENU REPRESENTANTE -->
 
 					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4' }">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
 							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone"
@@ -189,12 +191,12 @@
 					</h:panelGroup>
 					
 					<!-- Consulta órgão/entidade -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'  or usuario.usuario.perfil eq '4' }">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/office.png']}" width="80%" />
 
-							<h:outputText styleClass="tituloMenu" value="Gerir Entidades" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
+							<h:outputText styleClass="tituloMenu" value="Gerir Entidades" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
 							<h:outputText styleClass="tituloMenu" value="Consultar Entidades" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
 
 							<p>Gerir entidades ou ógrãos</p>
@@ -216,7 +218,8 @@
 <!-- 					</h:panelGroup> -->
 					
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+					<h:panelGroup class="botao" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'  or usuario.usuario.perfil eq '5' 
+														 or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="Consulta/consulta_acoes">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/exchange.png']}" width="80%" />
@@ -229,12 +232,12 @@
 					</h:panelGroup>
 					
 					<!-- Gerir responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/businessman.png']}" width="80%" />
 
-							<h:outputText styleClass="tituloMenu" value="Gerir Responsáveis" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
+							<h:outputText styleClass="tituloMenu" value="Gerir Responsáveis" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
 							<h:outputText styleClass="tituloMenu" value="Consultar Responsáveis" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
 
 							<p>Registrar responsável</p>

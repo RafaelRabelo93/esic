@@ -78,12 +78,12 @@ public class  ResponsavelDAO {
     }
     
     @SuppressWarnings("unchecked")
-    public static Responsavel findResponsavelUsuario(int idUsuario) {
+    public static List<Responsavel> findResponsavelUsuario(int idUsuario) {
     	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam AND resp.ativo = 1");
     	query.setParameter("usuarioParam", idUsuario);  
     	
     	List<Responsavel> results = query.getResultList();
-    	return results.get(0);
+    	return results;
     }
     
     

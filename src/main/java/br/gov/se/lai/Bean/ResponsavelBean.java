@@ -107,10 +107,13 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String alterarDadosUsuario() {
-		responsavel.setEntidades(EntidadesDAO.find(idEntidade));
-		ResponsavelDAO.saveOrUpdate(responsavel);
+		if(verificaAcesso() || verificaExistenciaGestorSistema(usuarioBean.getUsuario())) {
+			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
+			ResponsavelDAO.saveOrUpdate(responsavel);
+			responsavel = new Responsavel();
+			idEntidade = 0;
+		}
 		responsavel = new Responsavel();
-		idEntidade = 0;
 		return "Consulta/consultar_responsavel";
 	}
 	
@@ -132,7 +135,7 @@ public class ResponsavelBean implements Serializable{
 	}
 
 	public boolean verificaAdmin() {
-		if ( usuarioBean.getUsuario().getPerfil() == 4 ){
+		if ( usuarioBean.getUsuario().getPerfil() == 6 ){
 			return true;
 		}else {
 			return false;
@@ -140,7 +143,15 @@ public class ResponsavelBean implements Serializable{
 	}
 		
 	public boolean verificaExistenciaResponsavel(Usuario usuario) {
-		if(usuario.getPerfil() == (short) 2) {
+		if(usuario.getPerfil() == (short) 2 || usuario.getPerfil() == (short) 4) {
+			return true;
+		}else {
+			return false;			
+		}
+	}
+
+	public boolean verificaExistenciaGestorSistema(Usuario usuario) {
+		if(usuario.getPerfil() == (short) 5 ) {
 			return true;
 		}else {
 			return false;			
@@ -209,19 +220,25 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	public void perfilGestorGeral() {
 		try {
-			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
-			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
-				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-				permissao = true;
-			} else {
-				this.entidades = new ArrayList<Entidades>(
-						EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-				permissao = false;
+			List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+			for (Responsavel responsavel : respList) {
+				if (verificaExistenciaGestorSistema(responsavel.getUsuario()) || responsavel.getUsuario().getPerfil() == 6) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+					permissao = true;
+					break;
+				} else {
+					try {
+						this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+					}catch (NullPointerException e) {
+						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+					}finally {
+						permissao = false;
+					}
+				}
+				responsavel = new Responsavel();
 			}
-			responsavel = new Responsavel();
 		} catch (IndexOutOfBoundsException e) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}

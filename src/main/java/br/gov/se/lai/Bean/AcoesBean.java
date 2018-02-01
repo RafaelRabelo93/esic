@@ -48,7 +48,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			acoes.add(acao);
 		}
 		acao = new Acoes();
-		
 	}
 	
 	public void delete() {
@@ -77,7 +76,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() == 4 || usuarioBean.getUsuario().getPerfil() == 5 ) {
+		if(usuarioBean.getUsuario().getPerfil() != 1 || usuarioBean.getUsuario().getPerfil() != 3 ) {
 			return true;
 		}else {
 			return false;

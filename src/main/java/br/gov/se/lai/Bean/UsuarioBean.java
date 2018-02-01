@@ -246,8 +246,8 @@ public class UsuarioBean implements Serializable {
 			return null;
 		} else {
 			if (!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Login ou Senha Incorretos.", "Tente novamente."));
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 				logout();
 				return null;
 			} else {
@@ -458,7 +458,7 @@ public class UsuarioBean implements Serializable {
 		// Aqui descriptografa o access_key e pega o email e data
 
 		if (usuario.getPerfil() == 2) {
-			Responsavel resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
 				NotificacaoEmail.enviarEmail(resp.getEmail(), "Alteração de Email",
@@ -589,7 +589,7 @@ public class UsuarioBean implements Serializable {
 
 	public Responsavel getResponsavel() {
 		try {
-			Responsavel listResponsavel = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel listResponsavel = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			if (!listResponsavel.equals(null)) {
 				return listResponsavel;
 			} else {
