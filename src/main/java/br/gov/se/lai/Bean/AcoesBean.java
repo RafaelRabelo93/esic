@@ -46,8 +46,8 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);
 			acoes.add(acao);
-			acao = new Acoes();
 		}
+		acao = new Acoes();
 		
 	}
 	

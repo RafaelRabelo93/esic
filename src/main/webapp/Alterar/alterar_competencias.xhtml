@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
             
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
+			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0'or usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
 					
 				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
 				

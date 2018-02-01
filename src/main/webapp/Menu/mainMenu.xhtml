@@ -9,11 +9,10 @@
 <h:body>
 
 	<ui:composition>
-
+		
 		<h:form class="form" id="mainMenu">
 
 			<div class="mainMenu">
-			<!--		Mensagens de Erro		-->
 				
 				<div id="title">
 					<h:outputText value="Sistema Eletrônico de"/>
@@ -21,9 +20,6 @@
 					<h:outputText value="Informação ao Cidadão"/>
 				</div>
 
-		<div class="menu" >
-			<p:growl id="growl" showDetail="true" sticky="true" /> 	
-					
 			<!-- MENU CIDADÃO -->
 			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3'}">
 			
@@ -31,8 +27,8 @@
 					<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.Denuncia()}">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar denúncia" />
+							<h:outputText styleClass="tituloMenu" value="Denúncia" />
+							<p>Realizar denúncia</p>
 							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -46,8 +42,8 @@
 					<h:commandLink id="btnInfo" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Informação" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar pedido de informação" />
+							<h:outputText styleClass="tituloMenu" value="Informação" />
+							<p>Realizar pedido de informação</p>
 							<f:setPropertyActionListener value="Informação" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -61,8 +57,8 @@
 					<h:commandLink id="btnSol" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/chat.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar solicitação" />
+							<h:outputText styleClass="tituloMenu" value="Solicitação" />
+							<p>Realizar solicitação</p>
 							<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -76,8 +72,8 @@
 					<h:commandLink id="btnElogio" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Elogio" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar elogio" />
+							<h:outputText styleClass="tituloMenu" value="Elogio" />
+							<p>Realizar elogio</p>
 							<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -91,8 +87,8 @@
 					<h:commandLink id="btnSugestao" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/sugestion.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Sugestão" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar sugestão" />
+							<h:outputText styleClass="tituloMenu" value="Sugestão" />
+							<p>Realizar sugestão</p>
 							<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -106,8 +102,8 @@
 					<h:commandLink id="btnReclama" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="60%" />
-							<h:outputText styleClass="titulo" value="Reclamação" style="font-size:35px; padding: 2% 0;" />
-							<h:outputText style="font-size:20px; color:#333" value="Realizar reclamação" />
+							<h:outputText styleClass="tituloMenu" value="Reclamação" />
+							<p>Realizar reclamação</p>
 							<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
 						</div>
 						
@@ -124,7 +120,7 @@
 					<p:graphicImage styleClass="icone" value="#{resource['img/icon/search.png']}" width="100px"/>
 					
 					<h:panelGroup styleClass="column">
-						<h:outputText styleClass="titulo" value="Consulta" style="font-size:35px; padding: 2% 0;"/>
+						<h:outputText styleClass="titulo" value="Consulta"/>
 						<h:outputText styleClass="subTitulo" value="Acompanhar andamento da manifestação realizada" />
 					</h:panelGroup>
 				</h:commandLink>
@@ -134,13 +130,10 @@
 					<!-- LAI -->
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" href="#lai">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
-								width="80%"/>
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="80%"/>
 
-							<h:outputText styleClass="titulo" value="LAI" style="font-size:35px; padding: 2% 0;"/>
-							
-							<h:outputText style="font-size:20px; color:#333"
-								value="Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe" />
+							<h:outputText styleClass="tituloMenu" value="LAI"/>
+							<p>Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -150,23 +143,21 @@
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
 								width="80%" />
 
-							<h:outputText styleClass="titulo" value="Cadastro" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
-							<h:outputText style="font-size:20px; color:#333"
-								value="Registrar usuário " />
+							<p>Registrar usuário</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
 					<!-- Alterar dados -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil ne '0'}">
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '3'}">
 						<h:commandLink styleClass="link" action="#{usuario.alterarDadosUsuario()}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
 								width="80%" />
 
-							<h:outputText styleClass="titulo" value="Alterar Dados" style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="tituloMenu" value="Alterar Dados" />
 
-							<h:outputText style="font-size:20px; color:#333"
-								value="Editar dados pessoais do usuário" />
+							<p>Editar dados pessoais do usuário</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -178,10 +169,9 @@
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
 								width="80%"/>
 
-							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:35px; padding: 2% 0;"/>
+							<h:outputText styleClass="tituloMenu" value="Solicitação"/>
 
-							<h:outputText style="font-size:20px; color:#333"
-								value="Realizar pedido de informação a orgãos ou entidades do governo do estado de Sergipe" />
+							<p>Realizar pedido de informação a orgãos ou entidades do governo do estado de Sergipe</p>
 
 						</h:commandLink>
 					</h:panelGroup>
@@ -193,12 +183,8 @@
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/monitor.png']}" width="80%" />
 
-							<h:outputText styleClass="titulo"
-								value="Acompanhar Solicitações"
-								style="font-size:35px; padding: 2% 0;" />
-
-							<h:outputText style="font-size:20px; color:#333"
-								value="Acompanhamento de solicitações" />
+							<h:outputText styleClass="tituloMenu" value="Acompanhar Solicitações"/>
+							<p>Acompanhamento de solicitações"</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -208,11 +194,10 @@
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/office.png']}" width="80%" />
 
-							<h:outputText styleClass="titulo" value="Gerir Entidade"
-								style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="tituloMenu" value="Gerir Entidades" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
+							<h:outputText styleClass="tituloMenu" value="Consultar Entidades" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
 
-							<h:outputText style="font-size:20px; color:#333"
-								value="Gerir entidades ou ógrãos" />
+							<p>Gerir entidades ou ógrãos</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -222,7 +207,7 @@
 <!-- 							<p:graphicImage styleClass="icone" -->
 <!-- 								value="#{resource['img/icon/office-edit.png']}" width="80%" /> -->
 
-<!-- 							<h:outputText styleClass="titulo" value="Alterar Entidade" -->
+<!-- 							<h:outputText styleClass="tituloMenu" value="Alterar Entidade" -->
 <!-- 								style="font-size:35px; padding: 2% 0;" /> -->
 
 <!-- 							<h:outputText style="font-size:20px; color:#333" -->
@@ -236,8 +221,7 @@
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/exchange.png']}" width="80%" />
 
-							<h:outputText styleClass="titulo" value="Gerir Ações"
-								style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="tituloMenu" value="Gerir Ações" />
 
 							<h:outputText style="font-size:20px; color:#333"
 								value="Registrar ação" />
@@ -245,17 +229,15 @@
 					</h:panelGroup>
 					
 					<!-- Gerir responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/businessman.png']}" width="80%" />
 
-							<h:outputText styleClass="titulo"
-								value="Gerir Responsáveis"
-								style="font-size:35px; padding: 2% 0;" />
+							<h:outputText styleClass="tituloMenu" value="Gerir Responsáveis" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'}" />
+							<h:outputText styleClass="tituloMenu" value="Consultar Responsáveis" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
 
-							<h:outputText style="font-size:20px; color:#333"
-								value="Registrar responsável" />
+							<p>Registrar responsável</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
@@ -264,7 +246,7 @@
 <!-- 						<h:commandLink styleClass="link" action="/Cadastro/cad_acoes"> -->
 <!-- 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="80%" /> -->
 
-<!-- 							<h:outputText styleClass="titulo" value="Cadastro de Ação" -->
+<!-- 							<h:outputText styleClass="tituloMenu" value="Cadastro de Ação" -->
 <!-- 								style="font-size:35px; padding: 2% 0;" /> -->
 
 <!-- 							<h:outputText style="font-size:20px; color:#333" -->
@@ -278,7 +260,7 @@
 <!-- 							<p:graphicImage styleClass="icone" -->
 <!-- 								value="#{resource['img/icon/businessman.png']}" width="80%" /> -->
 
-<!-- 							<h:outputText styleClass="titulo" -->
+<!-- 							<h:outputText styleClass="tituloMenu" -->
 <!-- 								value="Alterar Responsável" -->
 <!-- 								style="font-size:35px; padding: 2% 0;" /> -->
 
@@ -291,7 +273,6 @@
 
 
 				</div>
-			</div>
 
 		</h:form>
 

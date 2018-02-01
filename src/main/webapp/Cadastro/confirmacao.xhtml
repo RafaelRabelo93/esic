@@ -10,22 +10,37 @@
 
 	<ui:composition template="/templates/template.xhtml">
 
-		<ui:define name="content"> 
-			<h:form>
-	
-				<div class="ficha" style="min-height:82vh">
-					<h:panelGroup styleClass="box" style="width: 50vw; align-items: center; align-self: center">
-						
-						<h:outputText value="USUÁRO CADASTRADO COM SUCESSO" styleClass="tituloBox" />
-						<p:graphicImage styleClass="inline" value="#{resource['img/icon/network.png']}" width="100px"/>
-						<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}" styleClass="inline link" style="text-decoration: none">
-							<p style="width:350px;">Clique aqui para continuar seu cadastro como cidadão e realizar manifestações </p>
-							<i class="fa fa-chevron-right fa-2x" style="color:#255d95; margin-left: 7px"/>
-						</h:commandLink>
-						
-						<p>Caso esteja se cadastrando como representante do sistema, aguarde o gestor responsável registrá-lo.</p>
-					</h:panelGroup>
-				</div>	
+		<ui:define name="content">
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+		
+			<h:form style="">
+			
+				<h:outputText value="USUÁRIO CADASTRADO COM SUCESSO" styleClass="tituloBox" style="margin-top: 5vh; display: flex; justify-content: center;" />
+				<h:outputText value="Lembre-se do seu nome de usuário (&lt;b&gt; #{usuario.usuario.nick} &lt;/b&gt;) e senha para efetuar login no sistema." escape="false" style="color: #707070; text-align: center; display: flex; justify-content: center;"/>
+				
+			<h:panelGroup styleClass="inline align">
+				
+				<h:panelGroup styleClass="box" style="width: 30vw; align-items: center; margin: 10px; min-height: 210px;;">
+					<h:outputText value="CIDADÃO" styleClass="tituloBox" />
+					<p:graphicImage value="#{resource['img/icon/network.png']}" height="100px"/>
+					<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}" styleClass="inline link" style="text-decoration: none">
+						<i class="fa fa-chevron-left fa-2x" style="color:#255d95; margin-right: 7px"/>
+						<p>Clique aqui para continuar seu cadastro como cidadão e realizar manifestações</p>
+					</h:commandLink>
+				</h:panelGroup>
+
+				<h:panelGroup styleClass="box" style="width: 30vw; align-items: center; margin: 10px; min-height: 210px;">
+					<h:outputText value="REPRESENTANTE" styleClass="tituloBox" />
+					<p:graphicImage value="#{resource['img/icon/boss.png']}" height="90px"/>
+					<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}" styleClass="inline link" style="text-decoration: none; margin-top: 10px">
+						<p>Clique aqui para solicitar ao gestor responsável seu cadastro como representante </p>
+						<i class="fa fa-chevron-right fa-2x" style="color:#255d95; margin-left: 7px"/>
+					</h:commandLink>
+				</h:panelGroup>
+				
+			</h:panelGroup>
 			
 			</h:form>
 		

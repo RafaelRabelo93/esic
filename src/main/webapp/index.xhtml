@@ -10,7 +10,10 @@
 			
 		<ui:composition template="/templates/templateSemMenu.xhtml" >
 			
-			<ui:define name="content"> 
+			<ui:define name="content">
+			
+				<!-- Mensagem de Erro -->
+				<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
 				<ui:include src="/Menu/mainMenu.xhtml" />
 				<ui:include src="/Menu/menuSec.xhtml" />

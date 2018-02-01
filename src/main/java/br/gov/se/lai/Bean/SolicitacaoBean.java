@@ -147,8 +147,6 @@ public class SolicitacaoBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
 			page = "/index.xhtml?faces-redirect=true";
 			
-		}finally {
-			finalizarSolicitacao();
 		}
 
 		return page;
@@ -200,7 +198,7 @@ public class SolicitacaoBean implements Serializable {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
 		}catch (NullPointerException e) {
-			solicitacao.setCidadao(CidadaoDAO.findCidadao(7));
+			solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
 		}
 	}
 	
@@ -581,7 +579,7 @@ public class SolicitacaoBean implements Serializable {
 
 			entReencaminhar = EntidadesDAO.find(idEntidades);
 			Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
-			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
+			Responsavel respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
 			int idResp = ResponsavelBean.responsavelDisponivel(1, entReencaminhar.getIdEntidades()) ; 
 			Responsavel respDestinatario = new Responsavel();
 			if( idResp == -1) {

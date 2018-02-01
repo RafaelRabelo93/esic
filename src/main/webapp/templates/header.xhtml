@@ -8,9 +8,6 @@
 
 <h:head>
 	<h:outputStylesheet name="header.css" library="css" />		
-	
-    
-
 </h:head>
 
 <h:body>
@@ -18,34 +15,34 @@
 	<ui:composition>
 	
 	<script language="javascript">  
-	    var tam=100;       
+	    var tam=1;
 	    var cont=0;
 	
 	    function normalTamanho(){
-	        tam=100;
+	        tam=1;
 	        modificarFonte(tam);
 	    }
 	
 	    function aumentaTamanho(){
-	        tam+=10;
+	        tam+=0.1;
 	        modificarFonte(tam);
 	    }
 	
 	    function diminuiTamanho(){
-	        tam-=10;
+	        tam-=0.1;
 	        modificarFonte(tam);
 	    }
 	
 	    function modificarFonte(tamanho){
 	    	var seletor = '#page, .link, span, a, p, label, .titulo';
-	        var css = 'font-size: '+ tamanho +'% !important;';
+	        var css = 'font-size: '+ tamanho +'em !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
 	        else if(S.addRule)S.addRule(seletor,css,r.length);
 	        
 	        var seletor = '#page, .link, span, a, p, label, .titulo';
-	        var css = 'font-size: '+ tamanho+'% !important;';
+	        var css = 'font-size: '+ tamanho+'em !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
@@ -124,8 +121,8 @@
 								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
-								<p:inputText placeholder="Nickname" value="#{usuario.nick}" />
-								<p:password placeholder="Senha" value="#{usuario.senha}" />
+								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
+								<p:password placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
 						<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all "/>
 							</h:panelGrid>

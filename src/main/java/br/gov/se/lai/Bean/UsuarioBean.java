@@ -458,7 +458,7 @@ public class UsuarioBean implements Serializable {
 		// Aqui descriptografa o access_key e pega o email e data
 
 		if (usuario.getPerfil() == 2) {
-			Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			Responsavel resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
 				NotificacaoEmail.enviarEmail(resp.getEmail(), "Alteração de Email",
@@ -588,17 +588,16 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public Responsavel getResponsavel() {
-//		try {
-//			Responsavel listResponsavel = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
-//			if (!listResponsavel.equals(null)) {
-//				return listResponsavel;
-//			} else {
-//				return null;
-//			}
-//		}catch (Exception e) {
-//			return null;
-//		}
-		return null;
+		try {
+			Responsavel listResponsavel = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+			if (!listResponsavel.equals(null)) {
+				return listResponsavel;
+			} else {
+				return null;
+			}
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	public int getVeioDeSolicitacao() {

@@ -45,7 +45,7 @@ public class ResponsavelBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
-//		perfilCGE();
+		perfilGestorGeral();
 		this.responsavel = new Responsavel();
 		todosResponsaveis = ResponsavelDAO.list();
 	}
@@ -208,24 +208,25 @@ public class ResponsavelBean implements Serializable{
 			}
 	}
 	
-//	@SuppressWarnings("unchecked")
-//	public void perfilGestorGeral() {
-//		try {
-//			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
-//			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
-//				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-//				permissao = true;
-//			} else {
-//				this.entidades = new ArrayList<Entidades>(
-//						EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-//				permissao = false;
-//			}
-//			responsavel = new Responsavel();
-//		} catch (IndexOutOfBoundsException e) {
-//			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-//		}
-//	}
-//	
+
+	@SuppressWarnings("unchecked")
+	public void perfilGestorGeral() {
+		try {
+			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
+				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+				permissao = true;
+			} else {
+				this.entidades = new ArrayList<Entidades>(
+						EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+				permissao = false;
+			}
+			responsavel = new Responsavel();
+		} catch (IndexOutOfBoundsException e) {
+			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		}
+	}
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {

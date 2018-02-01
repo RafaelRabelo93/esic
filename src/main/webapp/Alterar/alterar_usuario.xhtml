@@ -12,7 +12,10 @@
 
 		<ui:define name="content">
 		
-			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' }" prependId="false"> 
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+		
+			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '6'}" prependId="false"> 
 				
 				<div class="ficha">
 
