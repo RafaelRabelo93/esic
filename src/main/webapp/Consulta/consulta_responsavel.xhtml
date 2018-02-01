@@ -61,7 +61,7 @@
 							<h:outputText value="Inativo" rendered="#{!resp.ativo}" />
 						</p:column>
 						
-						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or responsavel.verificaAdmin() eq true }" >
+						<p:column headerText="Editar" width="10" style="text-align: center" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
 							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
@@ -70,7 +70,7 @@
 
 					</p:dataTable>
 
-					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or responsavel.verificaAdmin() eq true }" style="display: flex; margin-top: 10px" styleClass="botaoLink">
+					<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{responsavel.verificaGestor() eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" style="display: flex; margin-top: 10px" styleClass="botaoLink">
 					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 					<h:outputText value="Novo Responsável" />
 				</h:commandLink>

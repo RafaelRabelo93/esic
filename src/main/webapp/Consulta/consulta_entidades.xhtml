@@ -84,7 +84,7 @@
 							</p:column>
 						</p:dataTable>
 	
-						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade" rendered="#{usuario.usuario.perfil eq '4'}"
+						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '5'}"
 							style="display: flex; margin-top: 10px" styleClass="botaoLink"
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaEntidade').click();}">
 							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
