@@ -34,15 +34,8 @@
 	    }
 	
 	    function modificarFonte(tamanho){
-	    	var seletor = '#page, .link, a, label, .titulo';
+	    	var seletor = '#page, .link, a, label, p .titulo';
 	        var css = 'font-size: '+ tamanho +'em !important;';
-	        S= document.styleSheets[document.styleSheets.length-1];
-	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
-	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
-	        else if(S.addRule)S.addRule(seletor,css,r.length);
-	        
-	        var seletor = '#page, .link, a, label, .titulo';
-	        var css = 'font-size: '+ tamanho+'em !important;';
 	        S= document.styleSheets[document.styleSheets.length-1];
 	        var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	        if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);
@@ -51,8 +44,8 @@
 	    
 	    function mudarContraste(){
 	    	if(cont==0)	{
-	     	var seletor = '#page, #header, .mainMenu, #title, a, .titulo, span, .barraNav, .menuSec, .footer, .menuAcesso, p, label';
-	     	var css = 'background: black !important; color: yellow !important; background-image: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)) !important;';
+	     	var seletor = '#page, #header, .mainMenu, #title, a, .titulo, span, .barraNav, .menuSec, .footer, .menuAcesso, p, label, .ui-datatable, td, th, div, select, i';
+	     	var css = 'background: black !important; color: yellow !important; border-color: yellow !important; background-image: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)) !important;';
 	         S= document.styleSheets[document.styleSheets.length-1];
 	         var r= (S.cssRules!= undefined)? S.cssRules: S.rules;
 	         if(S.insertRule) S.insertRule(seletor+'{'+css+'}',r.length);

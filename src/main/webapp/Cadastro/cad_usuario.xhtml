@@ -29,7 +29,7 @@
 						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
 							<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" />
 							<f:validateLength maximum="65"/>
-							<p:keyFilter regEx="/[a-z\-\']/i"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/"/>
 						</p:inputText>
 						<p:message for="nome" display="text"/>
 						

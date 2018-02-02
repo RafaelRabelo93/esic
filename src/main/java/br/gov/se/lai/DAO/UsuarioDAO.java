@@ -58,7 +58,7 @@ public class UsuarioDAO {
     	    return results.get(0);
     	}
         
-    }        
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -93,7 +93,30 @@ public class UsuarioDAO {
     }
 
 	public static List<Usuario> list() {
-	
         return null;
-    }  
+    }
+	
+//	@SuppressWarnings("unchecked")
+//	public static List<Usuario> completeNick (String prefix) {
+//		Query query = em.createQuery("FROM Usuario WHERE nick LIKE '%"+prefix+"%' ORDER BY nick");
+//		List<Usuario> results = query.getResultList();
+//    	
+//    	if (results.isEmpty()) {
+//    		return null;
+//    	}else {    		
+//    		return results;
+//    	}
+//	}
+
+	@SuppressWarnings("unchecked")
+	public static List<String> completeNick (String prefix) {
+		Query query = em.createQuery("SELECT nick FROM Usuario WHERE nick LIKE '%"+prefix+"%' ORDER BY nick");
+		List<String> results = query.getResultList();
+    	
+    	if (results.isEmpty()) {
+    		return null;
+    	}else {    		
+    		return results;
+    	}
+	}
 }

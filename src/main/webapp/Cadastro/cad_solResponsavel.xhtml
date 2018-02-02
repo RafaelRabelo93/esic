@@ -21,23 +21,16 @@
 				
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
-					<h:panelGroup id="dataPanel" styleClass="box" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '6'}">
-						<h:outputText value="Cadastro de Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
+					<h:panelGroup id="dataPanel" styleClass="box column" rendered="#{usuario.usuario.perfil eq '1'}">
+						<h:outputText value="Solicitação de Cadastro como Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
-						<h:panelGroup styleClass="inline">
-							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Nick: " for="nick" /> 
-								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}"
-									itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
-							</h:panelGroup>
+						<p:outputLabel value="Nick: " for="nick" /> 
+						<h:outputText id="nick" required="true" value="#{usuario.nick}"/> 
 							
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
-								<p:outputLabel value="Email: " for="email" /> 
-								<p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" size="35" maxlength="100" >
-									<f:validateLength maximum="100"/>
-							 	</p:inputText> 
-							</h:panelGroup>
-						</h:panelGroup>
+						<p:outputLabel value="Email: " for="email" /> 
+						<p:inputText id="email" required="true" value="#{responsavel.responsavel.email}" size="35" maxlength="100" >
+							<f:validateLength maximum="100"/>
+					 	</p:inputText> 
 					 	
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
 						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true">
@@ -45,13 +38,6 @@
 							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu> 
 
-						 <p:outputLabel value="Nível:" for="nivel" /> 
-						 <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">
-							<f:selectItem itemLabel="Representante" itemValue="1" />
-							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
-							<f:selectItem itemLabel="Gestor" itemValue="3" />
-							<f:selectItem itemLabel="Comissão Mista" itemValue="4" />
-						</p:selectOneRadio> 
 					</h:panelGroup>
 					
 					 

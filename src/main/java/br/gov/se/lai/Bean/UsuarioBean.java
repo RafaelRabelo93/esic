@@ -130,7 +130,7 @@ public class UsuarioBean implements Serializable {
 				} else {
 					nick = usuario.getNick();
 					login();
-					return "/Cadastro/cad_cidadao";
+					return "/Cadastro/confirmacao";
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -532,6 +532,11 @@ public class UsuarioBean implements Serializable {
 		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
 		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+	
+	public static List<String> completeNick (String prefix) {
+		List<String> nicks = UsuarioDAO.completeNick(prefix);
+		return nicks;
 	}
 
 	// GETTERS E SETTERS

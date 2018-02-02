@@ -83,6 +83,7 @@
 	justify-content: center;
 	
 	width: 100%;
+    margin-top: 5vh;
 }
 
 .botao{
@@ -131,7 +132,7 @@
     text-decoration: none;
 }
 
-.link{
+.link {
 	display: flex;
 	flex-direction: column;
     align-items: center;
@@ -144,10 +145,18 @@
 	text-align: center;
 }
 
-.icone:hover {
-	opacity: 0.9;
-	-webkit-transform: perspective(1px) translateZ(0);
-	transform: perspective(1px) translateZ(0);
+.botao:hover .icone {
+	width: 82%;
+	filter:brightness(120%);
+}
+
+.botao:hover .tituloMenu {
+	color: #1d72cf;
+	font-weight: 700;
+}
+
+.botao:hover p {
+	color: #808080;
 }
 
 .tituloMenu {
@@ -156,11 +165,6 @@
     line-height: 25px;
 	font-weight: bold;
 	font-variant-caps: all-petite-caps;
-}
-
-.tituloMenu:hover {
-	color: #1d72cf;
-	font-weight: 700;
 }
 
 .subTitulo {

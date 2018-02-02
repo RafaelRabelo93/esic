@@ -825,7 +825,7 @@ td.prazo.branco {
 
 #conteudo {
 	width: -webkit-fill-available;
-	border-right: 1px solid silver;
+/* 	border-right: 1px solid silver; */
 }
 
 #barraBtns {
@@ -844,7 +844,7 @@ td.prazo.branco {
  	-webkit-flex-flow: column nowrap;
  	flex-flow: column nowrap;
  	
- 	background-color: #e4e4e4;
+	background: linear-gradient(#e4e4e4,white);
 }
 
 .blankSquareBtn {
