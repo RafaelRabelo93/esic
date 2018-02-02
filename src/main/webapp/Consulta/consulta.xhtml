@@ -265,11 +265,7 @@
 						</p:tabView>
 
 					<h:form enctype="multipart/form-data">
-<<<<<<< HEAD
-						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '6'}">
-=======
 						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Mensagem de Resposta:" for="mensagem"  style="margin-bottom: 5px"/>
 								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField respostaField">
@@ -315,11 +311,7 @@
 								<p:selectOneMenu id="destino" value="#{solicitacao.idEntidades}" styleClass="abaField encaminharField">
 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"/>
 										<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-<<<<<<< HEAD
-										<f:selectItems value="#{entidades.todasEntidades}" var="orgao" itemLabel="#{orgao.sigla} - #{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-=======
 										<f:selectItems value="#{entidades.exibirEntidadesEncaminhamento()}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 								</p:selectOneMenu>
 	
 								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
@@ -351,11 +343,7 @@
 						
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
-<<<<<<< HEAD
-								rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-=======
 								rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
 								styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
@@ -364,11 +352,7 @@
 						
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
-<<<<<<< HEAD
-								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-=======
 								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'
 								 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
@@ -378,11 +362,7 @@
 						
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"  onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-<<<<<<< HEAD
-									rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-=======
 									rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>

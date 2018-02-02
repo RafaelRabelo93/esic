@@ -12,11 +12,7 @@
 
 		<ui:define name="content">
             
-<<<<<<< HEAD
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '4'}">
-=======
 			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0'or usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3'}">
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 					
 				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
 				
@@ -89,13 +85,8 @@
 					
 						<h:outputLabel value="Órgão/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
-<<<<<<< HEAD
-	
-						<h:outputLabel value="Açõess: " for="acoes" />
-=======
-
 						<h:outputLabel value="Ações: " for="acoes" />
->>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
+
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
