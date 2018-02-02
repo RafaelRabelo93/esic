@@ -56,7 +56,12 @@ public class ResponsavelBean implements Serializable{
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
 			this.responsavel.setAtivo(true);
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
-			this.usuario.setPerfil((short)2);
+			if(ehGestorSistema()) {
+				this.usuario.setPerfil((short)5);
+				this.responsavel.setNivel((short)3);
+			}else {
+				this.usuario.setPerfil((short)2);
+			}
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			UsuarioDAO.saveOrUpdate(usuario);	
@@ -77,6 +82,14 @@ public class ResponsavelBean implements Serializable{
 			this.responsavel = ResponsavelDAO.findResponsavelEmail(email);
 			this.responsavel.getUsuario().setPerfil((short)-1);
 			ResponsavelDAO.saveOrUpdate(responsavel);
+		}
+	}
+	
+	public boolean ehGestorSistema() { 
+		if(responsavel.getNivel() == 5) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	
@@ -221,26 +234,29 @@ public class ResponsavelBean implements Serializable{
 	
 
 	public void perfilGestorGeral() {
-		try {
-			List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
-			for (Responsavel responsavel : respList) {
-				if (verificaExistenciaGestorSistema(responsavel.getUsuario()) || responsavel.getUsuario().getPerfil() == 6) {
-					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-					permissao = true;
-					break;
-				} else {
-					try {
-						this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-					}catch (NullPointerException e) {
-						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-					}finally {
-						permissao = false;
-					}
-				}
-				responsavel = new Responsavel();
-			}
-		} catch (IndexOutOfBoundsException e) {
+		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		}else{
+			try {
+				List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+				for (Responsavel responsavel : respList) {
+					if (responsavel.getUsuario().getPerfil() == 5) {
+						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+						permissao = true;
+						break;
+					} else {
+						try {
+							this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+						}catch (NullPointerException e) {
+							this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+						}finally {
+							permissao = false;
+						}
+					}
+					responsavel = new Responsavel();
+				}
+			} catch (IndexOutOfBoundsException e) {
+			}
 		}
 	}
 	
