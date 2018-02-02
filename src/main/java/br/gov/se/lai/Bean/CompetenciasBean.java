@@ -150,7 +150,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 2 || user.getPerfil() == 4 || user.getPerfil() == 5 ) {
+		if(user.getPerfil() != 1 || user.getPerfil() != 3 ) {
 			return true;
 		}else {
 			return false;

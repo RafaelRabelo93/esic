@@ -56,7 +56,12 @@ public class ResponsavelBean implements Serializable{
 			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
 			this.responsavel.setAtivo(true);
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
-			this.usuario.setPerfil((short)2);
+			if(ehGestorSistema()) {
+				this.usuario.setPerfil((short)5);
+				this.responsavel.setNivel((short)3);
+			}else {
+				this.usuario.setPerfil((short)2);
+			}
 			this.responsavel.setUsuario(this.usuario);
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			UsuarioDAO.saveOrUpdate(usuario);	
@@ -77,6 +82,14 @@ public class ResponsavelBean implements Serializable{
 			this.responsavel = ResponsavelDAO.findResponsavelEmail(email);
 			this.responsavel.getUsuario().setPerfil((short)-1);
 			ResponsavelDAO.saveOrUpdate(responsavel);
+		}
+	}
+	
+	public boolean ehGestorSistema() { 
+		if(responsavel.getNivel() == 5) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	
@@ -107,10 +120,13 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String alterarDadosUsuario() {
-		responsavel.setEntidades(EntidadesDAO.find(idEntidade));
-		ResponsavelDAO.saveOrUpdate(responsavel);
+		if(verificaAcesso() || verificaExistenciaGestorSistema(usuarioBean.getUsuario())) {
+			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
+			ResponsavelDAO.saveOrUpdate(responsavel);
+			responsavel = new Responsavel();
+			idEntidade = 0;
+		}
 		responsavel = new Responsavel();
-		idEntidade = 0;
 		return "Consulta/consultar_responsavel";
 	}
 	
@@ -132,7 +148,7 @@ public class ResponsavelBean implements Serializable{
 	}
 
 	public boolean verificaAdmin() {
-		if ( usuarioBean.getUsuario().getPerfil() == 4 ){
+		if ( usuarioBean.getUsuario().getPerfil() == 6 ){
 			return true;
 		}else {
 			return false;
@@ -140,7 +156,15 @@ public class ResponsavelBean implements Serializable{
 	}
 		
 	public boolean verificaExistenciaResponsavel(Usuario usuario) {
-		if(usuario.getPerfil() == (short) 2) {
+		if(usuario.getPerfil() == (short) 2 || usuario.getPerfil() == (short) 4) {
+			return true;
+		}else {
+			return false;			
+		}
+	}
+
+	public boolean verificaExistenciaGestorSistema(Usuario usuario) {
+		if(usuario.getPerfil() == (short) 5 ) {
 			return true;
 		}else {
 			return false;			
@@ -208,21 +232,31 @@ public class ResponsavelBean implements Serializable{
 			}
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	public void perfilGestorGeral() {
-		try {
-			responsavel = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
-			if (responsavel.getEntidades().getIdEntidades().equals(1)) {
-				this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-				permissao = true;
-			} else {
-				this.entidades = new ArrayList<Entidades>(
-						EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
-				permissao = false;
-			}
-			responsavel = new Responsavel();
-		} catch (IndexOutOfBoundsException e) {
+		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		}else{
+			try {
+				List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+				for (Responsavel responsavel : respList) {
+					if (responsavel.getUsuario().getPerfil() == 5) {
+						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+						permissao = true;
+						break;
+					} else {
+						try {
+							this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+						}catch (NullPointerException e) {
+							this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
+						}finally {
+							permissao = false;
+						}
+					}
+					responsavel = new Responsavel();
+				}
+			} catch (IndexOutOfBoundsException e) {
+			}
 		}
 	}
 	

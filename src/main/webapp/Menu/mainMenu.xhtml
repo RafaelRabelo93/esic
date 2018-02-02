@@ -175,31 +175,66 @@
 
 						</h:commandLink>
 					</h:panelGroup>
+					
+<!-- 					MENU REPRESENTANTE -->
 
 					<!-- Consulta (Representante) -->
+<<<<<<< HEAD
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'or usuario.usuario.perfil eq '6' }">
+=======
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
 							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="80%" />
 
 							<h:outputText styleClass="tituloMenu" value="Acompanhar Solicitações"/>
-							<p>Acompanhamento de solicitações"</p>
+							<p>Acompanhamento de solicitações</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
 					<!-- Consulta órgão/entidade -->
+<<<<<<< HEAD
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2'  or usuario.usuario.perfil eq '6' }">
+=======
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="80%" />
 
+<<<<<<< HEAD
 							<h:outputText styleClass="tituloMenu" value="Órgãos / Entidades" />
+=======
+							<h:outputText styleClass="tituloMenu" value="Gerir Entidades" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
+							<h:outputText styleClass="tituloMenu" value="Consultar Entidades" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 
 							<p>Gerir entidades ou ógrãos</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
+<<<<<<< HEAD
 					<!-- Gerir ação -->
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '6'}">
+=======
+<!-- 					Alterar órgão/entidade -->
+<!-- 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '4' }"> -->
+<!-- 						<h:commandLink styleClass="link" action="pages/alterar_entidades"> -->
+<!-- 							<p:graphicImage styleClass="icone" -->
+<!-- 								value="#{resource['img/icon/office-edit.png']}" width="80%" /> -->
+
+<!-- 							<h:outputText styleClass="tituloMenu" value="Alterar Entidade" -->
+<!-- 								style="font-size:35px; padding: 2% 0;" /> -->
+
+<!-- 							<h:outputText style="font-size:20px; color:#333" -->
+<!-- 								value="Alterar entidade ou ógrão" /> -->
+<!-- 						</h:commandLink> -->
+<!-- 					</h:panelGroup> -->
+					
+					<!-- Gerir de ação -->
+					<h:panelGroup class="botao" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'  or usuario.usuario.perfil eq '5' 
+														 or usuario.usuario.perfil eq '6'}">
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 						<h:commandLink styleClass="link" action="Consulta/consulta_acoes">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/exchange.png']}" width="80%" />
@@ -211,11 +246,20 @@
 					</h:panelGroup>
 					
 					<!-- Gerir responsável -->
+<<<<<<< HEAD
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '6'}">
+=======
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="80%" />
 
+<<<<<<< HEAD
 							<h:outputText styleClass="tituloMenu" value="Responsáveis"/>
+=======
+							<h:outputText styleClass="tituloMenu" value="Gerir Responsáveis" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
+							<h:outputText styleClass="tituloMenu" value="Consultar Responsáveis" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
+>>>>>>> 57e75c48aaea9238cda16ee384e92847cd4c2f02
 
 							<p>Gerir responsável</p>
 						</h:commandLink>

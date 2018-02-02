@@ -14,6 +14,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Responsavel;
+import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.PermissaoUsuario;
@@ -28,6 +30,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	 */
 	private static final long serialVersionUID = -1157796158944497538L;
 	private Entidades entidades;
+	private Solicitacao solicitacao;
 	private Usuario user ;
 	private int idOrgaos;
 	private int idEntidades;
@@ -118,6 +121,16 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		}else {
 			return false;
 		}
+	}
+	
+	public List<Entidades> exibirEntidadesEncaminhamento(){
+		List<Entidades> listaAuxiliar = todasEntidades;
+		List<Responsavel> resps = new ArrayList<>(user.getResponsavels());
+		for (Responsavel responsavel : resps) {
+			listaAuxiliar.remove(EntidadesDAO.find(responsavel.getEntidades().getIdEntidades()));
+		}
+		
+		return listaAuxiliar;
 	}
 	
 	public boolean verificaUnicidadeNome() {
@@ -229,5 +242,15 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setForOrgao(boolean forOrgao) {
 		this.forOrgao = forOrgao;
 	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
+	}
+	
+	
 
 }

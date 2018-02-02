@@ -147,7 +147,7 @@
 
 .botao:hover .icone {
 	width: 82%;
-	filter:brightness(120%);
+	filter:brightness(105%);
 }
 
 .botao:hover .tituloMenu {
@@ -156,7 +156,7 @@
 }
 
 .botao:hover p {
-	color: #808080;
+/* 	color: #808080; */
 }
 
 .tituloMenu {
