@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body>
+<h:body onload="#{acoes.carregarLista()}">
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_acao" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3' }">
+			<h:form id="cad_acao" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
 
 				<div class="ficha">
 
@@ -42,7 +42,7 @@
 					</p:panelGrid>
 
 					<p:commandLink class="botaoLink" id="novaAcao" action="#{acoes.save}" update="@all"
-						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}">
+						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}" >
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>

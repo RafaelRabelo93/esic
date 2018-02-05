@@ -98,7 +98,7 @@
 				<p:dialog widgetVar="editDialog" header="Editar Órgão / Entidade"
 					modal="true" showHeader="true" fitViewport="true" showEffect="fade"
 					hideEffect="fade" resizable="false" maximizable="false"
-					draggable="false" closeOnEscape="true">
+					draggable="false" closeOnEscape="true" onHide="#{acoes.limparAcao()}">
 					<h:form id="dialog">
 						<p:outputPanel id="entidadeEdit"
 							style="display:flex; flex-flow: column">

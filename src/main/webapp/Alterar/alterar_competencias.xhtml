@@ -58,7 +58,7 @@
 
                         </h:panelGroup>
 					
-					<h:panelGroup styleClass="divBtn" rendered="#{usuario.usuario.perfil eq '2' }"> 					
+					<h:panelGroup styleClass="divBtn" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> 					
 					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
 						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
 					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
@@ -106,7 +106,8 @@
 							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
 						<h:outputText id="display" />
 					
-					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
+					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="dialog alterar_competencias" type="button" 
+									oncomplete="PF('dlg').hide();" style="margin: 0;">
 						<h:outputText value="Adicionar"  />
 						<i class="fa fa-plus" />
 					</p:commandLink>

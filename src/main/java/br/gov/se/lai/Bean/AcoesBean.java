@@ -33,6 +33,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		carregarLista();
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		carregarLista();
 	}
 	
 	public void carregarLista() {
@@ -76,11 +77,15 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() != 1 || usuarioBean.getUsuario().getPerfil() != 3 ) {
+		if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() != 4 || usuarioBean.getUsuario().getPerfil() != 5 || usuarioBean.getUsuario().getPerfil() != 6 ) {
 			return true;
 		}else {
 			return false;
 		}
+	}
+	
+	public void limparAcao() {
+		acao = new Acoes();
 	}
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -99,7 +104,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		}
 
 		public void setAcoes(List<Acoes> acoes) {
-			this.acoes = acoes;
+			acoes = acoes;
 		}
 
 		public int getIdAcao() {
