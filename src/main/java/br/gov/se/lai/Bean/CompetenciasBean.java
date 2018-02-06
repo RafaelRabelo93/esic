@@ -202,7 +202,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 //		}
 //		return acoes;
 //	}
-//	
 
 	public void setAcoes(List<Acoes> acoes) {
 		this.acoes = acoes;

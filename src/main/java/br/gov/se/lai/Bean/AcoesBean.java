@@ -43,6 +43,11 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			acoes = null;
 		}
 	}
+	
+	public void limpaAcao() {
+		acao = new Acoes();
+	}
+	
 	public void save() {
 		if(verificaPermissao() ) {
 			AcoesDAO.saveOrUpdate(acao);
@@ -103,8 +108,8 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			return acoes;
 		}
 
-		public void setAcoes(List<Acoes> acoes) {
-			acoes = acoes;
+		public void setAcoes(List<Acoes> novaAcoes) {
+			acoes = novaAcoes;
 		}
 
 		public int getIdAcao() {

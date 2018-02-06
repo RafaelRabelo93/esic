@@ -53,6 +53,7 @@ public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 4098925984824190470L;
 	private Usuario usuario;
+	private Usuario usuarioNovo;
 	private String senha;
 	private String nick;
 	private String nome;
@@ -75,6 +76,7 @@ public class UsuarioBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		usuario = new Usuario();
+		usuarioNovo = new Usuario();
 		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
 			Scheduler scheduler = shedFact.getScheduler();
@@ -150,7 +152,41 @@ public class UsuarioBean implements Serializable {
 	public void cadastrarCidadao() {
 		save();
 	}
+	
+	public String criarNovoUsuarioPorGestor() { 
+		if (!verificaSeVazio(usuarioNovo.getNome()) == true && !verificaSeVazio(usuarioNovo.getSenha()) == true
+				&& !verificaSeVazio(usuarioNovo.getNick()) == true) {
+			senha = usuarioNovo.getSenha();
+			usuarioNovo.setSenha(Criptografia.Criptografar(senha));
+			usuarioNovo.setPerfil((short) 1);
+			if (!verificaExistenciaNick(usuarioNovo.getNick())) {
+				UsuarioDAO.saveOrUpdate(usuarioNovo);
+				return "/index.xhtml?faces-redirect=true";
+				
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Nick já existente no sistema.", "Escolha outro."));
+				usuarioNovo = new Usuario();
+				return null;
+			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Não é possível cadastrar usuário.", "Preencha os campos vazios."));
+			usuarioNovo = new Usuario();
+			return null;
+		}
+	}
 
+	public void nomeCompleto(String nomeCompleto) {
+		if (nomeCompleto != null) {
+			String[] nomeSobrenome = nomeCompleto.split(" ");
+			if (nomeSobrenome.length > 1) {
+				this.nome = nomeSobrenome[0] + " " + nomeSobrenome[nomeSobrenome.length - 1];
+			} else {
+				this.nome = nomeSobrenome[0];
+			}
+		}
+	}
 	public boolean verificaSeVazio(String campo) {
 		String verificacao = campo.replaceAll(" ", "");
 		if (verificacao.equals("")) {
@@ -210,10 +246,11 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
-	public void sugestaoNick() {
+	public void sugestaoNick(String nome) {
 		int cont = 1;
 		String nck = "";
 		try {
+			nomeCompleto(nome);
 			nck = deAccent((getNomeCompleto().replace(" ", ".")).toLowerCase());
 			List<Usuario> usuarios = UsuarioDAO.buscarNicks(nck);
 			cont += (usuarios.size());
@@ -225,7 +262,14 @@ public class UsuarioBean implements Serializable {
 			} else {
 				this.nick = nck + cont;
 			}
-			this.usuario.setNick(this.nick);
+			
+			if(usuario.getPerfil() == 0) {
+				this.usuario.setNick(this.nick);
+			}else {
+				this.usuarioNovo.setNick(nick);
+			}
+			
+			nomeCompleto(usuario.getNome());
 
 		}
 
@@ -255,6 +299,7 @@ public class UsuarioBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
+				nomeCompleto(usuario.getNome());
 				return "/index?faces-redirect=true";
 			}
 		}
@@ -567,24 +612,11 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public String getNomeCompleto() {
-		String completo = usuario.getNome();
-		if (completo != null) {
-			String[] nomeSobrenome = completo.split(" ");
-			if (nomeSobrenome.length > 1) {
-				this.nome = nomeSobrenome[0] + " " + nomeSobrenome[nomeSobrenome.length - 1];
-			} else {
-				this.nome = nomeSobrenome[0];
-			}
-
-			return this.nome;
-		} else {
-			return "";
-		}
+		return this.nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-		sugestaoNick();
 	}
 
 	public Cidadao getCidadao() {
@@ -672,5 +704,15 @@ public class UsuarioBean implements Serializable {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+
+	public Usuario getUsuarioNovo() {
+		return usuarioNovo;
+	}
+
+	public void setUsuarioNovo(Usuario usuarioNovo) {
+		this.usuarioNovo = usuarioNovo;
+	}
+	
+	
 
 }
