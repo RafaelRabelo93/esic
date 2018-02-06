@@ -170,32 +170,36 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public List<Acoes> getAcoes() {
-		if(this.acoes == null) {
-			List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
-			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
-			Iterator<Acoes> a = this.acoes.iterator();
-			for (Competencias competencias : compEnt) {
-				while(a.hasNext()) {
-					Acoes acao = a.next();
-					if(competencias.getAcoes().getIdAcoes() == acao.getIdAcoes()) {
-						a.remove();
-						break;
-					}
-				}
-			}
-		} else {
-			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
-			Acoes acaoRemover = AcoesDAO.findAcoes(idAcoes);
-			Iterator<Acoes> acs = this.acoes.iterator();
-			while (acs.hasNext()) {
-				Acoes a = acs.next();
-				if (a == acaoRemover) {
-					acs.remove();
-				}
-			}
-		}
 		return acoes;
 	}
+	
+//	public List<Acoes> getAcoes() {
+//		if(this.acoes == null) {
+//			List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
+//			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
+//			Iterator<Acoes> a = this.acoes.iterator();
+//			for (Competencias competencias : compEnt) {
+//				while(a.hasNext()) {
+//					Acoes acao = a.next();
+//					if(competencias.getAcoes().getIdAcoes() == acao.getIdAcoes()) {
+//						a.remove();
+//						break;
+//					}
+//				}
+//			}
+//		} else {
+//			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
+//			Acoes acaoRemover = AcoesDAO.findAcoes(idAcoes);
+//			Iterator<Acoes> acs = this.acoes.iterator();
+//			while (acs.hasNext()) {
+//				Acoes a = acs.next();
+//				if (a == acaoRemover) {
+//					acs.remove();
+//				}
+//			}
+//		}
+//		return acoes;
+//	}
 	
 
 	public void setAcoes(List<Acoes> acoes) {

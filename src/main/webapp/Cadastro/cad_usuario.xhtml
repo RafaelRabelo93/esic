@@ -26,32 +26,55 @@
 						<h:outputText value="Dados do Usuário" styleClass="tituloBox" />
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
-						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.sugestaoNick()}" update="nick" />
+						<p:inputText rendered="#{usuario.usuario.perfil eq '0'}" id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
+							<p:ajax event="blur" listener="#{usuario.sugestaoNick(usuario.usuario.nome)}" update="nick" />
+							<f:validateLength maximum="65"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/"/>
+						</p:inputText>
+						<p:inputText rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
+										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" id="nomeNovo" required="true" value="#{usuario.usuarioNovo.nome}"  maxlength="65" size="55">
+							<p:ajax event="blur" listener="#{usuario.sugestaoNick(usuario.usuarioNovo.nome)}" update="nick2" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/"/>
 						</p:inputText>
 						<p:message for="nome" display="text"/>
 						
 						<p:outputLabel value="Nome de usuário: " for="nick" />
-						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" />
+						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" rendered="#{usuario.usuario.perfil eq '0'}" />
+						<h:outputText id="nick2" required="true" readonly="true" value="#{usuario.usuarioNovo.nick}" maxlength="50" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
+										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
 						<p:message for="nick" display="text"/>
 						
 						<p:outputLabel value="Senha:" for="senha1" />
-						<p:password id="senha1" match="senha2"
+						<p:password id="senha1" match="senha2" rendered="#{usuario.usuario.perfil eq '0'}"
 							placeholder="Digite sua senha" required="true" value="#{usuario.usuario.senha}" maxlength="20"
 							promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
+								<f:validateLength minimum="6" maximum="64" />
+						</p:password>
+						<p:password id="senha3" match="senha4"
+							placeholder="Digite sua senha" required="true" value="#{usuario.usuarioNovo.senha}" maxlength="20" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
+										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
 								<f:validateLength minimum="6" maximum="64" />
 						</p:password>
 						<p:message for="senha1" display="text"/>
 
 						<p:outputLabel value="Confirme sua senha:" for="senha2" />
-						<p:password id="senha2" placeholder="Repita sua senha" required="true" />
+						<p:password id="senha2" placeholder="Repita sua senha" required="true" rendered="#{usuario.usuario.perfil eq '0'}"/>
+						<p:password id="senha4" placeholder="Repita sua senha" required="true" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
+										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
 
 					</h:panelGroup>
 
-					<p:commandLink action="#{usuario.save}" id="novoUsuario" class="botaoLink" update="formHeader cad_usuario"
-							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoUsuario').click();}">
+					<p:commandLink action="#{usuario.criarNovoUsuarioPorGestor()}" id="novoUsuarioGestor" class="botaoLink" update="formHeader cad_usuario"
+							rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
+										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" 
+										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoUsuario').click();}">
+						<h:outputText value="Avançar" />
+						<i class="fa fa-arrow-right" style="color: white; padding-left: 3px" />
+					</p:commandLink>
+
+					<p:commandLink action="#{usuario.save}" id="novoUsuario" class="botaoLink"  rendered="#{usuario.usuario.perfil eq '0'}" update="formHeader cad_usuario"
+						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoUsuario').click();}">
 						<h:outputText value="Avançar" />
 						<i class="fa fa-arrow-right" style="color: white; padding-left: 3px" />
 					</p:commandLink>
