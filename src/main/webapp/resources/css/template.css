@@ -1,5 +1,5 @@
 #content {
-    min-height: 86vh;
+    min-height: 80.5vh;
 }
 
 .cad_form {
@@ -125,11 +125,11 @@
 }
 
 .box a:hover {
-	font-weight: bold;
+/* 	font-weight: bold; */
 }
 
 .box a:hover i {
-	font-size: 2.5em;
+/* 	font-size: 2.5em; */
 }
 
 .inline {
@@ -221,10 +221,9 @@
 	margin: 0;
     
     width: fit-content;
+    width: -moz-fit-content;
     height: fit-content;
 	
-/* 	display: flex; */
-    
     align-items: center;
 }
 
@@ -236,6 +235,14 @@
 	border-radius: 3px;
 	flex-flow: row nowrap;
 	word-wrap: normal; 
+}
+
+.ui-state-disabled {
+	background:#c4c4c4;
+}
+
+.blankSquareBtn .ui-state-disabled  {
+	background: none;
 }
 
 .ui-tooltip {
@@ -408,6 +415,10 @@
 
 .blank .ui-panelgrid .ui-panelgrid-cell {
 	padding: 0 !important;
+}
+
+.ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
+	align-self: center;
 }
 
 /* ============================= */
@@ -844,7 +855,7 @@ td.prazo.branco {
  	-webkit-flex-flow: column nowrap;
  	flex-flow: column nowrap;
  	
-	background: linear-gradient(#e4e4e4,white);
+	background: linear-gradient(#c4c4c4,white);
 }
 
 .blankSquareBtn {
@@ -1157,6 +1168,7 @@ i.fa.fa-home {
 .anexo {
     border: 1px solid silver;
     width: fit-content;
+    width: -moz-fit-content;
     padding: 3px;
     margin-top: 10px;
     text-decoration: none;
