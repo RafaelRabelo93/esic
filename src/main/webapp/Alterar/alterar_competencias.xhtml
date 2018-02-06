@@ -11,6 +11,9 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
+		
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
             
 			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0'or usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3'}">
 					
