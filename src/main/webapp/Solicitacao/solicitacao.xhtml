@@ -17,12 +17,12 @@
 
 			<h:form id="solicitacao" styleClass="cad_form"
 				rendered="#{usuario.usuario.perfil eq '3' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
-				enctype="multipart/form-data" onmouseover="#{acoes.carregarLista()}">
+				enctype="multipart/form-data" >
 
 				<div class="ficha">
 					<p:steps activeIndex="2" styleClass="custom" readonly="false">
 						<p:menuitem value="Tipo de solicitação" url="/index.xhtml"/> 
-						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
 						<p:menuitem value="Realizar Solicitação" url="#" />
 					</p:steps>
 
@@ -34,11 +34,10 @@
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />
 
 						<p:outputLabel value="Assunto:" />
-						<h:outputText id="assunto1" value="#{solicitacao.acoesTemporaria.titulo}" rendered="#{solicitacao.acoesTemporaria ne null}"	style="color:#a8a8a8;" />
-						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null}"	style="color:#a8a8a8;" />
+						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
 						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
 							disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}">
+							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"  >
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{acoes.acoes}" var="acoesDen"
 								itemLabel="#{acoesDen.titulo}"

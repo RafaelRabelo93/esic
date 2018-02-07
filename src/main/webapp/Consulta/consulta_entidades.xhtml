@@ -56,7 +56,6 @@
 							</p:column>
 	
 							<p:column headerText="Editar" width="45"  rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }" style="text-align: center">
-
 								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog:info" onclick="PF('editDialog').show();"
 									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">

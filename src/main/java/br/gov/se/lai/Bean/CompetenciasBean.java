@@ -36,7 +36,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	public static int idAcoes;
-	private int idEntidade;
+	public static int idEntidade;
 	private Entidades ent;
 	private String novaAcao;
 	private Usuario user;
@@ -220,8 +220,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		return idAcoes;
 	}
 
-	public void setIdAcoes(int idAcoes) {
-		this.idAcoes = idAcoes;
+	public void setIdAcoes(int NovaIdAcoes) {
+		idAcoes = NovaIdAcoes;
 	}
 
 	public List<Competencias> getListCompetencias() {
@@ -259,8 +259,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		return idEntidade;
 	}
 
-	public void setIdEntidade(int idEntidade) {
-		this.idEntidade = idEntidade;
+	public void setIdEntidade(int NovaIdEntidade) {
+		idEntidade = NovaIdEntidade;
 	}
 
 	public List<Competencias> getListCompetenciasExcluir() {

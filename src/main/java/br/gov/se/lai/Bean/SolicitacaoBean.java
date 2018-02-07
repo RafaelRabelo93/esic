@@ -366,7 +366,9 @@ public class SolicitacaoBean implements Serializable {
 		solicitacao.setEntidades(EntidadesDAO.find(1));
 		solicitacao.setTipo("Denúncia");
 		setModoAnonimo(true);
-		return "/Solicitacao/solicitacao.xhtml";
+		CompetenciasBean.idAcoes = 0;
+		AcoesBean.carregarLista();
+		return "/Solicitacao/solicitacao.xhtml?faces-redirect=true";
 	}
 	
 
@@ -383,11 +385,13 @@ public class SolicitacaoBean implements Serializable {
 	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
 	public String questionarioParaSolicitacao() {
-		if (idAcao == 0) {
+		if (idAcao == 0 || idEntidades == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não permite campos vazios.", "Preencha os campos."));
 			return null;
 		} else {
+			solicitacao.setEntidades(EntidadesDAO.find(idEntidades));
+			solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 			return "/Solicitacao/solicitacao.xhtml";
 		}
 	}
@@ -636,10 +640,15 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	public void limparEntidade(AjaxBehaviorEvent e) {
-		
+		if(form) {
+			CompetenciasBean.idEntidade = 0;
+		}else {
+			CompetenciasBean.listEntidades = null;
+			CompetenciasBean.idAcoes = 0;
+			AcoesBean.carregarLista();
+		}
 	}
 	
-
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

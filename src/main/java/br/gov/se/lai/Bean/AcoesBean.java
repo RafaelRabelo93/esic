@@ -36,7 +36,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		carregarLista();
 	}
 	
-	public void carregarLista() {
+	public static void carregarLista() {
 		if(CompetenciasBean.idAcoes == 0) {
 			acoes = new ArrayList<Acoes>(AcoesDAO.list());
 		}else {
@@ -89,9 +89,17 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	public void limparAcao() {
-		acao = new Acoes();
+	public String redirecionarConsultaAcoes() {
+		carregarLista();
+		return "/Consulta/consulta_acoes.xhtml?faces-redirect=true";
 	}
+
+	public String redirecionarCadastroAcoes() {
+		acao = new Acoes();
+		return "/Cadastro/cad_acoes.xhtml?faces-redirect=true";
+	}
+	
+	
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

@@ -431,7 +431,7 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public void emailRedefinirSenha() {
-		if (!verificaSeVazio(email)) {
+		if (!verificaSeVazio(emailRedirect)) {
 			if (tratarEmail(emailRedirect)) {
 				Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelEmail(emailRedirect);
 				if (!resp.equals(null)) {
@@ -442,7 +442,7 @@ public class UsuarioBean implements Serializable {
 				}
 
 			} else {
-				Cidadao cid = CidadaoDAO.findCidadaoEmail(email);
+				Cidadao cid = CidadaoDAO.findCidadaoEmail(emailRedirect);
 				if (!cid.equals(null)) {
 					acessoUsuario(cid.getUsuario());
 					String accessKey = cid.getUsuario().getSessionId();
