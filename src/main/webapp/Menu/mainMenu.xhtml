@@ -23,7 +23,7 @@
 			<!-- MENU CIDADÃO -->
 			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3'}">
 			
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.Denuncia()}">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="60%" />
@@ -38,7 +38,7 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnInfo" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="60%" />
@@ -53,7 +53,7 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnSol" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/chat.png']}" width="60%" />
@@ -68,7 +68,7 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnElogio" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="60%" />
@@ -83,7 +83,7 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnSugestao" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/sugestion.png']}" width="60%" />
@@ -98,7 +98,7 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:panelGroup class="botao container">
+				<h:panelGroup class="container">
 					<h:commandLink id="btnReclama" styleClass="link card" action="Solicitacao/questionario2">
 						<div class="face front link">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="60%" />
@@ -133,15 +133,14 @@
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="80%"/>
 
 							<h:outputText styleClass="tituloMenu" value="LAI"/>
-							<p>Acesso ao Portal da Lei de Acesso à Informação do estado de Sergipe</p>
+							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado de Sergipe</p>
 						</a>
 					</h:panelGroup>
 					
 					<!-- Cadastro de usuário -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}"
-								width="80%" />
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}" width="80%" />
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
@@ -151,11 +150,10 @@
 					
 					<!-- Continuar Cadastro -->
 					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link" action="#{usuario.alterarDadosUsuario()}">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"
-								width="80%" />
+						<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"	width="80%" />
 
-							<h:outputText styleClass="tituloMenu" value="Alterar Dados" />
+							<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
 
 							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
 						</h:commandLink>
@@ -166,12 +164,11 @@
 					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
 
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"
-								width="80%"/>
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"	width="80%"/>
 
 							<h:outputText styleClass="tituloMenu" value="Solicitação"/>
 
-							<p>Realizar pedido de informação a orgãos ou entidades do governo do estado de Sergipe</p>
+							<p>Realizar pedido de informação a orgãos ou entidades do governo do Estado de Sergipe</p>
 
 						</h:commandLink>
 					</h:panelGroup>
@@ -184,7 +181,7 @@
 							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="80%" />
 
-							<h:outputText styleClass="tituloMenu" value="Acompanhar Solicitações"/>
+							<h:outputText styleClass="tituloMenu" value="Solicitações"/>
 							<p>Acompanhamento de solicitações</p>
 						</h:commandLink>
 					</h:panelGroup>
@@ -194,8 +191,7 @@
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="80%" />
 
-							<h:outputText styleClass="tituloMenu" value="Gerir Entidades" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
-							<h:outputText styleClass="tituloMenu" value="Consultar Entidades" rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel ne '3'}" />
+							<h:outputText styleClass="tituloMenu" value="Entidades" />
 							<p>Gerir entidades ou ógrãos</p>
 						</h:commandLink>
 					</h:panelGroup>

@@ -78,7 +78,7 @@
 					
 					</h:form>
 					
-					<p:dialog widgetVar="editDialog" header="Editar Representante"  rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"  modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<p:dialog widgetVar="editDialog" header="Editar Responsável" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"  modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 						<h:form id="dialog">
 						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
 							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
@@ -89,7 +89,7 @@
 								</p:inputText>
 
 								<p:outputLabel value="Orgão/Entidade:" for="orgao" rendered="true" />
-								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}">
+								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains">
 									<f:selectItem itemLabel="#{responsavel.responsavel.entidades.sigla} - #{responsavel.responsavel.entidades.nome}" itemValue="#{responsavel.responsavel.entidades.idEntidades}"/>
 									<f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 								</p:selectOneMenu>

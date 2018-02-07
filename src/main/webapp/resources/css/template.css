@@ -552,6 +552,24 @@
 
 .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
     margin-top: 60% !important;
+	white-space: nowrap !important;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container {
+	width: 98%;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	width: 96% !important;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
+	top: 14px !important;
+	right: 14px !important;
 }
 
 .ui-button-icon-only{
