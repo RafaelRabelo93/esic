@@ -128,11 +128,11 @@ public class UsuarioBean implements Serializable {
 				if (veioDeSolicitacao == 0) {
 					nick = usuario.getNick();
 					login();
-					return "/index.xhtml?faces-redirect=true";
+					return "/Cadastro/confirmacao?faces-redirect=true";
 				} else {
 					nick = usuario.getNick();
 					login();
-					return "/Cadastro/confirmacao";
+					return "/Cadastro/confirmacao?faces-redirect=true";
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,

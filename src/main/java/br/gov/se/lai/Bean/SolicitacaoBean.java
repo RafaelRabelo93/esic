@@ -634,6 +634,11 @@ public class SolicitacaoBean implements Serializable {
 	public void popularEncaminharEntidade() {
 		entReencaminhar = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(idEntidades)).get(0);
 	}
+	
+	public void limparEntidade(AjaxBehaviorEvent e) {
+		
+	}
+	
 
 
 	// GETTERS E SETTERS
