@@ -55,7 +55,7 @@
 				</button>
 				<div class="dropdown-content">
 					<h:commandLink value="Gerir Responsável" action="/Consulta/consulta_responsavel"/>
-					<h:commandLink value="Cadastrar Responsável" action="/Cadastro/cad_responsavel"/>
+					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
 				</div>
 			</h:panelGroup>
 			
@@ -72,9 +72,9 @@
 			</button>
 			<div class="dropdown-content">
 				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
-				<h:commandLink value="Cadastrar Entidades" action="/Cadastro/cad_entidades"/>
-				<h:commandLink value="Gerir Ações" action="/Consulta/consulta_acoes"/>
-				<h:commandLink value="Cadastrar Ações" action="/Cadastro/cad_acoes"/>
+				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}"/>
+				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
+				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
 			</div>
 		</h:panelGroup>
 		

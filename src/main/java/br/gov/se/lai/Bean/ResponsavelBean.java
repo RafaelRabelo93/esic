@@ -260,6 +260,11 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	public String redirectCadastroUsuario() {
+		responsavel = new Responsavel();
+		return "/Cadastro/cad_responsavel.xhtml?faces-redirect=true";
+	}
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {

@@ -162,6 +162,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		todasEntidades = EntidadesDAO.list();
 		return "/Consulta/consulta_entidades";
 	}
+	
+	public String redirecionarCadastroEntidade() {
+		entidades = new Entidades();
+		return  "/Cadastro/cad_entidades.xhtml?faces-redirect=true";
+	}
 //GETTERS E SETTERS ==============================================	
 	
 	
