@@ -94,11 +94,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		listCompetencias.add(competencias);
 		listaAcoesUpdate();
 		competencias = new Competencias();
+		idAcoes = 0;
 	}
 	
 	
 	private void listaAcoesUpdate(){
-		Iterator<Acoes> a = acoes.iterator();
+		Iterator<Acoes> a = AcoesBean.acoes.iterator();
 		while(a.hasNext()) {
 			Acoes acao = a.next();
 			if(acao.getIdAcoes() == idAcoes) {
@@ -123,7 +124,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	public String filtrarAcoesEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
-		Iterator<Acoes> a = getAcoes().iterator();
+		Iterator<Acoes> a = AcoesBean.acoes.iterator();
 		for (Competencias competencias : compEnt) {
 			while(a.hasNext()) {
 				Acoes acao = a.next();
@@ -171,7 +172,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public List<Acoes> getAcoes() {
 		return acoes;
 	}
-	
+
 //	public List<Acoes> getAcoes() {
 //		if(this.acoes == null) {
 //			List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
@@ -189,7 +190,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 //		} else {
 //			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
 //			Acoes acaoRemover = AcoesDAO.findAcoes(idAcoes);
-//			Iterator<Acoes> acs = this.acoes.iterator();
+//			Iterator<Acoes> acs = getAcoes().iterator();
 //			while (acs.hasNext()) {
 //				Acoes a = acs.next();
 //				if (a == acaoRemover) {
@@ -199,7 +200,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 //		}
 //		return acoes;
 //	}
-	
+//	
 
 	public void setAcoes(List<Acoes> acoes) {
 		this.acoes = acoes;

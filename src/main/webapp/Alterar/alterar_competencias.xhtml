@@ -109,7 +109,7 @@
 							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" />
 						<h:outputText id="display" />
 					
-					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias" type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
+					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias dialog:dlg2 " type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
 						<h:outputText value="Adicionar"  />
 						<i class="fa fa-plus" />
 					</p:commandLink>
@@ -141,7 +141,6 @@
 							type="submit" oncomplete="PF('dlg2').hide();" update="dialog:dlg2">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
-								<f:setPropertyActionListener value="#{acoes.acao}" target="" />
 							</p:commandLink>
 	
 						</p:outputPanel>
