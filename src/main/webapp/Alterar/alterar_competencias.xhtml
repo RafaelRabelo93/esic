@@ -79,10 +79,10 @@
 			
 			</h:form>
 			
-		<!-- Dialog Nova Competï¿½ncia -->
+		<!-- Dialog Nova Competênncia -->
 			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
-				<p:outputPanel id="dlg2" style="max-width: 690px; border:none">
+				<p:outputPanel id="dlg2" style="max-width: 700px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
 						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
 					
@@ -96,7 +96,7 @@
 								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
 							</p:selectOneMenu>
 	
-							<h:outputLabel value="Ou" style="margin: -20px 2vw 0 4vw" />
+							<h:outputLabel value="Ou" style="margin: 0 5em" />
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias"	onclick="PF('dlg2').show();">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
@@ -105,12 +105,12 @@
 						</h:panelGroup>
 						
 						<h:outputLabel value="Descrição: " for="descricao" />
-						<p:inputTextarea id="descricao" rows="5" cols="50" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
-							counterTemplate="{0} caracteres restantes." style="width: 98%"/>
+						<p:inputTextarea id="descricao" cols="60" rows="4" counter="display" value="#{competencias.competencias.descricao}"  maxlength="200"
+							counterTemplate="{0} caracteres restantes." style="width: 98%; resize: vertical;"/>
 						<h:outputText id="display" />
 					
 					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="dialog alterar_competencias" type="button" 
-									oncomplete="PF('dlg').hide();" style="margin: 0;">
+						oncomplete="PF('dlg').hide();" style="margin: 0;">
 						<h:outputText value="Adicionar" style="margin-right: 5px" />
 						<i class="fa fa-plus" />
 					</p:commandLink>
@@ -124,13 +124,13 @@
 			<!-- Sub Dialog Nova Ação -->
 				<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog2">
-						<p:outputPanel id="dlg2" style="max-width: 690px">
+						<p:outputPanel id="dlg2" style="max-width: 700px">
 							<p:panelGrid columns="1" style="border:none; width: 60%;">
 								<p:outputLabel value="Título:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
 								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="80" rows="6" counter="display" maxlength="200" style="width:100%"
+								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;"
 									counterTemplate="{0} caracteres restantes."
 									value="#{acoes.acao.descricao}"  />
 								<h:outputText id="display" />
