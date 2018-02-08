@@ -32,7 +32,7 @@
 						rowsPerPageTemplate="10,25,50" rowKey="#{slt.idSolicitacao}">
 
 						<p:column width="20" priority="3" style="text-align:center">
-							<h:panelGroup rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation"/> </h:panelGroup> 
+							<h:panelGroup rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
 							<h:panelGroup rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
 							<h:panelGroup rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup> 
 							<h:panelGroup rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup> 
@@ -67,7 +67,7 @@
 						</p:column>
 
 						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="100" style="text-align:center"
-						styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
+						styleClass="prazo #{slt.status eq 'Finalizada' ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
 							<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
@@ -98,7 +98,7 @@
 
 			</div>
 
-<!-- Dialog Detalhe Solicitação -->
+		<!-- Dialog Detalhe Solicitação -->
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
 				header="#{solicitacao.solicitacao.titulo}" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"

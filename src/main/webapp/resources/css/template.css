@@ -124,12 +124,14 @@
 	text-decoration: none;
 }
 
-.box a:hover {
-/* 	font-weight: bold; */
+
+
+.column.link.box {
+	height: -webkit-fill-available;
 }
 
-.box a:hover i {
-/* 	font-size: 2.5em; */
+.column.link.box:hover img {
+	width: 110px;
 }
 
 .inline {
@@ -442,7 +444,12 @@
 
 .date{
 	width: 100%;
-	display: flex;
+	
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
 }
 
 .ui-datepicker {
@@ -504,8 +511,54 @@
 }
 
 .ui-dialog .ui-dialog-content {
-	display: flex;
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
 	flex-flow: column nowrap;	
+}
+
+.ui-confirm-dialog .ui-dialog-content {
+	display: none;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	margin: .5em !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
+    -moz-justify-content: center;
+ 	-ms-justify-content: center;
+ 	-o-justify-content: center;
+ 	-webkit-justify-content: center;
+ 	justify-content: center;
+ 	
+ 	-moz-flex-flow: column nowrap;
+ 	-ms-flex-flow: column nowrap;
+ 	-o-flex-flow: column nowrap;
+ 	-webkit-flex-flow: column nowrap;
+ 	flex-flow: column nowrap;
+ 	
+ 	margin: 0 !important;
+ 	padding: 0 !important;
+ 	
+ 	border: none !important;
+}
+
+.ui-confirmdialog-yes {
+    background-color: #c3f361 !important;
+}
+
+.ui-confirmdialog-no {
+    background-color: #ffb5ae !important;
 }
 
 /* Outros */
@@ -658,7 +711,12 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .ui-datascroller .ui-datascroller-content {
-    display: flex;
+    display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
     flex-flow: column nowrap;
     justify-content: space-between;
 /*     margin-bottom: 2vw; */
@@ -672,12 +730,21 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .ui-widget .ui-outputpanel{
-	display:flex;
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+ 	
 	flex-flow: column nowrap;
 }
 
 .ui-inplace .ui-inplace-editor {
-   display: flex
+	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
 }
 
 .ui-state-hightlight, .ui-widget-content.ui-state-hightlight  {
@@ -910,7 +977,8 @@ td.prazo.branco {
  	font-size: 15px;
  	text-align: center;
  	color: gray;
- 	border-bottom: 1px solid #e4e4e4;
+/*  	border-bottom: 1px solid #e4e4e4; */
+	background: none;
 }
 
  a.blankSquareBtn:hover  {

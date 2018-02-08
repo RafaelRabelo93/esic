@@ -47,7 +47,7 @@
 						</p:selectOneRadio>
 					
 						<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
-						<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}">
+						<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}" filter="true" filterMatchMode="contains">
 							<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
 							<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
 						</p:selectOneMenu>

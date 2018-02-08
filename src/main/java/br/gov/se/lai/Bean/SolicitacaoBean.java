@@ -306,20 +306,18 @@ public class SolicitacaoBean implements Serializable {
 		
 	}
 	public String consultarSolicitacaoGestor() {
-		if((EntidadesDAO.find(getIdEntidades()).getIdOrgaos() == userBean.getResponsavel().getEntidades().getIdOrgaos() ) || 
-				userBean.getResponsavel().getEntidades().getIdEntidades().equals(1)) {
-			
-			if (getIdEntidades() == 0) {
-				this.filteredSolicitacoes = SolicitacaoDAO.list();
-			} else {
-				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
-			}
-			
+		if(userBean.getUsuario().getPerfil() == 5 || userBean.getUsuario().getPerfil() == 6  ) {
+			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta";
 		}else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário sem permissão.", "Tente outro login."));
-			return null;
+			if(EntidadesDAO.find(getIdEntidades()).getIdOrgaos() == userBean.getResponsavel().getEntidades().getIdOrgaos()) {
+				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+				return "/Consulta/consulta";
+			}else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário sem permissão.", "Tente outro login."));
+				return null;
+			}
 		}
 	}
 	

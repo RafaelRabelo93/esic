@@ -14,7 +14,6 @@ import javax.faces.bean.SessionScoped;
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
-import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
@@ -47,7 +46,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		listCompetencias= new ArrayList<Competencias>();
-		this.acoes = null;
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
@@ -99,8 +97,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	private List<Acoes> listaAcoesUpdate(){
-		Iterator<Acoes> a = acoes.iterator();
+	private void listaAcoesUpdate(){
+		Iterator<Acoes> a = AcoesBean.acoes.iterator();
 		while(a.hasNext()) {
 			Acoes acao = a.next();
 			if(acao.getIdAcoes() == idAcoes) {
@@ -108,7 +106,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 				break;
 			}
 		}
-		return acoes;
 	}
 	
 	public void listaCompetenciasUpdate(){
@@ -126,7 +123,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	public String filtrarAcoesEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
-		Iterator<Acoes> a = getAcoes().iterator();
+		Iterator<Acoes> a = AcoesBean.acoes.iterator();
 		for (Competencias competencias : compEnt) {
 			while(a.hasNext()) {
 				Acoes acao = a.next();
@@ -174,7 +171,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public List<Acoes> getAcoes() {
 		return acoes;
 	}
-	
+
 //	public List<Acoes> getAcoes() {
 //		if(this.acoes == null) {
 //			List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
@@ -192,7 +189,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 //		} else {
 //			this.acoes = new ArrayList<Acoes>(AcoesDAO.list());
 //			Acoes acaoRemover = AcoesDAO.findAcoes(idAcoes);
-//			Iterator<Acoes> acs = this.acoes.iterator();
+//			Iterator<Acoes> acs = getAcoes().iterator();
 //			while (acs.hasNext()) {
 //				Acoes a = acs.next();
 //				if (a == acaoRemover) {

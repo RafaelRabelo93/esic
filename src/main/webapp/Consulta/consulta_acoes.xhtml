@@ -50,7 +50,7 @@
 							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
 								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
 								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-								<p:confirm header="Excluir Ação" message="Tem certeza que deseja excluir esta ação?"/>
+								<p:confirm/>
 							</p:commandLink>
 						</p:column>
 						
@@ -65,9 +65,15 @@
 					</h:form>
 					
 					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
-				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-						<p>Ela está sendo utilizada pelos seguintes órgãos:</p>
+						 <h:panelGroup styleClass="column" style="align-items: center;; padding: 1em;">
+							<i class="fa fa-exclamation-triangle fa-3x" style="margin-bottom: 5px; color: crimson"/>
+							<p style="margin: 0">Tem certeza que deseja deletar esta Ação?</p>
+							<p style="margin: 0; font-weight:bold">Esse processo é irreversível.</p>
+						</h:panelGroup>
+				        <h:panelGroup styleClass="inline" style="justify-content: center; border-top: 1px solid gray">
+					        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				        </h:panelGroup>
 				    </p:confirmDialog>
 					
 					<p:dialog widgetVar="editDialog" header="Editar Ação" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
