@@ -47,7 +47,6 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		listCompetencias= new ArrayList<Competencias>();
-		this.acoes = null;
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
