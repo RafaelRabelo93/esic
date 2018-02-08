@@ -124,12 +124,14 @@
 	text-decoration: none;
 }
 
-.box a:hover {
-/* 	font-weight: bold; */
+
+
+.column.link.box {
+	height: -webkit-fill-available;
 }
 
-.box a:hover i {
-/* 	font-size: 2.5em; */
+.column.link.box:hover img {
+	width: 110px;
 }
 
 .inline {
@@ -910,7 +912,8 @@ td.prazo.branco {
  	font-size: 15px;
  	text-align: center;
  	color: gray;
- 	border-bottom: 1px solid #e4e4e4;
+/*  	border-bottom: 1px solid #e4e4e4; */
+	background: none;
 }
 
  a.blankSquareBtn:hover  {
