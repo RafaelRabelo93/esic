@@ -239,6 +239,11 @@
 	word-wrap: normal; 
 }
 
+.botaoLink label {
+	color: white !important;
+	margin: 0 !important;
+}
+
 .ui-state-disabled {
 	background:#c4c4c4;
 }
@@ -588,6 +593,11 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+
+.ui-selectoneradio label {
+	margin-top: 0 !important;
+	margin-left: 10px !important;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {

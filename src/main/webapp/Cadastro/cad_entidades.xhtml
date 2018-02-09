@@ -40,17 +40,19 @@
 						</p:inputText>
 					
 						<p:outputLabel value="Tipo: " for="orgao" />
-						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}">
-							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
-							<f:selectItem itemLabel="Órgão" itemValue="true" />
-							<f:selectItem itemLabel="Entidade" itemValue="false" />
+						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}" required="true">
+							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="selectOrgao"/>
+							<f:selectItem itemLabel="Órgão" itemValue="#{true}" />
+							<f:selectItem itemLabel="Entidade" itemValue="#{false}" />
 						</p:selectOneRadio>
-					
-						<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
-						<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}" filter="true" filterMatchMode="contains">
-							<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-							<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-						</p:selectOneMenu>
+						
+						<h:panelGroup id="selectOrgao" styleClass="column">
+							<p:outputLabel id="idOrgaoLabel" value="Órgão relacionado:" for="idOrgao" rendered="#{!(entidades.forOrgao)}"/>
+							<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}" rendered="#{!(entidades.forOrgao)}" filter="true" filterMatchMode="contains" required="true">
+								<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+								<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+							</p:selectOneMenu>
+						</h:panelGroup>
 							
 					</h:panelGroup>
 
@@ -64,7 +66,7 @@
 				</div>
 
 			</h:form>
-
+			
 		</ui:define>
 
 	</ui:composition>
