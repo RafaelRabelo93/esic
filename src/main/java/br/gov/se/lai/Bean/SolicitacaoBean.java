@@ -86,6 +86,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
 	private boolean form = false;
+	private boolean mudarEndereco;
 
 	@PostConstruct
 	public void init() { 
@@ -837,5 +838,12 @@ public class SolicitacaoBean implements Serializable {
 		this.form = form;
 	}
 
+	public boolean getMudarEndereco() {
+		return mudarEndereco;
+	}
+
+	public void setMudarEndereco(boolean mudarEndereco) {
+		this.mudarEndereco = mudarEndereco;
+	}
 	
 }

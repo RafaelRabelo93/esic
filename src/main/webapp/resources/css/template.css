@@ -91,7 +91,8 @@
     background: white;
     
     width: 100%;
-    width: -webkit-fill-available;   
+    width: -webkit-fill-available;
+    width: -moz-available;   
 }
 
 .box label {
@@ -225,6 +226,7 @@
     width: fit-content;
     width: -moz-fit-content;
     height: fit-content;
+    height: -moz-fit-content;
 	
     align-items: center;
 }
@@ -435,6 +437,7 @@
     box-shadow: none;
     padding: 0;
     width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 .ui-inputfield {
@@ -471,6 +474,7 @@
 
 .consultaDialog.ui-dialog {
 	height: fit-content !important;
+	height: -moz-fit-content !important;
     width: 90% !important;
     left: 5% !important;
     top: 3vh !important;
@@ -931,6 +935,7 @@ td.prazo.branco {
 
 #conteudo {
 	width: -webkit-fill-available;
+	width: -moz-available;
 /* 	border-right: 1px solid silver; */
 }
 

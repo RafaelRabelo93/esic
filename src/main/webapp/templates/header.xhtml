@@ -45,20 +45,24 @@
 						
 						<li><h:outputLink value="">Sobre</h:outputLink></li>
 
-						<li><p:commandButton id="Login" value="Login" 
-								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
+						<li><p:commandButton id="Login" value="Login" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
 								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
 								<p:password placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
-						<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all growl "/>
+								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all growl "/>
 							</h:panelGrid>
 						</p:overlayPanel>
 
-						<li><p:commandButton id="userInfo" value="#{usuario.nomeCompleto}" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
-	
+						<li>
+							<p:commandLink id="userInfo" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none; padding-bottom: 0; align-items: center; flex-flow: column;">
+								<h:outputText value="#{usuario.nomeCompleto}" />
+								<br/>
+								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+							</p:commandLink>
+						</li>			
 					</ul>
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
@@ -71,22 +75,39 @@
 							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
 
-					<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq 3}">
-								<h:outputText value="Visualizar Perfil" />
-								<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
-							</p:commandLink>
+						<h:panelGroup styleClass="column">
+							<h:panelGroup styleClass="inline" style="margin-bottom: .5em; justify-content: space-between; width: 100%;">
+								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq 3}" style="margin-right: .5em">
+									<h:outputText value="Visualizar Perfil" />
+									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
+								</p:commandLink>
+								
+								<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button" style="margin-right: .5em">
+									<h:outputText value="Alterar Senha" />
+									<i class="fa fa-unlock-alt" style="color: white; padding-left: 5px" />
+								</p:commandLink>
+								
+								<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+									<h:outputText value="Sair" />
+									<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
+								</p:commandLink>						
+							</h:panelGroup>
 							
-							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button">
-								<h:outputText value="Alterar Senha" />
-								<i class="fa fa-unlock-alt" style="color: white; padding-left: 5px" />
-							</p:commandLink>
-							
-							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all" type="button">
-								<h:outputText value="Sair" />
-								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
-							</p:commandLink>						
-						</h:panelGrid>
+							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4'}" styleClass="inline" style="justify-content: space-between; width: 100%;">
+								<h:commandLink styleClass="botaoLink perfilBtn" update="@all" type="button">
+									<h:outputText value="Perfil" />
+									<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+									<h:outputText value="Cidadão" />
+								</h:commandLink>
+								
+								<h:commandLink styleClass="botaoLink perfilBtn" update="@all" type="button" style="margin-left: .5em">
+									<h:outputText value="Perfil" />
+									<p:graphicImage value="#{resource['img/icon/boss.png']}" height="45px" width="45px"/>
+									<h:outputText value="Representante" />
+								</h:commandLink>
+							</h:panelGroup>
+						</h:panelGroup>
+						
 					</p:overlayPanel>
 					
 				</div>

@@ -46,14 +46,155 @@
 
 						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />
-							<p:selectOneMenu id="recResp"
+							<p:selectOneMenu id="recResp" 
 								value="#{solicitacao.solicitacao.formaRecebimento}"
-								rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+								rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-								<f:selectItem itemLabel="Correspondência" itemValue="1" />
+								<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 								<f:selectItem itemLabel="Email" itemValue="2" />
 								<f:selectItem itemLabel="Email e Correspondência" itemValue="3" />
+								<p:ajax update="panel" event="change"/>
 							</p:selectOneMenu>
+						</h:panelGroup>
+						
+						<h:panelGroup id="panel" styleClass="column" rendered="#{solicitacao.solicitacao.formaRecebimento eq '1' or solicitacao.solicitacao.formaRecebimento eq '3'}">
+							<h:outputText value="Endereço de entrega:" style="color:#1a568c; margin-top: 1em;" />
+							
+							<h:panelGroup styleClass="column" id="endereco" >
+								<h:panelGroup styleClass="column" rendered="#{!solicitacao.mudarEndereco}">
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="CEP:" />
+										<h:outputText value="#{usuario.cidadao.cep}" />
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Cidade:" />
+										<h:outputText value="#{usuario.cidadao.cidade}" maxlength="45"/>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Estado:"/>
+										<h:outputText value="#{usuario.cidadao.estado}" />
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Logradouro:" />
+										<h:outputText value="#{usuario.cidadao.endereco}"/>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Bairro:" />
+										<h:outputText value="#{usuario.cidadao.bairro}" maxlength="45"/>
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Número:" for="numero" />
+										<h:outputText value="#{usuario.cidadao.numero}"/>
+		
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Complemento: " />
+										<h:outputText value="#{usuario.cidadao.complemento}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+								
+								<h:panelGroup styleClass="column" rendered="#{solicitacao.mudarEndereco}">
+									<h:panelGroup styleClass="inline">
+										<h:panelGroup styleClass="column">
+											<p:outputLabel value="CEP:" />
+											<p:inputMask id="cep" value="#{cidadao.cidadao.cep}" mask="99999-999" disabled="#{!solicitacao.mudarEndereco}"/>
+										</h:panelGroup>
+			
+										<h:panelGroup styleClass="column" style="margin-left: 2vw">
+											<p:outputLabel value="Cidade:" />
+											<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
+												<f:validateLength maximum="45"/>
+											</p:inputText>
+										</h:panelGroup>
+			
+										<h:panelGroup styleClass="column" style="margin-left: 2vw">
+											<p:outputLabel value="Estado: " for="uf" />
+											<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" widgetVar="estado" style="width:125px" disabled="#{!solicitacao.mudarEndereco}">
+												<f:selectItem itemLabel="Selecionar" itemValue="" />
+												<f:selectItem itemLabel="Acre" itemValue="AC" />
+												<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+												<f:selectItem itemLabel="Amapá" itemValue="AP" />
+												<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+												<f:selectItem itemLabel="Bahia" itemValue="BA" />
+												<f:selectItem itemLabel="Ceará" itemValue="CE" />
+												<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+												<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+												<f:selectItem itemLabel="Goiás" itemValue="GO" />
+												<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+												<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+												<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+												<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+												<f:selectItem itemLabel="Pará" itemValue="PA" />
+												<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+												<f:selectItem itemLabel="Paraná" itemValue="PR" />
+												<f:selectItem itemLabel="Piauí" itemValue="PI" />
+												<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+												<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+												<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+												<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+												<f:selectItem itemLabel="Roraima" itemValue="RR" />
+												<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+												<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+												<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+												<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+									</h:panelGroup>
+			
+									<h:panelGroup styleClass="inline">
+										<h:panelGroup styleClass="column">
+											<p:outputLabel value="Logradouro:" />
+											<p:inputText id="rua" value="#{cidadao.cidadao.endereco}" size="40" maxlength="100" disabled="#{!solicitacao.mudarEndereco}">
+												<f:validateLength maximum="100" />
+											</p:inputText>
+										</h:panelGroup>
+			
+										<h:panelGroup styleClass="column" style="margin-left: 2vw">
+											<p:outputLabel value="Bairro:" />
+											<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
+												<f:validateLength maximum="45"/>
+											</p:inputText>
+										</h:panelGroup>
+									</h:panelGroup>
+			
+									<h:panelGroup styleClass="inline">
+										<h:panelGroup styleClass="column">
+											<p:outputLabel value="Número:" for="numero" />
+											<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" maxlength="5" disabled="#{!solicitacao.mudarEndereco}">
+												<f:validateLength maximum="5" />
+											</p:inputText>
+			
+										</h:panelGroup>
+			
+										<h:panelGroup styleClass="column" style="margin-left: 2vw">
+											<p:outputLabel value="Complemento: " for="complemento" />
+											<p:inputText id="complemento"
+												value="#{cidadao.cidadao.complemento}" maxlength="200" size="40" disabled="#{!solicitacao.mudarEndereco}">
+												<f:validateLength maximum="200" />
+											</p:inputText>
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="inline">
+								<p:outputLabel value="Alterar endereço de envio?"/>
+								<p:selectBooleanCheckbox value="#{solicitacao.mudarEndereco}" >
+									 <p:ajax update="endereco" event="change"/>
+								</p:selectBooleanCheckbox>
+							</h:panelGroup>
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">

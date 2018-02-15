@@ -37,7 +37,7 @@
 #menuAcess ul li a {
 	font-size: .75em;
 	padding: 2px 5px;
-	display: inline-block;
+	display: inline-flex;
  
 	/* visual do link */	
 	color: #3e4e86;
@@ -128,7 +128,7 @@
 
 #barraNav ul li a {
 	padding: 7px 17px;
-	display: inline-block;
+	display: inline-flex;
  
 	/* visual do link */	
 	color: white;
@@ -139,6 +139,22 @@
 #barraNav ul li a:hover {
 	font-weight: bold;
 }
+
+.perfilBtn {
+	-moz-flex-flow: column nowrap;
+ 	-ms-flex-flow: column nowrap;
+ 	-o-flex-flow: column nowrap;
+ 	-webkit-flex-flow: column nowrap;
+ 	flex-flow: column nowrap;
+	
+    min-width: 120px;
+	height: 100px !important;
+	
+    text-align: center;
+    
+    padding: 8px 0 0 0 !important;
+}
+
 
 /* New Menu ========================================================================================================================================================================================================*/
 #navbar {
