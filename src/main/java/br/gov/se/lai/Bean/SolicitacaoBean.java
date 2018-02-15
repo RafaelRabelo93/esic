@@ -128,6 +128,8 @@ public class SolicitacaoBean implements Serializable {
 			this.mensagem.setSolicitacao(solicitacao);
 			this.mensagem.setTipo((short) 1);
 			MensagemDAO.saveOrUpdate(mensagem);
+			
+			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null);
 	
 			if (!(file.getContents().length == 0)) {
 				AnexoBean anx = new AnexoBean();

@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.gov.se.lai.DAO.AcoesDAO;
+import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.utils.HibernateUtil;
@@ -33,7 +34,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		carregarLista();
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
-		carregarLista();
 	}
 	
 	public static void carregarLista() {
@@ -77,6 +77,22 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			}
 		}
 		return "cad_competencias2";
+	}
+	
+	public List<Acoes> AcaoLigadaEntidadeAtiva() {
+
+		Iterator<Acoes> a = acoes.iterator();
+		while (a.hasNext()) {
+			Acoes acao = a.next();
+			List<Competencias> comp = CompetenciasDAO.filtrarCompetencias(acao.getIdAcoes());
+			for (Competencias competencias : comp) {
+				if (comp.isEmpty() || !competencias.getEntidades().isAtiva()) {
+					a.remove();
+					break;
+				}
+			}
+		}
+		return acoes;
 	}
 	
 

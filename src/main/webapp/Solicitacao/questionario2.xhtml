@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body  >
+<h:body onload="#{acoes.AcaoLigadaEntidadeAtiva()}" >
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -47,7 +47,7 @@
 	        				<p:selectOneMenu id="assunto" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
-								 <f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
+								 <f:selectItems value="#{acoes.AcaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
 							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
 

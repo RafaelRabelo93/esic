@@ -251,7 +251,7 @@
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
 											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
+												<h:outputLink value="#{anexo.downloadAnexo(msg)}" >
 													<h:outputText value="#{anexo.nomeView}" />
 												</h:outputLink>
 											</p:dataList>

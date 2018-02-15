@@ -20,7 +20,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-//		System.out.println("Entrou em verificacoes");
+		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listarGeral()) {
 			try {
 				updatePrazoTipo(solicitacao);
@@ -75,8 +75,7 @@ public class verificarStatusSolicitacao implements Job {
 			if (now.after(solicitacao.getDataLimite())) {
 				// System.out.println("Finalizou");
 				if ((solicitacao.getStatus().equals("Respondida")
-						|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short) 2)))
-						&& now.after(solicitacao.getDataLimite())) {
+						|| ((solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short) 3))))) {
 	
 						System.out.println("Finalizou");
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
@@ -86,14 +85,12 @@ public class verificarStatusSolicitacao implements Job {
 
 					} else {
 						if ((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada")
-								|| (solicitacao.getStatus().equals("Recurso")
-										&& solicitacao.getInstancia() < (short) 2))
-								&& now.after(solicitacao.getDataLimite())) {
+								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3))) {
 							solicitacao.setStatus("Respondida");
+							solicitacao.setInstancia((short)(solicitacao.getInstancia()+1));
 							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
-							if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-								MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
-							}
+							SolicitacaoDAO.saveOrUpdate(solicitacao);
+							MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
 
 						}
 					}

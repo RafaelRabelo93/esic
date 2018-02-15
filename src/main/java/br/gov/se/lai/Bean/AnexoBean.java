@@ -37,7 +37,7 @@ public class AnexoBean implements Serializable {
 	private String nomeView;
 	private StreamedContent fileDownload;
 	private static List<File> filesInFolder;
-	private static final String filesPath = "C:\\resources\\esic\\arquivos\\";
+	private static final String filesPath = "\\resources\\arquivos";
 
 	@PostConstruct
 	public void init() {
@@ -45,8 +45,8 @@ public class AnexoBean implements Serializable {
 	}
 
 	public void save(Anexo anexo, Mensagem mensagem, UploadedFile file) throws IOException, NullPointerException{
-		Path folder = Paths.get(filesPath);
-		//Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + "resources\\arquivos");   
+//		Path folder = Paths.get(filesPath);
+		Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath );   
 		try (InputStream input = file.getInputstream()) {
 			if (!file.getFileName().equals("")) {
 				String[] infoExtensao = file.getContentType().split("/")[1].split("-");
@@ -87,7 +87,7 @@ public class AnexoBean implements Serializable {
 			String solicitacaoNum = anexoNome[0];
 			String mensagemNum = anexoNome[1];
 			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(msgKeyStr)) {
-				retorno = "\\arquivos\\"+file.getName();
+				retorno = (Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath +"//"+file.getName())).toString();
 				nomeView = file.getName();
 				break;
 			}
@@ -114,7 +114,7 @@ public class AnexoBean implements Serializable {
 	
 	public static void listarFiles() {
 		try {
-			filesInFolder = (List<File>) Files.walk(Paths.get(filesPath))
+			filesInFolder = (List<File>) Files.walk(Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath ))
 					.filter(Files::isRegularFile)
 					.map(Path::toFile)
 					.collect(Collectors.toList());
