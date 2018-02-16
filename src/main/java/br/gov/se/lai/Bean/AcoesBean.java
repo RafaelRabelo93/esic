@@ -85,10 +85,14 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		while (a.hasNext()) {
 			Acoes acao = a.next();
 			List<Competencias> comp = CompetenciasDAO.filtrarCompetencias(acao.getIdAcoes());
-			for (Competencias competencias : comp) {
-				if (comp.isEmpty() || !competencias.getEntidades().isAtiva()) {
-					a.remove();
-					break;
+			if(comp.isEmpty() ) {
+				a.remove();
+			}else {
+				for (Competencias competencias : comp) {
+					if (!competencias.getEntidades().isAtiva()) {
+						a.remove();
+						break;
+					}
 				}
 			}
 		}
