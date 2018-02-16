@@ -135,7 +135,7 @@ public class NotificacaoEmail implements Job{
 
 	public static void enviarEmailTramites(Solicitacao solicitacao, String mensagem, Responsavel respRemetente, Responsavel respDestinatario ) {
 		Email email = new SimpleEmail();
-		List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 1);
+		List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 1);
 		
 		try {  
 			email.setDebug(true);  
@@ -154,8 +154,8 @@ public class NotificacaoEmail implements Job{
 
 	public static void enviarEmailAutoridades(Solicitacao solicitacao, String titulo, String mensagem) {
 		Email email = new SimpleEmail();
-		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 3);
-		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidade(solicitacao.getEntidades().getIdEntidades(), 2);
+		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 3);
+		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 2);
 		
 		try {  
 			email.setDebug(true);  
