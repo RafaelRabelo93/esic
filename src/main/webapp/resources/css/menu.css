@@ -7,25 +7,25 @@
 	display: -o-flex;
 	display: flex;
 	
-  -moz-flex-flow: column wrap;
-  -ms-flex-flow: column wrap;
-  -o-flex-flow: column wrap;
-  -webkit-flex-flow: column wrap;
-  flex-flow: column wrap;
-  
-  -moz-justify-content: center;
-  -ms-justify-content: center;
-  -o-justify-content: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-
-  -moz-align-items: center;
-  -ms-align-items: center;
-  -o-align-items: center;
-  -webkit-align-items: center;
-  align-items: center;
-  
-  padding: 5% 0;
+	-moz-flex-flow: column wrap;
+	-ms-flex-flow: column wrap;
+	-o-flex-flow: column wrap;
+	-webkit-flex-flow: column wrap;
+	flex-flow: column wrap;
+	
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	
+	-moz-align-items: center;
+	-ms-align-items: center;
+	-o-align-items: center;
+	-webkit-align-items: center;
+	align-items: center;
+	
+	padding: 5% 0;
 }
 
 #title{	
@@ -83,7 +83,7 @@
 	justify-content: center;
 	
 	width: 100%;
-    margin-top: 5vh;
+    margin: 1em 0;
 }
 
 .botao{
@@ -133,9 +133,18 @@
 }
 
 .link {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
 	flex-direction: column;
-    align-items: center;
+	
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
 }
 
 .link p {
@@ -209,9 +218,14 @@
 	border: 1px solid #c0c0c0;
     border-radius: 7px;
     background-size: 200% 100%;
+    
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, white), color-stop(50%, #165389));
+    background-image: -webkit-linear-gradient(left, white 50%, #165389 50%);
+    background-image: -o-linear-gradient(left, white 50%, #165389 50%);
     background-image: linear-gradient(to right, white 50%, #165389 50%);
+    
     -webkit-transition: background-position 1s;
-    -moz-transition: background-position 1s;
+    -o-transition: background-position 1s;
     transition: background-position 1s;
     
 	
@@ -223,6 +237,13 @@
   	font-family: "lato", Sans-serif;
   	font-weight: 100;
   	text-align: left;
+}
+
+.btnConsulta .titulo {
+	color: #1b4882;
+	font-size: 35px;
+	font-weight: bold;
+	font-variant-caps: all-petite-caps;
 }
 
 .btnConsulta > .column {
@@ -243,7 +264,7 @@
 .btnConsulta:hover .titulo {
 	color: white !important;
 	-webkit-transition: color 1s;
-    -moz-transition: color 1s;
+    -o-transition: color 1s;
     transition: color 1s;
 }
 
@@ -255,37 +276,36 @@
  }
 
 /* <-- Menu Secundário --> */
-
-.menuSec{
+.menuSec {
 	background-color: white;
-	
+
 	padding-top: 1%;
 	list-style: none;
-	  
+
 	display: -ms-flexbox;
 	display: -moz-flexbox;
 	display: -webkit-flex;
 	display: -o-flex;
 	display: flex;
-  
+
 	-moz-flex-flow: row wrap;
 	-ms-flex-flow: row wrap;
 	-o-flex-flow: row wrap;
 	-webkit-flex-flow: row wrap;
 	flex-flow: row wrap;
-  
+
 	-moz-justify-content: center;
 	-ms-justify-content: center;
 	-o-justify-content: center;
 	-webkit-justify-content: center;
 	justify-content: center;
-		
+
 	clear: both;
     position: relative;
-		
+
 	width: 100% !important;
 	height: 100%;
-	
+
 	border-top: 7px solid #c0c0c0;
 	bottom: 0;
 	overflow: hidden;
@@ -293,32 +313,32 @@
 
 .menuAcesso{
 	background-color: white;
-	
+
 	padding: 1%;
 	list-style: none;
-	  
+
 	display: -ms-flexbox;
 	display: -moz-flexbox;
 	display: -webkit-flex;
 	display: -o-flex;
 	display: flex;
-  
+
 	-moz-flex-flow: row wrap;
 	-ms-flex-flow: row wrap;
 	-o-flex-flow: row wrap;
 	-webkit-flex-flow: row wrap;
 	flex-flow: row wrap;
-  
+
 	-moz-justify-content: center;
 	-ms-justify-content: center;
 	-o-justify-content: center;
 	-webkit-justify-content: center;
-		
+
 	clear: both;
     position: relative;
-		
+
 	width: 100%;
-	
+
 	border-top: 1px solid #d7d7d7;
 	bottom: 0;
 	overflow: hidden;
@@ -369,7 +389,6 @@
     text-align-last: center;
 }
 
-
 .botaoFoot a:hover{
 	text-decoration: underline;
 }
@@ -398,15 +417,15 @@
 	display: -o-flex;
 	display: flex;
 	
-   position: relative;
-   -webkit-perspective: 1000;
-   -moz-perspective: 1000;
-   -ms-perspective: 1000;
-   -o-perspective: 1000;
-   margin: 0 0 20px 0;
-   
-    width: 220px;
-    height: 220px;
+	position: relative;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	-o-perspective: 1000;
+	margin: 0 0 20px 0;
+	
+	width: 220px;
+	height: 220px;
 }
 
 .container a{
@@ -424,13 +443,15 @@
    width: 200px; 
    height: 50px;
    position: relative;
+   
    -webkit-transform-style: preserve-3d;
-   -webkit-transition: 0.5s;
    -moz-transform-style: preserve-3d;
-   -moz-transition: 0.5s;
    -ms-transform-style: preserve-3d;
-   -ms-transition: 0.5s;
    -o-transform-style: preserve-3d;
+   
+   -webkit-transition: 0.5s;
+   -moz-transition: 0.5s;
+   -ms-transition: 0.5s;
    -o-transition: 0.5s;
    transition: 0.5s;
 }
@@ -450,6 +471,7 @@
    -ms-backface-visibility: hidden;
    -o-backface-visibility: hidden;
    backface-visibility: hidden;
+   
    top: 0;
    left: 0;
    width: 100%;

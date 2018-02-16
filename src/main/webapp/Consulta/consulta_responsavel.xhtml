@@ -30,7 +30,7 @@
 						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
 						style="margin-bottom:1vw">
 
-						<p:column headerText="Órgão" sortBy="#{resp.entidades.idOrgaos}" width="20">
+						<p:column headerText="Órgão" sortBy="#{resp.entidades.sigla}" width="20">
 							<h:outputText value="#{resp.entidades.sigla}" />
 						</p:column>
 
@@ -47,13 +47,10 @@
 						</p:column>
 
 						<p:column headerText="Tipo" sortBy="#{resp.nivel}" width="50">
-							<h:outputText value="Representante"
-								rendered="#{resp.nivel eq '1' }" />
-							<h:outputText value="Autoridade 1"
-								rendered="#{resp.nivel eq '2' }" />
+							<h:outputText value="Representante" rendered="#{resp.nivel eq '1' }" />
+							<h:outputText value="Autoridade 1" rendered="#{resp.nivel eq '2' }" />
 							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' }" />
-							<h:outputText value="Comissão Mista"
-								rendered="#{resp.nivel eq '4' }" />
+							<h:outputText value="Comissão Mista" rendered="#{resp.nivel eq '4' }" />
 						</p:column>
 
 						<p:column headerText="Status" sortBy="#{resp.ativo}" width="20">
@@ -62,8 +59,8 @@
 						</p:column>
 						
 						<p:column headerText="Editar" width="15" style="text-align: center" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();"
-								disabled="#{!(resp.entidades.idOrgaos eq usuario.responsavel.entidades.idOrgaos or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+							<p:commandLink class="botaoLinkIcon" update="dialog" onclick="PF('editDialog').show();"
+								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
 							</p:commandLink>
@@ -79,21 +76,20 @@
 					</h:form>
 					
 					<p:dialog widgetVar="editDialog" header="Editar Responsável" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"  modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-						<h:form id="dialog">
-						<p:outputPanel id="entidadeEdit" style="display:flex; flex-flow: column">
-							<p:panelGrid id="info" columns="2" layout="grid" style="border: none; width: 100%;">
+						<h:form id="dialog" styleClass="dialog">
+							<p:outputPanel id="entidadeEdit" styleClass="box" style="display:flex; flex-flow: column;  margin: 0; border: none; padding: 0">
 								<p:outputLabel value="Email: " for="email" />
 								<p:inputText id="email" value="#{responsavel.responsavel.email}" size="30" maxlength="100" >
 									<f:validateLength minimum="5" maximum="100"/>
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
-
-								<p:outputLabel value="Orgão/Entidade:" for="orgao" rendered="true" />
+	
+								<p:outputLabel value="Órgão/Entidade:" for="orgao" rendered="true" />
 								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains">
 									<f:selectItem itemLabel="#{responsavel.responsavel.entidades.sigla} - #{responsavel.responsavel.entidades.nome}" itemValue="#{responsavel.responsavel.entidades.idEntidades}"/>
 									<f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 								</p:selectOneMenu>
-
+	
 								<p:outputLabel value="Nível: "  for="nivel" />
 								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}">
 									<f:selectItem itemLabel="Representante" itemValue="1" />
@@ -107,13 +103,12 @@
 									<f:selectItem itemLabel="Ativo" itemValue="true" />
 									<f:selectItem itemLabel="Inativo" itemValue="false" />
 								</p:selectOneRadio>
-							</p:panelGrid>
-							
-							<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" oncomplete="PF('editDialog').hide();" update="form:responsaveis">
-								<h:outputText value="Salvar" />
-								<i class="fa fa-check" style="color: white; padding-left: 3px" />
-							</p:commandLink>
-						</p:outputPanel>
+								
+								<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" oncomplete="PF('editDialog').hide();" update="form:responsaveis">
+									<h:outputText value="Salvar" />
+									<i class="fa fa-check" style="color: white; padding-left: 3px" />
+								</p:commandLink>
+							</p:outputPanel>
 						</h:form>
 					</p:dialog>
 			

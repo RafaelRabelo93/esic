@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body  >
+<h:body onload="#{acoes.AcaoLigadaEntidadeAtiva()}" >
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -15,11 +15,11 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
  
-			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'}" onmouseover="#{acoes.carregarLista()}">
+			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' }" onmouseover="#{acoes.carregarLista()}">
 
 				<div class="ficha">
 
-					<p:steps activeIndex="1" styleClass="custom tres" readonly="false">
+					<p:steps activeIndex="1" styleClass="custom" readonly="false">
 						<p:menuitem value="Tipo de solicitação" url="/index.xhtml" />
 						<p:menuitem value="Determinar Órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#"/>
@@ -47,7 +47,7 @@
 	        				<p:selectOneMenu id="assunto" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
-								 <f:selectItems value="#{acoes.acoes}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
+								 <f:selectItems value="#{acoes.AcaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
 							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
 
@@ -76,7 +76,7 @@
 						<h:panelGroup id="select_orgao" styleClass="column" rendered="#{solicitacao.form}" style="margin-top: 15px;">
 							<p style="margin:0">Selecione diretamento o órgão a qual deseja direcionar a manifestação.</p>
 							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold" />
-   				            <p:selectOneMenu id="orgao" value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" style="width:300px" styleClass="field selectField">
+   				            <p:selectOneMenu id="orgao" value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" style="width:300px" styleClass="field selectField" filter="true" filterMatchMode="contains">
                                 <p:ajax event="change" listener="#{competencias.filtrarCompetenciasEntidade}" update = "select_orgao" />
                                 <p:ajax listener="#{solicitacao.definirEntidadeDeSolicitacao}"/>
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>

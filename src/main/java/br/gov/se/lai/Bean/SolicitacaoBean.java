@@ -86,6 +86,8 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
 	private boolean form = false;
+	private boolean mudarEndereco;
+	private boolean mudarEmail;
 
 	@PostConstruct
 	public void init() { 
@@ -128,6 +130,8 @@ public class SolicitacaoBean implements Serializable {
 			this.mensagem.setSolicitacao(solicitacao);
 			this.mensagem.setTipo((short) 1);
 			MensagemDAO.saveOrUpdate(mensagem);
+			
+			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null);
 	
 			if (!(file.getContents().length == 0)) {
 				AnexoBean anx = new AnexoBean();
@@ -281,7 +285,7 @@ public class SolicitacaoBean implements Serializable {
 	 * solicitações relacionadas ao cidadão. 
 	 */
 	public String verificaCidadaoConsulta() {
-		if (userBean.getUsuario().getPerfil() == 3) {
+		if (userBean.getUsuario().getPerfil() == 3 || userBean.getUsuario().getPerfil() == 4 && !userBean.isPerfilAlterarCidadaoResponsavel()) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta.xhtml?faces-redirect=true";
 		} else {
@@ -310,7 +314,7 @@ public class SolicitacaoBean implements Serializable {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta";
 		}else {
-			if(EntidadesDAO.find(getIdEntidades()).getIdOrgaos() == userBean.getResponsavel().getEntidades().getIdOrgaos()) {
+			if(ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos()) ) {
 				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 				return "/Consulta/consulta";
 			}else {
@@ -837,5 +841,20 @@ public class SolicitacaoBean implements Serializable {
 		this.form = form;
 	}
 
+	public boolean getMudarEndereco() {
+		return mudarEndereco;
+	}
+
+	public void setMudarEndereco(boolean mudarEndereco) {
+		this.mudarEndereco = mudarEndereco;
+	}
+
+	public boolean getMudarEmail() {
+		return mudarEmail;
+	}
+
+	public void setMudarEmail(boolean mudarEmail) {
+		this.mudarEmail = mudarEmail;
+	}
 	
 }

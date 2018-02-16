@@ -116,7 +116,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 4 || user.getPerfil() == 5) {
+		if(user.getPerfil() == 4 || user.getPerfil() == 6) {
 			return true;
 		}else {
 			return false;

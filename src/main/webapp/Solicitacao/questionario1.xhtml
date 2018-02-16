@@ -15,11 +15,11 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
-			<h:form id="solicitacao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'}" >
+			<h:form id="solicitacao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' }" >
 
 				<div class="ficha">
 
-					<p:steps activeIndex="0" styleClass="custom tres" readonly="true">
+					<p:steps activeIndex="0" styleClass="custom" readonly="true">
 						<p:menuitem value="Tipo de solicitação" url="#" />
 						<p:menuitem value="Determinar Órgão / Entidade" url="#" />
 						<p:menuitem value="Realizar Solicitação" url="#" />
@@ -35,7 +35,7 @@
 						
 						<div class="botao" style="width: 150px; padding: 0">
 						<h:commandLink id="btnDenuncia" styleClass="link" action="#{solicitacao.Denuncia()}">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/megaphone.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
@@ -44,7 +44,7 @@
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnInfo" styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/info.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/info.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Informação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Informação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
@@ -53,7 +53,7 @@
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnSol" styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/question.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/question.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Solicitação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
@@ -62,7 +62,7 @@
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnElogio" styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/like.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Elogio" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
@@ -71,7 +71,7 @@
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnSugestao" styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/speaking.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/speaking.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Sugestão" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>
@@ -80,7 +80,7 @@
 						
 						<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
 						<h:commandLink id="btnReclama" styleClass="link" action="questionario2">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="80vh" />
+							<p:graphicImage value="#{resource['img/icon/dislike.png']}" width="80vh" />
 							<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
 							<h:outputText styleClass="titulo" value="Reclamação" style="font-size:30px; padding: 2% 0;" />
 						</h:commandLink>

@@ -21,7 +21,7 @@
 				</div>
 
 			<!-- MENU CIDADÃO -->
-			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3'}">
+			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false   }">
 			
 				<h:panelGroup class="container">
 					<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.Denuncia()}">
@@ -116,7 +116,7 @@
 			</h:panelGroup>
 			
 				<!-- Consulta (Cidadão) -->
-				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="#{usuario.usuario.perfil eq '3'}">
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false}">
 					<p:graphicImage styleClass="icone" value="#{resource['img/icon/search.png']}" width="100px"/>
 					
 					<h:panelGroup styleClass="column">
@@ -125,10 +125,10 @@
 					</h:panelGroup>
 				</h:commandLink>
 				
-				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil ne '3'}">		
+				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil ne '3' or usuario.usuario.perfil ne '4'  }">		
 					
 					<!-- LAI -->
-					<h:panelGroup class="botao">
+                   	<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '2' or usuario.usuario.perfil ge '5' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)}">
 						<a class="link" href="http://lai.se.gov.br/">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="80%"/>
 
@@ -176,7 +176,7 @@
 <!-- 					MENU REPRESENTANTE -->
 
 					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
 							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="80%" />
@@ -187,7 +187,7 @@
 					</h:panelGroup>
 					
 					<!-- Consulta órgão/entidade -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="80%" />
 
@@ -197,7 +197,7 @@
 					</h:panelGroup>
 					
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4'  or usuario.usuario.perfil eq '5' 
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true  or usuario.usuario.perfil eq '5' 
 														 or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
@@ -210,7 +210,7 @@
 					</h:panelGroup>
 					
 					<!-- Gerir responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="80%" />
 

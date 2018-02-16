@@ -67,7 +67,7 @@
 						</p:column>
 
 						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="100" style="text-align:center"
-						styleClass="prazo #{slt.status eq 'Finalizada' ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
+						styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
 							<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
@@ -75,7 +75,7 @@
 						</p:column>
 						
 						<p:column headerText="Data final" sortBy="#{slt.datafim}" width="100" style="text-align:center">
-							<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}"/>
+							<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}" style="color: #c0c0c0;"/>
 							<h:outputText value="#{slt.datafim}" rendered="#{slt.datafim ne null}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
@@ -251,7 +251,7 @@
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
 											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
+												<h:outputLink value="#{anexo.downloadAnexo(msg)}" >
 													<h:outputText value="#{anexo.nomeView}" />
 												</h:outputLink>
 											</p:dataList>

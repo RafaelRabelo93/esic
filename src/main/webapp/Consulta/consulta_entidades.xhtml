@@ -25,7 +25,7 @@
 						<p:dataTable id="entidades" widget="orgaos" var="orgaos"
 							emptyMessage="Nao há órgãos"
 							filteredValue="#{entidades.todasEntidades}"
-							sortBy="#{orgaos.idOrgaos}" expandableRowGroups="false"
+							sortBy="#{orgaos.sigla}" expandableRowGroups="false"
 							value="#{entidades.todasEntidades}" resizableColumns="true" liveResize="true"
 							rowStyleClass="#{orgaos.sigla}" paginator="true"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -48,7 +48,7 @@
 							<p:column headerText="Ações" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }">
 								<p:commandLink class="botaoLinkIcon" id="consComp"
 									action="#{competencias.consultarCompetencias}" style="margin:5px"
-									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}"
+									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos))}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consComp').click();}">
 									<i class="fa fa-plus" />
 									<f:setPropertyActionListener value="#{orgaos}" target="#{competencias.ent}" />
@@ -56,8 +56,8 @@
 							</p:column>
 	
 							<p:column headerText="Editar" width="45"  rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog:info" onclick="PF('editDialog').show();"
-									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}"
+								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog" onclick="PF('editDialog').show();"
+									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos))}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">
 									<i class="fa fa-pencil-square-o" />
 									<f:setPropertyActionListener value="#{orgaos}"
@@ -67,7 +67,7 @@
 	
 							<p:column headerText="Solicitações" width="90" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{solicitacao.consultarSolicitacaoGestor()}"
-										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}"
+										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos))}"
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
@@ -89,27 +89,22 @@
 				<p:dialog widgetVar="editDialog" header="Editar Órgão / Entidade"
 					modal="true" showHeader="true" fitViewport="true" showEffect="fade"
 					hideEffect="fade" resizable="false" maximizable="false" draggable="false" 
-					closeOnEscape="true" >
+					closeOnEscape="true" style="padding: 0">
 
-					<h:form id="dialog">
-						<p:outputPanel id="entidadeEdit"
-							style="display:flex; flex-flow: column">
-							<p:panelGrid id="info" columns="2"
-								style="border: none; width: 100%;">
+					<h:form id="dialog" styleClass="dialog">
+						<p:outputPanel id="entidadeEdit" styleClass="box" style="display:flex; flex-flow: column; margin: 0; border: none; padding: 0">
 								<p:outputLabel for="nome" value="Nome:" />
-								<p:inputText id="nome" value="#{entidades.entidades.nome}" />
+								<p:inputText id="nome" required="true" size="50" value="#{entidades.entidades.nome}" />
 
 								<p:outputLabel for="sigla" value="Sigla:" />
-								<p:inputText id="sigla" value="#{entidades.entidades.sigla}" />
+								<p:inputText id="sigla" required="true" value="#{entidades.entidades.sigla}" />
 
 								<p:outputLabel for="ativa" value="Status:" />
-								<p:selectOneRadio id="ativa"
+								<p:selectOneRadio id="ativa" required="true"
 									value="#{entidades.entidades.ativa}">
 									<f:selectItem itemLabel="Ativa" itemValue="true" />
 									<f:selectItem itemLabel="Inativa" itemValue="false" />
 								</p:selectOneRadio>
-
-							</p:panelGrid>
 
 							<p:commandLink class="botaoLink"  action="#{entidades.edit}"
 								oncomplete="PF('editDialog').hide();" update="form:entidades">

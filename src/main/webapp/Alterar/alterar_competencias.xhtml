@@ -88,8 +88,8 @@
 					
 						<h:outputLabel value="Órgão/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+						
 						<h:outputLabel value="Ações: " for="acoes" />
-
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px" >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -111,7 +111,7 @@
 					
 					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias dialog:dlg2 " type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
 						<h:outputText value="Adicionar"  />
-						<i class="fa fa-plus" />
+						<i class="fa fa-plus" style="margin-left: 5px"/>
 					</p:commandLink>
 	
 					</h:panelGroup>
