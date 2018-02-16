@@ -30,7 +30,7 @@
 						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
 						style="margin-bottom:1vw">
 
-						<p:column headerText="Órgão" sortBy="#{resp.entidades.idOrgaos}" width="20">
+						<p:column headerText="Órgão" sortBy="#{resp.entidades.sigla}" width="20">
 							<h:outputText value="#{resp.entidades.sigla}" />
 						</p:column>
 
@@ -47,13 +47,10 @@
 						</p:column>
 
 						<p:column headerText="Tipo" sortBy="#{resp.nivel}" width="50">
-							<h:outputText value="Representante"
-								rendered="#{resp.nivel eq '1' }" />
-							<h:outputText value="Autoridade 1"
-								rendered="#{resp.nivel eq '2' }" />
+							<h:outputText value="Representante" rendered="#{resp.nivel eq '1' }" />
+							<h:outputText value="Autoridade 1" rendered="#{resp.nivel eq '2' }" />
 							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' }" />
-							<h:outputText value="Comissão Mista"
-								rendered="#{resp.nivel eq '4' }" />
+							<h:outputText value="Comissão Mista" rendered="#{resp.nivel eq '4' }" />
 						</p:column>
 
 						<p:column headerText="Status" sortBy="#{resp.ativo}" width="20">

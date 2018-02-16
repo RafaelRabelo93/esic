@@ -25,7 +25,7 @@
 						<p:dataTable id="entidades" widget="orgaos" var="orgaos"
 							emptyMessage="Nao há órgãos"
 							filteredValue="#{entidades.todasEntidades}"
-							sortBy="#{orgaos.idOrgaos}" expandableRowGroups="false"
+							sortBy="#{orgaos.sigla}" expandableRowGroups="false"
 							value="#{entidades.todasEntidades}" resizableColumns="true" liveResize="true"
 							rowStyleClass="#{orgaos.sigla}" paginator="true"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -67,7 +67,7 @@
 	
 							<p:column headerText="Solicitações" width="90" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{solicitacao.consultarSolicitacaoGestor()}"
-										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos)}"
+										disabled="#{!(usuario.responsavel.entidades.idOrgaos eq orgaos.idOrgaos or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}"
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
