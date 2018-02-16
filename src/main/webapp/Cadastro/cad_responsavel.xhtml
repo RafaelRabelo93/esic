@@ -42,7 +42,7 @@
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
 						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
 
 						 <p:outputLabel value="Nível:" for="nivel" /> 

@@ -68,6 +68,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private String sessionId;
+	private boolean perfilAlterarCidadaoResponsavel;
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -77,6 +78,7 @@ public class UsuarioBean implements Serializable {
 	public void init() {
 		usuario = new Usuario();
 		usuarioNovo = new Usuario();
+		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
 			Scheduler scheduler = shedFact.getScheduler();
@@ -84,11 +86,11 @@ public class UsuarioBean implements Serializable {
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
 					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 10 * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
-			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
-			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
-			 scheduler.scheduleJob(jobEmail, triggerEmail);
+//			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
+//			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
+//			 scheduler.scheduleJob(jobEmail, triggerEmail);
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
 		}
@@ -711,6 +713,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setUsuarioNovo(Usuario usuarioNovo) {
 		this.usuarioNovo = usuarioNovo;
+	}
+
+	public boolean isPerfilAlterarCidadaoResponsavel() {
+		return perfilAlterarCidadaoResponsavel;
+	}
+
+	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavel) {
+		this.perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavel;
 	}
 	
 	

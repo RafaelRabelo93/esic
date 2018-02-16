@@ -71,19 +71,25 @@ public class SolicitacaoDAO {
 				{
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
 					
-					String query = "FROM Solicitacao as slt WHERE  slt.entidades.idEntidades = ";
+					String query = "FROM Solicitacao as slt WHERE   ";
 							
-					for (Responsavel resp : ListResp) {
-						if (resp.isAtivo()) {
-							query = query +resp.getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
-							for (int i = 2 ;  i <= usuarioBean.getResponsavel().getNivel(); i++) {
-								query = query+" OR slt.instancia = "+ i;
+					for (int i = 0; i < ListResp.size(); i++) {
+						query += " slt.entidades.idEntidades = ";
+						if (ListResp.get(i).isAtivo()) {
+							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
+							for (int j = 2 ;  j <= usuarioBean.getResponsavel().getNivel(); j++) {
+								query = query+" OR slt.instancia = "+ j;
 							}
-							break;
+						}
+
+						if(i == ListResp.size()-1) {
+							query += ")";
+						}else {
+							query += ") OR ";
 						}
 					}
 					
-					return (List<Solicitacao>) Consultas.buscaPersonalizada(query+")",em);
+					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
 				}else 
 				{
 					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();		
