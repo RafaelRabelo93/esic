@@ -91,7 +91,7 @@ public class  ResponsavelDAO {
     	List<Responsavel> results = query.getResultList();
     	return results;
     }
-    
+
     
 
     @SuppressWarnings("unchecked")

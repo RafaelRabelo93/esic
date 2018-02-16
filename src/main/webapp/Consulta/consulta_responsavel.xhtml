@@ -63,7 +63,7 @@
 						
 						<p:column headerText="Editar" width="15" style="text-align: center" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
 							<p:commandLink class="botaoLinkIcon" update="dialog" onclick="PF('editDialog').show();"
-								disabled="#{!(resp.entidades.idOrgaos eq usuario.responsavel.entidades.idOrgaos or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
 							</p:commandLink>

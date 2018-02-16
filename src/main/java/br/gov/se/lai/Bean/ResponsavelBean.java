@@ -64,6 +64,8 @@ public class ResponsavelBean implements Serializable{
 					if(ehGestorSistema()) {
 						this.usuario.setPerfil((short)5);
 						this.responsavel.setNivel((short)3);
+					}else if(ehCidadaoRepresentante(usuario)) {
+						this.usuario.setPerfil((short)4);
 					}else {
 						this.usuario.setPerfil((short)2);
 					}
@@ -85,7 +87,7 @@ public class ResponsavelBean implements Serializable{
 				
 			}
 		}catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Entidade não encontrado!", null));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuario não encontrado!", null));
 			return null;
 		}
 	}
@@ -107,6 +109,14 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	public boolean ehCidadaoRepresentante(Usuario usuario) { 
+		if(usuario.getPerfil() == 3) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	public String edit() {
 		if(verificaAcesso() ) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
@@ -118,15 +128,23 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public boolean verificaExistenciaResponsavelNaEntidade(Usuario usuario, int idEntidadeEntrada) {
-		try {
-			if(ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0)
-					.getEntidades().getIdEntidades().equals(idEntidadeEntrada)){
-				return true;
-			}else {
-				return false;
+		boolean retorno = false;
+		if(verificaExistenciaResponsavel(usuario)) {
+			try{
+				List<Responsavel> respVinculadosAoNovoUsuario = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+				if(!respVinculadosAoNovoUsuario.isEmpty()){
+					for (Responsavel resp : respVinculadosAoNovoUsuario) {
+						if(resp.getEntidades().getIdEntidades().equals(idEntidadeEntrada)) {
+							retorno = true;
+							break;
+						}
+					}
+				}
+			}catch (IndexOutOfBoundsException e) {
 			}
-		}catch (NullPointerException e) {
-			return false;
+			return retorno;
+		}else {
+			return retorno;
 		}
 	}
 	
@@ -301,7 +319,28 @@ public class ResponsavelBean implements Serializable{
 			}
 		}
 		return retorno;
-		
+	}
+	
+	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
+		List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>();
+		for (Responsavel resp : listRespDaEntidade) {
+			if(resp.getNivel().equals((short)3)) {
+				entidadesPossiveisDeCadastro.add(resp.getEntidades());
+			}
+		}
+		return entidadesPossiveisDeCadastro;
+	}
+	
+
+	public boolean possivelEditarResponsavelDasEntidades(int idOrgao){
+		boolean retorno = false;
+		for (Responsavel resp : listRespDaEntidade) {
+			if(resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) {
+				retorno =  true;
+				break;
+			}
+		}
+		return retorno;
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	

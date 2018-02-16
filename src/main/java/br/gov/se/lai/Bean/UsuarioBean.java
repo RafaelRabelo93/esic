@@ -68,6 +68,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private String sessionId;
+	private boolean perfilAlterarCidadaoResponsavel;
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -77,6 +78,7 @@ public class UsuarioBean implements Serializable {
 	public void init() {
 		usuario = new Usuario();
 		usuarioNovo = new Usuario();
+		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
 			Scheduler scheduler = shedFact.getScheduler();
@@ -711,6 +713,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setUsuarioNovo(Usuario usuarioNovo) {
 		this.usuarioNovo = usuarioNovo;
+	}
+
+	public boolean isPerfilAlterarCidadaoResponsavel() {
+		return perfilAlterarCidadaoResponsavel;
+	}
+
+	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavel) {
+		this.perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavel;
 	}
 	
 	
