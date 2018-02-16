@@ -16,7 +16,7 @@
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 			<h:form id="solicitacao" styleClass="cad_form" prependId="false"
-				rendered="#{usuario.usuario.perfil eq '3' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
+				rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4'  or solicitacao.solicitacao.tipo eq 'Denúncia'}"
 				enctype="multipart/form-data" >
 
 				<div class="ficha">
