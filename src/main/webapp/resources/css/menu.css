@@ -225,6 +225,13 @@
   	text-align: left;
 }
 
+.btnConsulta .titulo {
+    color: #1b4882;
+    font-size: 35px;
+    font-weight: bold;
+    font-variant-caps: all-petite-caps;
+}
+
 .btnConsulta > .column {
     margin-left: 1.7em;
 }
