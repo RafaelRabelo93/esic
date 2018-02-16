@@ -719,8 +719,8 @@ public class UsuarioBean implements Serializable {
 		return perfilAlterarCidadaoResponsavel;
 	}
 
-	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavel) {
-		this.perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavel;
+	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavelNovo) {
+		perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavelNovo;
 	}
 	
 	

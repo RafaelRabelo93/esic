@@ -285,7 +285,7 @@ public class SolicitacaoBean implements Serializable {
 	 * solicitações relacionadas ao cidadão. 
 	 */
 	public String verificaCidadaoConsulta() {
-		if (userBean.getUsuario().getPerfil() == 3) {
+		if (userBean.getUsuario().getPerfil() == 3 || userBean.getUsuario().getPerfil() == 4 && !userBean.isPerfilAlterarCidadaoResponsavel()) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta.xhtml?faces-redirect=true";
 		} else {

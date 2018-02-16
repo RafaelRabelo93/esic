@@ -197,7 +197,7 @@
 					</h:panelGroup>
 					
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true  or usuario.usuario.perfil eq '5' 
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true  or usuario.usuario.perfil eq '5' 
 														 or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"

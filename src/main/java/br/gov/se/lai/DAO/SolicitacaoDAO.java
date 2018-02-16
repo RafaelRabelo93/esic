@@ -67,7 +67,7 @@ public class SolicitacaoDAO {
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			}else 
 			{
-				if(usuarioBean.getUsuario().getPerfil() == 2 ) 
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4) 
 				{
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
 					
