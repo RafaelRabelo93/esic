@@ -62,12 +62,12 @@ public class SolicitacaoDAO {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if(usuarioBean != null) 
 		{
-			if(usuarioBean.getUsuario().getPerfil() == 3) 
+			if(usuarioBean.getUsuario().getPerfil() == 3 || usuarioBean.getUsuario().getPerfil() == 4 && !usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
 			{
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			}else 
 			{
-				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4) 
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
 				{
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
 					
