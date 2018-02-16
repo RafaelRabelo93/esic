@@ -128,7 +128,7 @@
 				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil ne '3' or usuario.usuario.perfil ne '4'  }">		
 					
 					<!-- LAI -->
-					<h:panelGroup class="botao">
+                   	<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '2' or usuario.usuario.perfil ge '5' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)}">
 						<a class="link" href="http://lai.se.gov.br/">
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="80%"/>
 
