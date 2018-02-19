@@ -175,9 +175,11 @@ public class SolicitacaoBean implements Serializable {
 
 		} else {
 			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
 			}else {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
+//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(4)));
 			}
 			this.solicitacao.setStatus("Aberta");
 		}
@@ -481,15 +483,20 @@ public class SolicitacaoBean implements Serializable {
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
-			return constanteAdicionalTempo;
+			return 4;
+//			return constanteAdicionalTempo;
 		case "Prorrogada":
-			return constanteAdicionalTempo;
+			return 2;
+//			return constanteAdicionalTempo;
 		case "Respondida":
-			return constanteAdicionalTempo;
+			return 2;
+//			return constanteAdicionalTempo;
 		case "Recurso":
-			return 5;
+			return 2;
+//			return 5;
 		default:
-			return constanteTempo;
+			return 4;
+//			return constanteTempo;
 		}
 	}
 

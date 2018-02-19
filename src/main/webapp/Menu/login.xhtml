@@ -17,7 +17,7 @@
 
 			<h:panelGroup styleClass="inlineLogin" >
 				
-				<h:form id="cadForm">
+				<h:form id="cadForm" rendered="#{usuario.usuario.perfil eq '0'}">
 					<h:panelGroup  styleClass="loginForm">
 						<h:outputText value="Cadastre-se" styleClass="tituloBox" style="align-self: flex-start;" />
 								

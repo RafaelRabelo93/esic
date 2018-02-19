@@ -60,8 +60,8 @@
 							<p:commandLink id="userInfo" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none; padding-bottom: 0; align-items: center; flex-flow: column;">
 								<h:outputText value="#{usuario.nomeCompleto}" />
 								<br/>
-								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Responsável" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Responsável" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Gestor" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 							</p:commandLink>
@@ -74,13 +74,13 @@
 							<h:outputText value="#{usuario.usuario.nick}" />
 							<h:outputText value="E-mail:" style="color:#1a568c;" />
 							<h:outputText value="#{usuario.email}" />
-							<h:outputText value="Órgão/Entidade:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2'}"/>
+							<h:outputText value="Órgão/Entidade:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}"/>
 							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
 						</h:panelGrid>
 
 						<h:panelGroup styleClass="column">
 							<h:panelGroup styleClass="inline" style="margin-bottom: .5em; justify-content: space-between; width: 100%;">
-								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3'}" style="margin-right: .5em">
+								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
 									<h:outputText value="Visualizar Perfil" />
 									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 								</p:commandLink>

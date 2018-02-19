@@ -20,8 +20,8 @@
 					<h:outputText value="Informação ao Cidadão"/>
 				</div>
 
-			<!-- MENU CIDADÃO -->
-			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false   }">
+		<!-- ====== MENU CIDADÃO ====== -->
+			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 			
 				<h:panelGroup class="container">
 					<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.Denuncia()}">
@@ -116,7 +116,7 @@
 			</h:panelGroup>
 			
 				<!-- Consulta (Cidadão) -->
-				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false}">
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					<p:graphicImage styleClass="icone" value="#{resource['img/icon/search.png']}" width="100px"/>
 					
 					<h:panelGroup styleClass="column">
@@ -125,103 +125,127 @@
 					</h:panelGroup>
 				</h:commandLink>
 				
-				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil ne '3' or usuario.usuario.perfil ne '4'  }">		
-					
-					<!-- LAI -->
-                   	<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '2' or usuario.usuario.perfil ge '5' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)}">
-						<a class="link" href="http://lai.se.gov.br/">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="80%"/>
+				
+		<!-- ====== MENU LOGOFF ====== -->
+			<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">		
+				
+				<!-- LAI -->
+                  	<h:panelGroup class="botao">
+					<a class="link" href="http://lai.se.gov.br/">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="70%"/>
 
-							<h:outputText styleClass="tituloMenu" value="LAI"/>
-							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado de Sergipe</p>
-						</a>
-					</h:panelGroup>
-					
-					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '6'}">
-						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}" width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro" />
-
-							<p>Registrar usuário</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Continuar Cadastro -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"	width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
-
-							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-
-					<!-- Solicitação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
-
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"	width="80%"/>
-
-							<h:outputText styleClass="tituloMenu" value="Solicitação"/>
-
-							<p>Realizar pedido de informação a orgãos ou entidades do governo do Estado de Sergipe</p>
-
-						</h:commandLink>
-					</h:panelGroup>
-					
-<!-- 					MENU REPRESENTANTE -->
-
-					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
-							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Solicitações"/>
-							<p>Acompanhamento de solicitações</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Consulta órgão/entidade -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Entidades" />
-							<p>Gerir entidades ou ógrãos</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Gerir de ação -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true  or usuario.usuario.perfil eq '5' 
-														 or usuario.usuario.perfil eq '6'}">
-						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/exchange.png']}" width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Ações" />
-
-							<p>Gerir ações</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Gerir responsável -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="80%" />
-
-							<h:outputText styleClass="tituloMenu" value="Responsáveis"/>
-
-							<p>Gerir responsável</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
+						<h:outputText styleClass="tituloMenu" value="LAI"/>
+						<p>Acesso ao Portal da Lei de Acesso à Informação do Estado de Sergipe</p>
+					</a>
 				</h:panelGroup>
+				
+				<!-- Cadastro de usuário -->
+				<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
+					<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}" width="70%" />
 
+						<h:outputText styleClass="tituloMenu" value="Cadastro" />
+
+						<p>Registrar usuário</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Continuar Cadastro Cidadão -->
+				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
+					<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/contract.png']}"	width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
+
+						<p>Continuar cadastro como cidadão para realizar manifestações.</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Continuar Cadastro Responsável -->
+				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
+					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" />
+
+						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Solicitação -->
+				<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+					<h:commandLink styleClass="link" action="#{solicitacao.verificaCidadaoSolicitacao}" >
+
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}"	width="70%"/>
+
+						<h:outputText styleClass="tituloMenu" value="Solicitação"/>
+
+						<p>Realizar pedido de informação a orgãos ou entidades do governo do Estado de Sergipe</p>
+
+					</h:commandLink>
+				</h:panelGroup>
+				
+			</h:panelGroup>
+			
+					
+		<!-- ====== MENU REPRESENTANTE ====== -->
+			<h:panelGroup class="menuBtn" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.ativo) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">	
+				
+				<!-- LAI -->
+				<h:panelGroup class="botao">
+					<a class="link" href="http://lai.se.gov.br/">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/ESIC.png']}"	width="70%"/>
+
+						<h:outputText styleClass="tituloMenu" value="LAI"/>
+						<p>Acesso ao Portal da Lei de Acesso à Informação do Estado de Sergipe</p>
+					</a>
+				</h:panelGroup>
+				
+				<!-- Consulta (Representante) -->
+				<h:panelGroup class="botao">
+					<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
+						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Solicitações"/>
+						<p>Acompanhamento de solicitações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Consulta órgão/entidade -->
+				<h:panelGroup class="botao">
+					<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Entidades" />
+						<p>Gerir entidades ou ógrãos</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Gerir responsável -->
+				<h:panelGroup class="botao">
+					<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Responsáveis"/>
+
+						<p>Gerir responsável</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Gerir de ação -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavel.nivel ne '4'}">
+					<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
+						<p:graphicImage styleClass="icone"
+							value="#{resource['img/icon/exchange.png']}" width="70%" />
+
+						<h:outputText styleClass="tituloMenu" value="Ações" />
+
+						<p>Gerir ações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+			</h:panelGroup>
 
 				</div>
 
