@@ -124,6 +124,10 @@ public class SolicitacaoBean implements Serializable {
 		try {
 			
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			
+			if(solicitacao.getTipo().equals("Solicitação")) {
+				dadosRecebimentoSolicitacao(solicitacao);
+			}
 	
 			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
 			this.mensagem.setData(new Date(System.currentTimeMillis()));
@@ -206,6 +210,53 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}catch (NullPointerException e) {
 			solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
+		}
+	}
+	
+	public void dadosRecebimentoSolicitacao(Solicitacao solicitacao) {
+		switch (solicitacao.getFormaRecebimento()) {
+		case 1: 
+			enderecoRecebimentoSolicitacao(solicitacao);
+			break;
+		case 2:
+			emailRecebimentoSolicitacao(solicitacao);
+			break;
+		case 3:
+			enderecoRecebimentoSolicitacao(solicitacao);
+			emailRecebimentoSolicitacao(solicitacao);
+			break;
+		}
+	}
+	
+	public void emailRecebimentoSolicitacao(Solicitacao solicitacao) {
+		if(mudarEmail) {
+			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+cidadao.getEmail()));
+		}else {
+			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+solicitacao.getCidadao().getEmail()));
+		}
+	}
+	
+	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
+		if(mudarEndereco) {
+			CidadaoBean cidadao = new CidadaoBean();
+			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
+															+ " CEP: "+ cidadao.getCep()+ "\n"
+															+ "Cidade: " + cidadao.getCidade() 
+															+ "  - Estado: " + cidadao.getEstado() + "\n"
+															+ "Logradouro" + cidadao.getEndereco()
+															+ "  - Numero: " + cidadao.getNumero() + "\n"
+															+ "Complemento: " + cidadao.getComplemento() 
+															+ "  - Bairro: "+ cidadao.getBairro()));
+		}else {
+			Cidadao cid = solicitacao.getCidadao();
+			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
+														+ " CEP: "+ cid.getCep()+ "\n"
+														+ "Cidade: " + cid.getCidade() 
+														+ "  - Estado: " + cid.getEstado() + "\n"
+														+ "Logradouro" + cid.getEndereco()
+														+ "  - Numero: " + cid.getNumero() + "\n"
+														+ "Complemento: " + cid.getComplemento() 
+														+ "  - Bairro: "+ cid.getBairro()));
 		}
 	}
 	
@@ -325,6 +376,11 @@ public class SolicitacaoBean implements Serializable {
 				return null;
 			}
 		}
+	}
+	
+	public String consultarSolicitacaoEspecifica(int idEntidade) {
+		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(idEntidade);
+		return "/Consulta/consulta";
 	}
 	
 

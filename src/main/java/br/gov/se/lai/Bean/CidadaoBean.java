@@ -32,6 +32,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private String cpf;
 	private String rg;
 	private String orgaoexp;
+	private String bairro;
+	private String complemento;
 	private Date datanasc;
 	private String sexo;
 	private int escolaridade;
@@ -279,5 +281,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+	
 
 }
