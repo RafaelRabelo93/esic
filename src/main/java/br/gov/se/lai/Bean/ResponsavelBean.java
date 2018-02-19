@@ -322,13 +322,18 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
-		List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>();
-		for (Responsavel resp : listRespDaEntidade) {
-			if(resp.getNivel().equals((short)3)) {
-				entidadesPossiveisDeCadastro.add(resp.getEntidades());
+		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6) {
+			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>(EntidadesDAO.listAtivas());
+			return entidadesPossiveisDeCadastro;
+		}else {
+			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>();
+			for (Responsavel resp : listRespDaEntidade) {
+				if (resp.getNivel().equals((short) 3)) {
+					entidadesPossiveisDeCadastro.add(resp.getEntidades());
+				}
 			}
+			return entidadesPossiveisDeCadastro;
 		}
-		return entidadesPossiveisDeCadastro;
 	}
 	
 
@@ -341,6 +346,14 @@ public class ResponsavelBean implements Serializable{
 			}
 		}
 		return retorno;
+	}
+	
+	public boolean bloquearEdicaoPessoalPermissoes(int idUsuarioResponsavelAvaliado) {
+		if(idUsuarioResponsavelAvaliado == usuarioBean.getUsuario().getIdUsuario()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	

@@ -199,7 +199,7 @@ public class NotificacaoEmail implements Job{
 		
 		email.setDebug(true);  
 		email.setHostName("smtp.expresso.se.gov.br");  
-		email.setAuthentication("mayara.machado","efgh1234");  
+		email.setAuthentication("mayara.machado","abcd1234");  
 		email.addTo("mayara.machado@cge.se.gov.br"); 
 //		email.addCc("michael.mendonca@cge.se.gov.br");
 //		email.addTo(destinatario);  

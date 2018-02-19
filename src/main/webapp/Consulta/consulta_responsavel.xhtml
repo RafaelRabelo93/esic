@@ -85,23 +85,23 @@
 								</p:inputText>
 	
 								<p:outputLabel value="Órgão/Entidade:" for="orgao" rendered="true" />
-								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains">
+								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains" >
 									<f:selectItem itemLabel="#{responsavel.responsavel.entidades.sigla} - #{responsavel.responsavel.entidades.nome}" itemValue="#{responsavel.responsavel.entidades.idEntidades}"/>
 									<f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 								</p:selectOneMenu>
 	
-								<p:outputLabel value="Nível: "  for="nivel" />
-								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}">
-									<f:selectItem itemLabel="Representante" itemValue="1" />
-									<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
-									<f:selectItem itemLabel="Gestor" itemValue="3" />
-									<f:selectItem itemLabel="Comissão Mista" itemValue="4" />
+								<p:outputLabel value="Nível: "  for="nivel"/>
+								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}" >
+									<f:selectItem itemLabel="Representante" itemValue="1" itemDisabled="#{responsavel.responsavel.nivel ne '1' and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
+									<f:selectItem itemLabel="Autoridade 1" itemValue="2" itemDisabled="#{responsavel.responsavel.nivel ne '2'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
+									<f:selectItem itemLabel="Gestor" itemValue="3" itemDisabled="#{responsavel.responsavel.nivel ne '3'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
+									<f:selectItem itemLabel="Comissão Mista" itemValue="4" itemDisabled="#{responsavel.responsavel.nivel ne '4'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 								</p:selectOneRadio>
 								
 								<p:outputLabel value="Atividade: " for="ativo" />
-								<p:selectOneRadio id="ativo" value="#{responsavel.responsavel.ativo}">
-									<f:selectItem itemLabel="Ativo" itemValue="true" />
-									<f:selectItem itemLabel="Inativo" itemValue="false" />
+								<p:selectOneRadio id="ativo" value="#{responsavel.responsavel.ativo}" >
+									<f:selectItem itemLabel="Ativo" itemValue="true" itemDisabled="#{responsavel.responsavel.ativo ne true and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }" />
+									<f:selectItem itemLabel="Inativo" itemValue="false" itemDisabled="#{responsavel.responsavel.ativo ne false and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 								</p:selectOneRadio>
 								
 								<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" oncomplete="PF('editDialog').hide();" update="form:responsaveis">
