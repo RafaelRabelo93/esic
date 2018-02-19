@@ -1,4 +1,8 @@
-#content {
+#content1 {
+    min-height: 85.5vh;
+}
+
+#content2 {
     min-height: 80.5vh;
 }
 
