@@ -117,7 +117,7 @@ public class NotificacaoEmail implements Job{
 //			System.out.println("Entrou em email");
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
-			email.setAuthentication("mayara.machado","efgh1234");  
+			email.setAuthentication("mayara.machado","abcd1234");  
 //			email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
@@ -140,7 +140,7 @@ public class NotificacaoEmail implements Job{
 		try {  
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
-			email.setAuthentication("mayara.machado","efgh1234");  
+			email.setAuthentication("mayara.machado","abcd1234");  
 //			email.addTo(respDestinatario); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br");  
 			email.setFrom(respRemetente.getEmail()); 
@@ -160,7 +160,7 @@ public class NotificacaoEmail implements Job{
 		try {  
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
-			email.setAuthentication("mayara.machado","efgh1234");  
+			email.setAuthentication("mayara.machado","abcd1234");  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 //			email.addTo(respSec.get(0).getEmail().toString()); //pode ser qualquer email  
 //			email.addCc(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
