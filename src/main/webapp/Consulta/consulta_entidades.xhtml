@@ -25,7 +25,7 @@
 						<p:dataTable id="entidades" widget="orgaos" var="orgaos"
 							emptyMessage="Nao há órgãos"
 							filteredValue="#{entidades.todasEntidades}"
-							sortBy="#{orgaos.idOrgaos}" expandableRowGroups="false"
+							sortBy="#{orgaos.sigla}" expandableRowGroups="false"
 							value="#{entidades.todasEntidades}" resizableColumns="true" liveResize="true"
 							rowStyleClass="#{orgaos.sigla}" paginator="true"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
