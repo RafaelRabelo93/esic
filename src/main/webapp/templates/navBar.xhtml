@@ -54,8 +54,8 @@
 					</h:commandLink>
 				</button>
 				<div class="dropdown-content">
-					<h:commandLink value="Gerir Responsável" action="/Consulta/consulta_responsavel"/>
-					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
+					<h:commandLink value="Consultar Responsáveis" action="/Consulta/consulta_responsavel"/>
+					<h:commandLink value="Cadastrar Responsável" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" action="#{responsavel.redirectCadastroUsuario()}"/>
 				</div>
 			</h:panelGroup>
 			
@@ -72,7 +72,7 @@
 			</button>
 			<div class="dropdown-content">
 				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
-				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}"/>
+				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
 				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
 				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
 			</div>
