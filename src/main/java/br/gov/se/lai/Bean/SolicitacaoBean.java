@@ -88,6 +88,7 @@ public class SolicitacaoBean implements Serializable {
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
+	private CidadaoBean cidadaoBean;
 
 	@PostConstruct
 	public void init() { 
@@ -97,6 +98,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
+		this.cidadaoBean = new CidadaoBean();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
@@ -149,16 +151,19 @@ public class SolicitacaoBean implements Serializable {
 	
 			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
-			page = "/Solicitacao/confirmacao";
+			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
 			page = "/index.xhtml?faces-redirect=true";
 			
+		}finally {
+			solicitacao = new Solicitacao();
+			finalizarSolicitacao();
+			return page;
 		}
-
-		return page;
+		
 	}
 	
 	public void finalizarSolicitacao() {
@@ -169,6 +174,10 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.idAcoes = 0;
 		acoesTemporaria = null;
 		idAcao = 0;
+		formaRecebimento = 0;
+		cidadaoBean.limparCidadaoBean();
+		cidadaoBean = new CidadaoBean();
+		
 	}
 
 	public void gerarDataLimite() {
@@ -230,7 +239,7 @@ public class SolicitacaoBean implements Serializable {
 	
 	public void emailRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEmail) {
-			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+cidadao.getEmail()));
+			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+cidadaoBean.getEmail()));
 		}else {
 			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+solicitacao.getCidadao().getEmail()));
 		}
@@ -238,15 +247,14 @@ public class SolicitacaoBean implements Serializable {
 	
 	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEndereco) {
-			CidadaoBean cidadao = new CidadaoBean();
 			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
-															+ " CEP: "+ cidadao.getCep()+ "\n"
-															+ "Cidade: " + cidadao.getCidade() 
-															+ "  - Estado: " + cidadao.getEstado() + "\n"
-															+ "Logradouro" + cidadao.getEndereco()
-															+ "  - Numero: " + cidadao.getNumero() + "\n"
-															+ "Complemento: " + cidadao.getComplemento() 
-															+ "  - Bairro: "+ cidadao.getBairro()));
+															+ " CEP: "+ cidadaoBean.getCep()+ "\n"
+															+ "Cidade: " + cidadaoBean.getCidade() 
+															+ "  - Estado: " + cidadaoBean.getEstado() + "\n"
+															+ "Logradouro" + cidadaoBean.getEndereco()
+															+ "  - Numero: " + cidadaoBean.getNumero() + "\n"
+															+ "Complemento: " + cidadaoBean.getComplemento() 
+															+ "  - Bairro: "+ cidadaoBean.getBairro()));
 		}else {
 			Cidadao cid = solicitacao.getCidadao();
 			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
@@ -918,6 +926,14 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setMudarEmail(boolean mudarEmail) {
 		this.mudarEmail = mudarEmail;
+	}
+
+	public CidadaoBean getCidadaoBean() {
+		return cidadaoBean;
+	}
+
+	public void setCidadaoBean(CidadaoBean cidadaoBean) {
+		this.cidadaoBean = cidadaoBean;
 	}
 	
 }
