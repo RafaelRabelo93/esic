@@ -88,6 +88,7 @@ public class SolicitacaoBean implements Serializable {
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
+	private CidadaoBean cidadaoBean ;
 
 	@PostConstruct
 	public void init() { 
@@ -97,6 +98,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
+		this.cidadaoBean = new CidadaoBean();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
@@ -238,7 +240,6 @@ public class SolicitacaoBean implements Serializable {
 	
 	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEndereco) {
-			CidadaoBean cidadao = new CidadaoBean();
 			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
 															+ " CEP: "+ cidadao.getCep()+ "\n"
 															+ "Cidade: " + cidadao.getCidade() 
