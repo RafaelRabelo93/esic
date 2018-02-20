@@ -361,13 +361,13 @@
 
 /* Configurações do Step */
 
-/* .ui-steps.dois .ui-steps-item { */
-/*     width: 50%; */
-/* } */
+.dois .ui-steps-item {
+    width: 50%;
+}
 
-/* .ui-steps.tres .ui-steps-item { */
-/*     width: 33%; */
-/* } */
+.tres .ui-steps-item {
+    width: 33%;
+}
  
 .ui-state-highlight {
     text-shadow: none !important;
@@ -376,7 +376,7 @@
 .ui-steps.custom {
 	margin-top: 0;
     margin-bottom: 5vw;
-/*     width: 100%; */
+    width: 100%;
 }
  
 .ui-steps.custom .ui-steps-item .ui-menuitem-link {
@@ -924,6 +924,11 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 	font-variant-caps: all-petite-caps;
 }
 
+.consultaTable.ui-datatable .ui-datatable-header {
+    border: none !important;
+    background: none !important;
+}
+
  /* Cores de prazo */
 td.prazo.verde {
     background-color: #c8f5c8;
@@ -1352,4 +1357,43 @@ i.fa.fa-home {
 
 .noHover{
     pointer-events: none !important;
+}
+
+.togglerBtn {
+    color: white !important;
+    text-decoration: none;
+    background: #155288;
+    padding: .2em .5em;
+    margin-top: 10px;
+    border: 1px solid #155288;
+    border-radius: 2px;
+}
+
+.togglerBtn i {
+	margin-right: .4em;
+    background: #4e7db5;
+    border-radius: 5px;
+}
+
+.ui-commandlink.ui-widget.togglerBtn.ui-state-focus {
+    background: -webkit-gradient(linear, left top, right bottom, from(#276eb3), to(#135186));
+    background: -webkit-linear-gradient(top left, #276eb3, #135186);
+    background: -o-linear-gradient(top left, #276eb3, #135186);
+    background: linear-gradient(#276eb3, #135186);
+    
+    border-color: #135186;
+    box-shadow: none !important;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 95% !important;
+}
+
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: #ff0080;
+  outline: 1px solid slategrey;
 }

@@ -240,24 +240,24 @@ public class SolicitacaoBean implements Serializable {
 	
 	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEndereco) {
-			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
+			mensagem.setTexto(mensagem.getTexto().concat("\n\nEndereço de recebimento: \n"
 															+ " CEP: "+ cidadao.getCep()+ "\n"
 															+ "Cidade: " + cidadao.getCidade() 
-															+ "  - Estado: " + cidadao.getEstado() + "\n"
-															+ "Logradouro" + cidadao.getEndereco()
-															+ "  - Numero: " + cidadao.getNumero() + "\n"
-															+ "Complemento: " + cidadao.getComplemento() 
-															+ "  - Bairro: "+ cidadao.getBairro()));
+															+ "  -  Estado: " + cidadao.getEstado() + "\n"
+															+ "Bairro: "+ cidadao.getBairro() + "\n"
+															+ "Logradouro: " + cidadao.getEndereco()
+															+ "  -  Numero: " + cidadao.getNumero() + "\n"
+															+ "Complemento: " + cidadao.getComplemento()));
 		}else {
 			Cidadao cid = solicitacao.getCidadao();
-			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
-														+ " CEP: "+ cid.getCep()+ "\n"
+			mensagem.setTexto(mensagem.getTexto().concat("\n\nEndereço de recebimento: \n"
+														+ "CEP: "+ cid.getCep()+ "\n"
 														+ "Cidade: " + cid.getCidade() 
-														+ "  - Estado: " + cid.getEstado() + "\n"
-														+ "Logradouro" + cid.getEndereco()
-														+ "  - Numero: " + cid.getNumero() + "\n"
-														+ "Complemento: " + cid.getComplemento() 
-														+ "  - Bairro: "+ cid.getBairro()));
+														+ "  -  Estado: " + cid.getEstado() + "\n"
+														+ "Bairro: "+ cid.getBairro() + "\n"
+														+ "Logradouro: " + cid.getEndereco()
+														+ "  -  Numero: " + cid.getNumero() + "\n"
+														+ "Complemento: " + cid.getComplemento()));
 		}
 	}
 	
