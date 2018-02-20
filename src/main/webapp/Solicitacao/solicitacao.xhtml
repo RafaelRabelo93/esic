@@ -250,6 +250,7 @@
 						<h:outputText value="Enviar" />
 						<i class="fa fa-share-square-o"	style="color: white; padding-left: 3px" />
 						<f:param name="tipo" value="#{solicitacao.solicitacao.tipo}" />
+						<f:setPropertyActionListener value="#{cidadao}" target="#{solicitacao.cidadaoBean}" />
 					</p:commandLink>
 
 				</div>

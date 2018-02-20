@@ -143,6 +143,17 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			return false;
 		}
 	}
+	
+	public void limparCidadaoBean() {
+		setEmail(null);
+		setBairro(null);
+		setCep(null);
+		setComplemento(null);
+		setCidade(null);
+		setEndereco(null);
+		setEstado(null);
+		setNumero(null);
+	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
