@@ -186,6 +186,16 @@
 			<version>1.6.0</version>
 		</dependency>
 
+
+		<!-- JavaMail API 1.6.0 -->
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
 		<!-- Md5 » 2.2.1 -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
