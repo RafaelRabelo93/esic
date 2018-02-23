@@ -41,7 +41,7 @@
 					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
 					    </f:facet>
 
-						<p:column ariaHeaderText="Icones" width="20" style="text-align:center" rendered="false">
+						<p:column ariaHeaderText="Icones" width="20" style="text-align:center" toggleable="false">
 							<h:panelGroup rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
 							<h:panelGroup rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
 							<h:panelGroup rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup> 
@@ -62,7 +62,7 @@
 							<h:outputText value="#{slt.titulo}" />
 						</p:column>
 
-						<p:column headerText="Tipo" width="120" sortBy="#{slt.tipo}">
+						<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}">
 							<h:outputText value="#{slt.tipo}" />
 						</p:column>
 						
@@ -95,7 +95,7 @@
 							</h:outputText>
 						</p:column>
 
-						<p:column style="width:32px; text-align: center" >
+						<p:column style="width:32px; text-align: center" toggleable="false" >
 							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 								<p:ajax listener="#{solicitacao.popularMensagens}"/>
