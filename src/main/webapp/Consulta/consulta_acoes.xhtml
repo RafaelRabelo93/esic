@@ -17,7 +17,7 @@
 			
 			<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
 				
-				<h:form id="form" styleClass="ficha" style="padding-top: 0;">
+				<h:form id="form" styleClass="ficha" style="padding-top: 0;"  >
 				
 				<h:outputText value="Ações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"/>
 
@@ -28,8 +28,8 @@
 						<h:outputText value="Nova Ação" />
 					</p:commandLink>
 					
-					<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true"
-					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
+					<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true"
+					rowsPerPageTemplate="5,10,15" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
 						
 						<f:facet name="header">
 					        Ações Solicitadas
@@ -44,13 +44,13 @@
 						</p:column>
 						
 						<p:column headerText="Aceitar" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="" >
+							<p:commandLink class="botaoLinkIcon" action="#{acoes.autenticaAcao(ac)}" update="form dialog:info" onclick="" >
 								<i class="fa fa-check" />
 							</p:commandLink>
 						</p:column>
 						
 						<p:column headerText="Excluir" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
+							<p:commandLink class="botaoLinkIcon" action="#{acoes.remove()}" update="form dialog:info">
 								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
 								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
 								<p:confirm/>
@@ -59,7 +59,7 @@
 					
 					</p:dataTable>
 					
-					<p:dataTable id="acoes"  emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh"
+					<p:dataTable id="acoes"  emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoesVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh"
 					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 						
 						<f:facet name="header">
@@ -83,7 +83,7 @@
 						
 					</p:dataTable>
 					
-					<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
+					<p:dataTable id="acoesInativas" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" emptyMessage="Não há ações sem ligação." var="ac" value="#{acoes.acoesNaoVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
 					paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 						
 						<f:facet name="header">

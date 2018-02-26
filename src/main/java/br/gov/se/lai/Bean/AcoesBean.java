@@ -28,6 +28,9 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private int idAcao;
 	public static List<Acoes> acoes;
 	private String titulo;
+	private List<Acoes>  acoesPendentes;
+	private List<Acoes>  acoesNaoVinculadas;
+	private List<Acoes>  acoesVinculadas;
 	
 	
 	@PostConstruct
@@ -35,6 +38,10 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		acoes = new ArrayList<Acoes>(AcoesDAO.list());		
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
+		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
+		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+
 	}
 	
 	public static void carregarLista() {
@@ -63,10 +70,10 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 	}
 	
-	public void delete() {
+	public void remove() {
 		if(verificaPermissao() ) {
-			int ind = acoes.indexOf(acao);
-			acoes.remove(ind);
+			acoes.remove(acao);
+			getAcoesPendentes().remove(acao);
 			AcoesDAO.delete(acao);
 			acao = new Acoes();
 		}
@@ -86,15 +93,16 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return "cad_competencias2";
 	}
 	
-	public List<Acoes> listarAcoesPendentes(){
-		List<Acoes> acoesPendentes = AcoesDAO.listPorStatus("Pendente");
-		return acoesPendentes;
+	public void listarAcoesPendentes(){
+		acoesPendentes = AcoesDAO.listPorStatus("Pendente");
 	}
 
-	public List<Acoes> listarAcoesCadastradas(){
-		List<Acoes> acoesCadastradas = AcoesDAO.listPorStatus("Não-vinculada");
-		acoesCadastradas.addAll(AcoesDAO.listPorStatus("Vinculada"));
-		return acoesCadastradas;
+	public void listarAcoesNaoVinculadas(){
+		acoesNaoVinculadas = AcoesDAO.listPorStatus("Não-vinculada");
+	}
+
+	public void listarAcoesVinculadas(){
+		acoesVinculadas = AcoesDAO.listPorStatus("Vinculada");
 	}
 	
 	public List<Acoes> acaoLigadaEntidadeAtiva() {
@@ -120,6 +128,8 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	public void autenticaAcao(Acoes acao) {
 		acao.setStatus("Não-vinculada");
 		AcoesDAO.saveOrUpdate(acao);
+		getAcoesPendentes().remove(acao);
+		getAcoesNaoVinculadas().add(acao);
 	}
 	
 
@@ -184,5 +194,30 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			this.titulo = titulo;
 		}
 
+		public List<Acoes> getAcoesPendentes() {
+			return acoesPendentes;
+		}
+
+		public void setAcoesPendentes(List<Acoes> acoesPendentes) {
+			this.acoesPendentes = acoesPendentes;
+		}
+
+		public List<Acoes> getAcoesNaoVinculadas() {
+			return acoesNaoVinculadas;
+		}
+
+		public void setAcoesNaoVinculadas(List<Acoes> acoesNaoVinculadas) {
+			this.acoesNaoVinculadas = acoesNaoVinculadas;
+		}
+
+		public List<Acoes> getAcoesVinculadas() {
+			return acoesVinculadas;
+		}
+
+		public void setAcoesVinculadas(List<Acoes> acoesVinculadas) {
+			this.acoesVinculadas = acoesVinculadas;
+		}
+
+		
 
 }

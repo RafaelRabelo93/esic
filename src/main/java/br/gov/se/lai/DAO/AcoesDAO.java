@@ -4,9 +4,11 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
@@ -57,9 +59,16 @@ public class AcoesDAO {
 		return em.createNativeQuery("SELECT * FROM esic.acoes", Acoes.class).getResultList();
     }  
 
-	@SuppressWarnings("unchecked")
-	public static List<Acoes> listPorStatus (String status) {
-		return (List<Acoes>) Consultas.buscaPersonalizada("FROM Acoes as acoes WHERE acoes.status = "+status,em);
-	}  
+
+    @SuppressWarnings("unchecked")
+	public static List<Acoes> listPorStatus(String status){
+    	Query query = em.createQuery("FROM Acoes as acoes WHERE acoes.status = '"+status+"'");
+    	List<Acoes> results = query.getResultList();
+   		
+    	return results;
+    	
+    	
+    }
+
 	
 }
