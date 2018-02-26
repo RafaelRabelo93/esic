@@ -255,16 +255,17 @@ public class SolicitacaoBean implements Serializable {
 															+ "  - Numero: " + cidadaoBean.getNumero() + "\n"
 															+ "Complemento: " + cidadaoBean.getComplemento() 
 															+ "  - Bairro: "+ cidadaoBean.getBairro()));
+
 		}else {
 			Cidadao cid = solicitacao.getCidadao();
-			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
-														+ " CEP: "+ cid.getCep()+ "\n"
+			mensagem.setTexto(mensagem.getTexto().concat("\n\nEndereço de recebimento: \n"
+														+ "CEP: "+ cid.getCep()+ "\n"
 														+ "Cidade: " + cid.getCidade() 
-														+ "  - Estado: " + cid.getEstado() + "\n"
-														+ "Logradouro" + cid.getEndereco()
-														+ "  - Numero: " + cid.getNumero() + "\n"
-														+ "Complemento: " + cid.getComplemento() 
-														+ "  - Bairro: "+ cid.getBairro()));
+														+ "  -  Estado: " + cid.getEstado() + "\n"
+														+ "Bairro: "+ cid.getBairro() + "\n"
+														+ "Logradouro: " + cid.getEndereco()
+														+ "  -  Numero: " + cid.getNumero() + "\n"
+														+ "Complemento: " + cid.getComplemento()));
 		}
 	}
 	
