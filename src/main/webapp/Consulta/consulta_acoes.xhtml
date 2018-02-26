@@ -28,9 +28,44 @@
 						<h:outputText value="Nova Ação" />
 					</p:commandLink>
 					
-					<p:dataTable id="acoes" emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
-					paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true"
+					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
+						
+						<f:facet name="header">
+					        Ações Solicitadas
+					    </f:facet>
+						
+						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+							<h:outputText value="#{ac.titulo}" />
+						</p:column>
 	
+						<p:column headerText="Descrição">
+							<h:outputText value="#{ac.descricao}" />
+						</p:column>
+						
+						<p:column headerText="Aceitar" width="50" style="text-align: center">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="" >
+								<i class="fa fa-check" />
+							</p:commandLink>
+						</p:column>
+						
+						<p:column headerText="Excluir" width="50" style="text-align: center">
+							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
+								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
+								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+								<p:confirm/>
+							</p:commandLink>
+						</p:column>
+					
+					</p:dataTable>
+					
+					<p:dataTable id="acoes"  emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh"
+					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						
+						<f:facet name="header">
+					        Ações Ativas
+					    </f:facet>
+						
 						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
 							<h:outputText value="#{ac.titulo}" />
 						</p:column>
@@ -46,17 +81,34 @@
 							</p:commandLink>
 						</p:column>
 						
-						<p:column headerText="Excluir" width="50" style="text-align: center" rendered="false">
-							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
-								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-								<p:confirm/>
-							</p:commandLink>
+					</p:dataTable>
+					
+					<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
+					paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						
+						<f:facet name="header">
+					        Ações Inativas
+					    </f:facet>
+						
+						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+							<h:outputText value="#{ac.titulo}" />
+						</p:column>
+	
+						<p:column headerText="Descrição">
+							<h:outputText value="#{ac.descricao}" />
 						</p:column>
 						
+						<p:column headerText="Editar" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
+								<i class="fa fa-pencil-square-o" />
+								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+							</p:commandLink>
+						</p:column>
+					
 					</p:dataTable>
 					
 				</h:form>
+									
 									
 					<!-- Dialog Editar Ação -->
 					<p:dialog widgetVar="editDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
