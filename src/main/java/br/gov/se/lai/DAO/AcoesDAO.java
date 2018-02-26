@@ -56,5 +56,10 @@ public class AcoesDAO {
 	public static List<Acoes> list() {
 		return em.createNativeQuery("SELECT * FROM esic.acoes", Acoes.class).getResultList();
     }  
+
+	@SuppressWarnings("unchecked")
+	public static List<Acoes> listPorStatus (String status) {
+		return (List<Acoes>) Consultas.buscaPersonalizada("FROM Acoes as acoes WHERE acoes.status = "+status,em);
+	}  
 	
 }

@@ -585,6 +585,16 @@ public class UsuarioBean implements Serializable {
 		List<String> nicks = UsuarioDAO.completeNick(prefix);
 		return nicks;
 	}
+	
+	public boolean verificaGestor() {
+		return usuario.getPerfil()==(short)5;
+	}
+	public boolean verificaResponsavelCidadaoPerfil() {
+		return usuario.getPerfil()==(short)4;
+	}
+	public boolean verificaResponsavel() {
+		return usuario.getPerfil()==(short)2;
+	}
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

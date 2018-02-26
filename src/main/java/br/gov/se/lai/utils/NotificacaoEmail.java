@@ -19,6 +19,7 @@ import br.gov.se.lai.Bean.ResponsavelBean;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
+import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
@@ -158,10 +159,10 @@ public class NotificacaoEmail implements Job{
 		}
 	}
 
-	public static void enviarEmailAutoridades(Solicitacao solicitacao, String titulo, String mensagem) {
+	public static void enviarEmailAutoridades(int idEntidade, String titulo, String mensagem) {
 		Email email = new SimpleEmail();
-		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 3);
-		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 2);
+		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidadeNivel(idEntidade, 3);
+		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidadeNivel(idEntidade, 2);
 		
 		try {  
 			email.setDebug(true);  
@@ -191,6 +192,19 @@ public class NotificacaoEmail implements Job{
 		try {
 			enviarEmail(email, "Redefinição de senha", mensagem);
 
+		} catch (EmailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void enviarEmailRequisicaoResponsavel(String nickUser, int idEntidade, String emailUser, String email, String mensagem) {
+		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cadastro_responsavel.xhtml?user="+nickUser
+																								+"&identidade="+idEntidade
+																								+"&mail="+emailUser;
+		try {
+			enviarEmail(email, "Requisição de responsável", mensagem);
+			
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

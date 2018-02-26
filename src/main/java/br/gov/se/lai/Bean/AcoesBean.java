@@ -14,6 +14,7 @@ import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
 
 
@@ -50,7 +51,13 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	
 	public void save() {
 		if(verificaPermissao() ) {
-			AcoesDAO.saveOrUpdate(acao);
+			if(usuarioBean.verificaGestor()) {
+				acao.setStatus("Não-vinculada");
+				AcoesDAO.saveOrUpdate(acao);
+			}else if(usuarioBean.verificaResponsavel()){
+				acao.setStatus("Pendente");
+				AcoesDAO.saveOrUpdate(acao);
+			}
 			acoes.add(acao);
 		}
 		acao = new Acoes();
@@ -79,7 +86,18 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return "cad_competencias2";
 	}
 	
-	public List<Acoes> AcaoLigadaEntidadeAtiva() {
+	public List<Acoes> listarAcoesPendentes(){
+		List<Acoes> acoesPendentes = AcoesDAO.listPorStatus("Pendente");
+		return acoesPendentes;
+	}
+
+	public List<Acoes> listarAcoesCadastradas(){
+		List<Acoes> acoesCadastradas = AcoesDAO.listPorStatus("Não-vinculada");
+		acoesCadastradas.addAll(AcoesDAO.listPorStatus("Vinculada"));
+		return acoesCadastradas;
+	}
+	
+	public List<Acoes> acaoLigadaEntidadeAtiva() {
 
 		Iterator<Acoes> a = acoes.iterator();
 		while (a.hasNext()) {
@@ -99,10 +117,15 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return acoes;
 	}
 	
+	public void autenticaAcao(Acoes acao) {
+		acao.setStatus("Não-vinculada");
+		AcoesDAO.saveOrUpdate(acao);
+	}
+	
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() != 4 || usuarioBean.getUsuario().getPerfil() != 5 || usuarioBean.getUsuario().getPerfil() != 6 ) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil()) {
 			return true;
 		}else {
 			return false;
@@ -118,6 +141,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		return "/Cadastro/cad_acoes.xhtml?faces-redirect=true";
 	}
+	
 	
 	
 	

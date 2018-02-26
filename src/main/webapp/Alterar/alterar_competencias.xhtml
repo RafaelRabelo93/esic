@@ -37,12 +37,12 @@
                                     <h:outputText value="#{comp.acoes.titulo}" />
                                 </p:column>
                                 
-                                <p:column headerText="Excluir" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '2' }">
-									<p:commandLink class="botaoLinkIcon" action="#{competencias.delete}" update="alterar_competencias:table">
-										<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-										<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-									</p:commandLink>
-								</p:column>
+<!--                                 <p:column headerText="Excluir" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' }"> -->
+<!-- 									<p:commandLink class="botaoLinkIcon" action="#{competencias.delete}" update="alterar_competencias:table"> -->
+<!-- 										<i class="fa fa-trash" style="color: white; padding-left: 3px" /> -->
+<!-- 										<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" /> -->
+<!-- 									</p:commandLink> -->
+<!-- 								</p:column> -->
                                 
                                 <p:rowExpansion>
 							        <p:panelGrid columns="2" columnClasses="label,value" style="border: none">

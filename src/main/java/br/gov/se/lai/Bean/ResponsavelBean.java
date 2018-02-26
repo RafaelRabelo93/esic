@@ -370,25 +370,23 @@ public class ResponsavelBean implements Serializable{
 						  + "\n\n >> Dados do usuário:"
 						  + "\n\n Usuario: "+getNick()
 						  +"\n Email: "+getEmail()
-						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla();
-		int idDestinatario= responsavelDisponivel(3, getIdEntidade());
+						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
+						  + "\n\n Clique aqui: ";
+		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 		if(idDestinatario != -1) {
 			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-			try {
-				NotificacaoEmail.enviarEmail(destinatario, "Solicitação para cadastro de novo representante. ", mensagem);
-			} catch (EmailException e) {
-				e.printStackTrace();
-			}
+			NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
 			return "/index.xhtml?faces-redirect=true";
 		}else {
-			//find gestor sistema e enviar email
-			try {
-				NotificacaoEmail.enviarEmail("gestor.sistema@email.com", "Solicitação para cadastro de novo representante. ", mensagem);
-			} catch (EmailException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+			if(idDestinatario != -1) {
+				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
+				return "/index.xhtml?faces-redirect=true";
+			}else {
+				//retorno pra onde?
+				return "/index.xhtml?faces-redirect=true";
 			}
-			return "/index.xhtml?faces-redirect=true";
 		}
 	}
 	

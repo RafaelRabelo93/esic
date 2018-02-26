@@ -74,6 +74,20 @@ public class UsuarioDAO {
     	}
     	
     }
+
+    @SuppressWarnings("unchecked")
+    public static List<Usuario> listarGestoresSistema(){
+    	Query query = em.createQuery("FROM Usuario as usu WHERE usu.perfil = 5");
+    	List<Usuario> results = query.getResultList();
+    	
+    	if (results.isEmpty()) {
+    		return null;
+    	}else {    		
+    		return results;
+    	}
+    	
+    }
+    
     @SuppressWarnings("unchecked")
     public static Usuario buscarSessionIds(String sessionId){
     	Query query = em.createQuery("FROM Usuario as usu WHERE usu.sessionId LIKE :sessionIdParam");
