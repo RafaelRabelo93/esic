@@ -16,10 +16,16 @@
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
 				<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3' }" >
-
-					<h:outputText value="Responsáveis" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
 					
 					<h:form id="form" styleClass="ficha">
+					
+					<h:outputText value="Responsáveis" style="color:#1a568c; font-size:25px;" />
+					
+						<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" styleClass="botaoLink" style="margin-bottom: 1vh">
+							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+							<h:outputText value="Novo Responsável" />
+						</h:commandLink>
+				
 						<p:dataTable id="responsaveis" var="resp"
 						emptyMessage="Não há entidades"
 						filteredValue="#{responsavel.todosResponsaveis}"
@@ -67,14 +73,10 @@
 						</p:column>
 
 					</p:dataTable>
-
-				<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" styleClass="botaoLink">
-					<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-					<h:outputText value="Novo Responsável" />
-				</h:commandLink>
 					
 					</h:form>
 					
+					<!-- Dialog Editar Responsável -->
 					<p:dialog widgetVar="editDialog" header="Editar Responsável" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"  modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 						<h:form id="dialog" styleClass="dialog">
 							<p:outputPanel id="entidadeEdit" styleClass="box" style="display:flex; flex-flow: column;  margin: 0; border: none; padding: 0">
@@ -96,6 +98,7 @@
 									<f:selectItem itemLabel="Autoridade 1" itemValue="2" itemDisabled="#{responsavel.responsavel.nivel ne '2'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 									<f:selectItem itemLabel="Gestor" itemValue="3" itemDisabled="#{responsavel.responsavel.nivel ne '3'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 									<f:selectItem itemLabel="Comissão Mista" itemValue="4" itemDisabled="#{responsavel.responsavel.nivel ne '4'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
+									<f:selectItem itemLabel="Gestor do Sistema" itemValue="5" itemDisabled="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel lt '5'}"/>
 								</p:selectOneRadio>
 								
 								<p:outputLabel value="Atividade: " for="ativo" />
