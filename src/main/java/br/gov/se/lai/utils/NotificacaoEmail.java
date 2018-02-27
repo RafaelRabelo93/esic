@@ -122,7 +122,7 @@ public class NotificacaoEmail implements Job{
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
-			email.setSmtpPort(465);
+//			email.setSmtpPort(465);
 //			email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
@@ -147,7 +147,7 @@ public class NotificacaoEmail implements Job{
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
-			email.setSmtpPort(465);
+//			email.setSmtpPort(465);
 //			email.addTo(respDestinatario); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br");  
 			email.setFrom(respRemetente.getEmail()); 
@@ -168,7 +168,7 @@ public class NotificacaoEmail implements Job{
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");
 			email.setAuthentication("mayara.machado","abcd1234");  
-			email.setSmtpPort(465);
+//			email.setSmtpPort(465);
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 //			email.addTo(respSec.get(0).getEmail().toString()); //pode ser qualquer email  
 //			email.addCc(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
@@ -198,9 +198,11 @@ public class NotificacaoEmail implements Job{
 		}
 	}
 
-	public static void enviarEmailRequisicaoResponsavel(String nickUser, int idEntidade, String emailUser, String email, String mensagem) {
-		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cadastro_responsavel.xhtml?user="+nickUser
+	public static void enviarEmailRequisicaoResponsavel(int idUser, int idEntidade, String emailUser,String hashcode, String email, String mensagem) {
+		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cad_responsavel.xhtml?"+hashcode.substring(0, hashcode.length()/2)
+																								+"&user="+idUser
 																								+"&identidade="+idEntidade
+																								+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())
 																								+"&mail="+emailUser;
 		try {
 			enviarEmail(email, "Requisição de responsável", mensagem);
@@ -221,7 +223,7 @@ public class NotificacaoEmail implements Job{
 		email.setDebug(true);  
 		email.setHostName("smtp.expresso.se.gov.br");  
 		email.setAuthentication("mayara.machado","abcd1234");  
-		email.setSmtpPort(465);
+//		email.setSmtpPort(465);
 		email.addTo("mayara.machado@cge.se.gov.br"); 
 //		email.addCc("michael.mendonca@cge.se.gov.br");
 //		email.addTo(destinatario);  

@@ -50,6 +50,7 @@ public class ResponsavelBean implements Serializable{
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 		perfilGestorGeral();
+		pegarParamURL();
 		this.responsavel = new Responsavel();
 		todosResponsaveis = ResponsavelDAO.list();
 		listRespDaEntidade = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
@@ -282,6 +283,11 @@ public class ResponsavelBean implements Serializable{
 	
 
 	public void perfilGestorGeral() {
+		try {
+			pegarParamURL();
+		}catch(NullPointerException e){
+		}
+		
 		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
@@ -366,28 +372,44 @@ public class ResponsavelBean implements Serializable{
 	
 	public String requisitarCadastroResponsavel() {
 		Entidades ent = pegarEntidade();
+		String hashcode="";
 		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
 						  + "\n\n >> Dados do usuário:"
-						  + "\n\n Usuario: "+getNick()
+						  + "\n\n Usuario: "+usuario.getNome()
+						  + "\n\n Nick: "+getNick()
 						  +"\n Email: "+getEmail()
 						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
 						  + "\n\n Clique aqui: ";
 		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 		if(idDestinatario != -1) {
 			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-			NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
+			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario, mensagem);
 			return "/index.xhtml?faces-redirect=true";
 		}else {
 			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
 			if(idDestinatario != -1) {
 				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-				NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario, mensagem);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
 				//retorno pra onde?
 				return "/index.xhtml?faces-redirect=true";
 			}
 		}
+	}
+	
+	public void pegarParamURL() {
+		this.responsavel = new Responsavel();
+		 this.responsavel.setEmail( FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("email"));
+		 idEntidade = (Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("identidade")));
+		 nick = (UsuarioDAO.findUsuario(Integer.parseInt((FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				 .get("user"))))).getNick();
+	}
+	
+	public List<Entidades> entidadesSolicitacaoResponsavel(){
+		return EntidadesDAO.listAtivas();
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
