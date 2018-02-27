@@ -92,8 +92,6 @@ public class  ResponsavelDAO {
     	return results;
     }
 
-    
-
     @SuppressWarnings("unchecked")
 	public static List<Responsavel> list() {		
         return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();

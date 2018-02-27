@@ -151,7 +151,7 @@
 	
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" 
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" 
 							type="submit" oncomplete="PF('dlg2').hide();" update="dialog:dlg2">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
@@ -178,7 +178,7 @@
 								<h:outputText id="display" />
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" actionListener=" " style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:dlg2">
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:dlg2">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
 							</p:commandLink>

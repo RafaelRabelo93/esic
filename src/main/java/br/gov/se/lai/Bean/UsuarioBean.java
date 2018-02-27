@@ -162,8 +162,14 @@ public class UsuarioBean implements Serializable {
 			usuarioNovo.setSenha(Criptografia.Criptografar(senha));
 			usuarioNovo.setPerfil((short) 1);
 			if (!verificaExistenciaNick(usuarioNovo.getNick())) {
-				UsuarioDAO.saveOrUpdate(usuarioNovo);
-				return "/index.xhtml?faces-redirect=true";
+				if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+					return "/index.xhtml?faces-redirect=true";
+				}else {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Não é possível cadastrar usuário.", "Preencha os campos vazios."));
+					usuarioNovo = new Usuario();
+					return null;
+				}
 				
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -584,6 +590,16 @@ public class UsuarioBean implements Serializable {
 	public static List<String> completeNick (String prefix) {
 		List<String> nicks = UsuarioDAO.completeNick(prefix);
 		return nicks;
+	}
+	
+	public boolean verificaGestor() {
+		return usuario.getPerfil()==(short)5;
+	}
+	public boolean verificaResponsavelCidadaoPerfil() {
+		return usuario.getPerfil()==(short)4;
+	}
+	public boolean verificaResponsavel() {
+		return usuario.getPerfil()==(short)2;
 	}
 
 	// GETTERS E SETTERS

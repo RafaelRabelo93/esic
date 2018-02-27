@@ -6,16 +6,20 @@ import java.io.File;
 
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailConstants;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.sun.mail.imap.protocol.MailboxInfo;
+
 import br.gov.se.lai.Bean.ResponsavelBean;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
+import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
@@ -24,7 +28,7 @@ import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 
 public class NotificacaoEmail implements Job{
-
+	
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -47,7 +51,7 @@ public class NotificacaoEmail implements Job{
 			enviarEmail(destinatario, titulo, mensagem);
 			
 		} catch (EmailException e) {  
-			
+			System.out.println(e.getCause());
 			
 		}   
 		
@@ -108,7 +112,7 @@ public class NotificacaoEmail implements Job{
 		return envio;
 	}
 
-
+	
 	public static void enviarEmailAutomatico(Solicitacao solicitacao,String titulo, String mensagem) {
 		Email email = new SimpleEmail();
 		
@@ -118,6 +122,7 @@ public class NotificacaoEmail implements Job{
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setSmtpPort(465);
 //			email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
@@ -125,7 +130,8 @@ public class NotificacaoEmail implements Job{
 			email.setMsg(mensagem);  
 			email.send();  
 		} catch (EmailException e) {  
-//			System.out.println(e.getMessage());  
+			System.out.println(e.getMessage());  
+			System.out.println(email.getSocketConnectionTimeout());  
 		}catch (NullPointerException e) {
 //			System.out.println(e.getMessage());  
 		}catch (ArrayIndexOutOfBoundsException e) {
@@ -141,6 +147,7 @@ public class NotificacaoEmail implements Job{
 			email.setDebug(true);  
 			email.setHostName("smtp.expresso.se.gov.br");  
 			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setSmtpPort(465);
 //			email.addTo(respDestinatario); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br");  
 			email.setFrom(respRemetente.getEmail()); 
@@ -152,15 +159,16 @@ public class NotificacaoEmail implements Job{
 		}
 	}
 
-	public static void enviarEmailAutoridades(Solicitacao solicitacao, String titulo, String mensagem) {
+	public static void enviarEmailAutoridades(int idEntidade, String titulo, String mensagem) {
 		Email email = new SimpleEmail();
-		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 3);
-		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidadeNivel(solicitacao.getEntidades().getIdEntidades(), 2);
+		List<Responsavel> respSec = ResponsavelDAO.findResponsavelEntidadeNivel(idEntidade, 3);
+		List<Responsavel> respDir = ResponsavelDAO.findResponsavelEntidadeNivel(idEntidade, 2);
 		
 		try {  
 			email.setDebug(true);  
-			email.setHostName("smtp.expresso.se.gov.br");  
+			email.setHostName("smtp.expresso.se.gov.br");
 			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setSmtpPort(465);
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 //			email.addTo(respSec.get(0).getEmail().toString()); //pode ser qualquer email  
 //			email.addCc(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
@@ -189,6 +197,19 @@ public class NotificacaoEmail implements Job{
 			e.printStackTrace();
 		}
 	}
+
+	public static void enviarEmailRequisicaoResponsavel(String nickUser, int idEntidade, String emailUser, String email, String mensagem) {
+		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cadastro_responsavel.xhtml?user="+nickUser
+																								+"&identidade="+idEntidade
+																								+"&mail="+emailUser;
+		try {
+			enviarEmail(email, "Requisição de responsável", mensagem);
+			
+		} catch (EmailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	//+++++++++++++++++++ Email simples
@@ -200,6 +221,7 @@ public class NotificacaoEmail implements Job{
 		email.setDebug(true);  
 		email.setHostName("smtp.expresso.se.gov.br");  
 		email.setAuthentication("mayara.machado","abcd1234");  
+		email.setSmtpPort(465);
 		email.addTo("mayara.machado@cge.se.gov.br"); 
 //		email.addCc("michael.mendonca@cge.se.gov.br");
 //		email.addTo(destinatario);  

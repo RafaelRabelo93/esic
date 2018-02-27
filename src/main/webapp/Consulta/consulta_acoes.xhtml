@@ -11,161 +11,273 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-		
-			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
-			
-			<h:panelGroup styleClass="ficha" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
-				
-				<h:form id="form" styleClass="ficha" style="padding-top: 0;">
-				
-				<h:outputText value="Ações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"/>
 
-					<p:commandLink class="botaoLink" update="dialog2:info2" id="novaAcao" onclick="PF('newDialog').show();" style="margin-bottom: 1vh;"
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:panelGroup styleClass="ficha"
+				rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
+
+				<h:form id="form" styleClass="ficha" style="padding-top: 0;">
+
+					<h:outputText value="Ações"
+						style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" />
+
+					<p:commandLink class="botaoLink" update="dialog2:info2"
+						id="novaAcao" onclick="PF('newDialog').show();"
+						style="margin-bottom: 1vh;"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}"
 						rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 						<h:outputText value="Nova Ação" />
 					</p:commandLink>
-					
-					<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true"
-					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
-						
+
+					<p:dataTable id="novasAcoes"
+						emptyMessage="Não há novas solicitações de ações." var="ac"
+						value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}"
+						sortBy="#{ac.titulo}" paginator="true"
+						rowsPerPageTemplate="5,10,15"
+						rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						style="margin-bottom: 3vh">
+
 						<f:facet name="header">
 					        Ações Solicitadas
 					    </f:facet>
-						
+
 						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
 							<h:outputText value="#{ac.titulo}" />
 						</p:column>
-	
+
 						<p:column headerText="Descrição">
 							<h:outputText value="#{ac.descricao}" />
 						</p:column>
-						
-						<p:column headerText="Aceitar" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="" >
+
+						<p:column headerText="Aceitar" width="50"
+							style="text-align: center">
+							<p:commandLink class="botaoLinkIcon"
+								action="#{acoes.autenticaAcao(ac)}" update="form dialog:info"
+								onclick="">
 								<i class="fa fa-check" />
 							</p:commandLink>
 						</p:column>
-						
-						<p:column headerText="Excluir" width="50" style="text-align: center">
-							<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:acoes">
-								<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-								<p:confirm/>
+
+						<p:column headerText="Rejeitar" width="50"
+							style="text-align: center">
+							<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}"
+								update="form dialog:info" onclick="">
+								<i class="fa fa-check" />
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Sim" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="Não" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									<h:panelGroup styleClass="column"
+										style="align-items: center;; padding: 1em;">
+										<i class="fa fa-exclamation-triangle fa-3x"
+											style="margin-bottom: 5px; color: crimson" />
+										<p style="margin: 0">Tem certeza que deseja deletar esta
+											Ação?</p>
+										<p style="margin: 0; font-weight: bold">Esse processo é
+											irreversível.</p>
+									</h:panelGroup>
+									<h:panelGroup styleClass="inline"
+										style="justify-content: center; border-top: 1px solid gray">
+										<p:commandButton value="Sim" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="Não" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</h:panelGroup>
+								</p:confirmDialog>
+
 							</p:commandLink>
 						</p:column>
-					
+
 					</p:dataTable>
-					
-					<p:dataTable id="acoes"  emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh"
-					rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-						
+
+					<p:dataTable id="acoes" emptyMessage="Não há ações cadastradas."
+						var="ac" value="#{acoes.acoesVinculadas}" rowKey="#{acoes.idAcao}"
+						sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh"
+						rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
 						<f:facet name="header">
 					        Ações Ativas
 					    </f:facet>
-						
+
 						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
 							<h:outputText value="#{ac.titulo}" />
 						</p:column>
-	
+
 						<p:column headerText="Descrição">
 							<h:outputText value="#{ac.descricao}" />
 						</p:column>
-						
-						<p:column headerText="Editar" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
+
+						<p:column headerText="Editar" width="50"
+							style="text-align: center"
+							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info"
+								onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+								<f:setPropertyActionListener value="#{ac}"
+									target="#{acoes.acao}" />
 							</p:commandLink>
 						</p:column>
-						
+
 					</p:dataTable>
-					
-					<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" value="#{acoes.acoes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}"
-					paginator="true" rowsPerPageTemplate="5,10,15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-						
+
+					<p:dataTable id="acoesInativas"
+						rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"
+						emptyMessage="Não há ações sem ligação." var="ac"
+						value="#{acoes.acoesNaoVinculadas}" rowKey="#{acoes.idAcao}"
+						sortBy="#{ac.titulo}" paginator="true"
+						rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
 						<f:facet name="header">
 					        Ações Inativas
 					    </f:facet>
-						
+
 						<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
 							<h:outputText value="#{ac.titulo}" />
 						</p:column>
-	
+
 						<p:column headerText="Descrição">
 							<h:outputText value="#{ac.descricao}" />
 						</p:column>
-						
-						<p:column headerText="Editar" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-							<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
+
+						<p:column headerText="Editar" width="50"
+							style="text-align: center"
+							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:commandLink class="botaoLinkIcon" update="dialog:info"
+								onclick="PF('editDialog').show();">
 								<i class="fa fa-pencil-square-o" />
-								<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+								<f:setPropertyActionListener value="#{ac}"
+									target="#{acoes.acao}" />
 							</p:commandLink>
 						</p:column>
-					
+
+						<p:column headerText="Excluir" width="50"
+							style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}"
+								update="form dialog:info" onclick="">
+								<i class="fa fa-trash" />
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Sim" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="Não" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									<h:panelGroup styleClass="column"
+										style="align-items: center;; padding: 1em;">
+										<i class="fa fa-exclamation-triangle fa-3x"
+											style="margin-bottom: 5px; color: crimson" />
+										<p style="margin: 0">Tem certeza que deseja deletar esta
+											Ação?</p>
+										<p style="margin: 0; font-weight: bold">Esse processo é
+											irreversível.</p>
+									</h:panelGroup>
+									<h:panelGroup styleClass="inline"
+										style="justify-content: center; border-top: 1px solid gray">
+										<p:commandButton value="Sim" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="Não" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</h:panelGroup>
+								</p:confirmDialog>
+
+							</p:commandLink>
+						</p:column>
+
 					</p:dataTable>
-					
+
 				</h:form>
-									
-									
-					<!-- Dialog Editar Ação -->
-					<p:dialog widgetVar="editDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-						<h:form id="dialog">
+
+
+				<!-- Dialog Editar Ação -->
+				<p:dialog widgetVar="editDialog" modal="true" showHeader="true"
+					fitViewport="true" showEffect="fade" hideEffect="fade"
+					resizable="false" maximizable="false" draggable="false"
+					closeOnEscape="true">
+					<h:form id="dialog">
 						<p:outputPanel id="acaoEdit" styleClass="column">
-							<p:panelGrid id="info" columns="1" style="border: none; width: 100%;">
+							<p:panelGrid id="info" columns="1"
+								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Editar Ação" styleClass="tituloBox" style="padding-bottom: 2vw;" />
+									<h:outputText value="Editar Ação" styleClass="tituloBox"
+										style="padding-bottom: 2vw;" />
 								</f:facet>
-		
+
 								<p:outputLabel value="Título: " for="titulo" />
-								<p:inputText id="titulo" required="true" size="60" value="#{acoes.acao.titulo}" />
-		
+								<p:inputText id="titulo" required="true" size="60"
+									value="#{acoes.acao.titulo}" />
+
 								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{acoes.acao.descricao}" />
-		
-								<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
+								<p:inputTextarea id="descricao" rows="10" cols="62"
+									autoResize="true" required="true"
+									value="#{acoes.acao.descricao}" />
+
+								<h:outputText
+									value="Os campos marcados com * são de preenchimento obrigatório."
+									style="font-size:14px; color:gray" />
 							</p:panelGrid>
-							
-							<p:commandLink class="botaoLink" action="#{acoes.save}" id="editarAcoes" oncomplete="PF('editDialog').hide();" update="form:acoes"
+
+							<p:commandLink class="botaoLink" action="#{acoes.save}"
+								id="editarAcoes" oncomplete="PF('editDialog').hide();"
+								update="form:acoes"
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarAcoes').click();}">
 								<h:outputText value="Salvar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
 							</p:commandLink>
-							
+
+
 						</p:outputPanel>
-						</h:form>
-					</p:dialog>
-					
-					<!-- Dialog Nova Ação -->
-					<p:dialog widgetVar="newDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-						<h:form id="dialog2">
-						<p:outputPanel id="acaoCad" style="display:flex; flex-flow: column">
-							<p:panelGrid id="info2" columns="1" style="border: none; width: 100%;">
+					</h:form>
+				</p:dialog>
+
+				<!-- Dialog Nova Ação -->
+				<p:dialog widgetVar="newDialog" modal="true" showHeader="true"
+					fitViewport="true" showEffect="fade" hideEffect="fade"
+					resizable="false" maximizable="false" draggable="false"
+					closeOnEscape="true">
+					<h:form id="dialog2">
+						<p:outputPanel id="acaoCad"
+							style="display:flex; flex-flow: column">
+							<p:panelGrid id="info2" columns="1"
+								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Cadastro de Ação" styleClass="tituloBox" style="padding-bottom: 2vw;" />
+									<h:outputText value="Cadastro de Ação" styleClass="tituloBox"
+										style="padding-bottom: 2vw;" />
 								</f:facet>
-		
+
 								<p:outputLabel value="Título: " for="titulo" />
-								<p:inputText id="titulo" required="true" size="60" value="#{acoes.acao.titulo}" />
-		
+								<p:inputText id="titulo" required="true" size="60"
+									value="#{acoes.acao.titulo}" />
+
 								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{acoes.acao.descricao}" />
-		
-								<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
-		
+								<p:inputTextarea id="descricao" rows="10" cols="62"
+									autoResize="true" required="true"
+									value="#{acoes.acao.descricao}" />
+
+								<h:outputText
+									value="Os campos marcados com * são de preenchimento obrigatório."
+									style="font-size:14px; color:gray" />
+
 							</p:panelGrid>
-		
-							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:acoes" oncomplete="PF('newDialog').hide();" 
+
+							<p:commandLink class="botaoLink" action="#{acoes.save}"
+								id="salvarAcao" update="form "
+								oncomplete="PF('newDialog').hide();"
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('salvarAcao').click();}">
 								<h:outputText value="Cadastrar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
 							</p:commandLink>
 						</p:outputPanel>
-						</h:form>
-					</p:dialog>
-					
+					</h:form>
+				</p:dialog>
+
 			</h:panelGroup>
 
 		</ui:define>

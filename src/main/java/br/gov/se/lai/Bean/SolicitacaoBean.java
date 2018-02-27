@@ -255,7 +255,6 @@ public class SolicitacaoBean implements Serializable {
 															+ "  - Numero: " + cidadaoBean.getNumero() + "\n"
 															+ "Complemento: " + cidadaoBean.getComplemento() 
 															+ "  - Bairro: "+ cidadaoBean.getBairro()));
-
 		}else {
 			Cidadao cid = solicitacao.getCidadao();
 			mensagem.setTexto(mensagem.getTexto().concat("\n\nEndereço de recebimento: \n"

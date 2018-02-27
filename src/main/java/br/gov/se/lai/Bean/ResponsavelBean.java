@@ -11,6 +11,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.apache.commons.mail.EmailException;
+
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
@@ -18,6 +20,7 @@ import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 
 
 @ManagedBean(name = "responsavel")
@@ -353,6 +356,37 @@ public class ResponsavelBean implements Serializable{
 			return true;
 		}else {
 			return false;
+		}
+	}
+	
+	public Entidades pegarEntidade() {
+		Entidades entidade = EntidadesDAO.find(idEntidade);
+		return entidade;
+	}
+	
+	public String requisitarCadastroResponsavel() {
+		Entidades ent = pegarEntidade();
+		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
+						  + "\n\n >> Dados do usuário:"
+						  + "\n\n Usuario: "+getNick()
+						  +"\n Email: "+getEmail()
+						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
+						  + "\n\n Clique aqui: ";
+		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
+		if(idDestinatario != -1) {
+			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+			NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
+			return "/index.xhtml?faces-redirect=true";
+		}else {
+			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+			if(idDestinatario != -1) {
+				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(getNick(), getIdEntidade(), getEmail(), destinatario, mensagem);
+				return "/index.xhtml?faces-redirect=true";
+			}else {
+				//retorno pra onde?
+				return "/index.xhtml?faces-redirect=true";
+			}
 		}
 	}
 	
