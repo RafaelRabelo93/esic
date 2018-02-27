@@ -36,11 +36,12 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	@PostConstruct
 	public void init() {
 		acao = new Acoes();
-		acoes = new ArrayList<Acoes>(AcoesDAO.list());		
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
 		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
 		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+		acoes = new ArrayList<Acoes>(acoesVinculadas);
+		acoes.addAll(acoesNaoVinculadas);		
 
 	}
 	
@@ -61,21 +62,26 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			if(usuarioBean.verificaGestor()) {
 				acao.setStatus("Não-vinculada");
 				AcoesDAO.saveOrUpdate(acao);
-			}else if(usuarioBean.verificaResponsavel()){
+				getAcoesNaoVinculadas().add(acao);
+				getAcoes().add(acao);
+			}else if(usuarioBean.verificaResponsavel() || usuarioBean.verificaResponsavelCidadaoPerfil() ){
 				acao.setStatus("Pendente");
 				AcoesDAO.saveOrUpdate(acao);
+				getAcoesPendentes().add(acao);
 			}
-			acoes.add(acao);
 		}
 		acao = new Acoes();
 	}
 	
-	public void remove() {
+	public void remove(Acoes acao) {
 		if(verificaPermissao() ) {
 			acoes.remove(acao);
-			getAcoesPendentes().remove(acao);
+			if(acao.getStatus().equals("Pendente")) {
+				getAcoesPendentes().remove(acao);
+			}else if( acao.getStatus().equals("Não-vincualada")) {
+				getAcoesNaoVinculadas().remove(acao);
+			}
 			AcoesDAO.delete(acao);
-			acao = new Acoes();
 		}
 	}
 
@@ -130,6 +136,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		AcoesDAO.saveOrUpdate(acao);
 		getAcoesPendentes().remove(acao);
 		getAcoesNaoVinculadas().add(acao);
+		getAcoes().add(acao);
 	}
 	
 
@@ -143,7 +150,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public String redirecionarConsultaAcoes() {
-		carregarLista();
 		return "/Consulta/consulta_acoes.xhtml?faces-redirect=true";
 	}
 

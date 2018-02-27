@@ -13,7 +13,7 @@ public class UsuarioDAO {
 	
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
-    public static void saveOrUpdate(Usuario usuario) {     	        
+    public static boolean saveOrUpdate(Usuario usuario) {     	        
         try {
         	if(!em.getTransaction().isActive()) em.getTransaction().begin();
         	if(usuario.getIdUsuario() ==  null) {
@@ -23,10 +23,12 @@ public class UsuarioDAO {
     		}
             em.getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuario "+ usuario.getNome()+" salvo(a) com sucesso!"));
+            return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar usuario "+ usuario.getNome()));
         	System.out.println(e); 
             em.getTransaction().rollback();
+            return false;
         }
     }
     public static void delete(Usuario usuario) {        
