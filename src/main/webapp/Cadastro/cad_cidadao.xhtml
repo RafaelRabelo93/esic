@@ -225,7 +225,6 @@
 					<h:outputText value="Os campos acima marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
 
 					<p:commandLink class="botaoLink" action="#{cidadao.save}" id="novoCidadao"
-						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoCidadao').click();}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />

@@ -74,19 +74,23 @@ public class SolicitacaoDAO {
 					String query = "FROM Solicitacao as slt WHERE   ";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
-						query += " slt.entidades.idEntidades = ";
 						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += " slt.entidades.idEntidades = ";
 							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
 							for (int j = 2 ;  j <= usuarioBean.getResponsavel().getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
-						}
-
-						if(i == ListResp.size()-1) {
 							query += ")";
-						}else {
-							query += ") OR ";
 						}
+//						if(i == ListResp.size()-1) {
+//							query += ")";
+//						}else {
+//							query += ") OR ";
+//						}
+
 					}
 					
 					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);

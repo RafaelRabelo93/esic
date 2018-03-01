@@ -303,6 +303,9 @@ public class UsuarioBean implements Serializable {
 				logout();
 				return null;
 			} else {
+				if((usuario.getPerfil() == (short)2 || usuario.getPerfil() == (short)4)) {
+					
+				}
 				loadEmail();
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
