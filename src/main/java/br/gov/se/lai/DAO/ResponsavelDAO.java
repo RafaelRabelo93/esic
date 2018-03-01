@@ -93,8 +93,14 @@ public class  ResponsavelDAO {
     }
 
     @SuppressWarnings("unchecked")
-	public static List<Responsavel> list() {		
-        return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();
+	public static List<Responsavel> listEntidadePossuemGestores() {		
+        return em.createNativeQuery("SELECT idEntidades FROM Responsavel as resp  WHERE resp.nivel = 3", Responsavel.class).getResultList();
 	
+    }    
+
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> list() {		
+    	return em.createNativeQuery("SELECT * FROM Responsavel as resp  WHERE resp.ativo = 1", Responsavel.class).getResultList();
+    	
     }    
 }

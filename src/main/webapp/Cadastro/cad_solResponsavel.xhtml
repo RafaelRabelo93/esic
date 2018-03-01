@@ -25,7 +25,7 @@
 						<h:outputText value="Solicitação de Cadastro como Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
 						<p:outputLabel value="Nick: " for="nick" /> 
-						<h:outputText id="nick" required="true" value="#{responsavel.nick}"/> 
+						<h:outputText id="nick" required="true" value="#{usuario.usuario.nick}"/> 
 							
 						<p:outputLabel value="Email: " for="email" /> 
 						<p:inputText id="email" required="true" value="#{responsavel.email}" size="35" maxlength="100" >
@@ -35,7 +35,7 @@
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
 						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+							 <f:selectItems value="#{responsavel.entidadesSolicitacaoResponsavel()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu> 
 
 					</h:panelGroup>
@@ -44,6 +44,8 @@
 					<p:commandLink class="botaoLink" action="#{responsavel.requisitarCadastroResponsavel()}" id="novoResponsavel" update="cad_responsavel dataPanel nick orgao" 
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoResponsavel').click();}">
 						<h:outputText value="Cadastrar" />
+						<f:setPropertyActionListener value="#{usuario.usuario.nick}" target="#{responsavel.nick}" />
+						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>
 

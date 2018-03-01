@@ -84,18 +84,16 @@
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="inline">
-							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
-								<p:outputLabel value="CPF: " for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
-									<f:validator validatorId="StellaCPFValidator" />
-								</p:inputMask>
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
+								<p:inputMask id="cpf" value="#{cidadao.cpf}"
+									mask="999.999.999-99" />
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputText id="rg" value="#{cidadao.cidadao.rg}" maxlength="16" disabled="#{!cidadao.cidadao.tipo}">
-									<f:validateLength maximum="16" />
-								</p:inputText>
+								<p:inputMask id="rg" value="#{cidadao.rg}"
+									mask="?9999999999999999" />
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
@@ -206,7 +204,8 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Número:" for="numero" />
-								<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" maxlength="5">
+								<p:inputText id="numero" value="#{cidadao.numero}"
+									size="10" maxlength="5">
 									<f:validateLength maximum="5" />
 								</p:inputText>
 							</h:panelGroup>

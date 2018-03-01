@@ -67,7 +67,7 @@ public class UsuarioBean implements Serializable {
 	public boolean alterarSenha = false;
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
-	private String sessionId;
+	private static String sessionId;
 	private boolean perfilAlterarCidadaoResponsavel;
 
 	/*
@@ -335,18 +335,19 @@ public class UsuarioBean implements Serializable {
 		return "/index";
 	}
 
-	public void generateSessionId() {
+	public static String generateSessionId() {
 		int len = 45;
 		String charsCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String Chars = "abcdefghijklmnopqrstuvwxyz";
 		String nums = "0123456789";
 		String passSymbols = charsCaps + Chars + nums;
 		Random rnd = new Random();
-		this.sessionId = "";
+		sessionId = "";
 
 		for (int i = 0; i < len; i++) {
-			this.sessionId += passSymbols.charAt(rnd.nextInt(passSymbols.length()));
+			sessionId += passSymbols.charAt(rnd.nextInt(passSymbols.length()));
 		}
+		return sessionId;
 
 	}
 
