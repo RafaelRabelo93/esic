@@ -86,7 +86,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}">
+								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
