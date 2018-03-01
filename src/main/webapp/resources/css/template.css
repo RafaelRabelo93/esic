@@ -657,12 +657,13 @@
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter {
-	width: 96% !important;
+	width: 94% !important;
+/* 	padding-right: 5px !important; */
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
-	top: 14px !important;
-	right: 14px !important;
+	top: 13px !important;
+	right: 15px !important;
 }
 
 .ui-button-icon-only{
@@ -971,6 +972,7 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 	
 	color: white;
 	text-shadow: none;
+	text-align: center;
 	
 	margin-top: 2vh !important;
 }
