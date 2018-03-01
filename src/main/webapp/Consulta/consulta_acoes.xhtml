@@ -21,7 +21,7 @@
 				
 				<h:outputText value="Ações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"/>
 
-					<p:commandLink class="botaoLink" update="dialog2:info2" id="novaAcao" onclick="PF('newDialog').show();" style="margin-bottom: 1vh;"
+					<p:commandLink class="botaoLink" update="dialog2:info2" id="novaAcao" onclick="PF('newDialog').show();" style="margin-bottom: -10px;"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}"
 						rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<i class="fa fa-plus" style="color: white; padding-right: 7px" />

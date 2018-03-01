@@ -111,6 +111,13 @@
 									<f:setPropertyActionListener value="true" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
 								</h:commandLink>
 							</h:panelGroup>
+							
+							<h:commandLink styleClass="botaoLink perfilBtn" action="Cadastro/cad_cidadao" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
+								<h:outputText value="Criar Perfil" />
+								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+								<h:outputText value="Cidadão" />
+							</h:commandLink>
+								
 						</h:panelGroup>
 						
 					</p:overlayPanel>
