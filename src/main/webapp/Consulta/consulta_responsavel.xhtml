@@ -21,7 +21,8 @@
 					
 					<h:outputText value="Responsáveis" style="color:#1a568c; font-size:25px;" />
 					
-						<h:commandLink action="/Cadastro/cad_responsavel" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" styleClass="botaoLink" style="margin-bottom: 1vh">
+						<h:commandLink action="/Cadastro/cad_responsavel" styleClass="botaoLink" style="margin-bottom: 10px"
+						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
 							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 							<h:outputText value="Novo Responsável" />
 						</h:commandLink>
@@ -32,7 +33,8 @@
 						sortBy="#{resp.entidades.idOrgaos}" expandableRowGroups="false"
 						value="#{responsavel.todosResponsaveis}" resizableColumns="true" liveResize="true"
 						rowStyleClass="#{resp.entidades.nome}" paginator="true"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="(Página {currentPage} de {totalPages})"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
 						style="margin-bottom:1vw">
 

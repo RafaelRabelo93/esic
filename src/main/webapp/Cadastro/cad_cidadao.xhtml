@@ -87,7 +87,9 @@
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
 								<p:inputMask id="cpf" value="#{cidadao.cpf}"
-									mask="999.999.999-99" />
+									mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
+									<f:validator validatorId="StellaCPFValidator" />
+								</p:inputMask>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
