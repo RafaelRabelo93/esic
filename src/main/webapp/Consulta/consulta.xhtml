@@ -291,12 +291,12 @@
 							
 							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" autoResize="false" style="width:100%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
+								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
 									<f:validateLength maximum="200" />
 								</p:inputTextarea>
 								<h:outputText id="display" />
 		
-								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="form:solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
+								<p:commandLink class="botaoLink"  style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
 									<h:outputText value="Salvar" />
 									<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
 									<i class="fa fa-check" style="padding-left: 3px" />

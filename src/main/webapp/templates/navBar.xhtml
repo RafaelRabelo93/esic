@@ -74,13 +74,26 @@
 			<div class="dropdown-content">
 				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
 				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
-				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
-				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
 			</div>
 		</h:panelGroup>
 		
 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" />
 			
+		<!-- Ações -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6'}">
+			<button class="dropbtn"> 
+				<h:commandLink action="#{acoes.redirecionarConsultaAcoes()}">
+						<i class="fa fa-refresh" />
+						<h:outputText value="Ações" style="margin:0 7px"/>
+						<i class="fa fa-caret-down"/>
+				</h:commandLink>
+			</button>
+			<div class="dropdown-content">
+				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
+				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
+			</div>
+		</h:panelGroup>
+		
 		</div>
 			
 	</h:form>
