@@ -2,7 +2,9 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -49,9 +51,9 @@ public class ResponsavelBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		this.responsavel = new Responsavel();
 		perfilGestorGeral();
 		pegarParamURL();
-		this.responsavel = new Responsavel();
 		todosResponsaveis = ResponsavelDAO.list();
 		listRespDaEntidade = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
 	}
@@ -283,11 +285,6 @@ public class ResponsavelBean implements Serializable{
 	
 
 	public void perfilGestorGeral() {
-		try {
-			pegarParamURL();
-		}catch(NullPointerException e){
-		}
-		
 		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
@@ -372,7 +369,7 @@ public class ResponsavelBean implements Serializable{
 	
 	public String requisitarCadastroResponsavel() {
 		Entidades ent = pegarEntidade();
-		String hashcode="";
+		String hashcode=UsuarioBean.generateSessionId();
 		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
 						  + "\n\n >> Dados do usuário:"
 						  + "\n\n Usuario: "+usuario.getNome()
@@ -392,23 +389,28 @@ public class ResponsavelBean implements Serializable{
 				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario, mensagem);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
-				//retorno pra onde?
+				//Busca
 				return "/index.xhtml?faces-redirect=true";
 			}
 		}
 	}
 	
 	public void pegarParamURL() {
+		if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("access-key") != null ) {
+			
 		this.responsavel = new Responsavel();
 		 this.responsavel.setEmail( FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("email"));
+				.get("mail"));
 		 idEntidade = (Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 					.get("identidade")));
 		 nick = (UsuarioDAO.findUsuario(Integer.parseInt((FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				 .get("user"))))).getNick();
+		}
 	}
 	
 	public List<Entidades> entidadesSolicitacaoResponsavel(){
+		Set ids = new HashSet<>(ResponsavelDAO.listEntidadePossuemGestores());
 		return EntidadesDAO.listAtivas();
 	}
 	

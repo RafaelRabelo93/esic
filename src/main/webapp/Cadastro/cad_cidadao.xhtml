@@ -78,13 +78,13 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}"
+								<p:inputMask id="cpf" value="#{cidadao.cpf}"
 									mask="999.999.999-99" />
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"
+								<p:inputMask id="rg" value="#{cidadao.rg}"
 									mask="?9999999999999999" />
 							</h:panelGroup>
 
@@ -201,7 +201,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Número:" for="numero" />
-								<p:inputText id="numero" value="#{cidadao.cidadao.numero}"
+								<p:inputText id="numero" value="#{cidadao.numero}"
 									size="10" maxlength="5">
 									<f:validateLength maximum="5" />
 								</p:inputText>

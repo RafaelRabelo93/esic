@@ -199,7 +199,7 @@ public class NotificacaoEmail implements Job{
 	}
 
 	public static void enviarEmailRequisicaoResponsavel(int idUser, int idEntidade, String emailUser,String hashcode, String email, String mensagem) {
-		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cad_responsavel.xhtml?"+hashcode.substring(0, hashcode.length()/2)
+		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
 																								+"&user="+idUser
 																								+"&identidade="+idEntidade
 																								+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())
