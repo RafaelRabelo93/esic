@@ -69,7 +69,7 @@ public class SolicitacaoDAO {
 			{
 				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
 				{
-					List<Responsavel> ListResp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
 					
 					String query = "FROM Solicitacao as slt WHERE   ";
 							
