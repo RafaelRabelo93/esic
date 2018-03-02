@@ -303,17 +303,38 @@ public class UsuarioBean implements Serializable {
 				logout();
 				return null;
 			} else {
-				if((usuario.getPerfil() == (short)2 || usuario.getPerfil() == (short)4)) {
+				if(usuarioInativo()) {
+					FacesContext.getCurrentInstance().addMessage(null, 
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+					logout();
+					return null;
 					
+				}else {
+					loadEmail();
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+					acessoUsuario(this.usuario);
+					nomeCompleto(usuario.getNome());
+					return "/index?faces-redirect=true";
 				}
-				loadEmail();
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
-				acessoUsuario(this.usuario);
-				nomeCompleto(usuario.getNome());
-				return "/index?faces-redirect=true";
 			}
 		}
+	}
+	
+	public boolean usuarioInativo() {
+		boolean retorno = false;
+		if(this.usuario.getPerfil() == (short)2 ) {
+			List<Responsavel> responsaveis = new ArrayList<>(ResponsavelDAO.findResponsavelUsuario(this.usuario.getIdUsuario()));
+			for (Responsavel responsavel : responsaveis) {
+				if(responsavel.isAtivo()) {
+					retorno = true;
+				}else {
+					retorno = false;
+				}
+			}
+		}
+		
+		return retorno;
 	}
 
 	public void loadEmail() {
