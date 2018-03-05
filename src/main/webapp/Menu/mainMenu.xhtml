@@ -229,7 +229,7 @@
 
 				<!-- ====== MENU REPRESENTANTE ====== -->
 				<h:panelGroup class="menuBtn"
-					rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.ativo) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 					<!-- LAI -->
 					<h:panelGroup class="botao">

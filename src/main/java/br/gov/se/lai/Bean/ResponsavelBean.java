@@ -55,7 +55,7 @@ public class ResponsavelBean implements Serializable{
 		perfilGestorGeral();
 		pegarParamURL();
 		todosResponsaveis = ResponsavelDAO.list();
-		listRespDaEntidade = ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
+		listRespDaEntidade = ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario());
 	}
 	
 	public String save() {
@@ -171,7 +171,7 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String alterarDadosUsuario() {
-		if(verificaAcesso() || verificaExistenciaGestorSistema(usuarioBean.getUsuario())) {
+		if(verificaExistenciaGestorSistema(usuarioBean.getUsuario()) || verificaAcesso()) {
 			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			responsavel = new Responsavel();
@@ -319,7 +319,7 @@ public class ResponsavelBean implements Serializable{
 	public static boolean permissaoDeAcessoEntidades(int idOrgao) {
 		boolean retorno = false;
 		for (Responsavel responsavel : listRespDaEntidade) {
-			if(responsavel.getEntidades().getIdOrgaos() == idOrgao) {
+			if( responsavel.getEntidades().getIdOrgaos() == idOrgao) {
 				retorno =  true;
 				break;
 			}
@@ -414,6 +414,26 @@ public class ResponsavelBean implements Serializable{
 		return EntidadesDAO.listAtivas();
 	}
 	
+	
+	public boolean temPerfilAtivo() {
+		return (ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()).size() > 0) ;
+	}
+	
+	public static String retornaListaEmail(Usuario usuario) {
+		String emailRetorno = "";
+		for (Responsavel resp : ResponsavelDAO.findResponsavelUsuarioAtivo(usuario.getIdUsuario())) {
+			emailRetorno += resp.getEmail()+"\n";
+		}
+		return emailRetorno;
+	}
+
+	public static String retornaListaEntidadeSiglas(Usuario usuario) {
+		String siglaRetorno = "";
+		for (Responsavel resp : ResponsavelDAO.findResponsavelUsuarioAtivo(usuario.getIdUsuario())) {
+			siglaRetorno += resp.getEntidades().getSigla()+"\n";
+		}
+		return siglaRetorno;
+	}
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {

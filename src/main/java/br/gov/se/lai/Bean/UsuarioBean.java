@@ -59,6 +59,7 @@ public class UsuarioBean implements Serializable {
 	private String nome;
 	private String nomeCompleto;
 	private String email;
+	private String sigla;
 	private String emailRedirect;
 	private String tipoString;
 	private int veioDeSolicitacao;
@@ -303,9 +304,9 @@ public class UsuarioBean implements Serializable {
 				logout();
 				return null;
 			} else {
-				if(usuarioInativo()) {
+				if(!usuarioInativo()) {
 					FacesContext.getCurrentInstance().addMessage(null, 
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário inativo.", "Solicite ativação ao gestor da sua entidade."));
 					logout();
 					return null;
 					
@@ -323,15 +324,12 @@ public class UsuarioBean implements Serializable {
 	
 	public boolean usuarioInativo() {
 		boolean retorno = false;
-		if(this.usuario.getPerfil() == (short)2 ) {
-			List<Responsavel> responsaveis = new ArrayList<>(ResponsavelDAO.findResponsavelUsuario(this.usuario.getIdUsuario()));
-			for (Responsavel responsavel : responsaveis) {
-				if(responsavel.isAtivo()) {
-					retorno = true;
-				}else {
-					retorno = false;
-				}
+		if(this.usuario.getPerfil() == (short)2 || this.usuario.getPerfil() == (short)4  ) {
+			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
+				retorno = true;
 			}
+		}else if (this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
+			retorno = true;
 		}
 		
 		return retorno;
@@ -342,9 +340,9 @@ public class UsuarioBean implements Serializable {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 			setEmail(listCidadao.get(0).getEmail());
 		} else {
-			if (usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty()) {
-				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-				setEmail(listResponsavel.get(0).getEmail());
+			if (usuario.getPerfil() == 2 || usuario.getPerfil() == 4 && !usuario.getResponsavels().isEmpty()) {
+				setEmail(ResponsavelBean.retornaListaEmail(usuario));
+				setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario));
 			} else {
 				setEmail("Não cadastrado");
 			}
@@ -763,7 +761,14 @@ public class UsuarioBean implements Serializable {
 	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavelNovo) {
 		perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavelNovo;
 	}
-	
-	
 
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+	
+	
 }

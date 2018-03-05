@@ -84,8 +84,17 @@ public class  ResponsavelDAO {
     }
     
     @SuppressWarnings("unchecked")
-    public static List<Responsavel> findResponsavelUsuario(int idUsuario) {
+    public static List<Responsavel> findResponsavelUsuarioAtivo(int idUsuario) {
     	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam AND resp.ativo = 1");
+    	query.setParameter("usuarioParam", idUsuario);  
+    	
+    	List<Responsavel> results = query.getResultList();
+    	return results;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> findResponsavelUsuario(int idUsuario) {
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam");
     	query.setParameter("usuarioParam", idUsuario);  
     	
     	List<Responsavel> results = query.getResultList();
