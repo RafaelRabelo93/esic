@@ -59,6 +59,7 @@ public class UsuarioBean implements Serializable {
 	private String nome;
 	private String nomeCompleto;
 	private String email;
+	private String emailCid;
 	private String sigla;
 	private String emailRedirect;
 	private String tipoString;
@@ -324,10 +325,15 @@ public class UsuarioBean implements Serializable {
 	
 	public boolean usuarioInativo() {
 		boolean retorno = false;
-		if(this.usuario.getPerfil() == (short)2 || this.usuario.getPerfil() == (short)4  ) {
+		if(this.usuario.getPerfil() == (short)2 ) {
 			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
 				retorno = true;
 			}
+		}else if(this.usuario.getPerfil() == (short)4) {
+//			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
+//				retorno = true;
+//			}
+			retorno = true;
 		}else if (this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
 			retorno = true;
 		}
@@ -338,14 +344,17 @@ public class UsuarioBean implements Serializable {
 	public void loadEmail() {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			setEmail(listCidadao.get(0).getEmail());
-		} else {
-			if (usuario.getPerfil() == 2 || usuario.getPerfil() == 4 && !usuario.getResponsavels().isEmpty()) {
+			setEmailCid(listCidadao.get(0).getEmail());
+		} else if (usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty()) {
 				setEmail(ResponsavelBean.retornaListaEmail(usuario));
-				setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario));
-			} else {
-				setEmail("Não cadastrado");
-			}
+				setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+		}else if ( usuario.getPerfil() == 4) {
+			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+			setEmailCid(listCidadao.get(0).getEmail());
+			setEmail(ResponsavelBean.retornaListaEmail(usuario));
+			setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+		}else {
+			setEmail("Não cadastrado");
 		}
 	}
 
@@ -373,7 +382,6 @@ public class UsuarioBean implements Serializable {
 
 	}
 
-	@SuppressWarnings("unused")
 	private void acessoUsuario(Usuario usuario) {
 		generateSessionId();
 		usuario.setLastLogged(new Date(System.currentTimeMillis()));
@@ -426,7 +434,6 @@ public class UsuarioBean implements Serializable {
 					}
 				}
 			} catch (EmailException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -765,10 +772,20 @@ public class UsuarioBean implements Serializable {
 	public String getSigla() {
 		return sigla;
 	}
+	
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
+
+	public String getEmailCid() {
+		return emailCid;
+	}
+
+	public void setEmailCid(String emailCid) {
+		this.emailCid = emailCid;
+	}
+	
 	
 	
 }

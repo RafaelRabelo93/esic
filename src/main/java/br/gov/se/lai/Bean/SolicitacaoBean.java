@@ -375,7 +375,7 @@ public class SolicitacaoBean implements Serializable {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta";
 		}else {
-			if(ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos()) ) {
+			if(ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos(), getIdEntidades() )) {
 				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 				return "/Consulta/consulta";
 			}else {
