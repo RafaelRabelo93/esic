@@ -245,6 +245,7 @@ public class ResponsavelBean implements Serializable{
 				}
 		}
 		
+		
 		if(busca == false) {
 			return -1;
 		}else {
@@ -289,13 +290,12 @@ public class ResponsavelBean implements Serializable{
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
 			try {
+				if(usuarioBean.getUsuario().getPerfil() == 5) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+					permissao = true;
+				}else {
 				List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
 				for (Responsavel responsavel : respList) {
-					if (responsavel.getUsuario().getPerfil() == 5) {
-						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-						permissao = true;
-						break;
-					} else {
 						try {
 							this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
 						}catch (NullPointerException e) {
@@ -304,24 +304,29 @@ public class ResponsavelBean implements Serializable{
 							permissao = false;
 						}
 					}
-					responsavel = new Responsavel();
 				}
+					responsavel = new Responsavel();
 			} catch (IndexOutOfBoundsException e) {
 			}
 		}
 	}
+	
 	
 	public String redirectCadastroUsuario() {
 		responsavel = new Responsavel();
 		return "/Cadastro/cad_responsavel.xhtml?faces-redirect=true";
 	}
 	
-	public static boolean permissaoDeAcessoEntidades(int idOrgao) {
+	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
-		for (Responsavel responsavel : listRespDaEntidade) {
-			if( responsavel.getEntidades().getIdOrgaos() == idOrgao) {
-				retorno =  true;
-				break;
+		for (Responsavel respo : listRespDaEntidade) {
+			if(respo.getEntidades().getIdOrgaos() == idOrgao) {
+				if(respo.getEntidades().getIdEntidades().equals(idEntidade)) {
+					retorno =  true;
+				}else if(responsavelDisponivel(1, idEntidade) == -1 ){
+					retorno =  true;
+				}
+//				break;
 			}
 		}
 		return retorno;
