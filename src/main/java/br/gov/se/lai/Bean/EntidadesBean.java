@@ -36,7 +36,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private int idEntidades;
 	private String nome;
 	private boolean ativa;
-	private boolean forOrgao;
+	private boolean forOrgao = true;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;

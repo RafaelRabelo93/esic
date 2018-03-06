@@ -59,6 +59,7 @@
 							<h:outputText value="Autoridade 1" rendered="#{resp.nivel eq '2' }" />
 							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' }" />
 							<h:outputText value="Comissão Mista" rendered="#{resp.nivel eq '4' }" />
+							<h:outputText value="Gestor do Sistema" rendered="#{resp.usuario.perfil eq '5'}" />
 						</p:column>
 
 						<p:column headerText="Status" sortBy="#{resp.ativo}" width="20">

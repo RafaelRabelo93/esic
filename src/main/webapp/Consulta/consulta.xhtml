@@ -41,13 +41,19 @@
 					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
 					    </f:facet>
 
-						<p:column ariaHeaderText="Icones" width="20" style="text-align:center" toggleable="false">
-							<h:panelGroup rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
-							<h:panelGroup rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup> 
+						<p:column ariaHeaderText="Icones" width="20" toggleable="false" style="text-align:center;">
+							<h:panelGroup id="iconDenuncia" rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
+								<p:tooltip for="iconDenuncia" value="Denúncia" position="right"/>
+							<h:panelGroup id="iconInfo" rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
+								<p:tooltip for="iconInfo" value="Pedido de Informação" position="right"/>
+							<h:panelGroup id="iconSol" rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup>
+								<p:tooltip for="iconSol" value="Solicitação" position="right"/>
+							<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup>
+								<p:tooltip for="iconElogio" value="Elogio" position="right"/>
+							<h:panelGroup id="iconSugestao" rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup>
+								<p:tooltip for="iconSugestao" value="Sugestão" position="right"/>
+							<h:panelGroup id="iconReclama" rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup>
+								<p:tooltip for="iconReclama" value="Reclamação" position="right"/>
 						</p:column>
 						
 						<p:column headerText="Protocolo" width="150" filterable="true" >

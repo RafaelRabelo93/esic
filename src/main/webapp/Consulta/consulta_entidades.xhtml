@@ -94,10 +94,16 @@
 					<h:form id="dialog" styleClass="dialog">
 						<p:outputPanel id="entidadeEdit" styleClass="box" style="display:flex; flex-flow: column; margin: 0; border: none; padding: 0">
 								<p:outputLabel for="nome" value="Nome:" />
-								<p:inputText id="nome" required="true" size="50" value="#{entidades.entidades.nome}" />
+								<p:inputText id="nome" required="true" size="50" value="#{entidades.entidades.nome}" maxlength="200">
+									<f:validateLength maximum="200"/>
+									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
+								</p:inputText>
 
 								<p:outputLabel for="sigla" value="Sigla:" />
-								<p:inputText id="sigla" required="true" value="#{entidades.entidades.sigla}" />
+								<p:inputText id="sigla" required="true" size="10" value="#{entidades.entidades.sigla}" maxlength="10" >
+									<f:validateLength maximum="10"/>
+									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
+								</p:inputText>
 
 								<p:outputLabel for="ativa" value="Status:" />
 								<p:selectOneRadio id="ativa" required="true"

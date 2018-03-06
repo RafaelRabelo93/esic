@@ -32,17 +32,19 @@
 						<p:outputLabel value="Nome: " for="nome" />
 						<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" maxlength="200" >
 							<f:validateLength maximum="200"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText> 
 						
 						<p:outputLabel value="Sigla: " for="sigla" />
 						<p:inputText id="sigla" required="true" size="10" value="#{entidades.entidades.sigla}" maxlength="10" >
 							<f:validateLength maximum="10"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>
 					
 						<p:outputLabel value="Tipo: " for="orgao" />
-						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}" required="true">
+						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}"  required="true">
 							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="selectOrgao"/>
-							<f:selectItem itemLabel="Órgão" itemValue="#{true}" />
+							<f:selectItem itemLabel="Órgão" itemValue="#{true}"  />
 							<f:selectItem itemLabel="Entidade" itemValue="#{false}" />
 						</p:selectOneRadio>
 						
