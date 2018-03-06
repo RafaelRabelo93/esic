@@ -872,8 +872,8 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .ui-state-highlight .ui-icon{
-	-webkit-filter: brightness(100);
-	filter: brightness(100);
+/* 	-webkit-filter: brightness(100); */
+/* 	filter: brightness(100); */
 }
 
 

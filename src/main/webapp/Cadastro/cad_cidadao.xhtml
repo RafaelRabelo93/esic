@@ -22,7 +22,7 @@
 
 				<div class="ficha">
 
-					<h:panelGroup id="panel" styleClass="box">
+					<h:panelGroup styleClass="box">
 
 						<h:outputText value="Cadastro de Cidadão" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 
@@ -47,10 +47,11 @@
 							</h:panelGroup>
 						</h:panelGroup>
 
+						<h:panelGroup id="panel" styleClass="column">
 						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-								<p:selectOneRadio id="tipo" value="#{cidadao.cidadao.tipo}" layout="pageDirection">
+								<p:selectOneRadio id="tipo" value="#{cidadao.cidadao.tipo}"  layout="pageDirection">
 									<f:selectItem itemLabel="Física" itemValue="true" />
 									<f:selectItem itemLabel="Jurídica" itemValue="false" />
 									<p:ajax update="panel" event="change"/>
@@ -59,7 +60,7 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!cidadao.cidadao.tipo}">
 								<p:outputLabel value="CNPJ:" for="cnpj"/>
-								<p:inputMask id="cnpj" value="#{cidadao.cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{cidadao.cidadao.tipo}">
+								<p:inputMask id="cnpj" value="#{cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{cidadao.cidadao.tipo}">
 									<f:validator validatorId="StellaCNPJValidator" />
 								</p:inputMask>
 							</h:panelGroup>
@@ -86,14 +87,14 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
+								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputText id="rg" value="#{cidadao.cidadao.rg}" maxlength="16" disabled="#{!cidadao.cidadao.tipo}">
+								<p:inputText id="rg" value="#{cidadao.rg}" maxlength="16" disabled="#{!cidadao.cidadao.tipo}">
 									<f:validateLength maximum="16" />
 								</p:inputText>
 							</h:panelGroup>
@@ -132,9 +133,9 @@
 									<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
 									<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
 								</p:selectOneMenu>
-								<p:outputLabel value="* SM = Salário Mínimo"
-									style="color:gray; font-size:12px; margin: 0" />
+								<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0" />
 							</h:panelGroup>
+						</h:panelGroup>
 						</h:panelGroup>
 
 						<h:outputText value="Endereço"
@@ -206,7 +207,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Número:" for="numero" />
-								<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" maxlength="5">
+								<p:inputText id="numero" value="#{cidadao.numero}" size="10" maxlength="5">
 									<f:validateLength maximum="5" />
 								</p:inputText>
 							</h:panelGroup>
