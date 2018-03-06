@@ -72,6 +72,8 @@ public class ResponsavelBean implements Serializable{
 						this.responsavel.setNivel((short)3);
 					}else if(ehCidadaoRepresentante(usuario)) {
 						this.usuario.setPerfil((short)4);
+					}else if(ehRepresentante(usuario)){
+						this.usuario.setPerfil((short)4);
 					}else {
 						this.usuario.setPerfil((short)2);
 					}
@@ -117,6 +119,14 @@ public class ResponsavelBean implements Serializable{
 	
 	public boolean ehCidadaoRepresentante(Usuario usuario) { 
 		if(usuario.getPerfil() == 3) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean ehRepresentante(Usuario usuario) { 
+		if(usuario.getPerfil() == 4) {
 			return true;
 		}else {
 			return false;
@@ -528,6 +538,8 @@ public class ResponsavelBean implements Serializable{
 	public void setListRespDaEntidade(List<Responsavel> listRespDaEntidade) {
 		this.listRespDaEntidade = listRespDaEntidade;
 	}
+	
+	
 	
 	
 	
