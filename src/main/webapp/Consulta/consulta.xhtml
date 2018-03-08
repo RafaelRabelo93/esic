@@ -196,9 +196,10 @@
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
-													<h:outputText value="#{anexo.nomeView}" />
-												</h:outputLink>
+												<f:facet name="header">
+										           Anexos
+										        </f:facet>
+												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/>
 											</p:dataList>
 
 										</p:outputPanel>

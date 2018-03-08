@@ -69,18 +69,46 @@
 					</ul>
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
-						<h:panelGrid columns="1" cellpadding="5">
-							<h:outputText value="Nick:" style="color:#1a568c;" />
-							<h:outputText value="#{usuario.usuario.nick}" />
-							<h:outputText value="E-mail:" style="color:#1a568c;" rendered="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' )}"/>
-							<h:outputText value="#{usuario.emailCid}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel}"/>
-							<h:outputText value="#{usuario.email}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" />
-							<h:outputText value="Órgão/Entidade de acesso:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}"/>
-							<h:outputText value="#{usuario.sigla}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" />
-						</h:panelGrid>
-
 						<h:panelGroup styleClass="column">
-							<h:panelGroup styleClass="inline" style="margin-bottom: .5em; justify-content: space-between; width: 100%;">
+							<h:outputLabel value="Nick:" style="margin-top: 1em" />
+							<h:outputText value="#{usuario.usuario.nick}" style="margin-left: 1em" />
+							
+							<h:outputLabel value="E-mail:" style="color:#1a568c; margin-top: 1em" rendered="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' )}"/>
+							<h:outputText value="#{usuario.emailCid}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel}"/>
+							<h:outputText value="#{usuario.email}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" />
+							
+							<h:outputText value="Órgãos:" style="color:#1a568c; margin-top: 1em"  rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}"/>
+							<h:outputText value="#{usuario.sigla}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" />
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="column" style="margin-top: 1em">
+							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4'}" styleClass="inline" style="justify-content: space-between; width: 100%;">
+								<h:panelGroup>
+									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button">
+										<h:outputText value="Perfil" />
+										<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+										<h:outputText value="Cidadão" />
+										<f:setPropertyActionListener value="false" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup rendered="#{responsavel.temPerfilAtivo()}" >
+									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button" style="margin-left: .5em">
+										<h:outputText value="Perfil" />
+										<p:graphicImage value="#{resource['img/icon/boss.png']}" height="45px" width="45px"/>
+										<h:outputText value="Representante" />
+										<f:setPropertyActionListener value="true" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
+									</h:commandLink>
+								</h:panelGroup>
+							</h:panelGroup>
+							
+							<h:commandLink styleClass="botaoLink perfilBtn" action="Cadastro/cad_cidadao" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
+								<h:outputText value="Criar Perfil" />
+								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+								<h:outputText value="Cidadão" />
+							</h:commandLink>
+							
+							<h:panelGroup styleClass="inline" style="margin-top: .5em; justify-content: space-between; width: 100%;">
 								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
 									<h:outputText value="Visualizar Perfil" />
 									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
@@ -96,32 +124,6 @@
 									<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
 								</p:commandLink>						
 							</h:panelGroup>
-							
-							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4'}" styleClass="inline" style="justify-content: space-between; width: 100%;">
-							<h:panelGroup>
-								<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button">
-									<h:outputText value="Perfil" />
-									<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
-									<h:outputText value="Cidadão" />
-									<f:setPropertyActionListener value="false" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
-								</h:commandLink>
-							</h:panelGroup>
-							
-							<h:panelGroup rendered="#{responsavel.temPerfilAtivo()}" >
-								<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button" style="margin-left: .5em">
-									<h:outputText value="Perfil" />
-									<p:graphicImage value="#{resource['img/icon/boss.png']}" height="45px" width="45px"/>
-									<h:outputText value="Representante" />
-									<f:setPropertyActionListener value="true" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
-								</h:commandLink>
-							</h:panelGroup>
-							</h:panelGroup>
-							
-							<h:commandLink styleClass="botaoLink perfilBtn" action="Cadastro/cad_cidadao" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
-								<h:outputText value="Criar Perfil" />
-								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
-								<h:outputText value="Cidadão" />
-							</h:commandLink>
 								
 						</h:panelGroup>
 						

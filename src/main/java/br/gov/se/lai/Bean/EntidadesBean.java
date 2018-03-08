@@ -41,7 +41,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
 	private List<Entidades> todasEntidadesAtivas;
-	
+	private List<Entidades> entidadesFiltradas;
 	
 	
 	@PostConstruct
@@ -264,6 +264,13 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setTodasEntidadesAtivas(List<Entidades> todasEntidadesAtivas) {
 		this.todasEntidadesAtivas = todasEntidadesAtivas;
+	}
+	public List<Entidades> getEntidadesFiltradas() {
+		return entidadesFiltradas;
+	}
+
+	public void setEntidadesFiltradas(List<Entidades> entidadesFiltradas) {
+		this.entidadesFiltradas = entidadesFiltradas;
 	}
 	
 	
