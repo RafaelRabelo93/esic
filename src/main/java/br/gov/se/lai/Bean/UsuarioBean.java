@@ -90,7 +90,7 @@ public class UsuarioBean implements Serializable {
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
 					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 10 * * ?")).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 0 10 * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
 //			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
 //			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
@@ -347,7 +347,7 @@ public class UsuarioBean implements Serializable {
 			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
 				retorno = true;
 			}
-		}else if(this.usuario.getPerfil() == (short)1 || this.usuario.getPerfil() == (short)4 
+		}else if(this.usuario.getPerfil() == (short)1 || this.usuario.getPerfil() == (short)3 ||this.usuario.getPerfil() == (short)4 
 				|| this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
 //			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
 //				retorno = true;

@@ -45,6 +45,7 @@ import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
+import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Responsavel;
@@ -172,6 +173,7 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
 		CompetenciasBean.idAcoes = 0;
+		CompetenciasBean.idEntidade = 0;
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;

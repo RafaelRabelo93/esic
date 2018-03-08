@@ -112,7 +112,7 @@
 									<f:selectItem itemLabel="Inativa" itemValue="false" />
 								</p:selectOneRadio>
 
-							<p:commandLink class="botaoLink"  action="#{entidades.edit}"
+							<p:commandLink class="botaoLink"  action="#{entidades.edit(entidades.entidades)}"
 								oncomplete="PF('editDialog').hide();" update="form:entidades">
 								<h:outputText value="Salvar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />

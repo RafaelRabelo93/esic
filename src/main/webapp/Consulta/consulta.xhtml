@@ -359,7 +359,7 @@
 						
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
-								rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+								rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
 								styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
@@ -368,7 +368,7 @@
 						
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
-								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'
 								 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
@@ -378,7 +378,7 @@
 						
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"  onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-									rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+									rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
 									styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
@@ -388,7 +388,7 @@
 						
 						<!-- Botão Recurso -->
 						<p:commandLink id="RecursoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
-								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'Informação'}" 
+								rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and solicitacao.solicitacao.tipo eq 'Informação'}" 
 								disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}" 
 								update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
