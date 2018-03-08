@@ -27,9 +27,9 @@
 							<h:outputText value="Novo Responsável" />
 						</h:commandLink>
 				
-						<p:dataTable id="responsaveis" var="resp"
-						emptyMessage="Não há entidades"
-						filteredValue="#{responsavel.todosResponsaveis}"
+						<p:dataTable id="responsaveis" var="resp" widgetVar="respTable"
+						emptyMessage="Não há entidades" 
+						filteredValue="#{responsavel.responsaveisFiltrados}"
 						sortBy="#{resp.entidades.idOrgaos}" expandableRowGroups="false"
 						value="#{responsavel.todosResponsaveis}" resizableColumns="true" liveResize="true"
 						rowStyleClass="#{resp.entidades.nome}" paginator="true"
@@ -37,20 +37,27 @@
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
 						style="margin-bottom:1vw">
+						
+						<f:facet name="header">
+				            <p:outputPanel styleClass="searchPanel">
+				                <h:outputText value="Pesquisar responsável:" style="margin-right: .5em"/>
+				                <p:inputText id="globalFilter" onkeyup="PF('respTable').filter()" style="width:150px" placeholder=""/>
+				            </p:outputPanel>
+				        </f:facet>
 
-						<p:column headerText="Órgão" sortBy="#{resp.entidades.sigla}" width="20">
+						<p:column headerText="Órgão" sortBy="#{resp.entidades.sigla}" width="20" filterBy="#{resp.entidades.sigla}" filterMatchMode="contains" filterable="false">
 							<h:outputText value="#{resp.entidades.sigla}" />
 						</p:column>
 
-						<p:column headerText="Nome" sortBy="#{resp.usuario.nome}" width="70">
+						<p:column headerText="Nome" sortBy="#{resp.usuario.nome}" width="70" filterBy="#{resp.usuario.nome}" filterMatchMode="contains" filterable="false">
 							<h:outputText value="#{resp.usuario.nome}" />
 						</p:column>
 
-						<p:column headerText="Nick" sortBy="#{resp.usuario.nick}" width="70">
+						<p:column headerText="Nick" sortBy="#{resp.usuario.nick}" width="70" filterBy="#{resp.usuario.nick}" filterMatchMode="contains" filterable="false">
 							<h:outputText value="#{resp.usuario.nick}" />
 						</p:column>
 
-						<p:column headerText="E-mail" sortBy="#{resp.email}" width="120">
+						<p:column headerText="E-mail" sortBy="#{resp.email}" width="120" filterBy="#{resp.email}" filterMatchMode="contains" filterable="false">
 							<h:outputText value="#{resp.email}" />
 						</p:column>
 
@@ -69,7 +76,7 @@
 						
 						<p:column headerText="Editar" width="15" style="text-align: center" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'  and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
 							<p:commandLink class="botaoLinkIcon" update="dialog" onclick="PF('editDialog').show();"
-								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) and responsavel.permissaoDeAcessoEntidades(resp.entidades.idOrgaos, resp.entidades.idEntidades) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
 							</p:commandLink>

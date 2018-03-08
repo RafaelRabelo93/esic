@@ -46,6 +46,7 @@ public class ResponsavelBean implements Serializable{
 	private boolean permissao;
 	private List<Responsavel> todosResponsaveis;
 	private static List<Responsavel> listRespDaEntidade ;
+	private List<Responsavel> responsaveisFiltrados;
 
 	
 	@PostConstruct
@@ -537,6 +538,14 @@ public class ResponsavelBean implements Serializable{
 
 	public void setListRespDaEntidade(List<Responsavel> listRespDaEntidade) {
 		this.listRespDaEntidade = listRespDaEntidade;
+	}
+
+	public List<Responsavel> getResponsaveisFiltrados() {
+		return responsaveisFiltrados;
+	}
+
+	public void setResponsaveisFiltrados(List<Responsavel> responsaveisFiltrados) {
+		this.responsaveisFiltrados = responsaveisFiltrados;
 	}
 	
 	
