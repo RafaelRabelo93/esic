@@ -14,55 +14,75 @@
 		
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
-
-			<div class="ficha">
+		
+		<h:form id="form" styleClass="ficha" style="padding: 2vh 1vw">
+		
+<!-- 			<div class="ficha"> -->
 
 				<h:outputText value="Solicitações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 
-				<h:panelGroup id="solicitacao_panel"
-					rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
+				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
 					<p:dataTable id="solicitacoes" widget="solicitacoes" var="slt"
 						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
 						expandableRowGroups="false" resizableColumns="true" liveResize="true"
 						value="#{solicitacao.filteredSolicitacoes}"
-						rowStyleClass="#{slt.status}" style="margin-bottom:1vw"
+						rowStyleClass="#{slt.status}" style="margin-bottom:1vw; width: 95vw"
 						filteredValue="#{solicitacao.filteredSolicitacoes}"
-						paginator="true" rows="50"
+						paginator="true" rows="50" styleClass="consultaTable"
+						currentPageReportTemplate="(Página {currentPage} de {totalPages})" 
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="10,25,50" rowKey="#{slt.idSolicitacao}">
+						rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}">
+						
+						<f:facet name="header">
+					        <p:commandLink id="toggler" style="float:right" styleClass="togglerBtn">
+					        	<i class="fa fa-columns"/>
+					        	<h:outputText value="Colunas" />
+					        </p:commandLink>
+					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
+					    </f:facet>
 
-						<p:column width="20" priority="3" style="text-align:center">
-							<h:panelGroup rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
-							<h:panelGroup rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup> 
-							<h:panelGroup rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup> 
+						<p:column ariaHeaderText="Icones" width="20" toggleable="false" style="text-align:center;">
+							<h:panelGroup id="iconDenuncia" rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
+								<p:tooltip for="iconDenuncia" value="Denúncia" position="right"/>
+							<h:panelGroup id="iconInfo" rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
+								<p:tooltip for="iconInfo" value="Pedido de Informação" position="right"/>
+							<h:panelGroup id="iconSol" rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup>
+								<p:tooltip for="iconSol" value="Solicitação" position="right"/>
+							<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup>
+								<p:tooltip for="iconElogio" value="Elogio" position="right"/>
+							<h:panelGroup id="iconSugestao" rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup>
+								<p:tooltip for="iconSugestao" value="Sugestão" position="right"/>
+							<h:panelGroup id="iconReclama" rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup>
+								<p:tooltip for="iconReclama" value="Reclamação" position="right"/>
 						</p:column>
 						
-						<p:column headerText="Protocolo" width="150" priority="6">
+						<p:column headerText="Protocolo" width="150" filterable="true" >
 							<h:outputText value="#{slt.protocolo}" />
 						</p:column>
 
-						<p:column headerText="Órgão" width="70" sortBy="#{slt.entidades.idOrgaos}" priority="3">
+						<p:column headerText="Órgão" width="80" filterBy="#{slt.entidades.sigla}" filterMatchMode="contains" filterable="false">
 							<h:outputText value="#{slt.entidades.sigla}" />
 						</p:column>
 
-						<p:column headerText="Título" sortBy="#{slt.titulo}" priority="4">
+						<p:column headerText="Título" sortBy="#{slt.titulo}" width="150">
 							<h:outputText value="#{slt.titulo}" />
 						</p:column>
 
-						<p:column headerText="Tipo" width="120" sortBy="#{slt.tipo}" priority="6">
+						<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}">
 							<h:outputText value="#{slt.tipo}" />
 						</p:column>
-
-						<p:column headerText="Status" width="100" sortBy="#{slt.status}" groupRow="true" priority="3">
+						
+						<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}">
+							<h:outputText value="#{slt.acoes.titulo}" />
+						</p:column>
+						
+						<p:column headerText="Status" width="100" sortBy="#{slt.status}" groupRow="true" style="text-align: center">
 							<h:outputText value="#{slt.status}" />
 						</p:column>
 
-						<p:column headerText="Cidadão" width="150"
+						<p:column headerText="Cidadão" width="150" visible="false"
 							sortBy="#{slt.cidadao.usuario.nome}"
-							rendered="#{usuario.usuario.perfil ne '3' }" priority="3">
+							rendered="#{usuario.usuario.perfil ne '3' }">
 							<h:outputText value="#{slt.cidadao.usuario.nome}" />
 						</p:column>
 
@@ -81,7 +101,7 @@
 							</h:outputText>
 						</p:column>
 
-						<p:column style="width:32px; text-align: center">
+						<p:column style="width:32px; text-align: center" toggleable="false" >
 							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 								<p:ajax listener="#{solicitacao.popularMensagens}"/>
@@ -96,7 +116,9 @@
 
 				</h:panelGroup>
 
-			</div>
+<!-- 			</div> -->
+			
+			</h:form>
 
 		<!-- Dialog Detalhe Solicitação -->
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
@@ -143,9 +165,6 @@
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</h:outputText>
 
-						<h:outputText value="Mensagens:"
-							style="color:#1a568c; font-size:18px" />
-
 					</p:panelGrid>
 
 					<!-- Caixa de mensagens -->
@@ -171,11 +190,10 @@
 												<h:outputText value="#{msg.usuario.nome}"
 													style="color:#1a568c" />
 												<h:outputText value="#{msg.data}" style="color:#1a568c">
-													<f:convertDateTime pattern="d/M/yy - hh:mm"
-														timeZone="GMT-03:00" />
+													<f:convertDateTime pattern="d/M/yy - hh:mm"	timeZone="GMT-03:00" />
 												</h:outputText>
 											</div>
-											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
+											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
 												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
@@ -269,7 +287,7 @@
 								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField respostaField">
 									<f:validateLength maximum="200" />
 								</p:inputTextarea>
-								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"  update="solicitacao_panel ">
+								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel ">
 									<h:outputText value="Enviar" />
 									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
 									<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
@@ -278,12 +296,12 @@
 							
 							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
 								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" autoResize="false" style="width:100%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
+								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
 									<f:validateLength maximum="200" />
 								</p:inputTextarea>
 								<h:outputText id="display" />
 		
-								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" update="solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
+								<p:commandLink class="botaoLink"  style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
 									<h:outputText value="Salvar" />
 									<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
 									<i class="fa fa-check" style="padding-left: 3px" />
@@ -372,7 +390,7 @@
 						<p:commandLink id="RecursoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
 								rendered="#{usuario.usuario.perfil eq '3' and solicitacao.solicitacao.tipo eq 'Informação'}" 
 								disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}" 
-								update="solicitacao_panel" styleClass="blankSquareBtn">
+								update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
 							<h:outputText value="Realizar Recurso" />
 							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />

@@ -88,6 +88,7 @@ public class SolicitacaoBean implements Serializable {
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
+	private CidadaoBean cidadaoBean;
 
 	@PostConstruct
 	public void init() { 
@@ -97,6 +98,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
 		this.anexo = new Anexo();
+		this.cidadaoBean = new CidadaoBean();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
@@ -124,6 +126,10 @@ public class SolicitacaoBean implements Serializable {
 		try {
 			
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			
+			if(solicitacao.getTipo().equals("Solicitação")) {
+				dadosRecebimentoSolicitacao(solicitacao);
+			}
 	
 			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
 			this.mensagem.setData(new Date(System.currentTimeMillis()));
@@ -145,16 +151,19 @@ public class SolicitacaoBean implements Serializable {
 	
 			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
-			page = "/Solicitacao/confirmacao";
+			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
 			page = "/index.xhtml?faces-redirect=true";
 			
+		}finally {
+			solicitacao = new Solicitacao();
+			finalizarSolicitacao();
+			return page;
 		}
-
-		return page;
+		
 	}
 	
 	public void finalizarSolicitacao() {
@@ -165,6 +174,10 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.idAcoes = 0;
 		acoesTemporaria = null;
 		idAcao = 0;
+		formaRecebimento = 0;
+		cidadaoBean.limparCidadaoBean();
+		cidadaoBean = new CidadaoBean();
+		
 	}
 
 	public void gerarDataLimite() {
@@ -175,9 +188,11 @@ public class SolicitacaoBean implements Serializable {
 
 		} else {
 			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
 			}else {
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
+//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
+				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(4)));
 			}
 			this.solicitacao.setStatus("Aberta");
 		}
@@ -204,6 +219,52 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}catch (NullPointerException e) {
 			solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
+		}
+	}
+	
+	public void dadosRecebimentoSolicitacao(Solicitacao solicitacao) {
+		switch (solicitacao.getFormaRecebimento()) {
+		case 1: 
+			enderecoRecebimentoSolicitacao(solicitacao);
+			break;
+		case 2:
+			emailRecebimentoSolicitacao(solicitacao);
+			break;
+		case 3:
+			enderecoRecebimentoSolicitacao(solicitacao);
+			emailRecebimentoSolicitacao(solicitacao);
+			break;
+		}
+	}
+	
+	public void emailRecebimentoSolicitacao(Solicitacao solicitacao) {
+		if(mudarEmail) {
+			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+cidadaoBean.getEmail()));
+		}else {
+			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+solicitacao.getCidadao().getEmail()));
+		}
+	}
+	
+	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
+		if(mudarEndereco) {
+			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
+															+ " CEP: "+ cidadaoBean.getCep()+ "\n"
+															+ "Cidade: " + cidadaoBean.getCidade() 
+															+ "  - Estado: " + cidadaoBean.getEstado() + "\n"
+															+ "Logradouro" + cidadaoBean.getEndereco()
+															+ "  - Numero: " + cidadaoBean.getNumero() + "\n"
+															+ "Complemento: " + cidadaoBean.getComplemento() 
+															+ "  - Bairro: "+ cidadaoBean.getBairro()));
+		}else {
+			Cidadao cid = solicitacao.getCidadao();
+			mensagem.setTexto(mensagem.getTexto().concat("\n\nEndereço de recebimento: \n"
+														+ "CEP: "+ cid.getCep()+ "\n"
+														+ "Cidade: " + cid.getCidade() 
+														+ "  -  Estado: " + cid.getEstado() + "\n"
+														+ "Bairro: "+ cid.getBairro() + "\n"
+														+ "Logradouro: " + cid.getEndereco()
+														+ "  -  Numero: " + cid.getNumero() + "\n"
+														+ "Complemento: " + cid.getComplemento()));
 		}
 	}
 	
@@ -314,7 +375,7 @@ public class SolicitacaoBean implements Serializable {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta";
 		}else {
-			if(ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos()) ) {
+			if(ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos(), getIdEntidades() )) {
 				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 				return "/Consulta/consulta";
 			}else {
@@ -323,6 +384,11 @@ public class SolicitacaoBean implements Serializable {
 				return null;
 			}
 		}
+	}
+	
+	public String consultarSolicitacaoEspecifica(int idEntidade) {
+		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(idEntidade);
+		return "/Consulta/consulta";
 	}
 	
 
@@ -481,15 +547,20 @@ public class SolicitacaoBean implements Serializable {
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
-			return constanteAdicionalTempo;
+			return 4;
+//			return constanteAdicionalTempo;
 		case "Prorrogada":
-			return constanteAdicionalTempo;
+			return 2;
+//			return constanteAdicionalTempo;
 		case "Respondida":
-			return constanteAdicionalTempo;
+			return 2;
+//			return constanteAdicionalTempo;
 		case "Recurso":
-			return 5;
+			return 2;
+//			return 5;
 		default:
-			return constanteTempo;
+			return 4;
+//			return constanteTempo;
 		}
 	}
 
@@ -855,6 +926,14 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setMudarEmail(boolean mudarEmail) {
 		this.mudarEmail = mudarEmail;
+	}
+
+	public CidadaoBean getCidadaoBean() {
+		return cidadaoBean;
+	}
+
+	public void setCidadaoBean(CidadaoBean cidadaoBean) {
+		this.cidadaoBean = cidadaoBean;
 	}
 	
 }

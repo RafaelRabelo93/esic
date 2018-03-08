@@ -15,72 +15,81 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
             
-			<h:form id="alterar_competencias" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '0'or usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '3'}">
+			<h:form id="alterar_competencias" styleClass="ficha" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' and usuario.usuario.perfil ne '3'}">
 					
-				<h:outputText value="Alterar competências de Órgão / Entidade" styleClass="tituloBox" style="margin-top: 2vh" />
+				<h:outputText value="Competências" styleClass="tituloBox" />
 				
-				<div class="ficha">
-					
-               			<h:panelGroup id="competencias_panel">
+				    <p:commandLink rendered="false" class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
+						action="#{competencias.save}" update="alterar_competencias:competencias_panel">
+				        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
+				        <i class="fa fa-pencil" />
+				    </p:commandLink>
+				
+				    <p:commandLink class="botaoLink" id="novaComp" onclick="PF('dlg').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"
+				    	onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaComp').click();}" style="margin-bottom: 1vh">
+				        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
+				        <i class="fa fa-plus" />
+				    </p:commandLink>
+				
+					<h:panelGroup id="competencias_panel">
 
-                            <p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
+						<p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
 
-                                <f:facet name="header">
-                                  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
-                                </f:facet>
-                                
-                                <p:column style="width:25px">
-                                    <p:rowToggler id="t" />
-                                </p:column>
-                                
-                                <p:column headerText="Ações">
-                                    <h:outputText value="#{comp.acoes.titulo}" />
-                                </p:column>
-                                
-                                <p:column headerText="Excluir" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '2' }">
-									<p:commandLink class="botaoLinkIcon" action="#{competencias.delete}" update="alterar_competencias:table">
-										<i class="fa fa-trash" style="color: white; padding-left: 3px" />
-										<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-									</p:commandLink>
-								</p:column>
-                                
-                                <p:rowExpansion>
-							        <p:panelGrid columns="2" columnClasses="label,value" style="border: none">
-							            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" />
-							            <h:outputLabel value="Descrição da competência:" for="compDesc" />
+							<f:facet name="header">
+							  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+							</f:facet>
 							
-							            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
-							            <p:inplace emptyLabel="..." editor="true">
-							            	<p:ajax event="save" listener="#{competencias.save}" update="acaoDesc" />
-							                <p:inputTextarea id="compDesc" value="#{comp.descricao}" />
-							            </p:inplace>
-							        </p:panelGrid>
-							    </p:rowExpansion>
-
-                            </p:dataTable>
-
-                        </h:panelGroup>
-					
-					<h:panelGroup styleClass="divBtn" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> 					
-					    <p:commandLink class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
-						    				 action="#{competencias.save}" update="alterar_competencias:competencias_panel">
-					        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
-					        <i class="fa fa-pencil" />
-					    </p:commandLink>
-					
-					    <p:commandLink class="botaoLink" id="novaComp" onclick="PF('dlg').show();" 
-					    onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaComp').click();}">
-					        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
-					        <i class="fa fa-plus" />
-					    </p:commandLink>
+							<p:column headerText="Ações">
+							    <h:panelGroup styleClass="column box" style="align-items: flex-start; border: none; margin: 0; padding: 0">
+								    <h:outputText value="#{comp.acoes.titulo}" style="font-weight: bold" />
+						            
+						            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" />
+						            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
+						            
+						            <h:outputLabel value="Descrição da competência:" for="compDesc" />
+					                <h:outputText id="compDesc" value="#{comp.descricao}" />
+					            </h:panelGroup>
+							</p:column>
+							
+	                        <p:column headerText="Editar" width="50" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" update="editDialog:info" onclick="PF('editDialog').show();" >
+									<i class="fa fa-pencil-square-o"/>
+									<f:setPropertyActionListener value="#{comp}" target="#{competencias.competencia}"/>
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
 					</h:panelGroup>
 				
-				</div>
-			
 			</h:form>
 			
-		<!-- Dialog Nova Competênncia -->
-			<p:dialog header="Cadastrar Competência" widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+			<!-- Dialog Editar Competênncia -->
+			<p:dialog widgetVar="editDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="editDialog">
+					<p:outputPanel id="acaoEdit" styleClass="column">
+						<h:panelGroup id="info" styleClass="box" style="border: none; padding: 0;">
+							<h:outputText value="Editar Competência" styleClass="tituloBox" style="margin-bottom: 0"/>
+	
+							<p:outputLabel value="Ação:" for="acao" />
+							<h:outputText id="acao" value="#{competencias.competencias.acoes.titulo}" />
+	
+							<p:outputLabel value="Descrição:" for="descricao" />
+							<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{competencias.competencias.descricao}"/>
+	
+							<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
+						</h:panelGroup>
+						
+						<p:commandLink class="botaoLink" action="#{competencias.save}" id="editarComp" oncomplete="PF('editDialog').hide();" update="alterar_competencias:table"
+							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarComp').click();}">
+							<h:outputText value="Salvar" />
+							<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						</p:commandLink>
+						
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+		
+		<!-- Dialog Nova Competência -->
+			<p:dialog widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 700px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
@@ -98,7 +107,12 @@
 	
 							<h:outputLabel value="Ou" style="margin: 0 5em" />
 							
-							<p:commandLink class="botaoLink" update="alterar_competencias" 	onclick="PF('dlg2').show();" >
+							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg3').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+								<i class="fa fa-plus-square" style="margin-right: 5px" />
+								<h:outputText value=" Nova Ação" />
+							</p:commandLink>
+							
+							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
 								<h:outputText value=" Nova Ação" />
 							</p:commandLink>
@@ -110,10 +124,10 @@
 						<h:outputText id="display" />
 					
 					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias dialog:dlg2 " type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
-						<h:outputText value="Adicionar"  />
+						<h:outputText value="Salvar"  />
 						<i class="fa fa-plus" style="margin-left: 5px"/>
 					</p:commandLink>
-	
+
 					</h:panelGroup>
 					
 					</p:outputPanel>
@@ -137,8 +151,34 @@
 	
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" 
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" 
 							type="submit" oncomplete="PF('dlg2').hide();" update="dialog:dlg2">
+								<h:outputText value="Salvar" style="margin-right: 5px"/>
+								<i class="fa fa-check" />
+							</p:commandLink>
+	
+						</p:outputPanel>
+					</h:form>
+	
+				</p:dialog>
+				
+			<!-- Sub Dialog Solicitar Nova Ação -->
+				<p:dialog header="Solicitar Nova Ação" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+					<h:form id="dialog3">
+
+						<p:outputPanel id="dlg3" style="max-width: 700px">
+							<p:panelGrid columns="1" style="border:none; width: 60%;">
+								<p:outputLabel value="Título:" for="titulo" />
+								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
+	
+								<p:outputLabel value="Descrição:" for="descr" />
+								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;"
+									counterTemplate="{0} caracteres restantes."
+									value="#{acoes.acao.descricao}"  />
+								<h:outputText id="display" />
+							</p:panelGrid>
+	
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:dlg2">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
 							</p:commandLink>

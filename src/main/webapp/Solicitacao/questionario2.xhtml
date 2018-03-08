@@ -15,11 +15,11 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
  
-			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' }" onmouseover="#{acoes.carregarLista()}">
+			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4'}" onmouseover="#{acoes.carregarLista()}">
 
 				<div class="ficha">
 
-					<p:steps activeIndex="1" styleClass="custom" readonly="false">
+					<p:steps activeIndex="1" styleClass="custom tres" readonly="false">
 						<p:menuitem value="Tipo de solicitação" url="/index.xhtml" />
 						<p:menuitem value="Determinar Órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#"/>

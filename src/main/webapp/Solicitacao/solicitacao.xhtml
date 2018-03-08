@@ -20,7 +20,7 @@
 				enctype="multipart/form-data" >
 
 				<div class="ficha">
-					<p:steps activeIndex="2" styleClass="custom" readonly="false">
+					<p:steps activeIndex="2" styleClass="custom tres" readonly="false">
 						<p:menuitem value="Tipo de solicitação" url="/index.xhtml"/> 
 						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
 						<p:menuitem value="Realizar Solicitação" url="#" />
@@ -63,7 +63,7 @@
 							<h:panelGroup styleClass="column" id="emailPanel" rendered="#{solicitacao.solicitacao.formaRecebimento eq '2' or solicitacao.solicitacao.formaRecebimento eq '3'}">
 								<h:panelGroup styleClass="column" rendered="#{solicitacao.mudarEmail}">
 									<p:outputLabel value="E-mail: " for="email" style="font-weight: bold"/>
-									<p:inputText id="email" value="#{cidadao.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
+									<p:inputText id="email" value="#{cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 										<f:validateLength minimum="5" maximum="100" />
 										<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 									</p:inputText>
@@ -132,19 +132,19 @@
 									<h:panelGroup styleClass="inline">
 										<h:panelGroup styleClass="column">
 											<p:outputLabel value="CEP:" />
-											<p:inputMask id="cep" value="#{cidadao.cidadao.cep}" mask="99999-999" size="10" disabled="#{!solicitacao.mudarEndereco}"/>
+											<p:inputMask id="cep" value="#{cidadao.cep}" mask="99999-999" size="10" disabled="#{!solicitacao.mudarEndereco}"/>
 										</h:panelGroup>
 			
 										<h:panelGroup styleClass="column" style="margin-left: 2vw">
 											<p:outputLabel value="Cidade:" />
-											<p:inputText id="cidade" value="#{cidadao.cidadao.cidade}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
+											<p:inputText id="cidade" value="#{cidadao.cidade}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
 												<f:validateLength maximum="45"/>
 											</p:inputText>
 										</h:panelGroup>
 			
 										<h:panelGroup styleClass="column" style="margin-left: 2vw">
 											<p:outputLabel value="Estado: " for="uf" />
-											<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" widgetVar="estado" style="width:125px" disabled="#{!solicitacao.mudarEndereco}">
+											<p:selectOneMenu id="uf" value="#{cidadao.estado}" widgetVar="estado" style="width:125px" disabled="#{!solicitacao.mudarEndereco}">
 												<f:selectItem itemLabel="Selecionar" itemValue="" />
 												<f:selectItem itemLabel="Acre" itemValue="AC" />
 												<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -179,14 +179,14 @@
 									<h:panelGroup styleClass="inline">
 										<h:panelGroup styleClass="column">
 											<p:outputLabel value="Logradouro:" />
-											<p:inputText id="rua" value="#{cidadao.cidadao.endereco}" size="40" maxlength="100" disabled="#{!solicitacao.mudarEndereco}">
+											<p:inputText id="rua" value="#{cidadao.endereco}" size="40" maxlength="100" disabled="#{!solicitacao.mudarEndereco}">
 												<f:validateLength maximum="100" />
 											</p:inputText>
 										</h:panelGroup>
 			
 										<h:panelGroup styleClass="column" style="margin-left: 2vw">
 											<p:outputLabel value="Bairro:" />
-											<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
+											<p:inputText id="bairro" value="#{cidadao.bairro}" maxlength="45" disabled="#{!solicitacao.mudarEndereco}">
 												<f:validateLength maximum="45"/>
 											</p:inputText>
 										</h:panelGroup>
@@ -195,7 +195,7 @@
 									<h:panelGroup styleClass="inline">
 										<h:panelGroup styleClass="column">
 											<p:outputLabel value="Número:" for="numero" />
-											<p:inputText id="numero" value="#{cidadao.cidadao.numero}" size="10" maxlength="5" disabled="#{!solicitacao.mudarEndereco}">
+											<p:inputText id="numero" value="#{cidadao.numero}" size="10" maxlength="5" disabled="#{!solicitacao.mudarEndereco}">
 												<f:validateLength maximum="5" />
 											</p:inputText>
 			
@@ -204,7 +204,7 @@
 										<h:panelGroup styleClass="column" style="margin-left: 2vw">
 											<p:outputLabel value="Complemento: " for="complemento" />
 											<p:inputText id="complemento"
-												value="#{cidadao.cidadao.complemento}" maxlength="200" size="40" disabled="#{!solicitacao.mudarEndereco}">
+												value="#{cidadao.complemento}" maxlength="200" size="40" disabled="#{!solicitacao.mudarEndereco}">
 												<f:validateLength maximum="200" />
 											</p:inputText>
 										</h:panelGroup>
@@ -250,6 +250,7 @@
 						<h:outputText value="Enviar" />
 						<i class="fa fa-share-square-o"	style="color: white; padding-left: 3px" />
 						<f:param name="tipo" value="#{solicitacao.solicitacao.tipo}" />
+						<f:setPropertyActionListener value="#{cidadao}" target="#{solicitacao.cidadaoBean}" />
 					</p:commandLink>
 
 				</div>

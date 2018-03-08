@@ -91,6 +91,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
 		listCompetencias.add(competencias);
+		save();
 		listaAcoesUpdate();
 		competencias = new Competencias();
 		idAcoes = 0;
@@ -149,7 +150,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() != 1 || user.getPerfil() != 3 ) {
+		if(user.getPerfil() == 2 || user.getPerfil() == 4 || user.getPerfil() == 5 ) {
 			return true;
 		}else {
 			return false;

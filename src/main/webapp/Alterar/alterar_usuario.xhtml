@@ -15,7 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 		
-			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '1' or usuario.usuario.perfil ne '6'}" prependId="false"> 
+			<h:form id="edit_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4'}" prependId="false"> 
 				
 				<div class="ficha">
 
@@ -25,38 +25,48 @@
 
 						<h:outputText value="Alterar Dados" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 
-						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" />
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{usuario.cidadao.tipo}"/>
+						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!usuario.cidadao.tipo}"/>
 
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Nome: " for="nome" />
 								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
-									 <p:keyFilter regEx="/[a-z\-\']/i"/>
+									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{usuario.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email" value="#{usuario.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
 							</h:panelGroup>
 						</h:panelGroup>
-
+						
+						<h:panelGroup id="panel" styleClass="column">
 						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-								<p:selectOneMenu id="tipo" value="#{usuario.cidadao.tipo}">
+								<p:selectOneRadio id="tipo" value="#{usuario.cidadao.tipo}" layout="pageDirection">
 									<f:selectItem itemLabel="Física" itemValue="true" />
 									<f:selectItem itemLabel="Jurídica" itemValue="false" />
-								</p:selectOneMenu>
+									<p:ajax update="panel" event="change"/>
+								</p:selectOneRadio>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!usuario.cidadao.tipo}">
+								<p:outputLabel value="CNPJ:" for="cnpj"/>
+								<p:inputMask id="cnpj" value="#{usuario.cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{usuario.cidadao.tipo}">
+									<f:validator validatorId="StellaCNPJValidator" />
+								</p:inputMask>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
-								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
+								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c" disabled="#{!usuario.cidadao.tipo}"
 									showOn="button" value="#{usuario.cidadao.datanasc}"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" timeInput="false">
@@ -64,10 +74,9 @@
 								</p:calendar>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"
-									layout="pageDirection">
+								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
@@ -75,32 +84,30 @@
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="inline">
-							<h:panelGroup styleClass="column">
-								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}"
-									mask="999.999.999-99" />
+							<h:panelGroup styleClass="column" rendered="#{usuario.cidadao.tipo}">
+								<p:outputLabel value="CPF:" for="cpf"/>
+								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}">
+									<f:validator validatorId="StellaCPFValidator" />
+								</p:inputMask>
 							</h:panelGroup>
-
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{usuario.cidadao.rg}"
-									mask="?9999999999999999" />
+								<p:inputMask id="rg" value="#{cidadao.rg}" mask="?9999999999999999" disabled="#{!usuario.cidadao.tipo}"/>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-								<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}"
-									size="15">
+								<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" size="15" disabled="#{!usuario.cidadao.tipo}">
 									<f:validateLength maximum="45" />
 								</p:inputText>
 							</h:panelGroup>
 						</h:panelGroup>
 
-						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;" rendered="#{usuario.cidadao.tipo}">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Escolaridade: " for="escolaridade" />
-								<p:selectOneMenu id="escolaridade"
-									value="#{usuario.cidadao.escolaridade}">
+								<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}" disabled="#{!usuario.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
@@ -114,9 +121,9 @@
 								</p:selectOneMenu>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Renda:" for="renda" />
-								<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}">
+								<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}" disabled="#{!usuario.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Sem renda" itemValue="0" />
 									<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
@@ -125,13 +132,12 @@
 									<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
 									<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
 								</p:selectOneMenu>
-								<p:outputLabel value="* SM = Salário Mínimo"
-									style="color:gray; font-size:12px; margin: 0" />
+								<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0" />
 							</h:panelGroup>
 						</h:panelGroup>
+						</h:panelGroup>
 
-						<h:outputText value="Endereço"
-							style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+						<h:outputText value="Endereço" style="color:#1a568c; font-size:25px; margin-top: 1em;" />
 
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
@@ -183,15 +189,14 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Logradouro:" />
-								<p:inputText id="rua" value="#{usuario.cidadao.endereco}"
-									size="40" maxlength="100">
+								<p:inputText id="rua" value="#{usuario.cidadao.endereco}" size="40" maxlength="100">
 									<f:validateLength maximum="100" />
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Bairro:" />
-								<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" maxlength="45">
+								<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" size="29" maxlength="45">
 									<f:validateLength maximum="45"/>
 								</p:inputText>
 							</h:panelGroup>
@@ -210,8 +215,7 @@
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Complemento: " for="complemento" />
 								<p:inputText id="complemento"
-									value="#{usuario.cidadao.complemento}" maxlength="200"
-									size="40">
+									value="#{usuario.cidadao.complemento}" maxlength="200" size="59">
 									<f:validateLength maximum="200" />
 								</p:inputText>
 							</h:panelGroup>
@@ -262,11 +266,12 @@
 
             function limpa_formulário_cep() {
                 // Limpa valores do formulário de cep.
-                $("#cep").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#rua").val("");
-                PF('estado').selectValue("");
+				$("#cpf").val("");
+				$("#cep").val("");
+				$("#bairro").val("");
+				$("#cidade").val("");
+				$("#rua").val("");
+				PF('estado').selectValue("");
             }
             
             //Quando o campo cep perde o foco.
@@ -317,7 +322,7 @@
                     limpa_formulário_cep();
                 }
             });
-        });
+		});
 
     </script>
 

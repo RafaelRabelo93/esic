@@ -14,6 +14,7 @@ import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.entity.Acoes;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
 
 
@@ -27,13 +28,21 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private int idAcao;
 	public static List<Acoes> acoes;
 	private String titulo;
+	private List<Acoes>  acoesPendentes;
+	private List<Acoes>  acoesNaoVinculadas;
+	private List<Acoes>  acoesVinculadas;
 	
 	
 	@PostConstruct
 	public void init() {
 		acao = new Acoes();
-		carregarLista();
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
+		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
+		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
+		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+		acoes = new ArrayList<Acoes>(acoesVinculadas);
+		acoes.addAll(acoesNaoVinculadas);		
+
 	}
 	
 	public static void carregarLista() {
@@ -50,18 +59,29 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	
 	public void save() {
 		if(verificaPermissao() ) {
-			AcoesDAO.saveOrUpdate(acao);
-			acoes.add(acao);
+			if(usuarioBean.verificaGestor()) {
+				acao.setStatus("Não-vinculada");
+				AcoesDAO.saveOrUpdate(acao);
+				getAcoesNaoVinculadas().add(acao);
+				getAcoes().add(acao);
+			}else if(usuarioBean.verificaResponsavel() || usuarioBean.verificaResponsavelCidadaoPerfil() ){
+				acao.setStatus("Pendente");
+				AcoesDAO.saveOrUpdate(acao);
+				getAcoesPendentes().add(acao);
+			}
 		}
 		acao = new Acoes();
 	}
 	
-	public void delete() {
+	public void remove(Acoes acao) {
 		if(verificaPermissao() ) {
-			int ind = acoes.indexOf(acao);
-			acoes.remove(ind);
+			acoes.remove(acao);
+			if(acao.getStatus().equals("Pendente")) {
+				getAcoesPendentes().remove(acao);
+			}else if( acao.getStatus().equals("Não-vincualada")) {
+				getAcoesNaoVinculadas().remove(acao);
+			}
 			AcoesDAO.delete(acao);
-			acao = new Acoes();
 		}
 	}
 
@@ -79,7 +99,19 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return "cad_competencias2";
 	}
 	
-	public List<Acoes> AcaoLigadaEntidadeAtiva() {
+	public void listarAcoesPendentes(){
+		acoesPendentes = AcoesDAO.listPorStatus("Pendente");
+	}
+
+	public void listarAcoesNaoVinculadas(){
+		acoesNaoVinculadas = AcoesDAO.listPorStatus("Não-vinculada");
+	}
+
+	public void listarAcoesVinculadas(){
+		acoesVinculadas = AcoesDAO.listPorStatus("Vinculada");
+	}
+	
+	public List<Acoes> acaoLigadaEntidadeAtiva() {
 
 		Iterator<Acoes> a = acoes.iterator();
 		while (a.hasNext()) {
@@ -99,10 +131,18 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return acoes;
 	}
 	
+	public void autenticaAcao(Acoes acao) {
+		acao.setStatus("Não-vinculada");
+		AcoesDAO.saveOrUpdate(acao);
+		getAcoesPendentes().remove(acao);
+		getAcoesNaoVinculadas().add(acao);
+		getAcoes().add(acao);
+	}
+	
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() != 4 || usuarioBean.getUsuario().getPerfil() != 5 || usuarioBean.getUsuario().getPerfil() != 6 ) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil()) {
 			return true;
 		}else {
 			return false;
@@ -110,7 +150,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	public String redirecionarConsultaAcoes() {
-		carregarLista();
 		return "/Consulta/consulta_acoes.xhtml?faces-redirect=true";
 	}
 
@@ -118,6 +157,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		return "/Cadastro/cad_acoes.xhtml?faces-redirect=true";
 	}
+	
 	
 	
 	
@@ -160,5 +200,30 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			this.titulo = titulo;
 		}
 
+		public List<Acoes> getAcoesPendentes() {
+			return acoesPendentes;
+		}
+
+		public void setAcoesPendentes(List<Acoes> acoesPendentes) {
+			this.acoesPendentes = acoesPendentes;
+		}
+
+		public List<Acoes> getAcoesNaoVinculadas() {
+			return acoesNaoVinculadas;
+		}
+
+		public void setAcoesNaoVinculadas(List<Acoes> acoesNaoVinculadas) {
+			this.acoesNaoVinculadas = acoesNaoVinculadas;
+		}
+
+		public List<Acoes> getAcoesVinculadas() {
+			return acoesVinculadas;
+		}
+
+		public void setAcoesVinculadas(List<Acoes> acoesVinculadas) {
+			this.acoesVinculadas = acoesVinculadas;
+		}
+
+		
 
 }

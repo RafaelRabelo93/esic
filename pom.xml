@@ -186,6 +186,16 @@
 			<version>1.6.0</version>
 		</dependency>
 
+
+		<!-- JavaMail API 1.6.0 -->
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
 		<!-- Md5 » 2.2.1 -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
@@ -194,7 +204,26 @@
 		</dependency>
 
 
-
+		<!-- Stella core -->
+		<dependency>
+		    <groupId>br.com.caelum.stella</groupId>
+		    <artifactId>caelum-stella-core</artifactId>
+		    <version>2.1.2</version>
+		</dependency>
+		
+		<!-- Stella bean validation -->
+		<dependency>
+		    <groupId>br.com.caelum.stella</groupId>
+		    <artifactId>caelum-stella-bean-validation</artifactId>
+		    <version>2.1.2</version>
+		</dependency>
+		
+		<!-- Stella faces -->
+		<dependency>
+		    <groupId>br.com.caelum.stella</groupId>
+		    <artifactId>caelum-stella-faces</artifactId>
+		    <version>2.1.2</version>
+		</dependency>
 
 	</dependencies>
 

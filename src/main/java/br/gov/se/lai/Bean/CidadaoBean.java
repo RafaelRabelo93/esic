@@ -32,6 +32,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private String cpf;
 	private String rg;
 	private String orgaoexp;
+	private String bairro;
+	private String complemento;
 	private Date datanasc;
 	private String sexo;
 	private int escolaridade;
@@ -53,7 +55,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao() && !cpfCadastrado(cpf) && !rgCadastrado(rg)) {
+		if ( !cpfCadastrado(cpf) && !rgCadastrado(rg)) {
 			this.usuario = usuarioBean.getUsuario();
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
@@ -61,13 +63,17 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
 			try {
-				if (getNumero().isEmpty()) { cidadao.setNumero(numero);}
+				if (!getNumero().isEmpty()) { cidadao.setNumero(numero);}
 			}catch (NullPointerException e) { cidadao.setNumero(null);} 
 			cidadao.setUsuario(this.usuario);
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
 				usuarioBean.setEmail(cidadao.getEmail());
-				usuario.getCidadaos().add(cidadao);
-				this.usuario.setPerfil((short) 3);
+				//usuario.getCidadaos().add(cidadao);
+				if(ehRepresentanteCidadao(usuario)) {
+					this.usuario.setPerfil((short) 4);
+				}else {
+					this.usuario.setPerfil((short) 3);
+				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
 			}
 			return "/index";
@@ -78,6 +84,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	@SuppressWarnings("finally")
 	public boolean cpfCadastrado(String cpf) {
 		try {
 			if (!cpf.equals("") ) {
@@ -97,6 +104,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	@SuppressWarnings("finally")
 	public boolean rgCadastrado(String rg) {
 		try {
 			if (!rg.equals("")) {
@@ -112,6 +120,14 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			}
 		} catch (Exception e) {
 		} finally {
+			return false;
+		}
+	}
+	
+	public boolean ehRepresentanteCidadao(Usuario usuario) { 
+		if(usuario.getPerfil() == 2 ) {
+			return true;
+		}else {
 			return false;
 		}
 	}
@@ -140,6 +156,17 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}else {
 			return false;
 		}
+	}
+	
+	public void limparCidadaoBean() {
+		setEmail(null);
+		setBairro(null);
+		setCep(null);
+		setComplemento(null);
+		setCidade(null);
+		setEndereco(null);
+		setEstado(null);
+		setNumero(null);
 	}
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -279,5 +306,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+	
 
 }

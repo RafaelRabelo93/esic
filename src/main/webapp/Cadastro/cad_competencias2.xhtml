@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '6'}">
+			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 				<div class="ficha">
 
@@ -36,7 +36,7 @@
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px"  >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
-								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
+								<f:selectItems value="#{acoes.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
 							</p:selectOneMenu>
 	
 							<h:outputLabel value="Ou" style="margin: 0 5em" />

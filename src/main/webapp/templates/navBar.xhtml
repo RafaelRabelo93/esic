@@ -33,7 +33,7 @@
 			</h:panelGroup>
 			
 		<!-- Solicitação Responsavel -->
-			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '6'}">
+			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 				<button class="dropbtn"> 
 					<h:commandLink action="#{solicitacao.consultarSolicitacao}">
 						<i class="fa fa-stack-exchange" />
@@ -42,10 +42,10 @@
 				</button>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '6'}" />
+			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '5'  or usuario.usuario.perfil eq '6'}" />
 			
 		<!-- Responsavel -->
-			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '6'}">
+			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '5'  or usuario.usuario.perfil eq '6'}">
 				<button class="dropbtn"> 
 					<h:commandLink action="Consulta/consulta_responsavel">
 						<i class="fa fa-users" />
@@ -54,15 +54,16 @@
 					</h:commandLink>
 				</button>
 				<div class="dropdown-content">
-					<h:commandLink value="Gerir Responsável" action="/Consulta/consulta_responsavel"/>
-					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
+
+					<h:commandLink value="Consultar Responsáveis" action="/Consulta/consulta_responsavel"/>
+					<h:commandLink value="Cadastrar Responsável" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" action="#{responsavel.redirectCadastroUsuario()}"/>
 				</div>
 			</h:panelGroup>
 			
 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '6'}" />
 			
 		<!-- Entidade -->
-		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) or usuario.usuario.perfil eq '6'}">
+		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))or usuario.usuario.perfil eq '5'  or usuario.usuario.perfil eq '6'}">
 			<button class="dropbtn"> 
 				<h:commandLink action="#{entidades.consultarEntidades}">
 						<i class="fa fa-building" />
@@ -72,14 +73,27 @@
 			</button>
 			<div class="dropdown-content">
 				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
-				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}"/>
-				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
-				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
+				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
 			</div>
 		</h:panelGroup>
 		
 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" />
 			
+		<!-- Ações -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6'}">
+			<button class="dropbtn"> 
+				<h:commandLink action="#{acoes.redirecionarConsultaAcoes()}">
+						<i class="fa fa-refresh" />
+						<h:outputText value="Ações" style="margin:0 7px"/>
+						<i class="fa fa-caret-down"/>
+				</h:commandLink>
+			</button>
+			<div class="dropdown-content">
+				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
+				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
+			</div>
+		</h:panelGroup>
+		
 		</div>
 			
 	</h:form>
