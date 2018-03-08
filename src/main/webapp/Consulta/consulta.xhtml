@@ -195,11 +195,10 @@
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
-											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<f:facet name="header">
-										           Anexos
-										        </f:facet>
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/>
+											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
+												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
+													<h:outputText value="#{anx.nome}" />
+												</h:outputLink>
 											</p:dataList>
 
 										</p:outputPanel>
