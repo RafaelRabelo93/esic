@@ -91,6 +91,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
 		listCompetencias.add(competencias);
+		save();
 		listaAcoesUpdate();
 		competencias = new Competencias();
 		idAcoes = 0;

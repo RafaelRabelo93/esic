@@ -74,7 +74,7 @@
 							<h:outputText value="#{usuario.usuario.nick}" />
 							<h:outputText value="E-mail:" style="color:#1a568c;" rendered="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' )}"/>
 							<h:outputText value="#{usuario.emailCid}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel}"/>
-							<h:outputText value="#{usuario.email}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" />
+							<h:outputText value="#{usuario.email}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" />
 							<h:outputText value="Órgão/Entidade de acesso:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}"/>
 							<h:outputText value="#{usuario.sigla}" style="white-space: pre-wrap;" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" />
 						</h:panelGrid>

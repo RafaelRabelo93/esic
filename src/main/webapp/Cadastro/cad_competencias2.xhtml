@@ -36,7 +36,7 @@
 						<h:panelGroup styleClass="inline">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px"  >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
-								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
+								<f:selectItems value="#{acoes.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
 							</p:selectOneMenu>
 	
 							<h:outputLabel value="Ou" style="margin: 0 5em" />

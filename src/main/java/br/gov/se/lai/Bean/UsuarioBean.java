@@ -71,6 +71,8 @@ public class UsuarioBean implements Serializable {
 	private String codigoURLTemporaria;
 	private static String sessionId;
 	private boolean perfilAlterarCidadaoResponsavel;
+	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
+			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -114,7 +116,7 @@ public class UsuarioBean implements Serializable {
 	 * Operações:
 	 * 
 	 * save() - Salvar novo usuário edit() - edita valores do usuário delete() -
-	 * apagar usuario sugestaoNick() - Sugerir nick para o usuário na hora de
+	 * apagar usuario gerarNick() - Sugerir nick para o usuário na hora de
 	 * preencher o cadastro de usuário verificaExistenciaNick(String nick) -
 	 * Verifica se o nick digitado/sugerido já existe, retorno booleano.
 	 * verificaSeVazio(String campo) - retorna valor booleano se determinado campo
@@ -151,6 +153,17 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public boolean nickUsuarioInvalido(String nick) {
+		boolean retorno = false;
+		for (String string : palavrasReservadas) {
+			if(nick.contains(string)) {
+				retorno =  true;
+				break;
+			}
+		}
+		return retorno;
 	}
 
 	public void cadastrarCidadao() {
@@ -230,7 +243,6 @@ public class UsuarioBean implements Serializable {
 				if (usuario.getPerfil() == 3) {
 					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 					listCidadao.get(0).setEmail(email);
-					;
 				} else {
 					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
 					listResponsavel.get(0).setEmail(email);
@@ -256,7 +268,7 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
-	public void sugestaoNick(String nome) {
+	public void gerarNick(String nome) {
 		int cont = 1;
 		String nck = "";
 		try {
@@ -273,13 +285,19 @@ public class UsuarioBean implements Serializable {
 				this.nick = nck + cont;
 			}
 			
-			if(usuario.getPerfil() == 0) {
-				this.usuario.setNick(this.nick);
-			}else {
-				this.usuarioNovo.setNick(nick);
+			if (nickUsuarioInvalido(nck)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nome de usuário inválido.", "Digite um nome válido."));
+				this.usuario.setNick(null);
+			} else {
+				if (usuario.getPerfil() == 0) {
+					this.usuario.setNick(this.nick);
+				} else {
+					this.usuarioNovo.setNick(nick);
+				}
+				nomeCompleto(usuario.getNome());
 			}
 			
-			nomeCompleto(usuario.getNome());
 
 		}
 
@@ -329,12 +347,11 @@ public class UsuarioBean implements Serializable {
 			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
 				retorno = true;
 			}
-		}else if(this.usuario.getPerfil() == (short)4) {
+		}else if(this.usuario.getPerfil() == (short)1 || this.usuario.getPerfil() == (short)4 
+				|| this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
 //			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
 //				retorno = true;
 //			}
-			retorno = true;
-		}else if (this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
 			retorno = true;
 		}
 		
@@ -437,6 +454,10 @@ public class UsuarioBean implements Serializable {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	public void palavrasReservadas() {
+		
 	}
 
 	public String alterarDadosUsuario() {

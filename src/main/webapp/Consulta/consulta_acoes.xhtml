@@ -47,14 +47,14 @@
 								<h:outputText value="#{ac.descricao}" />
 							</p:column>
 							
-							<p:column headerText="Aceitar" width="60" style="text-align: center">
+							<p:column headerText="Aceitar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
 								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="" >
 									<i class="fa fa-check" />
 								</p:commandLink>
 							</p:column>
 							
-							<p:column headerText="Recusar" width="50" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" action="#{acoes.delete}" update="form:tab:novasAcoes">
+							<p:column headerText="Recusar" width="50" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+								<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}" update="form:tab:novasAcoes">
 									<i class="fa fa-trash" style="color: white; padding-left: 3px" />
 									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
 									<p:confirm/>
@@ -180,7 +180,7 @@
 									style="font-size:14px; color:gray" />
 
 							</p:panelGrid>
-							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:tab:acoes" oncomplete="PF('newDialog').hide();" 
+							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:tab:acoes form:tab:acoesInativas form:tab:novasAcoes" oncomplete="PF('newDialog').hide();" 
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('salvarAcao').click();}">
 								<h:outputText value="Cadastrar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
