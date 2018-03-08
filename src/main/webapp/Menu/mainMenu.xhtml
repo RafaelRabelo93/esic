@@ -191,8 +191,7 @@
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
 
-							<p>Continuar cadastro como cidadão para realizar
-								manifestações.</p>
+							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
 						</h:commandLink>
 					</h:panelGroup>
 
@@ -295,10 +294,8 @@
 					</h:panelGroup>
 
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao"
-						rendered="#{usuario.responsavel.nivel ne '4'}">
-						<h:commandLink styleClass="link"
-							action="#{acoes.redirecionarConsultaAcoes()}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/exchange.png']}" width="70%" />
 
