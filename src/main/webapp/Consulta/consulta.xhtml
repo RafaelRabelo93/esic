@@ -195,11 +195,16 @@
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
-											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<f:facet name="header">
-										           Anexos
+											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
+<!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/> -->
+<!-- 											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}"> -->
+												<f:facet name="header"  >
+												<h:outputLink  value="#{anexo.downloadAnexo(msg)}">
+												Anexos
+												</h:outputLink>
 										        </f:facet>
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/>
+<!-- 													<h:outputText value="#{anexo.nomeView}" /> -->
+												
 											</p:dataList>
 
 										</p:outputPanel>
@@ -232,12 +237,6 @@
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
-											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
-													<h:outputText value="#{anexo.nomeView}" />
-												</h:outputLink>
-											</p:dataList>
-
 										</p:outputPanel>
 
 									</p:dataScroller>
@@ -269,12 +268,6 @@
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
-											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}" >
-													<h:outputText value="#{anexo.nomeView}" />
-												</h:outputLink>
-											</p:dataList>
-
 										</p:outputPanel>
 
 									</p:dataScroller>
@@ -292,7 +285,7 @@
 										styleClass="abaField respostaField">
 										<f:validateLength maximum="200" />
 									</p:inputTextarea>
-									<p:fileUpload value="#{solicitacao.file}" label="Enviar Anexo"
+									<p:fileUpload value="#{mensagem.file}" label="Enviar Anexo"
 										mode="simple" skinSimple="true"
 										style="display: flex;  align-items: center; margin-top: 15px"
 										allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"

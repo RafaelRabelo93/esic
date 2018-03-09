@@ -52,7 +52,7 @@ public class AnexoBean implements Serializable {
 			if (!file.getFileName().equals("")) {
 				String[] infoExtensao = file.getContentType().split("/")[1].split("-");
 				String extensao = "." + infoExtensao[infoExtensao.length-1];
-				String anexoNome = mensagem.getSolicitacao().getIdSolicitacao().toString()+"_"+mensagem.getSolicitacao().getMensagems().size()+ "_anexo";
+				String anexoNome = mensagem.getSolicitacao().getIdSolicitacao().toString()+"_"+mensagem.getIdMensagem()+ "_anexo";
 				
 				Path filePath = Files.createTempFile(folder,anexoNome,extensao);
 				Files.copy(input, filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -72,22 +72,22 @@ public class AnexoBean implements Serializable {
 	}
 	
 	public String downloadAnexo(Mensagem mensagem) {
-		int msgKey = 0;
-		for (Mensagem msg : mensagem.getSolicitacao().getMensagems()) {
-			if(msg != mensagem) {
-				msgKey++;
-			}else {
-				break;
-			}
-		}
+//		int msgKey = 0;
+//		for (Mensagem msg : mensagem.getSolicitacao().getMensagems()) {
+//			if(msg != mensagem) {
+//				msgKey++;
+//			}else {
+//				break;
+//			}
+//		}
 		listarFiles();
 		String retorno = null;
-		String msgKeyStr = ""+msgKey;
+//		String msgKeyStr = ""+msgKey;
 		for (File file : filesInFolder) {
 			String[] anexoNome = file.getName().split("_",4);
 			String solicitacaoNum = anexoNome[0];
 			String mensagemNum = anexoNome[1];
-			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(msgKeyStr)) {
+			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(mensagem.getIdMensagem().toString())) {
 				retorno = (Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath +"//"+file.getName())).toString();
 				nomeView = file.getName();
 				break;
