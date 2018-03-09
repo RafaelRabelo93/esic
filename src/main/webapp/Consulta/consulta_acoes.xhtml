@@ -47,9 +47,9 @@
 								</p:commandLink>
 							</p:column>
 							
-							<p:column headerText="Recusar" width="50" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:column headerText="Recusar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 								<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}" update="form:tab:novasAcoes">
-									<i class="fa fa-trash" style="color: white; padding-left: 3px" />
+									<i class="fa fa-times" style="color: white; padding: 0 2px 0 2px" />
 									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
 									<p:confirm/>
 								</p:commandLink>
