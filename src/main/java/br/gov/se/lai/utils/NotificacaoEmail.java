@@ -246,7 +246,7 @@ public class NotificacaoEmail implements Job{
 //		
 //		email.setDebug(true);  
 //		email.setHostName("smtp.expresso.se.gov.br");  
-//		email.setAuthentication("michael.mendonca","potter0159");  
+//		email.setAuthentication("michael.mendonca","015975325");  
 //		email.addTo("michael.mendonca@cge.se.gov.br"); //pode ser qualquer email  
 //		email.setFrom(remetente); //será passado o email que você fará a autenticação 
 //		email.setSubject(titulo);  

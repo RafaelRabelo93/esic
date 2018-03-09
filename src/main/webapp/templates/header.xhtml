@@ -82,7 +82,7 @@
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="column" style="margin-top: 1em">
-							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4'}" styleClass="inline" style="justify-content: space-between; width: 100%;">
+							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4' and responsavel.temPerfilAtivo()}" styleClass="inline" style="justify-content: space-between; width: 100%;">
 								<h:panelGroup>
 									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button">
 										<h:outputText value="Perfil" />
@@ -92,11 +92,11 @@
 									</h:commandLink>
 								</h:panelGroup>
 								
-								<h:panelGroup rendered="#{responsavel.temPerfilAtivo()}" >
+								<h:panelGroup>
 									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button" style="margin-left: .5em">
 										<h:outputText value="Perfil" />
 										<p:graphicImage value="#{resource['img/icon/boss.png']}" height="45px" width="45px"/>
-										<h:outputText value="Representante" />
+										<h:outputText value="Responsável" />
 										<f:setPropertyActionListener value="true" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
 									</h:commandLink>
 								</h:panelGroup>
