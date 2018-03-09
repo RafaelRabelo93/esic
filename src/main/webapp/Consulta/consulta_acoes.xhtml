@@ -42,7 +42,7 @@
 							</p:column>
 							
 							<p:column headerText="Aceitar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
-								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="" >
+								<p:commandLink class="botaoLinkIcon" update="dialog:info form" onclick="#{acoes.autenticaAcao(ac)}" >
 									<i class="fa fa-check" />
 								</p:commandLink>
 							</p:column>
