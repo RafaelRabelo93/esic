@@ -121,11 +121,11 @@
 			</h:form>
 
 		<!-- Dialog Detalhe Solicitação -->
-			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
+			<p:dialog widgetVar="detalheDialog" modal="true"  showHeader="true"
 				header="#{solicitacao.solicitacao.titulo}" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
-				onHide="PF('detalheDialog').toggleMaximize();"
+				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
 				styleClass="solicitacaoDialog">
 				<p:outputPanel id="solicitacaoDetalhe" style="display:flex; flex-flow: row; overflow-x: hidden;">
 					<h:panelGroup id="conteudo" style="padding: 10px">
@@ -198,12 +198,17 @@
 											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
 <!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/> -->
 <!-- 											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}"> -->
-												<f:facet name="header"  >
-												<h:outputLink  value="#{anexo.downloadAnexo(msg)}">
-												Anexos
-												</h:outputLink>
-										        </f:facet>
+<!-- 												<f:facet name="header"  > -->
+												<a href="#{anexo.downloadAnexo(msg)}"> Anexo</a>
+<!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}"> -->
+<!-- 												Anexos -->
+<!-- 												</h:outputLink> -->
+<!-- 										        </f:facet> -->
 <!-- 													<h:outputText value="#{anexo.nomeView}" /> -->
+
+												<p:commandButton value="Anexo" action="#{anexo.redirecionar(msg)}">
+													
+												</p:commandButton>
 												
 											</p:dataList>
 

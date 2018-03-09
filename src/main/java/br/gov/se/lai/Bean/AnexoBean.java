@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -95,6 +96,14 @@ public class AnexoBean implements Serializable {
 		}
 		return retorno;
 	}
+	
+	public void redirecionar(Mensagem msg){
+	      try {
+	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
+	      } catch (IOException ex) {
+	    	  ex.printStackTrace();
+	      }
+	  }
 
 	
 	public StreamedContent downloadArquivo(File file) {
