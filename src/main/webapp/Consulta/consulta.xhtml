@@ -284,11 +284,22 @@
 					<h:form enctype="multipart/form-data">
 						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
-								<p:outputLabel value="Mensagem de Resposta:" for="mensagem"  style="margin-bottom: 5px"/>
-								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField respostaField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel ">
+									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"
+										style="margin-bottom: 5px" />
+									<p:inputTextarea id="mensagem"
+										value="#{mensagem.mensagem.texto}" maxlength="200"
+										required="true" style="width:99%"
+										styleClass="abaField respostaField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<p:fileUpload value="#{solicitacao.file}" label="Enviar Anexo"
+										mode="simple" skinSimple="true"
+										style="display: flex;  align-items: center; margin-top: 15px"
+										allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
+										invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
+										sizeLimit="512"
+										invalidSizeMessage="O tamanho máximo permitido de 1MB." />
+									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel ">
 									<h:outputText value="Enviar" />
 									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
 									<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
