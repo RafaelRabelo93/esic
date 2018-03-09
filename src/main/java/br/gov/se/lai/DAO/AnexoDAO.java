@@ -6,6 +6,8 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 import br.gov.se.lai.entity.Anexo;
+import br.gov.se.lai.entity.Mensagem;
+import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
 public class AnexoDAO {
@@ -52,5 +54,10 @@ public class AnexoDAO {
 
 	public static List<Anexo> list() {
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Anexo> listarAnexoMensagem(int idMensagem){
+		return (List<Anexo>) Consultas.buscaPersonalizada("FROM Anexo as anx WHERE anx.mensagem.idMensagem = "+idMensagem,em);
 	}
 }

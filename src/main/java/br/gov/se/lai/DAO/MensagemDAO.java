@@ -60,6 +60,7 @@ public class MensagemDAO {
 		return (List<Mensagem>) Consultas.buscaPersonalizada("FROM Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao,em);
     }
 	
+	
 	@SuppressWarnings("unchecked")
 	public static List<Mensagem> listMensagensSolicitacao(int idSolicitacao){
 		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 1 OR msg.tipo = 2)";
