@@ -511,9 +511,14 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public boolean recursoLiberado() {
-		if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
-			return true;
-		} else {
+		try {
+
+			if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NullPointerException e) {
 			return false;
 		}
 	}
