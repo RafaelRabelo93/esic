@@ -62,6 +62,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
 	private List<Solicitacao> filteredSolicitacoes;
+	private List<Solicitacao> solicitacoesFiltradas;
 	private static List<Mensagem> mensagensSolicitacao;
 	private static final long serialVersionUID = -9191715805520708190L;
 	private Solicitacao solicitacao;
@@ -512,7 +513,6 @@ public class SolicitacaoBean implements Serializable {
 
 	public boolean recursoLiberado() {
 		try {
-
 			if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
 				return true;
 			} else {
@@ -943,4 +943,12 @@ public class SolicitacaoBean implements Serializable {
 		this.cidadaoBean = cidadaoBean;
 	}
 	
+	public List<Solicitacao> getSolicitacoesFiltradas() {
+		return solicitacoesFiltradas;
+	}
+
+	public void setSolicitacoesFiltradas(List<Solicitacao> solicitacoesFiltradas) {
+		this.solicitacoesFiltradas = solicitacoesFiltradas;
+	}
+
 }

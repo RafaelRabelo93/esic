@@ -731,10 +731,13 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
     border-radius: 0;
     background-color: #dddddd;
     color: #676767;
+    padding: 0 !important;
+    font-variant-caps: all-petite-caps;
 }
 
 .ui-datalist.ui-widget {
-    width: 25vw;
+/*     width: 25vw; */
+	width: 50%;
 }
 
 .ui-selectonemenu-label.ui-inputfield.ui-corner-all {
@@ -846,8 +849,8 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 	opacity: 0.5;
 }
 
-.ui-panelgrid-cell .ui-outputlabel, .ui-outputlabel {
-    color: #4f4f4f;
+.ui-panelgrid-cell .ui-outputlabel, .ui-outputlabel, label {
+    color: #155288;
 /*     font-variant-caps: all-petite-caps; */
 /*     font-size: 20px; */
 }
@@ -1456,7 +1459,7 @@ i.fa.fa-home {
     text-decoration: none;
     background: #155288;
     padding: .2em .5em;
-    margin-top: 10px;
+/*     margin-top: 10px; */
     border: 1px solid #155288;
     border-radius: 2px;
 }

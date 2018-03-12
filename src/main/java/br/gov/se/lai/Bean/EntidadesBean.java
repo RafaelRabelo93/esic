@@ -265,6 +265,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setTodasEntidadesAtivas(List<Entidades> todasEntidadesAtivas) {
 		this.todasEntidadesAtivas = todasEntidadesAtivas;
 	}
+
 	public List<Entidades> getEntidadesFiltradas() {
 		return entidadesFiltradas;
 	}
