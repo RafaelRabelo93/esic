@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
@@ -69,6 +71,9 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 				AcoesDAO.saveOrUpdate(acao);
 				getAcoesPendentes().add(acao);
 			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não eftuada.", "Usuário sem permissão."));
 		}
 		acao = new Acoes();
 	}

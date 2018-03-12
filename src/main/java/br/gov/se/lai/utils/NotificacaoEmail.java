@@ -120,12 +120,12 @@ public class NotificacaoEmail implements Job{
 			Responsavel resp = ResponsavelDAO.findResponsavel(ResponsavelBean.responsavelDisponivel(1, solicitacao.getEntidades().getIdEntidades()));
 //			System.out.println("Entrou em email");
 			email.setDebug(true);  
-			email.setHostName("smtp.expresso.se.gov.br");  
-			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setHostName(DadosAutenticacao.getHostNameEmail());  
+			email.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 //			email.setSmtpPort(465);
 //			email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
-			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
+			email.setFrom(DadosAutenticacao.getEmailFrom()); //será passado o email que você fará a autenticação 
 			email.setSubject(titulo);  
 			email.setMsg(mensagem);  
 			email.send();  
@@ -145,11 +145,11 @@ public class NotificacaoEmail implements Job{
 		
 		try {  
 			email.setDebug(true);  
-			email.setHostName("smtp.expresso.se.gov.br");  
-			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setHostName(DadosAutenticacao.getHostNameEmail());  
+			email.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 //			email.setSmtpPort(465);
-//			email.addTo(respDestinatario); //pode ser qualquer email  
-			email.addTo("mayara.machado@cge.se.gov.br");  
+//			email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
+			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
 			email.setFrom(respRemetente.getEmail()); 
 			email.setSubject("Trâmite Interno");  
 			email.setMsg(mensagem+" >"+respDestinatario.getEmail());  
@@ -166,17 +166,17 @@ public class NotificacaoEmail implements Job{
 		
 		try {  
 			email.setDebug(true);  
-			email.setHostName("smtp.expresso.se.gov.br");
-			email.setAuthentication("mayara.machado","abcd1234");  
+			email.setHostName(DadosAutenticacao.getHostNameEmail());  
+			email.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 //			email.setSmtpPort(465);
 			email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+			email.setFrom(DadosAutenticacao.getEmailFrom()); //será passado o email que você fará a autenticação
 //			email.addTo(respSec.get(0).getEmail().toString()); //pode ser qualquer email  
 //			email.addCc(solicitacao.getCidadao().getEmail()); //pode ser qualquer email  
 //			if(respSec.size() > 1) {
 //				email.addCc(respSec.get(1).toString());
 //			}
 //			email.addCc(respDir.get(0).toString());
-			email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
 			email.setSubject(titulo);  
 			email.setMsg(mensagem);  
 			email.send();  
@@ -220,14 +220,14 @@ public class NotificacaoEmail implements Job{
 		Email email = new SimpleEmail();
 		EmailAttachment attachment = new EmailAttachment();
 		
+		
 		email.setDebug(true);  
-		email.setHostName("smtp.expresso.se.gov.br");  
-		email.setAuthentication("mayara.machado","abcd1234");  
+		email.setHostName(DadosAutenticacao.getHostNameEmail());  
+		email.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 //		email.setSmtpPort(465);
-		email.addTo("mayara.machado@cge.se.gov.br"); 
-//		email.addCc("michael.mendonca@cge.se.gov.br");
-//		email.addTo(destinatario);  
-		email.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação 
+//		email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
+		email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+		email.setFrom(DadosAutenticacao.getEmailFrom());//será passado o email que você fará a autenticação 
 		email.setSubject(titulo);  
 		email.setMsg(mensagem+"\n\n\n\n\n\n destinatario: "+destinatario);  // só para teste  
 		email.send();  
@@ -235,24 +235,5 @@ public class NotificacaoEmail implements Job{
 	}
 	
 
-//	public static void enviarEmail(String destinatario, String remetente, String titulo, String mensagem) throws EmailException {
-//		
-//		//System.out.println("Entrou em email");
-//		//System.out.println(remetente + " - "+destinatario);
-//		
-//		
-//		Email email = new SimpleEmail();
-//		EmailAttachment attachment = new EmailAttachment();
-//		
-//		email.setDebug(true);  
-//		email.setHostName("smtp.expresso.se.gov.br");  
-//		email.setAuthentication("michael.mendonca","015975325");  
-//		email.addTo("michael.mendonca@cge.se.gov.br"); //pode ser qualquer email  
-//		email.setFrom(remetente); //será passado o email que você fará a autenticação 
-//		email.setSubject(titulo);  
-//		email.setMsg(mensagem);  
-//		email.send();  
-//		
-//	}
 	
 }
