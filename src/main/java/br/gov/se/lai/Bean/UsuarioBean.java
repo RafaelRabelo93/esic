@@ -456,10 +456,6 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
-	public void palavrasReservadas() {
-		
-	}
-
 	public String alterarDadosUsuario() {
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
 			return "Alterar/alterar_usuario";

@@ -55,8 +55,8 @@ public class ResponsavelBean implements Serializable{
 		this.responsavel = new Responsavel();
 		perfilGestorGeral();
 		pegarParamURL();
-		todosResponsaveis = ResponsavelDAO.list();
-		listRespDaEntidade = ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario());
+		todosResponsaveis = new ArrayList<>(ResponsavelDAO.list());
+		listRespDaEntidade = new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()));
 	}
 	
 	public String save() {
@@ -81,7 +81,7 @@ public class ResponsavelBean implements Serializable{
 					this.responsavel.setUsuario(this.usuario);
 					ResponsavelDAO.saveOrUpdate(responsavel);
 					UsuarioDAO.saveOrUpdate(usuario);	
-					todosResponsaveis.add(responsavel);
+//					todosResponsaveis.add(responsavel);
 					responsavel = new Responsavel();
 					idEntidade = 0;
 					nick = null;
@@ -536,6 +536,7 @@ public class ResponsavelBean implements Serializable{
 		return listRespDaEntidade;
 	}
 
+	@SuppressWarnings("static-access")
 	public void setListRespDaEntidade(List<Responsavel> listRespDaEntidade) {
 		this.listRespDaEntidade = listRespDaEntidade;
 	}

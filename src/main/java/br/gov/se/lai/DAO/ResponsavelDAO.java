@@ -109,7 +109,14 @@ public class  ResponsavelDAO {
 
     @SuppressWarnings("unchecked")
     public static List<Responsavel> list() {		
-    	return em.createNativeQuery("SELECT * FROM Responsavel ", Responsavel.class).getResultList();
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.ativo = 1");
     	
-    }    
+    	List<Responsavel> results = query.getResultList();
+    	return results;    	
+    }   
+    
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> listar(){
+    	return (List<Responsavel>) em.createNativeQuery("SELECT * FROM Responsavel", Responsavel.class).getResultList();
+    }
 }
