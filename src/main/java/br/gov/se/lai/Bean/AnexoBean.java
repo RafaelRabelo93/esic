@@ -72,7 +72,7 @@ public class AnexoBean implements Serializable {
 		} 
 	}
 	
-	public String downloadAnexo(Mensagem mensagem) {
+	public StreamedContent downloadAnexo(Mensagem mensagem) {
 //		int msgKey = 0;
 //		for (Mensagem msg : mensagem.getSolicitacao().getMensagems()) {
 //			if(msg != mensagem) {
@@ -95,12 +95,12 @@ public class AnexoBean implements Serializable {
 			}
 		}
 		
-		return retorno;
+//		return retorno;
 		
-//		InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(retorno);
-//        fileDownload = new DefaultStreamedContent(stream, "jpg", "download_esic.jpg");
-//		
-//		return fileDownload;
+		InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(retorno);
+        fileDownload = new DefaultStreamedContent(stream, "jpg", "download_esic.jpg");
+		
+		return fileDownload;
 	}
 	
 	public void redirecionar(Mensagem msg){

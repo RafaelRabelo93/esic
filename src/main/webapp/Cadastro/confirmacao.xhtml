@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 		
-			<h:form styleClass="ficha" rendered="#{usuario.usuario.perfil eq '1'}">
+			<h:form styleClass="ficha" rendered="#{!(usuario.usuario.perfil eq '1')}">
 			
 				<h:outputText value="USUÁRIO CADASTRADO COM SUCESSO" styleClass="tituloBox" style="margin-top: 5vh; display: flex; justify-content: center;" />
 				<h:outputText value="Lembre-se do seu nome de usuário (&lt;b&gt; #{usuario.usuario.nick} &lt;/b&gt;) e senha para efetuar login no sistema." escape="false" style="color: #707070; text-align: center; display: flex; justify-content: center;"/>

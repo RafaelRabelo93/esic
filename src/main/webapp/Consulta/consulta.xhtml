@@ -52,6 +52,11 @@
 								<p:inputText id="globalFilter" onkeyup="PF('slt').filter()"
 									style="width:50%" placeholder="Insira campo a ser pesquisado" />
 							</p:outputPanel>
+					    
+					    <f:facet name="filter">
+						    <p:calendar  pattern="dd/MM/yyyy">
+						        <p:ajax event="dateSelect" oncomplete="PF('slt').filter()"/>
+						    </p:calendar>
 						</f:facet>
 
 						<f:facet name="filter">
@@ -176,6 +181,7 @@
 							</p:commandLink>
 						</p:column>
 
+						</f:facet>
 					</p:dataTable>
 
 				</h:panelGroup>
@@ -244,42 +250,41 @@
 
 						<p:tabView dynamic="true" cache="true">
 							<p:tab title="Mensagens">
-								<p:dataScroller value="#{mensagem.mensagensSolicitacao}"
-									var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
+							
+									<p:dataScroller value="#{mensagem.mensagensSolicitacao}"
+										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
-									<f:facet name="loader">
-										<p:commandLink id="outrasMsgs">
-											<h:outputText value="Outras Mensagens" />
-											<br />
-											<i class="fa fa-caret-down" />
-										</p:commandLink>
-										<p:tooltip id="toolTipOutrasMsgs"
-											value="Visualizar mensagens anteriores" for="outrasMsgs"
-											position="top" style="box-shadow:none" />
-									</f:facet>
+										<f:facet name="loader">
+											<p:commandLink id="outrasMsgs">
+												<h:outputText value="Outras Mensagens" />
+												<br />
+												<i class="fa fa-caret-down" />
+											</p:commandLink>
+											<p:tooltip id="toolTipOutrasMsgs"
+												value="Visualizar mensagens anteriores" for="outrasMsgs"
+												position="top" style="box-shadow:none" />
+										</f:facet>
 
-									<p:outputPanel style="margin-top: 1vw;">
-										<div class="mensagem">
-											<h:outputText value="#{msg.usuario.nome}"
-												style="color:#1a568c" />
-											<h:outputText value="#{msg.data}" style="color:#1a568c">
-												<f:convertDateTime pattern="d/M/yy - hh:mm"
-													timeZone="GMT-03:00" />
-											</h:outputText>
-										</div>
-										<h:outputText value="#{msg.texto}"
-											style="margin-left:1vw; white-space: pre-wrap;" />
+										<p:outputPanel style="margin-top: 1vw;">
+											<div class="mensagem">
+												<h:outputText value="#{msg.usuario.nome}"
+													style="color:#1a568c" />
+												<h:outputText value="#{msg.data}" style="color:#1a568c">
+													<f:convertDateTime pattern="d/M/yy - hh:mm"	timeZone="GMT-03:00" />
+												</h:outputText>
+											</div>
+											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
+											
+											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
+												<h:outputLink id="anexo" value="#{anexo.downloadAnexo(msg)}">
+													<h:outputText value="#{anx.nome}" />
+											        <p:graphicImage value="#{anexo.redirecionar(msg)}" width="300" />
+												</h:outputLink>
+											</p:dataList>
 
-										<p:dataList value="#{msg.anexos}"
-											rendered="#{msg.anexos.size() ne '0'}" var="anx">
-											<h:outputLink value="#{anexo.downloadAnexo(msg)}">
-												<h:outputText value="Anexo" />
-											</h:outputLink>
-										</p:dataList>
+										</p:outputPanel>
 
-									</p:outputPanel>
-
-								</p:dataScroller>
+									</p:dataScroller>
 							</p:tab>
 							<p:tab title="Histórico da Solicitação"
 								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">

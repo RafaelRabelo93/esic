@@ -911,16 +911,20 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 
 /* Paginator */
 .ui-paginator {
-	background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd));
-	background: -webkit-linear-gradient(top left, #3d6ea9, #5b87bd);
-	background: -o-linear-gradient(top left, #3d6ea9, #5b87bd);
-	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
+/* 	background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd)); */ */
+/*     background: -webkit-linear-gradient(top left, #3d6ea9, #5b87bd); */
+/*     background: -o-linear-gradient(top left, #3d6ea9, #5b87bd); */
+/*     background: linear-gradient(to bottom right, #3d6ea9, #5b87bd); */
+    background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#276eb3));
+    background: -webkit-linear-gradient(top left, #135186, #276eb3);
+    background: -o-linear-gradient(top left, #135186, #276eb3);
+    background: linear-gradient(to bottom right, #135186, #276eb3);
 	
 	border: 1px solid #135186;
 }
 
 .ui-paginator .ui-paginator-page, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-rpp-options {
-	background-color: #276eb3;
+	background-color: #377cbb;
     border: 1px solid #155288;
     border-radius: 3px;
     
@@ -929,7 +933,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 a.ui-paginator-page.ui-state-default.ui-corner-all.ui-state-active {
-	background: #276eb3;
+	background: #377cbb;
 }
 
 a.ui-paginator-page.ui-state-default.ui-corner-all {
@@ -941,12 +945,9 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 }
 
 .ui-widget-header .ui-icon {
-    filter: brightness(100);
+/*     filter: brightness(100); */
 }
 
-.ui-paginator .ui-paginator-rpp-options {
-    background: #1a568c;
-}
 
 .ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
 	color: white;
@@ -986,10 +987,11 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 }
 
 .ui-datatable-header.ui-widget-header.ui-corner-top {
-	    background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd));
-    background: -webkit-linear-gradient(top left, #3d6ea9, #5b87bd);
-    background: -o-linear-gradient(top left, #3d6ea9, #5b87bd);
-    background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
+	background: #377cbb;
+    background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#377cbb));
+    background: -webkit-linear-gradient(top left, #3d6ea9, #377cbb);
+    background: -o-linear-gradient(top left, #3d6ea9, #377cbb);
+	background: linear-gradient(to bottom right, #3d6ea9, #377cbb);
     border: 1px solid #135186;
 	color: white;
 }
@@ -1457,16 +1459,22 @@ i.fa.fa-home {
 .togglerBtn {
     color: white !important;
     text-decoration: none;
-    background: #155288;
+    background: #4e7db5;
     padding: .2em .5em;
 /*     margin-top: 10px; */
     border: 1px solid #155288;
     border-radius: 2px;
+    
+    background: #135186;
+    background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd));
+    background: -webkit-linear-gradient(top left, #135186, #276eb3);
+    background: -o-linear-gradient(top left, #135186, #276eb3);
+    background: linear-gradient(to bottom right, #135186, #276eb3);
 }
 
 .togglerBtn i {
 	margin-right: .4em;
-    background: #4e7db5;
+/*     background: #155288; */
     border-radius: 5px;
 }
 
@@ -1491,4 +1499,57 @@ i.fa.fa-home {
 .ui-datatable-tablewrapper::-webkit-scrollbar-thumb {
   background-color: #ff0080 !important;
   outline: 1px solid slategrey;
+}
+
+
+/* ========================== */
+/* ====  RESPONSIVIDADE  ==== */
+/* ========================== */
+@media only screen and (max-width: 600px) {
+	
+	#title {
+		font-size: 1.5em;
+		margin: 0;
+	}
+	
+	.botao {
+		margin: 3vh 0;
+	    padding: 10px;
+	    
+	    border: 1px solid white;
+	    border-radius: 7px;
+	    
+	    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 75%, rgba(255,255,255,0.85) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0.85) 75%,rgba(255,255,255,0.85) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0.85) 75%,rgba(255,255,255,0.85) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#d9ffffff',GradientType=0 ); /* IE6-9 */
+	}
+	
+	.btnConsulta {
+		width: -webkit-fill-available;
+		width: -moz-available;
+		max-width: 320px;
+	}
+	
+	.btnConsulta > img {
+		width: -webkit-fill-available;
+		width: -moz-available;
+	}
+	
+	.btnConsulta > .column {
+		margin: 0 5px;
+	}
+	
+	.box {
+		width: -webkit-fill-available !important;
+   		width: -moz-available !important;   
+	}
+	
+	.btnConsulta .subTitulo {
+		padding: 0 10px;
+	}
+	
+	.ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
+	    width: 75% !important;
+	}
 }
