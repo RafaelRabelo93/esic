@@ -94,12 +94,20 @@ public class AnexoBean implements Serializable {
 				break;
 			}
 		}
+		
 		return retorno;
+		
+//		InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(retorno);
+//        fileDownload = new DefaultStreamedContent(stream, "jpg", "download_esic.jpg");
+//		
+//		return fileDownload;
 	}
 	
 	public void redirecionar(Mensagem msg){
 	      try {
-	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
+//	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
+	          FacesContext.getCurrentInstance().getExternalContext().redirect("file:///C:/Users/msmachado/Pictures/coentro.png");
+//	          FacesContext.getCurrentInstance().getExternalContext().redirect("http://google.com");
 	      } catch (IOException ex) {
 	    	  ex.printStackTrace();
 	      }

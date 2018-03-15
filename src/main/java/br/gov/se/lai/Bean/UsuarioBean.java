@@ -421,12 +421,14 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
-	public void redefinirSenha() {
+	public String redefinirSenha() {
 		if (!verificarParamURL()) {
 			try {
 				emailRedefinirSenha();
+				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
+				return null;
 			}
 		} else {
 			try {
@@ -449,11 +451,14 @@ public class UsuarioBean implements Serializable {
 								new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
 
 					}
+					return null;
 				}
 			} catch (EmailException e1) {
 				e1.printStackTrace();
+				return null;
 			}
 		}
+		return null;
 	}
 	
 	public String alterarDadosUsuario() {
