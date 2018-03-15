@@ -41,7 +41,7 @@
 					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
 					        
 					        <p:outputPanel styleClass="searchPanel">
-				                <h:outputText value="Pesquisar solicitação:" style="margin-right: .5em"/>
+								<i class="fa fa-search" style="color: white; margin-right: .5em"/>
 				                <p:inputText id="globalFilter" onkeyup="PF('slt').filter()" style="width:50%" placeholder="Insira campo a ser pesquisado"/>
 				            </p:outputPanel>
 					    </f:facet>
@@ -206,8 +206,9 @@
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
+												<h:outputLink id="anexo" value="#{anexo.downloadAnexo(msg)}">
 													<h:outputText value="#{anx.nome}" />
+											        <p:graphicImage value="#{anexo.downloadAnexo(msg)}" width="300" />
 												</h:outputLink>
 											</p:dataList>
 
