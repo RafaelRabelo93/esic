@@ -44,7 +44,7 @@ public class NotificacaoEmail implements Job{
 //		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
 //		String mensagem = mensagens.get(mensagens.size()-1).getTexto();
 		String mensagem = "Há uma nova mensagem de "+remetente + " para "+solicitacao.getEntidades().getSigla()+" na solicitação de protocolo "+ 
-						solicitacao.getProtocolo() + " acesse o portal do esic para visualizar. \n Acesse: http://localhost:8080/esic" + "\n"+envio[2]; 
+						solicitacao.getProtocolo() + " acesse o portal do esic para visualizar. \n Acesse:"+DadosAutenticacao.getEndereco() + "\n"+envio[2]; 
 
 		
 		try {  
@@ -188,7 +188,7 @@ public class NotificacaoEmail implements Job{
 
 	
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String email) {
-		String mensagem = "Clique no link para redefinir sua senha:  http://localhost:8080/esic/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
+		String mensagem = "Clique no link para redefinir sua senha:  "+DadosAutenticacao.getEndereco()+"/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
 		try {
 			enviarEmail(email, "Redefinição de senha", mensagem);
 
@@ -199,7 +199,7 @@ public class NotificacaoEmail implements Job{
 	}
 
 	public static void enviarEmailRequisicaoResponsavel(int idUser, int idEntidade, String emailUser,String hashcode, String email, String mensagem) {
-		mensagem += "\n\nClique no link para cadastrar usuário:  http://localhost:8080/esic/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
+		mensagem += "\n\nClique no link para cadastrar usuário:  "+DadosAutenticacao.getEndereco()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
 																								+"&user="+idUser
 																								+"&identidade="+idEntidade
 																								+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())

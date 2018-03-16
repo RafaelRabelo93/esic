@@ -35,6 +35,7 @@ public class AnexoBean implements Serializable {
 	private Anexo anexo;
 	private final String descricaoPadrao = "Anexo relacionado ao tema ";
 	private UploadedFile file;
+	private File arquivoEntrada;
 	private String descricao;
 	private String nomeView;
 	private StreamedContent fileDownload;
@@ -45,6 +46,20 @@ public class AnexoBean implements Serializable {
 	public void init() {
 		anexo = new Anexo();
 	}
+	
+	/**
+	 * Função save()
+	 * 
+	 * Função para salvar anexos.
+	 * Define diretório para armazenamento do arquivo. Recupera a extensão do arquivo, 
+	 * define nome e salva.
+	 * 
+	 * @param anexo - objeto para ser salvo.
+	 * @param mensagem - mensagem a qual o anexo será vinculado.
+	 * @param file - a mídia do anexo.
+	 * @throws IOException - caso dê erro na hora de escrever o arquivo.
+	 * @throws NullPointerException -  caso o objeto não tenha sido devidamente inicializado.
+	 */
 
 	public void save(Anexo anexo, Mensagem mensagem, UploadedFile file) throws IOException, NullPointerException{
 //		Path folder = Paths.get(filesPath);
@@ -72,7 +87,11 @@ public class AnexoBean implements Serializable {
 		} 
 	}
 	
-	public String downloadAnexo(Mensagem mensagem) {
+	/*
+	 * Ainda está dando erro
+	 */
+	
+	public File downloadAnexo(Mensagem mensagem) {
 //		int msgKey = 0;
 //		for (Mensagem msg : mensagem.getSolicitacao().getMensagems()) {
 //			if(msg != mensagem) {
@@ -89,26 +108,39 @@ public class AnexoBean implements Serializable {
 			String solicitacaoNum = anexoNome[0];
 			String mensagemNum = anexoNome[1];
 			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(mensagem.getIdMensagem().toString())) {
-				retorno = (Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath +"//"+file.getName())).toString();
+//				retorno = (Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath +"//"+file.getName())).toString();
+				arquivoEntrada = file;
 				nomeView = file.getName();
 				break;
 			}
 		}
-		return retorno;
+		
+		return arquivoEntrada;
+
 	}
+	
+	/*
+	 * Ainda está dando erro
+	 */
 	
 	public void redirecionar(Mensagem msg){
 	      try {
-	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
+//	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
+	          FacesContext.getCurrentInstance().getExternalContext().redirect("file:///C:/Users/msmachado/Pictures/coentro.png");
+//	          FacesContext.getCurrentInstance().getExternalContext().redirect("http://google.com");
 	      } catch (IOException ex) {
 	    	  ex.printStackTrace();
 	      }
 	  }
-
 	
-	public StreamedContent downloadArquivo(File file) {
+	/*
+	 * Ainda está dando erro
+	 */
+	
+	
+	public StreamedContent downloadArquivo(Mensagem msg) {
         try {
-        	File arquivo = new File(file.getPath());
+        	File arquivo = new File(downloadAnexo(msg).getPath());
         	fileDownload = (StreamedContent) arquivo;
             InputStream stream;
             stream = new FileInputStream(arquivo);
@@ -121,7 +153,10 @@ public class AnexoBean implements Serializable {
         return null;
     }
 
-	
+	/**
+	 * Função listarFiles
+	 * Lista todos os arquivos armazenados no diretório pré-definido.
+	 */
 	public static void listarFiles() {
 		try {
 			filesInFolder = (List<File>) Files.walk(Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath ))
@@ -133,6 +168,13 @@ public class AnexoBean implements Serializable {
 		}
 	}
 	
+	 /**
+	  * Função listarAnexos
+	  * Lista todos os anexos ligados a uma mensagem.
+	  *  
+	  * @param mensagem
+	  * @return
+	  */
 	public List<Anexo> listarAnexos(Mensagem mensagem){
 		return (List<Anexo>)AnexoDAO.listarAnexoMensagem(mensagem.getIdMensagem());
 	}
