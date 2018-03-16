@@ -523,4 +523,16 @@
 
 .container:hover .front {
    z-index: 0;
-} 
+}
+
+@media only screen and (max-width: 768px) {
+
+	.menu {
+		padding: 0 !important;
+	}
+	
+	.menu > span {
+		text-align: center;
+	}
+	
+}

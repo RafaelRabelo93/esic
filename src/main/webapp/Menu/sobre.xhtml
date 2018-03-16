@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/templateSemMenu.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form>
+
+				<h:panelGroup styleClass="column sobre">
+
+					<h1 style="margin-top: 0" >Sobre</h1>
+
+					<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao
+						Cidadão) permite que qualquer pessoa, física ou jurídica,
+						encaminhe pedidos de acesso a informação pública para os órgãos e
+						entidades do Poder Executivo Estadual.</p>
+
+					<p>Por meio do sistema, além de fazer o pedido, é possível
+						acompanhar o prazo e receber a resposta da solicitação por e-mail;
+						entrar com recursos e consultar as respostas recebidas.</p>
+
+					<p>Antes de solicitar uma informação, leia o Manual do Usuário
+						e conheça os procedimentos que devem ser adotados para fazer sua
+						solicitação.</p>
+
+					<h2>Do pedido de Acesso à Informação – Físico</h2>
+
+					<p>Qualquer pessoa, natural ou jurídica, poderá encaminhar o
+						pedido de acesso à informação à Controladoria Geral do Estado
+						(CGE/SE) que será responsável pelo envio aos órgãos e entidades da
+						Administração Pública Estadual.</p>
+
+					<p>O pedido será apresentado fisicamente, por meio de
+						formulário, e enviado aos respectivo endereço:</p>
+
+					<p style="margin:0 0 0 2em">Rua Vila Cristina, 1051 – Bairro 13 de Julho</p>
+					<p style="margin:0 0 0 2em">CEP: 49020-150 – Aracaju - Sergipe</p>
+					<p style="margin:0 0 0 2em">Horário de funcionamento: 7:00h às 13:00h</p>
+					<p style="margin:0 0 0 2em">Telefone: (79) 3179-3777</p>
+					<p style="margin:0 0 0 2em">Endereço Eletrônico: controladoria@cge.se.gov.br</p>
+
+					<h2>Do pedido de Acesso à Informação – Digital</h2>
+
+					<p>Qualquer pessoa, natural ou jurídica, poderá formular pedido
+						de acesso à informação aos órgãos e entidades da Administração
+						Pública Estadual.</p>
+
+					<p>O pedido será apresentado eletronicamente, por meio de
+						formulário padrão, disponibilizado no Portal de Acesso à
+						Informação www.lai.se.gov.br, pelo qual o requerente receberá a
+						resposta.</p>
+
+					<p>O prazo de resposta será contado a partir do primeiro dia
+						útil, após a data de registro do pedido no Serviço de Informações
+						ao Cidadão – SIC.</p>
+
+					<p>O pedido de acesso à informação deverá conter:</p>
+
+					<p>I – nome e endereço, completos, do requerente;</p>
+
+					<p>II – número de documento de identificação válido (CPF ou
+						CNPJ); e</p>
+
+					<p>III – especificação, de forma clara e precisa, da informação
+						requerida.</p>
+
+					<p>Não serão atendidos pedidos de acesso à informação:</p>
+
+					<p>I – genéricos; desproporcionais ou desarrazoados; ou</p>
+
+					<p>II – que exijam trabalhos adicionais de análise,
+						interpretação ou consolidação de dados e informações, ou serviços
+						de produção ou tratamento de dados, estranhos à competência e
+						atribuições do órgão ou entidade da Administração Pública
+						Estadual.</p>
+
+				</h:panelGroup>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

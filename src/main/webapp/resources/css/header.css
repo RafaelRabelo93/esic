@@ -29,7 +29,13 @@
     -webkit-align-content: center;
 	align-content: center;
 
-	margin-left: 0px;	
+	margin-left: 0px;
+	
+	background-color: #296099;
+	background: -webkit-gradient(linear, left top, right top, from(#145187), to(#296098));
+	background: -webkit-linear-gradient(left, #145187, #296098);
+	background: -o-linear-gradient(left, #145187, #296098);
+	background: linear-gradient(to right, #145187, #296098);
 }
 
 #menuAcess ul li { display: inline; }
@@ -43,10 +49,11 @@
 	display: inline-flex;
  
 	/* visual do link */	
-	color: #3e4e86;
-	font-weight: bold;
+/* 	color: #3e4e86; */
+	color: #bacee2;
+/* 	font-weight: bold; */
 	text-decoration: none;	
-	border-right:1px solid #b5b5b5;
+	border-right:1px solid #bacee2;
 }
 
 #menuAcess ul li a:hover {
@@ -74,9 +81,17 @@
 	
 /* 	background-image: linear-gradient(to top right, #135186, #3d6ea9); */
 /* 	background-color: #0f487b; */
-	border-top: 1px solid #0d3e6a;
-	border-bottom: 3px solid #3c6da8;
 /* 	background-color: #ededed; */
+	
+/* 	border-top: 1px solid #0d3e6a; */
+/* 	border-bottom: 3px solid #3c6da8; */
+	
+	background-color: #f8f8f8;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+
+
 }
 
 #divMenuDown {
@@ -127,6 +142,11 @@
 
 	margin-left: 0px;	
 	padding-right: 3%;
+	
+	background-color: #296099;
+	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
+	background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
+	background: -o-linear-gradient(top left, #135186, #3d6ea9);
 	background: linear-gradient(to bottom right, #135186, #3d6ea9);
 }
 
@@ -219,6 +239,8 @@
     
 	margin-left: auto;
 	margin-right: auto;
+	
+	border-right: 1px solid #ececec;
 }
 
 
@@ -361,7 +383,7 @@
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
 /* ========================== */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
 
 	.barraNav {
 		-moz-flex-flow: column nowrap;
