@@ -275,12 +275,6 @@
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
 											
-											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<h:outputLink id="anexo" value="#{anexo.downloadAnexo(msg)}">
-													<h:outputText value="#{anx.nome}" />
-											        <p:graphicImage value="#{anexo.redirecionar(msg)}" width="300" />
-												</h:outputLink>
-											</p:dataList>
 
 										</p:outputPanel>
 

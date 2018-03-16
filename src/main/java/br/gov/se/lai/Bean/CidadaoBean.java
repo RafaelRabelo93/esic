@@ -53,6 +53,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		cidadao = new Cidadao();	
 	}
 	
+	/**
+	 * Função save
+	 * Salva o perfil de cidadão.
+	 * @return
+	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if ( !cpfCadastrado(cpf) && !rgCadastrado(rg)) {
@@ -84,6 +89,13 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 * Função de cpfCadastrado
+	 * Verifica se o cpf inserido pelo usuário já consta no banco de dados.
+	 * 
+	 * @param cpf
+	 * @return
+	 */
 	@SuppressWarnings("finally")
 	public boolean cpfCadastrado(String cpf) {
 		try {
@@ -104,6 +116,14 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 * Função rgCadastrado
+	 * 
+	 * Verifica se o rg digitado pelo usuário já consta no banco de dados.
+	 * 
+	 * @param rg
+	 * @return
+	 */
 	@SuppressWarnings("finally")
 	public boolean rgCadastrado(String rg) {
 		try {
@@ -132,11 +152,15 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	public String delete() {
-
-		return "usuario";
-	}
 	
+	/**
+	 * Função edit
+	 * 
+	 * Atualiza a instancia de cidadão ligada ao usuário logado.
+	 *  
+	 * @return - redireciona para a página principal.
+	 * 
+	 */
 	public String edit() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if (verificaPermissao()) {
@@ -158,6 +182,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 * Função limparCidadaoBean
+	 * 
+	 * Limpa o objeto.
+	 */
 	public void limparCidadaoBean() {
 		setEmail(null);
 		setBairro(null);
