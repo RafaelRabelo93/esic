@@ -12,7 +12,50 @@
 	
 	<div class="footer">
 	
-		<p style="display:flex; color:white; align-items:center; justify-content: center; margin: 0; padding:0">Conteúdo do rodapé padrão</p>
+<!-- 		<p style="display:flex; color:white; align-items:center; justify-content: center; margin: 0; padding:0">Conteúdo do rodapé padrão</p> -->
+	
+		<h:panelGroup styleClass="column">
+	
+			<h:panelGroup styleClass="inline">
+			
+				<h:outputLink value="http://www.cge.se.gov.br/" styleClass="inline" style="text-decoration: none">
+					<h:graphicImage value="#{resource['img/brasao_governo_sergipe.png']}" style="padding: 5px" height="80" />
+					<h:panelGroup styleClass="column">
+						<h2>Controladoria Geral do Estado</h2>
+						<p>Governo do Estado de Sergipe</p>
+					</h:panelGroup>
+				</h:outputLink>
+				
+				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
+					<p style="margin-bottom: .5em">Legislação</p>
+					
+					<h:outputLink value="http://www.transparenciasergipe.se.gov.br/TRS/" styleClass="inline" style="text-decoration: none">
+						<p>Portal da Transparência de Sergipe</p>
+					</h:outputLink>
+				</h:panelGroup>
+				
+				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
+					<h:outputLink value="http://www.acessoainformacao.gov.br/acessoainformacaogov/" styleClass="inline" style="text-decoration: none; margin-bottom: .5em">
+						<p>Acesso à informação CGU</p>
+					</h:outputLink>
+					
+					<h:outputLink value="http://transparencia.gov.br/" styleClass="inline" style="text-decoration: none">
+						<p>Portal da Transparência Brasil</p>
+					</h:outputLink>
+				</h:panelGroup>
+				
+			</h:panelGroup>
+			
+			<h:panelGroup styleClass="column" style="margin-top: 2em">
+				<h2>(79) 3179-3777</h2>
+				<p>Rua Vila Cristina, 1051</p>
+				<p>13 de Julho - CEP 49020-150</p>
+				<p>Aracaju - Sergipe</p>
+				
+				<p style="margin-top: 2em">Governo do Estado de Sergipe © - 2018</p>
+			</h:panelGroup>
+			
+		</h:panelGroup>
 	
 	</div>
 	

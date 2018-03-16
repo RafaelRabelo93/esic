@@ -38,7 +38,7 @@
 				</h:commandLink>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}"/>
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}"/> -->
 			
 		<!-- Responsavel Responsável-->
 			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}">
@@ -48,7 +48,7 @@
 				</h:commandLink>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" /> -->
 		
 		<!-- Responsavel Gestor/Admin -->
 			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
@@ -63,7 +63,7 @@
 				</div>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}"/>
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}"/> -->
 			
 		<!-- Entidade -->
 		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}">
@@ -73,7 +73,7 @@
 			</h:commandLink>
 		</h:panelGroup>
 		
-		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" />
+<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
 			
 		<!-- Entidade Admin -->
 		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
@@ -88,7 +88,7 @@
 			</div>
 		</h:panelGroup>
 		
-		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" />
+<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
 		
 		<!-- Ações -->
 		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6'}">

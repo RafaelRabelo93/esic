@@ -1501,11 +1501,55 @@ i.fa.fa-home {
   outline: 1px solid slategrey;
 }
 
+.ui-separator {
+	width: 100%;
+	padding: 0px;
+	border-color: #e3e3e3;
+	margin: 1em 0;
+}
+
+.sobre {
+/* 	width: 90%; */
+	padding: 3vh;
+	background: white;
+	margin: 2vw 2vh;
+	align-self: center;
+	border: 1px solid silver;
+}
+
+p {
+	margin-top: 0;
+}
+
+h1, h2, h3 {
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #1a568c;
+	font-weight: normal;
+}
+
 
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
 /* ========================== */
+
+
+	.show-mobile {
+		display: none;
+	}
+
 @media only screen and (max-width: 600px) {
+	
+	.hide-mobile {
+		display: none !important;
+	}
+	
+	.show-mobile {
+		display: -ms-flexbox; 
+	 	display: -moz-flexbox;
+	 	display: -webkit-flex;
+	 	display: -o-flex;
+	 	display: flex;
+	}
 	
 	#title {
 		font-size: 1.5em;
@@ -1541,15 +1585,43 @@ i.fa.fa-home {
 	}
 	
 	.box {
-		width: -webkit-fill-available !important;
-   		width: -moz-available !important;   
+/* 		width: -webkit-fill-available !important; */
+/*    		width: -moz-available !important;    */
+		width: 80vw !important;
+	}
+	
+	.box p {
+		text-align: left;
+		align-self: center;
+	}
+	
+	.box span {
+		width: 100%;
 	}
 	
 	.btnConsulta .subTitulo {
 		padding: 0 10px;
 	}
 	
-	.ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield {
+	.ui-widget-header .ui-inputfield {
 	    width: 75% !important;
 	}
+	
+	.column-responsive {
+		-moz-flex-flow: column nowrap;
+	 	-ms-flex-flow: column nowrap;
+	 	-o-flex-flow: column nowrap;
+	 	-webkit-flex-flow: column nowrap;
+	 	flex-flow: column nowrap;
+	}
+	
+	.ui-inputfield {
+		width: 95% !important;
+	}
+	
+	.ui-selectonemenu {
+/* 		width: 60% !important; */
+		width: auto !important;
+	}
+	
 }
