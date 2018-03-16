@@ -41,7 +41,7 @@
 					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
 					        
 					        <p:outputPanel styleClass="searchPanel">
-				                <h:outputText value="Pesquisar solicitação:" style="margin-right: .5em"/>
+								<i class="fa fa-search" style="color: white; margin-right: .5em"/>
 				                <p:inputText id="globalFilter" onkeyup="PF('slt').filter()" style="width:50%" placeholder="Insira campo a ser pesquisado"/>
 				            </p:outputPanel>
 					    </f:facet>
@@ -204,27 +204,6 @@
 												</h:outputText>
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
-											
-											<p:dataList value="#{msg.anexos}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-<!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}" title="#{anexo.nomeView}"/> -->
-<!-- 											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}"> -->
-<!-- 												<f:facet name="header"  > -->
-												<a href="#{anexo.downloadAnexo(msg)}"> Anexo</a>
-<!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}"> -->
-<!-- 												Anexos -->
-<!-- 												</h:outputLink> -->
-<!-- 										        </f:facet> -->
-<!-- 													<h:outputText value="#{anexo.nomeView}" /> -->
-											</p:dataList>
-												<p:commandButton value="Anexo" action="#{anexo.redirecionar(msg)}">
-													
-												</p:commandButton>
-												
-<!-- 											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}"> -->
-<!-- 												<h:outputLink value="#{anexo.downloadAnexo(msg)}"> -->
-<!-- 													<h:outputText value="#{anx.nome}" /> -->
-<!-- 												</h:outputLink> -->
-<!-- 											</p:dataList> -->
 
 										</p:outputPanel>
 

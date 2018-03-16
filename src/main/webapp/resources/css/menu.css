@@ -423,9 +423,9 @@
 	-moz-perspective: 1000;
 	-ms-perspective: 1000;
 	-o-perspective: 1000;
-	margin: 0 0 20px 0;
+    margin: 10px 20px;
 	
-	width: 220px;
+/* 	width: 220px; */
 	height: 220px;
 }
 
@@ -506,7 +506,7 @@
 	
 	background: #2b629a;
     border-radius: 10px;
-    width: 210px;
+/*     width: 210px; */
     height: 210px;
 }
 
@@ -523,4 +523,16 @@
 
 .container:hover .front {
    z-index: 0;
-} 
+}
+
+@media only screen and (max-width: 768px) {
+
+	.menu {
+		padding: 0 !important;
+	}
+	
+	.menu > span {
+		text-align: center;
+	}
+	
+}

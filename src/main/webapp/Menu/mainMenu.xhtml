@@ -15,7 +15,7 @@
 			<div class="mainMenu">
 
 				<div id="title">
-					<h:outputText value="Sistema Eletrônico de" />
+					<h:outputText value="Sistema de" />
 					<br />
 					<h:outputText value="Informação ao Cidadão" />
 				</div>
@@ -160,14 +160,13 @@
 					rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 
 					<!-- LAI -->
-					<h:panelGroup class="botao">
-						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage
-								styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
-								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" />
-							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado
-								de Sergipe</p>
-						</a>
-					</h:panelGroup>
+<!-- 					<h:panelGroup class="botao"> -->
+<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
+<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
+<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
+<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado	de Sergipe</p> -->
+<!-- 						</a> -->
+<!-- 					</h:panelGroup> -->
 
 					<!-- Cadastro de usuário -->
 					<h:panelGroup class="botao"
@@ -231,14 +230,14 @@
 					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 					<!-- LAI -->
-					<h:panelGroup class="botao">
-						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage
-								styleClass="icone" value="#{resource['img/icon/ESIC.png']}"
-								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" />
-							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado
-								de Sergipe</p>
-						</a>
-					</h:panelGroup>
+<!-- 					<h:panelGroup class="botao"> -->
+<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
+<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
+<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
+<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado -->
+<!-- 								de Sergipe</p> -->
+<!-- 						</a> -->
+<!-- 					</h:panelGroup> -->
 
 <!-- 					Cadastro de usuário -->
 <!-- 					<h:panelGroup class="botao" -->
@@ -270,8 +269,7 @@
 
 					<!-- Consulta órgão/entidade -->
 					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link"
-							action="#{entidades.consultarEntidades}">
+						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/office.png']}" width="70%" />
 
@@ -282,8 +280,7 @@
 
 					<!-- Gerir responsável -->
 					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link"
-							action="/Consulta/consulta_responsavel">
+						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/businessman.png']}" width="70%" />
 
@@ -302,6 +299,18 @@
 							<h:outputText styleClass="tituloMenu" value="Ações" />
 
 							<p>Gerir ações</p>
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<!-- Cadastro de usuário -->
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/clipboard.png']}" width="70%" />
+
+							<h:outputText styleClass="tituloMenu" value="Cadastro" />
+
+							<p>Registrar usuário</p>
 						</h:commandLink>
 					</h:panelGroup>
 

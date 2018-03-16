@@ -29,7 +29,13 @@
     -webkit-align-content: center;
 	align-content: center;
 
-	margin-left: 0px;	
+	margin-left: 0px;
+	
+	background-color: #296099;
+	background: -webkit-gradient(linear, left top, right top, from(#145187), to(#296098));
+	background: -webkit-linear-gradient(left, #145187, #296098);
+	background: -o-linear-gradient(left, #145187, #296098);
+	background: linear-gradient(to right, #145187, #296098);
 }
 
 #menuAcess ul li { display: inline; }
@@ -43,10 +49,11 @@
 	display: inline-flex;
  
 	/* visual do link */	
-	color: #3e4e86;
-	font-weight: bold;
+/* 	color: #3e4e86; */
+	color: #bacee2;
+/* 	font-weight: bold; */
 	text-decoration: none;	
-	border-right:1px solid #b5b5b5;
+	border-right:1px solid #bacee2;
 }
 
 #menuAcess ul li a:hover {
@@ -74,9 +81,17 @@
 	
 /* 	background-image: linear-gradient(to top right, #135186, #3d6ea9); */
 /* 	background-color: #0f487b; */
-	border-top: 1px solid #0d3e6a;
-	border-bottom: 3px solid #3c6da8;
 /* 	background-color: #ededed; */
+	
+/* 	border-top: 1px solid #0d3e6a; */
+/* 	border-bottom: 3px solid #3c6da8; */
+	
+	background-color: #f8f8f8;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+
+
 }
 
 #divMenuDown {
@@ -127,6 +142,11 @@
 
 	margin-left: 0px;	
 	padding-right: 3%;
+	
+	background-color: #296099;
+	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
+	background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
+	background: -o-linear-gradient(top left, #135186, #3d6ea9);
 	background: linear-gradient(to bottom right, #135186, #3d6ea9);
 }
 
@@ -213,12 +233,14 @@
     font-size: 16px;    
     border: none;
     outline: none;
-    color: white;
-	padding: 0;
+    color: #333333;
+/* 	padding: 0; */
     background-color: inherit;
     
 	margin-left: auto;
 	margin-right: auto;
+	
+	border-right: 1px solid #ececec;
 }
 
 
@@ -233,6 +255,7 @@
 
 #navbar a:hover, .dropdown:hover .dropbtn {
     background-color: #3c6da8;
+    color: white;
 }
 
 .dropdown-content {
@@ -355,3 +378,55 @@
 /* .dropdown-menu > li > a:hover, .dropdown-menu > .active > a:hover { */
 /*   text-decoration: underline; */
 /* }  */
+
+
+/* ========================== */
+/* ====  RESPONSIVIDADE  ==== */
+/* ========================== */
+@media only screen and (max-width: 768px) {
+
+	.barraNav {
+		-moz-flex-flow: column nowrap;
+		-ms-flex-flow: column nowrap;
+		-o-flex-flow: column nowrap;
+		-webkit-flex-flow: column nowrap;
+		flex-flow: column nowrap;
+	}
+	
+	.barraNav > .inline {
+    	display: none;
+	}
+	
+	#barraNav ul {
+		display:-webkit-box;
+		display:-ms-flexbox;
+		display:flex
+	}
+	
+	.divMenu {
+		margin-bottom: 15px;
+	}
+	
+	.dropdown {
+		overflow: inherit;
+	}
+	
+	.dropdown a {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		-ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+	}
+	
+	.dropbtn > span {
+		display: none;
+	}
+	
+	.dropbtn > i {
+		margin: 0 5px;
+	}
+}
