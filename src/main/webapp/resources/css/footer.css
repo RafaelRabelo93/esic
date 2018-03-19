@@ -29,3 +29,10 @@
 	color:white;
 	margin: 0;
 }
+
+a:hover.footerLink {
+    text-decoration: underline white;
+}
+a.footerLink {
+    text-decoration: none;
+}

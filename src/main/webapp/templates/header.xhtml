@@ -47,8 +47,7 @@
 						
 						<li><h:outputLink value="../../esic/Menu/contato.xhtml">Fale Conosco</h:outputLink></li>
 
-						<li><p:commandButton id="Login" value="Login" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
-								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
+						<li><p:commandButton id="Login" value="Login" icon="fa fa-sign-in" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
