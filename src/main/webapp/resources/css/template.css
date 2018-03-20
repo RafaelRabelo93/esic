@@ -1,9 +1,11 @@
 #content1 {
-    min-height: 85.5vh;
+    min-height: 54.5vh;
+    background: rgba(255, 255, 255, 0.5);
 }
 
 #content2 {
-    min-height: 80.5vh;
+    min-height: 50.5vh;
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .cad_form {
@@ -642,9 +644,13 @@
 	padding: 0 3px;
 }
 
+.ui-selectonemenu-panel .ui-selectonemenu-list {
+    max-width: 50vw;
+}
+
 .ui-selectonemenu-panel .ui-selectonemenu-list-item {
     white-space: normal !important;
-    max-width: 50vw !important;
+/*     max-width: 50vw !important; */
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
@@ -1527,6 +1533,11 @@ h1, h2, h3 {
 	font-weight: normal;
 }
 
+.ui-button-icon-left {
+	left: .9em !important;
+	border-radius: 0;
+}
+
 
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
@@ -1624,4 +1635,25 @@ h1, h2, h3 {
 		width: auto !important;
 	}
 	
+}
+
+
+@media (min-width: 1200px)
+.ficha {
+    width: 1000px;
+}
+
+@media (min-width: 1200px)
+.ficha {
+    width: 1170px;
+}
+
+@media (min-width: 992px)
+.ficha {
+    width: 970px;
+}
+
+@media (min-width: 768px)
+.ficha {
+    width: 750px;
 }
