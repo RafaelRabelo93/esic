@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.gov.se.lai.Bean.UsuarioBean;
 import br.gov.se.lai.entity.Entidades;
@@ -119,8 +120,13 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarGeral() {
-			return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();
-
-	}
+		String status = "Finalizada";
+		Query query = em.createQuery("FROM Solicitacao as slt WHERE slt.status !=  :sltParam");
+		query.setParameter("sltParam", status);
+    	
+    	List<Solicitacao> results = query.getResultList();
+    	return results;    	
+    } 
+		
 
 }

@@ -90,11 +90,8 @@ public class UsuarioBean implements Serializable {
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
 					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 0 10 * * ?")).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
-//			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
-//			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
-//			 scheduler.scheduleJob(jobEmail, triggerEmail);
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
 		}
@@ -491,9 +488,13 @@ public class UsuarioBean implements Serializable {
 		String retorno = null;
 		if (!verificarParamURL()) {
 			try {
-				emailRedefinirSenha();
-				retorno = "/Menu/confirmaEmail.xhtml?faces-redirect=true";
+				if(emailRedefinirSenha()) {
+					retorno = "/index.xhtml?faces-redirect=true";
+				}else {
+					retorno = "/Menu/erroEmail.xhtml?faces-redirect=true";
+				}
 			} catch (Exception e) {
+				retorno = "/Menu/erroEmail.xhtml";
 				e.printStackTrace();
 			}
 		} else {
@@ -515,12 +516,13 @@ public class UsuarioBean implements Serializable {
 					} else {
 						FacesContext.getCurrentInstance().addMessage(null,
 								new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
+						retorno = "/Menu/erroEmail.xhtml";
 
 					}
 				}
 			} catch (EmailException e1) {
 				e1.printStackTrace();
-				retorno = "/Menu/erroEmail.xhtml?faces-redirect=true";
+				retorno = "/Menu/confirmaEmail.xhtml?faces-redirect=true";
 			}
 		}
 		return retorno;
@@ -570,7 +572,8 @@ public class UsuarioBean implements Serializable {
 	 * Gera texto e define para qual email estão enviando o código de reacesso.
 	 * 
 	 */
-	public void emailRedefinirSenha() {
+	public boolean emailRedefinirSenha() {
+		boolean valor = false;
 		if (!verificaSeVazio(emailRedirect)) {
 			if (tratarEmail(emailRedirect)) {
 				Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelEmail(emailRedirect);
@@ -579,6 +582,7 @@ public class UsuarioBean implements Serializable {
 					String accessKey = resp.getUsuario().getSessionId();
 					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
+					valor = true;
 				}
 
 			} else {
@@ -588,6 +592,7 @@ public class UsuarioBean implements Serializable {
 					String accessKey = cid.getUsuario().getSessionId();
 					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
+					valor = true;
 				}
 
 			}
@@ -595,8 +600,11 @@ public class UsuarioBean implements Serializable {
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo vazio", null));
+			valor = false;
 
 		}
+		
+		return valor;
 
 	}
 
