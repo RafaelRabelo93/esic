@@ -21,40 +21,46 @@
 
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
+						<h:outputText value="Alterar Dados" style="color:#1a568c; font-size:25px; align-self: center; margin-top: 1em" />
+						
 					<h:panelGroup styleClass="box">
 
-						<h:outputText value="Alterar Dados" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
-
+						<p:outputLabel value="Tipo Pessoa: " for="tipo" style="color:#1a568c; font-size:25px; margin-top: 0"/>
+						<h:panelGroup styleClass="column" style="margin-top: 1em">
+							<p:selectOneRadio id="tipo" value="#{usuario.cidadao.tipo}" layout="pageDirection">
+								<f:selectItem itemLabel="Física" itemValue="true" />
+								<f:selectItem itemLabel="Jurídica" itemValue="false" />
+								<p:ajax update="panel" event="change"/>
+							</p:selectOneRadio>
+						</h:panelGroup>
+						
+						<p:separator />
+						
 						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{usuario.cidadao.tipo}"/>
 						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!usuario.cidadao.tipo}"/>
 
+						
+						<h:panelGroup id="panel" styleClass="column">
+						
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Nome: " for="nome" />
-								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+								<p:outputLabel value="Nome completo: " for="nome" rendered="#{usuario.cidadao.tipo}"/>
+								<p:outputLabel value="Razão Social: " for="nome" rendered="#{!usuario.cidadao.tipo}"/>
+								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
 									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+							<h:panelGroup styleClass="column" >
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{usuario.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email" value="#{usuario.cidadao.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
-							</h:panelGroup>
-						</h:panelGroup>
-						
-						<h:panelGroup id="panel" styleClass="column">
-						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-								<p:selectOneRadio id="tipo" value="#{usuario.cidadao.tipo}" layout="pageDirection">
-									<f:selectItem itemLabel="Física" itemValue="true" />
-									<f:selectItem itemLabel="Jurídica" itemValue="false" />
-									<p:ajax update="panel" event="change"/>
-								</p:selectOneRadio>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!usuario.cidadao.tipo}">
@@ -136,8 +142,10 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						</h:panelGroup>
-
-						<h:outputText value="Endereço" style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+						
+						<p:separator />
+						
+						<h:outputText value="Endereço" style="color:#1a568c; font-size:25px;" />
 
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">

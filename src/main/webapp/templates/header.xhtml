@@ -43,10 +43,11 @@
 					<ul id="menuSM">
 						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
 						
-						<li><h:outputLink value="">Sobre</h:outputLink></li>
+						<li><h:outputLink value="../../esic/Menu/sobre.xhtml">Sobre</h:outputLink></li>
+						
+						<li><h:outputLink value="../../esic/Menu/contato.xhtml">Fale Conosco</h:outputLink></li>
 
-						<li><p:commandButton id="Login" value="Login" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
-								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
+						<li><p:commandButton id="Login" value="Login" icon="fa fa-sign-in" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
@@ -65,7 +66,14 @@
 								<h:outputText value="Gestor" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 							</p:commandLink>
-						</li>			
+						</li>
+						
+						<li>
+							<p:commandLink styleClass="botaoLink hide-mobile" style="background: none" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+								<h:outputText value="Sair" />
+								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
+							</p:commandLink>		
+						</li>
 					</ul>
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
@@ -114,17 +122,18 @@
 									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 								</p:commandLink>
 								
-								<p:commandLink styleClass="botaoLink"  rendered="#{usuario.usuario.perfil ne 5})" action="Alterar/alterar_senha" update="@all" type="button" style="margin-right: .5em">
+								<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button" style="margin-right: .5em">
 									<h:outputText value="Alterar Senha"/>
-									<i class="fa fa-unlock-alt" style="color: white; padding-left: 5px" />
+									<i class="fa fa-key" style="color: white; padding-left: 5px" />
 								</p:commandLink>
 								
-								<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+								<p:commandLink styleClass="botaoLink show-mobile" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
 									<h:outputText value="Sair" />
 									<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
-								</p:commandLink>						
+								</p:commandLink>
+							
 							</h:panelGroup>
-								
+							
 						</h:panelGroup>
 						
 					</p:overlayPanel>
