@@ -87,7 +87,8 @@ public class AnexoBean implements Serializable {
 		} 
 	}
 	
-	/*
+	/**
+	 * Função que recebe uma mensagem e retorna anexos ligados a ela.
 	 * Ainda está dando erro
 	 */
 	
