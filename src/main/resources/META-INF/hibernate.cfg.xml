@@ -4,9 +4,11 @@
 <hibernate-configuration>
  <session-factory name="esic">
   <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-  <property name="hibernate.connection.url">jdbc:mysql://http://172.28.64.30:3306/esic</property>
-  <property name="hibernate.connection.username">esic</property>
-  <property name="hibernate.connection.password">KhaGwX7VSwvtPtzH</property>
+<!--   <property name="hibernate.connection.url">jdbc:mysql://http://172.28.64.30:3306/esic</property> -->
+  <property name="hibernate.connection.url">jdbc:mysql://http://localhost:3306/esic</property>
+<!--   <property name="hibernate.connection.username">esic</property> -->
+  <property name="hibernate.connection.username">root</property>
+<!--   <property name="hibernate.connection.password">KhaGwX7VSwvtPtzH</property> -->
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>  
   
   <mapping package="br.gov.se.lai.entity"/>
