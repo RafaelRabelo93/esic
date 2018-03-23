@@ -34,7 +34,7 @@
 							<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5vw" width="140" height="50" />
 						</h:outputLink>
 	
-						<h:outputLink value="../../esic/index.xhtml" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
+						<h:outputLink value="#{usuario.redirecionarIndex()}" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
 <!-- 							<h:outputText value="e-SIC" /> -->
 							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
 						</h:outputLink>
@@ -43,7 +43,7 @@
 					</h:panelGroup>
 					
 					<ul id="menuSM">
-						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
+						<li><h:outputLink value="#{usuario.redirecionarIndex()}">Início</h:outputLink></li>
 						
 						<li><h:outputLink value="../../esic/Menu/sobre.xhtml">Sobre</h:outputLink></li>
 						

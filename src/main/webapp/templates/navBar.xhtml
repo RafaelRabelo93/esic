@@ -51,7 +51,7 @@
 <!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" /> -->
 		
 		<!-- Responsavel Gestor/Admin -->
-			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 				<h:commandLink action="/Consulta/consulta_responsavel" class="dropbtn">
 					<i class="fa fa-users" />
 					<h:outputText value="Responsável" style="margin:0 7px"/>

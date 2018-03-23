@@ -53,6 +53,7 @@ import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
+import br.gov.se.lai.utils.PrazosSolicitacao;
 
 @ManagedBean(name = "solicitacao")
 @SessionScoped
@@ -73,6 +74,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
+	private String tipo;
 	private String formaRecebimentoString;
 	private Calendar datafim;
 	private int idEntidades;
@@ -185,8 +187,11 @@ public class SolicitacaoBean implements Serializable {
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;
-		cidadaoBean.limparCidadaoBean();
-		cidadaoBean = new CidadaoBean();
+		try {
+			cidadaoBean.limparCidadaoBean();
+			cidadaoBean = new CidadaoBean();
+		}catch (NullPointerException e) {
+		}
 		
 	}
 
@@ -339,6 +344,7 @@ public class SolicitacaoBean implements Serializable {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
 					return "/Cadastro/cad_cidadao";
 				} else {
+					finalizarSolicitacao();
 					return "/Solicitacao/questionario1";
 				}
 			} else {
@@ -348,6 +354,19 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 	}
+	
+	/**
+	 * Função iniciarSolicitação
+	 * 
+	 * Limpar a solicitação da solicitação anterior e definir o tipo da solicitação.
+	 * @return
+	 */
+	public String iniciarSolicitacao() {
+		finalizarSolicitacao();
+		solicitacao.setTipo(this.tipo);
+		return "Solicitacao/questionario2.xhtml";
+	}
+	
 	
 	/**
 	 * Função enviarMensagemAutomatica
@@ -548,8 +567,7 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(
-					java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(solicitacao.getStatus()))));
+			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status).getTime());
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
@@ -627,25 +645,6 @@ public class SolicitacaoBean implements Serializable {
 
 	}
 
-	public static int prazoResposta(String status) {
-		switch (status) {
-		case "Aberta":
-			return 4;
-//			return constanteAdicionalTempo;
-		case "Prorrogada":
-			return 2;
-//			return constanteAdicionalTempo;
-		case "Respondida":
-			return 2;
-//			return constanteAdicionalTempo;
-		case "Recurso":
-			return 2;
-//			return 5;
-		default:
-			return 4;
-//			return constanteTempo;
-		}
-	}
 
 	public void onRowSelect(SelectEvent event) {
 		int rownum = filteredSolicitacoes.indexOf((Solicitacao) event.getObject());
@@ -705,25 +704,10 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	@SuppressWarnings("finally")
-	private boolean verificaSe24Horas() {
-		boolean retorno = false;
-		try {
-			Calendar hoje = Calendar.getInstance();
-			Calendar limite = Calendar.getInstance();
-			limite.setTime(solicitacao.getDataIni());
-			limite.add(Calendar.DATE, +1);
-			if (hoje.before(limite)) {
-				retorno = true;
-			}
-		} catch (NullPointerException e) {
-		}finally {
-			return retorno;
-		}
-	}
+
 
 	public boolean ehEncaminhavel() {
-		if (!verificaSeEncaminhada(solicitacao) && verificaSe24Horas()) {
+		if (!verificaSeEncaminhada(solicitacao) && PrazosSolicitacao.verificaSe24Horas(solicitacao)) {
 			return true;
 		} else {
 			return false;
@@ -1027,4 +1011,13 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacoesFiltradas = solicitacoesFiltradas;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	
 }

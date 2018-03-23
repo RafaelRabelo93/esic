@@ -41,7 +41,7 @@ public class verificarStatusSolicitacao implements Job {
 
 			LocalDate now = LocalDate.now();
 
-			int prazo =SolicitacaoBean.prazoResposta(solicitacao.getStatus());
+			int prazo =PrazosSolicitacao.prazoResposta(solicitacao.getStatus());
 			//Datas dos prazos para comparações
 			//LocalDate lcSolicitacaoInicio = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate inicioPrazo = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
@@ -123,7 +123,7 @@ public class verificarStatusSolicitacao implements Job {
 								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3))) {
 							solicitacao.setStatus("Respondida");
 							solicitacao.setInstancia((short)(solicitacao.getInstancia()+1));
-							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
+							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus()))));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
 							MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
 

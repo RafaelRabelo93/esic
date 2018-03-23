@@ -24,7 +24,7 @@ public class CidadaoDAO {
     			em.merge(cidadao);
     		}
             em.getTransaction().commit();  
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadao "+ cidadao.getUsuario().getNome()+" salvo(a) com sucesso!"));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadao "+ cidadao.getUsuario().getNome()+" salvo(a) com sucesso!"));
             return true;
         } catch (Exception e) {   
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar cidadao "));

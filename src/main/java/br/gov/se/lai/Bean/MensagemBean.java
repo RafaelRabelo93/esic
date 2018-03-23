@@ -32,6 +32,7 @@ import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
+import br.gov.se.lai.utils.PrazosSolicitacao;
 
 
 
@@ -99,7 +100,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
-			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
+			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 			}
