@@ -55,7 +55,7 @@
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
 								<p:password placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
-								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all growl "/>
+								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.loginSistema()}" update="@all growl "/>
 							</h:panelGrid>
 						</p:overlayPanel>
 

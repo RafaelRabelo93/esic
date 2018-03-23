@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body>
+<h:body >
 
 	<ui:composition>
 
@@ -15,11 +15,9 @@
 			<h:panelGroup class="mainMenu">
 				
 			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
-			
 				<!-- ====== MENU CIDADÃO ====== -->
 				<h:panelGroup class="menuBtn"
 					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
-
 					<h:panelGroup class="container">
 						<h:commandLink id="btnDenuncia" styleClass="link card"
 							action="#{solicitacao.Denuncia()}">
@@ -152,7 +150,7 @@
 
 
 				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '1'}">
 
 					<!-- LAI -->
 <!-- 					<h:panelGroup class="botao"> -->
@@ -215,6 +213,21 @@
 
 						</h:commandLink>
 					</h:panelGroup>
+
+				</h:panelGroup>
+				
+				<!-- ====== MENU LOGOFF ====== -->
+				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}">
+					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/>
+				</h:panelGroup>
+				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}">
+
+					<h:outputText value="ACESSO NEGADO" styleClass="tituloBox" style="margin: 0 0 0 15px"/>
+					
+				</h:panelGroup>
+
+				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}">
+					<h:outputText value="Sistema em construção." style="margin: 15px 0 0 0; font-size: 1.3em; text-align: center;"/>
 
 				</h:panelGroup>
 

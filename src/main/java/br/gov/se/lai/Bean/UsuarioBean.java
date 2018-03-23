@@ -181,6 +181,18 @@ public class UsuarioBean implements Serializable {
 		save();
 	}
 	
+	public boolean usuarioLogado() {
+		return (usuario.getNome() != null);
+	}
+	
+	public String redirecionamentoNegado() {
+		if(usuarioLogado()) {
+			return null ;
+		}else {
+			return  "/Menu/acessoNegado.xhtml?faces-redirect=true" ;
+		}
+	}
+	
 	/**
 	 * Criar um novo usuário sem sobrepor o usuário logado.
 	 * Função específica para gestor e administrador do sistema.

@@ -6,7 +6,7 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui">
 
-<h:body >
+<h:body onload="#{usuario.redirecionamentoNegado()}">
 			
 		<ui:composition template="/templates/templateSemMenu.xhtml" >
 			
@@ -15,6 +15,7 @@
 				<!-- Mensagem de Erro -->
 				<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
+				
 				<ui:include src="/Menu/mainMenu.xhtml" />
 				<ui:include src="/Menu/menuSec.xhtml" />
 			
