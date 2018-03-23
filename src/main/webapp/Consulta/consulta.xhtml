@@ -15,13 +15,27 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 		
-		<h:form id="form" styleClass="ficha">
-		
-<!-- 			<h:panelGroup styleClass="mainMenuPanel"> -->
-<!-- 				<h:panelGroup styleClass="ficha"> -->
+		<h:form id="form">
+				
+				<h:panelGroup styleClass="ficha">
 	
 					<h:outputText value="Solicitações" style="color:#1a568c; font-size:25px; padding-bottom: 1vh; align-self: center" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
-	
+					
+					<h:panelGroup id="legendaPanel" styleClass="legendaPanel" rendered="true" style="max-width: 100%; width: 100%; padding-top: 0;">
+				
+					    <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+					    	<i class="fa fa-question fa-2x" />
+					    </button>
+					    
+					    <div id="legenda" class="legendaBox" style="display: none; width: -webkit-fill-available; width: -moz-available; width: fill-available;">
+					    	<p class="title">Status da solicitação</p>
+							<p>Aberta - Solicitação realizada ainda sem resposta do órgão competente;</p>
+							<p>Respondida - Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
+							<p>Finalizada - Solicitação negada ou respondida e concluída.</p>
+					    </div>
+				    
+				    </h:panelGroup>
+						
 					<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
 						<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
 							emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
@@ -29,7 +43,7 @@
 							value="#{solicitacao.filteredSolicitacoes}"
 							rowStyleClass="#{slt.status}" style="margin-bottom:1vw;"
 							filteredValue="#{solicitacao.solicitacoesFiltradas}"
-							paginator="true" rows="50" styleClass=""
+							paginator="true" rows="50" reflow="true"
 							currentPageReportTemplate="(Página {currentPage} de {totalPages})" 
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}" scrollable="true">
@@ -127,28 +141,8 @@
 	
 					</h:panelGroup>
 	
-<!-- 				</h:panelGroup> -->
+				</h:panelGroup>
 				
-				<h:panelGroup id="legendaPanel" styleClass="legendaPanel" rendered="false">
-				
-				    <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
-				    	<i class="fa fa-question fa-2x" />
-				    </button>
-				    
-				    <div id="legenda" class="legendaBox" style="display: none;">
-				    	<p class="title">Status da solicitação</p>
-			
-						<p>Aberta - Solicitação realizada ainda sem resposta do órgão competente;</p>
-						
-						<p>Respondida - Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
-						
-						<p>Finalizada - Solicitação negada ou respondida e concluída.</p>
-						
-				    </div>
-			    
-			    </h:panelGroup>
-				
-<!-- 			</h:panelGroup> -->
 		</h:form>
 			
 
