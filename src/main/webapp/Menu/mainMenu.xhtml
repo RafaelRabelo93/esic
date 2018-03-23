@@ -10,16 +10,12 @@
 
 	<ui:composition>
 
-		<h:form class="form" id="mainMenu">
-
-			<div class="mainMenu">
-
-				<div id="title">
-					<h:outputText value="Sistema de" />
-					<br />
-					<h:outputText value="Informação ao Cidadão" />
-				</div>
-
+		<h:form class="form mainMenuPanel" id="mainMenu">
+			
+			<h:panelGroup class="mainMenu">
+				
+			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
+			
 				<!-- ====== MENU CIDADÃO ====== -->
 				<h:panelGroup class="menuBtn"
 					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
@@ -156,8 +152,7 @@
 
 
 				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup class="menuBtn"
-					rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 
 					<!-- LAI -->
 <!-- 					<h:panelGroup class="botao"> -->
@@ -315,10 +310,27 @@
 
 				</h:panelGroup>
 
-			</div>
+		    </h:panelGroup>
+			
+			<h:panelGroup styleClass="legendaPanel">
+			
+				 <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+			    	<i class="fa fa-question fa-2x" />
+			    </button>
+			    
+			    <div id="legenda" class="legendaBox" style="display: none;">
+			    	<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao Cidadão) permite que qualquer pessoa, física ou jurídica,
+			    	encaminhe pedidos de acesso a informação pública para os órgãos e entidades do Poder Executivo Estadual.</p>
+		
+					<p>Por meio do sistema, além de fazer o pedido, é possível acompanhar o prazo e receber a resposta da solicitação por e-mail; entrar com recursos e consultar as respostas recebidas.</p>
+					
+					<p>Antes de solicitar uma informação, leia o Manual do Usuário e conheça os procedimentos que devem ser adotados para fazer sua solicitação.</p>
+			    </div>
+		    
+		    </h:panelGroup>
 
 		</h:form>
-
+		
 	</ui:composition>
 
 </h:body>

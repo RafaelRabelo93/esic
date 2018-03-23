@@ -11,184 +11,146 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-
-			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true"
-				redisplay="false" life="5000" severity="info,warn,error" />
-
-			<h:form id="form" styleClass="ficha" style="padding: 2vh 1vw">
-
-				<!-- 			<div class="ficha"> -->
-
-				<h:outputText value="Solicitações"
-					style="color:#1a568c; font-size:25px; padding-bottom: 1vw;"
-					rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
-
-				<h:panelGroup id="solicitacao_panel"
-					rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
-					<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
-						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
-						expandableRowGroups="false" resizableColumns="true"
-						liveResize="true" value="#{solicitacao.filteredSolicitacoes}"
-						rowStyleClass="#{slt.status}"
-						style="margin-bottom:1vw; width: 95vw"
-						filteredValue="#{solicitacao.solicitacoesFiltradas}"
-						paginator="true" rows="50" styleClass=""
-						currentPageReportTemplate="(Página {currentPage} de {totalPages})"
-						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}">
-
-						<f:facet name="header">
-							<p:commandLink id="toggler" style="float:left"
-								styleClass="togglerBtn">
-								<i class="fa fa-columns" />
-								<h:outputText value="Colunas" />
-							</p:commandLink>
-							<p:columnToggler datasource="solicitacoes" trigger="toggler" />
-
-							<p:outputPanel styleClass="searchPanel">
-								<h:outputText value="Pesquisar solicitação:"
-									style="margin-right: .5em" />
-								<p:inputText id="globalFilter" onkeyup="PF('slt').filter()"
-									style="width:50%" placeholder="Insira campo a ser pesquisado" />
-							</p:outputPanel>
-					    
-					    <f:facet name="filter">
-						    <p:calendar  pattern="dd/MM/yyyy">
-						        <p:ajax event="dateSelect" oncomplete="PF('slt').filter()"/>
-						    </p:calendar>
-						</f:facet>
-
-						<f:facet name="filter">
-							<p:calendar pattern="dd/MM/yyyy">
-								<p:ajax event="dateSelect" oncomplete="PF('slt').filter()" />
-							</p:calendar>
-						</f:facet>
-
-						<p:column ariaHeaderText="Icones" width="20" toggleable="false"
-							style="text-align:center;">
-							<h:panelGroup id="iconDenuncia"
-								rendered="#{slt.tipo eq 'Denúncia'}">
-								<i class="fa fa-exclamation-circle" />
-							</h:panelGroup>
-							<p:tooltip for="iconDenuncia" value="Denúncia" position="right" />
-							<h:panelGroup id="iconInfo"
-								rendered="#{slt.tipo eq 'Informação'}">
-								<i class="fa fa-info" />
-							</h:panelGroup>
-							<p:tooltip for="iconInfo" value="Pedido de Informação"
-								position="right" />
-							<h:panelGroup id="iconSol"
-								rendered="#{slt.tipo eq 'Solicitação'}">
-								<i class="fa fa-hand-o-up" />
-							</h:panelGroup>
-							<p:tooltip for="iconSol" value="Solicitação" position="right" />
-							<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}">
-								<i class="fa fa-thumbs-o-up" />
-							</h:panelGroup>
-							<p:tooltip for="iconElogio" value="Elogio" position="right" />
-							<h:panelGroup id="iconSugestao"
-								rendered="#{slt.tipo eq 'Sugestão'}">
-								<i class="fa fa-comments" />
-							</h:panelGroup>
-							<p:tooltip for="iconSugestao" value="Sugestão" position="right" />
-							<h:panelGroup id="iconReclama"
-								rendered="#{slt.tipo eq 'Reclamação'}">
-								<i class="fa fa-thumbs-o-down" />
-							</h:panelGroup>
-							<p:tooltip for="iconReclama" value="Reclamação" position="right" />
-						</p:column>
-
-						<p:column headerText="Protocolo" width="150"
-							filterBy="#{slt.protocolo}" filterable="false">
-							<h:outputText value="#{slt.protocolo}" />
-						</p:column>
-
-						<p:column headerText="Órgão" width="80"
-							sortBy="#{slt.entidades.sigla}" filterBy="#{slt.entidades.sigla}"
-							filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.entidades.sigla}" />
-						</p:column>
-
-						<p:column headerText="Título" sortBy="#{slt.titulo}" width="150"
-							filterBy="#{slt.titulo}" filterMatchMode="contains"
-							filterable="false">
-							<h:outputText value="#{slt.titulo}" />
-						</p:column>
-
-						<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}"
-							filterBy="#{slt.tipo}" filterMatchMode="contains"
-							filterable="false">
-							<h:outputText value="#{slt.tipo}" />
-						</p:column>
-
-						<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}"
-							filterBy="#{slt.acoes.titulo}" filterMatchMode="contains"
-							filterable="false">
-							<h:outputText value="#{slt.acoes.titulo}" />
-						</p:column>
-
-						<p:column headerText="Status" width="100" sortBy="#{slt.status}"
-							filterBy="#{slt.status}" filterMatchMode="exact"
-							filterable="false" groupRow="false" style="text-align: center">
-							<h:outputText value="#{slt.status}" />
-						</p:column>
-
-						<p:column headerText="Cidadão" width="150" visible="false"
-							sortBy="#{slt.cidadao.usuario.nome}"
-							rendered="#{usuario.usuario.perfil ne '3' }"
-							filterBy="#{slt.cidadao.usuario.nome}" filterMatchMode="contains"
-							filterable="false">
-							<h:outputText value="#{slt.cidadao.usuario.nome}" />
-						</p:column>
-
-						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
-							width="100" style="text-align:center"
-							filterBy="#{slt.dataLimite}" filterMatchMode="exact"
-							filterable="false"
+		
+		<!-- Mensagem de Erro -->
+		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+		
+		<h:form id="form" styleClass="ficha">
+		
+<!-- 			<h:panelGroup styleClass="mainMenuPanel"> -->
+<!-- 				<h:panelGroup styleClass="ficha"> -->
+	
+					<h:outputText value="Solicitações" style="color:#1a568c; font-size:25px; padding-bottom: 1vh; align-self: center" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
+	
+					<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
+						<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
+							emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
+							expandableRowGroups="false" resizableColumns="true" liveResize="true"
+							value="#{solicitacao.filteredSolicitacoes}"
+							rowStyleClass="#{slt.status}" style="margin-bottom:1vw;"
+							filteredValue="#{solicitacao.solicitacoesFiltradas}"
+							paginator="true" rows="50" styleClass=""
+							currentPageReportTemplate="(Página {currentPage} de {totalPages})" 
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}" scrollable="true">
+							
+							<f:facet name="header">
+						        <p:commandLink id="toggler" style="float:left" styleClass="togglerBtn">
+						        	<i class="fa fa-columns"/>
+						        	<h:outputText value="Colunas" />
+						        </p:commandLink>
+						        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
+						        
+						        <p:outputPanel styleClass="searchPanel">
+									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('slt').filter()" style="width:50%" placeholder="Insira campo a ser pesquisado"/>
+					            </p:outputPanel>
+						    </f:facet>
+						    
+						    <f:facet name="filter">
+							    <p:calendar  pattern="dd/MM/yyyy">
+							        <p:ajax event="dateSelect" oncomplete="PF('slt').filter()"/>
+							    </p:calendar>
+							</f:facet>
+	
+							<p:column ariaHeaderText="Icones" width="20" toggleable="false" style="text-align:center;">
+								<h:panelGroup id="iconDenuncia" rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
+									<p:tooltip for="iconDenuncia" value="Denúncia" position="right"/>
+								<h:panelGroup id="iconInfo" rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
+									<p:tooltip for="iconInfo" value="Pedido de Informação" position="right"/>
+								<h:panelGroup id="iconSol" rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup>
+									<p:tooltip for="iconSol" value="Solicitação" position="right"/>
+								<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup>
+									<p:tooltip for="iconElogio" value="Elogio" position="right"/>
+								<h:panelGroup id="iconSugestao" rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup>
+									<p:tooltip for="iconSugestao" value="Sugestão" position="right"/>
+								<h:panelGroup id="iconReclama" rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup>
+									<p:tooltip for="iconReclama" value="Reclamação" position="right"/>
+							</p:column>
+												
+							<p:column headerText="Protocolo" width="150" filterBy="#{slt.protocolo}" filterable="false">
+								<h:outputText value="#{slt.protocolo}" />
+							</p:column>
+	
+							<p:column headerText="Órgão" width="80" sortBy="#{slt.entidades.sigla}" filterBy="#{slt.entidades.sigla}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.entidades.sigla}" />
+							</p:column>
+	
+							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" filterBy="#{slt.titulo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.titulo}" />
+							</p:column>
+	
+							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" filterBy="#{slt.tipo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.tipo}" />
+							</p:column>
+							
+							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}" filterBy="#{slt.acoes.titulo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.acoes.titulo}" />
+							</p:column>
+							
+							<p:column headerText="Status" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center">
+								<h:outputText value="#{slt.status}" />
+							</p:column>
+	
+							<p:column headerText="Cidadão" width="150" visible="false" sortBy="#{slt.cidadao.usuario.nome}" rendered="#{usuario.usuario.perfil ne '3' }" filterBy="#{slt.cidadao.usuario.nome}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.cidadao.usuario.nome}" />
+							</p:column>
+	
+							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="100" style="text-align:center" filterBy="#{slt.dataLimite}" filterMatchMode="exact" filterable="false"
 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
-							<h:outputText value="#{slt.dataLimite}"
-								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-							</h:outputText>
-							<h:outputText value=" ----------- "
-								rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
-						</p:column>
-
-						<p:column headerText="Data final" sortBy="#{slt.datafim}"
-							width="100" style="text-align:center" filterBy="#{slt.datafim}"
-							filterMatchMode="exact" filterable="false">
-							<h:outputText value=" ----------- "
-								rendered="#{slt.datafim eq null}" style="color: #c0c0c0;" />
-							<h:outputText value="#{slt.datafim}"
-								rendered="#{slt.datafim ne null}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-							</h:outputText>
-						</p:column>
-
-						<p:column style="width:32px; text-align: center"
-							toggleable="false">
-							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
-								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-								<p:ajax listener="#{solicitacao.popularMensagens}" />
-								<i class="fa fa-search" />
-								<f:setPropertyActionListener value="#{slt}"
-									target="#{solicitacao.solicitacao}" />
-								<f:setPropertyActionListener value="#{slt}"
-									target="#{mensagem.solicitacao}" />
-								<f:setPropertyActionListener value="#{slt}"
-									target="#{solicitacao.solicitacao}" />
-							</p:commandLink>
-						</p:column>
-
-						</f:facet>
-					</p:dataTable>
-
-				</h:panelGroup>
-
-				<!-- 			</div> -->
-
-			</h:form>
+								<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+								<h:outputText value=" ----------- " rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}"/>
+							</p:column>
+							
+							<p:column headerText="Data final" sortBy="#{slt.datafim}" width="100" style="text-align:center" filterBy="#{slt.datafim}" filterMatchMode="exact" filterable="false">
+								<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}" style="color: #c0c0c0;"/>
+								<h:outputText value="#{slt.datafim}" rendered="#{slt.datafim ne null}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+							</p:column>
+	
+							<p:column style="width:32px; text-align: center" toggleable="false" >
+								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
+									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+									<p:ajax listener="#{solicitacao.popularMensagens}"/>
+									<i class="fa fa-search" />
+									<f:setPropertyActionListener value="#{slt}"
+										target="#{solicitacao.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}" target="#{mensagem.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.solicitacao}" />
+								</p:commandLink>
+							</p:column>
+	
+						</p:dataTable>
+	
+					</h:panelGroup>
+	
+<!-- 				</h:panelGroup> -->
+				
+				<h:panelGroup id="legendaPanel" styleClass="legendaPanel" rendered="false">
+				
+				    <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+				    	<i class="fa fa-question fa-2x" />
+				    </button>
+				    
+				    <div id="legenda" class="legendaBox" style="display: none;">
+				    	<p class="title">Status da solicitação</p>
+			
+						<p>Aberta - Solicitação realizada ainda sem resposta do órgão competente;</p>
+						
+						<p>Respondida - Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
+						
+						<p>Finalizada - Solicitação negada ou respondida e concluída.</p>
+						
+				    </div>
+			    
+			    </h:panelGroup>
+				
+<!-- 			</h:panelGroup> -->
+		</h:form>
+			
 
 			<!-- Dialog Detalhe Solicitação -->
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
@@ -531,42 +493,43 @@
 					</h:panelGroup>
 				</p:outputPanel>
 			</p:dialog>
+<!-- JAVASCRIPT -->
+<script>
 
-			<!-- JAVASCRIPT -->
-			<script>
-				function abrirAba(aba) {
-					var x = document.getElementsByClassName("aba");
-					for (var i = 0; x.length > i; i++) {
-						x[i].style.display = "none";
-					}
-					document.getElementById(aba).style.display = "flex";
-				}
+	function abrirAba(aba) {
+	    var x = document.getElementsByClassName("aba");
+	    for (var i = 0; x.length > i ; i++) {
+	    	x[i].style.display = "none";  
+	    }
+	    document.getElementById(aba).style.display = "flex";  	    
+	}
 
-				function selecionarAba(abaBtn) {
-					var x = document.getElementsByClassName("blankSquareBtn");
-					for (var i = 0; x.length > i; i++) {
-						x[i].style.background = "#e4e4e4";
-						x[i].style.outline = "none";
-						x[i].style.border = "1px solid #e4e4e4";
-					}
+	function selecionarAba(abaBtn) {
+	    var x = document.getElementsByClassName("blankSquareBtn");
+	    for (var i = 0; x.length > i ; i++) {
+	    	x[i].style.background = "#e4e4e4";
+	    	x[i].style.outline = "none";
+	    	x[i].style.border = "1px solid #e4e4e4";
+	    }
 
-					document.getElementById(abaBtn).style.outline = "1px solid white";
-					document.getElementById(abaBtn).style.background = "white";
-					document.getElementById(abaBtn).style.border = "none";
-				}
+		document.getElementById(abaBtn).style.outline = "1px solid white";
+		document.getElementById(abaBtn).style.background = "white";
+		document.getElementById(abaBtn).style.border = "none";
+	}
 
-				function desativarCampos(abaField) {
-					var x = document.getElementsByClassName("abaField");
-					for (var i = 0; x.length > i; i++) {
-						x[i].disabled = true;
-					}
+	function desativarCampos(abaField) {
+	    var x = document.getElementsByClassName("abaField");
+	    for (var i = 0; x.length > i ; i++) {
+	    	x[i].disabled = true;
+	    }
 
-					var y = document.getElementsByClassName(abaField);
-					for (var i = 0; y.length > i; i++) {
-						y[i].disabled = false;
-					}
-				}
-			</script>
+	    var y = document.getElementsByClassName(abaField);
+	    for (var i = 0; y.length > i ; i++) {
+	    	y[i].disabled = false;
+	    }
+	}
+
+</script>
 
 
 		</ui:define>
