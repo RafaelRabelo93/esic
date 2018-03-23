@@ -74,6 +74,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
+	private String tipo;
 	private String formaRecebimentoString;
 	private Calendar datafim;
 	private int idEntidades;
@@ -186,8 +187,11 @@ public class SolicitacaoBean implements Serializable {
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;
-		cidadaoBean.limparCidadaoBean();
-		cidadaoBean = new CidadaoBean();
+		try {
+			cidadaoBean.limparCidadaoBean();
+			cidadaoBean = new CidadaoBean();
+		}catch (NullPointerException e) {
+		}
 		
 	}
 
@@ -340,6 +344,7 @@ public class SolicitacaoBean implements Serializable {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
 					return "/Cadastro/cad_cidadao";
 				} else {
+					finalizarSolicitacao();
 					return "/Solicitacao/questionario1";
 				}
 			} else {
@@ -349,6 +354,19 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 	}
+	
+	/**
+	 * Função iniciarSolicitação
+	 * 
+	 * Limpar a solicitação da solicitação anterior e definir o tipo da solicitação.
+	 * @return
+	 */
+	public String iniciarSolicitacao() {
+		finalizarSolicitacao();
+		solicitacao.setTipo(this.tipo);
+		return "Solicitacao/questionario2.xhtml";
+	}
+	
 	
 	/**
 	 * Função enviarMensagemAutomatica
@@ -993,4 +1011,13 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacoesFiltradas = solicitacoesFiltradas;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	
 }

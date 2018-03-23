@@ -29,7 +29,7 @@
 								<h:outputText styleClass="tituloMenu" value="Denúncia" />
 								<p>Realizar denúncia</p>
 								<f:setPropertyActionListener value="Denúncia"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -41,14 +41,14 @@
 
 					<h:panelGroup class="container">
 						<h:commandLink id="btnInfo" styleClass="link card"
-							action="Solicitacao/questionario2">
+							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/info.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Informação" />
 								<p>Realizar pedido de informação</p>
 								<f:setPropertyActionListener value="Informação"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -60,14 +60,14 @@
 
 					<h:panelGroup class="container">
 						<h:commandLink id="btnSol" styleClass="link card"
-							action="Solicitacao/questionario2">
+							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/chat.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
 								<p>Realizar solicitação</p>
 								<f:setPropertyActionListener value="Solicitação"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -79,14 +79,14 @@
 
 					<h:panelGroup class="container">
 						<h:commandLink id="btnElogio" styleClass="link card"
-							action="Solicitacao/questionario2">
+							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/like.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Elogio" />
 								<p>Realizar elogio</p>
 								<f:setPropertyActionListener value="Elogio"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -98,14 +98,14 @@
 
 					<h:panelGroup class="container">
 						<h:commandLink id="btnSugestao" styleClass="link card"
-							action="Solicitacao/questionario2">
+							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/sugestion.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
 								<p>Realizar sugestão</p>
 								<f:setPropertyActionListener value="Sugestão"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -118,14 +118,14 @@
 
 					<h:panelGroup class="container">
 						<h:commandLink id="btnReclama" styleClass="link card"
-							action="Solicitacao/questionario2">
+							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/dislike.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
 								<p>Realizar reclamação</p>
 								<f:setPropertyActionListener value="Reclamação"
-									target="#{solicitacao.solicitacao.tipo}" />
+									target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">

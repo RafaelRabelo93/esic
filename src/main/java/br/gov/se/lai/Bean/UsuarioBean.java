@@ -44,6 +44,7 @@ import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Criptografia;
+import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.verificarStatusSolicitacao;
 
@@ -55,6 +56,8 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuario;
 	private Usuario usuarioNovo;
 	private String senha;
+	private String senhaAtual;
+	private String novaSenha;
 	private String nick;
 	private String nome;
 	private String nomeCompleto;
@@ -257,8 +260,11 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String edit() {
-		if (Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
-			UsuarioDAO.saveOrUpdate(usuario);
+		this.usuario =  ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
+		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
+			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
+			UsuarioDAO.saveOrUpdate(this.usuario);
 
 			if (usuario.getPerfil() != 1) {
 
@@ -382,6 +388,41 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	public String loginSistema() {
+		String retorno = "";
+		this.usuario = UsuarioDAO.buscarUsuario(this.nick);
+		if (this.usuario == null) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+			logout();
+		} else {
+			if (!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+				logout();
+			} else {
+				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
+					loadEmail();
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+					acessoUsuario(this.usuario);
+					nomeCompleto(usuario.getNome());
+					retorno = "/index.xhtml?faces-redirect=true";
+				}else {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
+				}
+		}
+		}
+		
+		return retorno;
+			
+	}
+	
+	public boolean verificaPermissaoPrivilegiada() {
+		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado") || this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
+	}
+	
 	/**
 	 * Usuário responsável que se encontra inativo e não tem 
 	 * mais permissão de acessar o sistema como responsável.
@@ -436,7 +477,7 @@ public class UsuarioBean implements Serializable {
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		session.invalidate();
 		this.usuario = null;
-		return "/index";
+		return "/loginAdmin";
 	}
 
 	public static String generateSessionId() {
@@ -767,6 +808,9 @@ public class UsuarioBean implements Serializable {
 		return nicks;
 	}
 
+	public boolean verificaAdmin() {
+		return usuario.getPerfil()==(short)6;
+	}
 	public boolean verificaGestor() {
 		return usuario.getPerfil()==(short)5;
 	}
@@ -775,6 +819,12 @@ public class UsuarioBean implements Serializable {
 	}
 	public boolean verificaResponsavel() {
 		return usuario.getPerfil()==(short)2;
+	}
+	
+	public String redirecionarIndex() {
+		SolicitacaoBean t = new SolicitacaoBean();
+		t.finalizarSolicitacao();
+		return "/index.xhtml?faces-redirect=true";                          
 	}
 
 	// GETTERS E SETTERS
@@ -929,6 +979,22 @@ public class UsuarioBean implements Serializable {
 
 	public void setEmailCid(String emailCid) {
 		this.emailCid = emailCid;
+	}
+
+	public String getNovaSenha() {
+		return novaSenha;
+	}
+
+	public void setNovaSenha(String novaSenha) {
+		this.novaSenha = novaSenha;
+	}
+
+	public String getSenhaAtual() {
+		return senhaAtual;
+	}
+
+	public void setSenhaAtual(String senhaAtual) {
+		this.senhaAtual = senhaAtual;
 	}
 	
 	

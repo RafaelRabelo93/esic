@@ -32,7 +32,7 @@
 						<p:password id="senha" value="#{usuario.senha}" size="30"/>
 						
 						<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
-						<p:commandLink styleClass="botaoLink" action="#{usuario.login}" update="@all growl">
+						<p:commandLink styleClass="botaoLink" action="#{usuario.loginSistema()}" update="@all growl">
 							<h:outputText value="Entrar" />
 							<i class="fa fa-user-circle" style="color: white; padding-left: 5px" />
 						</p:commandLink>
