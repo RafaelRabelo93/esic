@@ -948,6 +948,7 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 
 .ui-paginator .ui-paginator-next .ui-icon, .ui-paginator .ui-paginator-prev .ui-icon, .ui-paginator .ui-paginator-first .ui-icon, .ui-paginator .ui-paginator-last .ui-icon{
 	background-position-y: -158px;
+    filter: brightness(100);
 }
 
 .ui-widget-header .ui-icon {
@@ -1538,6 +1539,83 @@ h1, h2, h3 {
 	border-radius: 0;
 }
 
+.legendaButton {
+	background: #145187;
+	padding: 2px 2px 2px 0px;
+	color: white;
+	border-radius: 50px;
+	border: 2px solid #ffffff;
+	box-shadow: 0 0 0 2pt #145187;
+	width: 35px;
+	height: 35px;
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.legendaButton:hover {
+	background: #5b87bd;
+    box-shadow: 0 0 0 2pt #5b87bd;
+}
+
+.legendaButton:focus {
+	outline: none;
+}
+
+.legendaPanel {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	
+	-webkit-box-align: end;
+	-ms-flex-align: end;
+	align-items: flex-end;
+		
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: column nowrap;
+	flex-flow: column nowrap;
+	
+	max-width: 450px;
+	padding: 1em;
+}
+
+.legendaBox {
+	padding: 1.5em;
+	margin-bottom: 1vh;
+	margin-top: 1vh;
+	
+ 	display: -ms-flexbox; 
+ 	display: -moz-flexbox;
+ 	display: -webkit-flex;
+ 	display: -o-flex;
+ 	display: flex;
+  
+	-moz-flex-flow: column wrap;
+ 	-ms-flex-flow: column wrap;
+ 	-o-flex-flow: column wrap;
+ 	-webkit-flex-flow: column wrap;
+ 	flex-flow: column wrap;
+	
+   	-moz-justify-content: flex-start;
+ 	-ms-justify-content: flex-start;
+ 	-o-justify-content: flex-start;
+ 	-webkit-justify-content: flex-start;
+ 	justify-content: flex-start;
+	
+ 	-moz-align-items: flex-start;
+ 	-ms-align-items: flex-start;
+ 	-o-align-items: flex-start;
+ 	-webkit-align-items: flex-start; 
+ 	align-items: flex-start;
+ 	
+ 	border: 1px solid silver;
+    background: white;
+    
+    min-width: 200px;
+}
+
+
+
 
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
@@ -1656,4 +1734,65 @@ h1, h2, h3 {
 @media (min-width: 768px)
 .ficha {
     width: 750px;
+}
+
+
+/* CSS ADMIN LOGIN */
+
+html {
+    height: 100%;
+    background: #354371;
+}
+
+#content3 {
+    min-height: 100%;
+    background: #103b61;
+    
+    min-height: -webkit-fill-available;
+}
+
+#LoginformAdmin {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    
+    min-height: -webkit-fill-available;
+    
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+}
+
+.loginFormAdmin {
+    display: -ms-flexbox;
+    display: -moz-flexbox;
+    display: -webkit-flex;
+    display: -o-flex;
+    display: flex;
+    -moz-flex-flow: column nowrap;
+    -ms-flex-flow: column nowrap;
+    -o-flex-flow: column nowrap;
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -moz-align-items: baseline;
+    -ms-align-items: baseline;
+    -o-align-items: baseline;
+    -webkit-align-items: baseline;
+    align-items: baseline;
+    border: 1px solid silver;
+    border-radius: 3px;
+    padding: 25px;
+    background: white;
+    margin: 2vh 2vw;
+    height: 260px;
+    width: 265px;
 }

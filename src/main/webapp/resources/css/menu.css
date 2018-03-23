@@ -1,5 +1,13 @@
 /* <-- Menu Principal --> */
 
+.mainMenuPanel {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	
+	width: 100%;
+}
+
 .mainMenu { 
 	display: -ms-flexbox;
 	display: -moz-flexbox;
@@ -26,6 +34,8 @@
 	align-items: center;
 	
 	padding: 5vh 0;
+	
+    width: 100%;
 }
 
 #title{	
