@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />	
+	<h:outputStylesheet name="index.css" library="css" />
+	<h:outputStylesheet name="header.css" library="css" />
+	<h:outputStylesheet name="menu.css" library="css" />
+	<h:outputStylesheet name="footer.css" library="css" />
+	<h:outputStylesheet name="template.css" library="css" />
+	<h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<h:outputStylesheet library="webjars" name="bootstrap/3.3.7-1/css/bootstrap.min.css" />
+	<h:outputScript library="js" name="locale.js"/>
+	<title>SICC</title>	
+	<link rel="shortcut icon" type="image/png" href="#{resource['img/icon/info-icon.png']}"/>
+</h:head>
+
+<h:body>
+	
+	    <div id="content3">
+	  	<ui:insert name="content" >
+	 	  Conteúdo da página
+	   	</ui:insert>
+	    </div>
+
+</h:body>
+</html>
