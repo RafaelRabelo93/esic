@@ -6,7 +6,7 @@ final class  DadosAutenticacao {
 	private final static String userLoginEmailAuthentication = "mayara.machado";
 	private final static String senhaUserLoginEmailAuthentication = "abcd1234";
 	private final static String emailFrom = "no_reply@expresso.se.gov.br";
-	private final static String endereco = "http://172.22.21.120:8080/esic";
+	private final static String endereco = "http://esic.se.gov.br";
 	
 	static String getHostNameEmail() {
 		return hostNameEmail;

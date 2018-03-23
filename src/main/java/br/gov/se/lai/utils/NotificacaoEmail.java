@@ -44,7 +44,7 @@ public class NotificacaoEmail implements Job{
 //		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
 //		String mensagem = mensagens.get(mensagens.size()-1).getTexto();
 		String mensagem = "Há uma nova mensagem de "+remetente + " para "+solicitacao.getEntidades().getSigla()+" na solicitação de protocolo "+ 
-						solicitacao.getProtocolo() + " acesse o portal do esic para visualizar. \n Acesse:"+DadosAutenticacao.getEndereco() + "\n"+envio[2]; 
+						solicitacao.getProtocolo() + " acesse o portal do esic para visualizar. \n Acesse: "+DadosAutenticacao.getEndereco() + "\n"+envio[2]; 
 
 		
 		try {  
@@ -226,7 +226,7 @@ public class NotificacaoEmail implements Job{
 		email.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 //		email.setSmtpPort(465);
 //		email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
-		email.addTo("mayara.machado@cge.se.gov.br"); //pode ser qualquer email  
+		email.addTo(destinatario); //pode ser qualquer email  
 		email.setFrom(DadosAutenticacao.getEmailFrom());//será passado o email que você fará a autenticação 
 		email.setSubject(titulo);  
 		email.setMsg(mensagem+"\n\n\n\n\n\n destinatario: "+destinatario);  // só para teste  
