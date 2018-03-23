@@ -16,22 +16,38 @@
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
 			<h:form id="acessoNegado">
+			<h:form style="
+			    display: -webkit-box;
+			    display: -ms-flexbox;
+			    display: flex;
+			    -webkit-box-orient: vertical;
+			    -webkit-box-direction: normal;
+			    -ms-flex-flow: column nowrap;
+			            flex-flow: column nowrap;
+			    -webkit-box-align: center;
+			    -ms-flex-align: center;
+			            align-items: center;">
 			
-			<div class="ficha">
-				<h:panelGroup styleClass="box" style="width: 50vw; align-items: center; align-self: center">
+			
+			<div class="box" style="padding: 0">
+				<p:graphicImage styleClass="inline" value="#{resource['img/construcao.gif']}" style="align-self: center; margin-bottom: 5px"/>
+			</div>
+			
+<!-- 			<div class="ficha"> -->
+<!-- 				<h:panelGroup styleClass="box" style="width: 50vw; align-items: center; align-self: center"> -->
 				
-					<h:outputText value="ACESSO NEGADO" styleClass="tituloBox" style="margin: 0 0 0 15px"/>
-					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/>
+<!-- 					<h:outputText value="ACESSO NEGADO" styleClass="tituloBox" style="margin: 0 0 0 15px"/> -->
+<!-- 					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/> -->
 					
-					<h:outputText value="Você não tem permissão para acessar esta página." style="margin: 15px 0 0 0; font-size: 1.3em; text-align: center;"/>
+<!-- 					<h:outputText value="Você não tem permissão para acessar esta página." style="margin: 15px 0 0 0; font-size: 1.3em; text-align: center;"/> -->
 					
 <!-- 					<h:commandLink action="/index" styleClass="column link box" style="text-decoration: none; height: 125px; align-items: center; margin: 1em 0 0 0; width: fit-content; height: fit-content;"> -->
 <!-- 						<p:graphicImage styleClass="inline" value="#{resource['img/icon/home.png']}" width="100px" style="align-self: center; margin-bottom: 5px"/> -->
 <!-- 						<p>Clique aqui para voltar à página inicial</p> -->
 <!-- 					</h:commandLink> -->
 					
-				</h:panelGroup>
-			</div>
+<!-- 				</h:panelGroup> -->
+<!-- 			</div> -->
 			
 			</h:form>
 		
