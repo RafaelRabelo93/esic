@@ -2,6 +2,7 @@ package br.gov.se.lai.utils;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 import br.gov.se.lai.entity.Solicitacao;
 
@@ -78,16 +79,20 @@ public class PrazosSolicitacao {
 	 * @return
 	 */
 	
-	public static Calendar diaUtilDataLimite(String status) {
+	public static Date diaUtilDataLimite(String status) {
 		
 		Calendar limite = Calendar.getInstance();
-		limite.setTime(java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(status))));
+		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+		limite.setTime(java.sql.Date.valueOf(LocalDate.now().plusDays(
+				limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status)
+				)));
 		
-		int limiteNum = limite.get(Calendar.DAY_OF_WEEK);
-		if( (limiteNum == Calendar.SUNDAY) || (limiteNum == Calendar.SATURDAY)) {
+		
+		
+		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
 			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
 		}
 		
-		return limite;
+		return limite.getTime();
 	}
 }

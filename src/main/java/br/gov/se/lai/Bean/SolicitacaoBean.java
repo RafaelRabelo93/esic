@@ -207,13 +207,7 @@ public class SolicitacaoBean implements Serializable {
 			this.solicitacao.setStatus("Finalizada");
 
 		} else {
-			if (LocalDate.now().getDayOfWeek().name().toLowerCase().equals("friday")) {
-//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo + 3)));
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
-			}else {
-//				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(constanteTempo+1)));
-				this.solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(4)));
-			}
+			this.solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getTipo()));
 			this.solicitacao.setStatus("Aberta");
 		}
 	}
@@ -567,7 +561,7 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status).getTime());
+			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
