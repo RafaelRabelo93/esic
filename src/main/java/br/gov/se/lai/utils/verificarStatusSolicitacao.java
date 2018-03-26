@@ -122,7 +122,7 @@ public class verificarStatusSolicitacao implements Job {
 						if ((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada")
 								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3))) {
 							solicitacao.setStatus("Respondida");
-							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus()))));
+							solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus()));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
 							MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
 

@@ -1,3 +1,5 @@
 /target/
-esic/src/main/java/br/gov/se/lai/utils/DadosAutenticacao.java
-esic/src/main/resources/META-INF/
+src/main/java/br/gov/se/lai/utils/DadosAutenticacao.java
+src/main/resource/META-INF/hibernate.cfg.xml
+src/main/resource/META-INF/persistence.xml
+src/main/resource/META-INF/hibernate.reveng.xml
