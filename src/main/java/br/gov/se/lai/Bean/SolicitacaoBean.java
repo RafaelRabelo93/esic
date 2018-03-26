@@ -53,6 +53,7 @@ import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
+import br.gov.se.lai.utils.PrazosSolicitacao;
 
 @ManagedBean(name = "solicitacao")
 @SessionScoped
@@ -73,6 +74,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Entidades> entidades;
 	private Calendar datainic;
 	private String status;
+	private String tipo;
 	private String formaRecebimentoString;
 	private Calendar datafim;
 	private int idEntidades;
@@ -106,7 +108,11 @@ public class SolicitacaoBean implements Serializable {
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		
 	}
-
+	
+	/**
+	 * Função salvar a solicitação
+	 * @return
+	 */
 	public String save() {
 		
 		String page = null;
@@ -141,15 +147,15 @@ public class SolicitacaoBean implements Serializable {
 			
 			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null);
 	
-			if (!(file.getContents().length == 0)) {
-				AnexoBean anx = new AnexoBean();
-				try {
-					anx.save(anexo, mensagem, file);
-				} catch (Exception e) {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-				}
-			}
+//			if (!(file.getContents().length == 0)) {
+//				AnexoBean anx = new AnexoBean();
+//				try {
+//					anx.save(anexo, mensagem, file);
+//				} catch (Exception e) {
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
+//				}
+//			}
 	
 			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
@@ -168,6 +174,9 @@ public class SolicitacaoBean implements Serializable {
 		
 	}
 	
+	/**
+	 * Limpar os objetos utilizados para salvar a solicitação no banco.
+	 */
 	public void finalizarSolicitacao() {
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
@@ -178,11 +187,19 @@ public class SolicitacaoBean implements Serializable {
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;
-		cidadaoBean.limparCidadaoBean();
-		cidadaoBean = new CidadaoBean();
+		try {
+			cidadaoBean.limparCidadaoBean();
+			cidadaoBean = new CidadaoBean();
+		}catch (NullPointerException e) {
+		}
 		
 	}
 
+	/**
+	 * Gerar data limite para resposta do responsável.
+	 * Caso a solicitação seja feita no final de semana,
+	 * o prazo inicia a contar no primeiro dia da semana.
+	 */
 	public void gerarDataLimite() {
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
@@ -201,6 +218,9 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Gerar data de finalização para tipos de solicitação que não necessitam de resposta.
+	 */
 	public void gerarDataFim() {
 		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
 			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
@@ -208,11 +228,18 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Ligar a instância de cidadão logada a solicitação efetuada.
+	 */
 	public void settarCidadao(){
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(userBean.getUsuario().getCidadaos());
 			this.solicitacao.setCidadao(listCidadao.get(0));
 	}
 	
+	/**
+	 * Ligar o tipo de cidadão ao tipo de solicitação denúncia.
+	 * O cidadão será anônimo caso o usuário tenha ativado o modoAnônimo.
+	 */
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
@@ -225,6 +252,13 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Função dadosRecebimentoSolicitacao
+	 * 
+	 * Adição de informações mais específicas para recebimento de um pedido de solicitação.
+	 * Pode ser email, correspondência ou email e correspondência.
+	 * @param solicitacao
+	 */
 	public void dadosRecebimentoSolicitacao(Solicitacao solicitacao) {
 		switch (solicitacao.getFormaRecebimento()) {
 		case 1: 
@@ -240,6 +274,12 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Função emailRecebimento
+	 * 
+	 * Verifica qual endereço de email o usuario quer receber a resposta da solicitacao e o adiciona à mensagem da solicitação.
+	 * @param solicitacao
+	 */
 	public void emailRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEmail) {
 			mensagem.setTexto(mensagem.getTexto().concat("\nEmail de recebimento: "+cidadaoBean.getEmail()));
@@ -248,6 +288,12 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Função enderecoRecebimento
+	 * 
+	 * Verifica qual endereço físico o usuario quer receber a resposta da solicitacao e o adiciona à mensagem da solicitação.
+	 * @param solicitacao
+	 */
 	public void enderecoRecebimentoSolicitacao(Solicitacao solicitacao) {
 		if(mudarEndereco) {
 			mensagem.setTexto(mensagem.getTexto().concat("\nEndereço de recebimento: \n"
@@ -273,7 +319,7 @@ public class SolicitacaoBean implements Serializable {
 	
 	
 	
-	/*
+	/**
 	 * verificaCidadaoSolicitacao void : String 
 	 * 
 	 * Verifica o tipo de usuário que está solicitando acesso e redireciona para ação uma condizente com a situação.
@@ -298,6 +344,7 @@ public class SolicitacaoBean implements Serializable {
 				if ((listCidadao.isEmpty()) && (userBean.getUsuario().getPerfil() == 1)) {
 					return "/Cadastro/cad_cidadao";
 				} else {
+					finalizarSolicitacao();
 					return "/Solicitacao/questionario1";
 				}
 			} else {
@@ -308,8 +355,23 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
-	/*
-	 * enviarMensagemAutomatica void : void - Envia notificação para o cidadão informando que a solicitação dele foi recebida.
+	/**
+	 * Função iniciarSolicitação
+	 * 
+	 * Limpar a solicitação da solicitação anterior e definir o tipo da solicitação.
+	 * @return
+	 */
+	public String iniciarSolicitacao() {
+		finalizarSolicitacao();
+		solicitacao.setTipo(this.tipo);
+		return "Solicitacao/questionario2.xhtml";
+	}
+	
+	
+	/**
+	 * Função enviarMensagemAutomatica
+	 * 
+	 * Envia notificação para o cidadão informando que a solicitação dele foi recebida.
 	 */
 
 	public void enviarMensagemAutomatica() {
@@ -317,8 +379,10 @@ public class SolicitacaoBean implements Serializable {
 				solicitacao.getTipo() + " recebido com sucesso.");
 	}
 	
-	/*
-	 * gerarProtocolo void : String - Gerar números de protocolo para as solicitações
+	/**
+	 * Função gerarProtocolo 
+	 * 
+	 * Gerar números de protocolo para as solicitações
 	 */
 	public String  gerarProtocolo() {
 		Date now = new Date(System.currentTimeMillis());
@@ -345,7 +409,9 @@ public class SolicitacaoBean implements Serializable {
 
 	
 
-	/* verificaCidadaoConsulta(): String - retorna a página com a lista populada de
+	/**
+	 * Função verificaCidadaoConsulta
+	 * Retorna a página com a lista populada de
 	 * solicitações relacionadas ao cidadão. 
 	 */
 	public String verificaCidadaoConsulta() {
@@ -359,7 +425,10 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	/*consultarSolicitacao() : String - Filtra a lista de solicitações de acordo com a
+	/**
+	 * Função consultarSolicitacao
+	 * 
+	 * Filtra a lista de solicitações de acordo com a
 	 * entidade passada como parâmetro da tela para o bean. 
 	 * 
 	 */
@@ -373,6 +442,13 @@ public class SolicitacaoBean implements Serializable {
 			return "/Consulta/consulta";
 		
 	}
+	
+	/**
+	 * Função consultarSolicitacaoGestor
+	 * 
+	 * Verifica o tipo de usuário para poder disponibilizar a visualização das solicitações
+	 * @return
+	 */
 	public String consultarSolicitacaoGestor() {
 		if(userBean.getUsuario().getPerfil() == 5 || userBean.getUsuario().getPerfil() == 6  ) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -389,14 +465,23 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Consultar solicitação de entidade especifica
+	 * @param idEntidade
+	 * @return
+	 */
 	public String consultarSolicitacaoEspecifica(int idEntidade) {
 		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(idEntidade);
 		return "/Consulta/consulta";
 	}
 	
-
-	/*listPersonalizada(AjaxBehaviorEvent e) : void - filtra lista de solicitações com 
+	/**
+	 * listPersonalizada
+	 * 
+	 * Filtra lista de solicitações com 
 	 * base no status passado como parâmetro da tela para o bean. 
+	 * 
+	 * @param e
 	 */
 	public void listPersonalizada(AjaxBehaviorEvent e) {
 		if (status == "Todas") {
@@ -406,22 +491,32 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	/*attMensagens(Mensagem m) : void - adiciona uma nova mensagem, que foi enviada durante 
+	/**
+	 * Função attMensagens
+	 * adiciona uma nova mensagem, que foi enviada durante 
 	 * a sessão, na lista de mensagens relacionada àquela solicitacao. 
+	 * @param mensagem
 	 */
 	public static void attMensagens(Mensagem mensagem) {
 		mensagensSolicitacao.add(mensagem);
 	}
 
-	/*popularMensagens(AjaxBehaviorEvent e) : List<Mensagem> - popula a lista de mensagens
-	 * relacionadas àquela solicitação.
+	
+	/**
+	 * Função popularMensagens
+	 * 
+	 * Popula a lista de mensagens  relacionadas àquela solicitação.
+	 * @return
 	 */
 	public List<Mensagem> popularMensagens() {
 		mensagensSolicitacao = new ArrayList<>(solicitacao.getMensagems());
 		return mensagensSolicitacao;
 	}
 	
-	/*alterarEnc() : void - Configura status de encaminhada da solicitacação
+	/**
+	 * Função alterarEnc
+	 * 
+	 * Configura status de encaminhada da solicitacação
 	 */
 
 	public void alterarEnc() {
@@ -472,8 +567,7 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(
-					java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(solicitacao.getStatus()))));
+			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status).getTime());
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
@@ -513,13 +607,12 @@ public class SolicitacaoBean implements Serializable {
 
 	public boolean recursoLiberado() {
 		try {
-			
-		if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
-			return true;
-		} else {
-			return false;
-		}
-		}catch (NullPointerException e) {
+			if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NullPointerException e) {
 			return false;
 		}
 	}
@@ -552,25 +645,6 @@ public class SolicitacaoBean implements Serializable {
 
 	}
 
-	public static int prazoResposta(String status) {
-		switch (status) {
-		case "Aberta":
-			return 4;
-//			return constanteAdicionalTempo;
-		case "Prorrogada":
-			return 2;
-//			return constanteAdicionalTempo;
-		case "Respondida":
-			return 2;
-//			return constanteAdicionalTempo;
-		case "Recurso":
-			return 2;
-//			return 5;
-		default:
-			return 4;
-//			return constanteTempo;
-		}
-	}
 
 	public void onRowSelect(SelectEvent event) {
 		int rownum = filteredSolicitacoes.indexOf((Solicitacao) event.getObject());
@@ -630,25 +704,10 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	@SuppressWarnings("finally")
-	private boolean verificaSe24Horas() {
-		boolean retorno = false;
-		try {
-			Calendar hoje = Calendar.getInstance();
-			Calendar limite = Calendar.getInstance();
-			limite.setTime(solicitacao.getDataIni());
-			limite.add(Calendar.DATE, +1);
-			if (hoje.before(limite)) {
-				retorno = true;
-			}
-		} catch (NullPointerException e) {
-		}finally {
-			return retorno;
-		}
-	}
+
 
 	public boolean ehEncaminhavel() {
-		if (!verificaSeEncaminhada(solicitacao) && verificaSe24Horas()) {
+		if (!verificaSeEncaminhada(solicitacao) && PrazosSolicitacao.verificaSe24Horas(solicitacao)) {
 			return true;
 		} else {
 			return false;
@@ -952,4 +1011,13 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacoesFiltradas = solicitacoesFiltradas;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	
 }

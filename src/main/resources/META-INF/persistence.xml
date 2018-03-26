@@ -4,23 +4,23 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		 
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/esic"/>			
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.28.64.30:3306/esic"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.user" value="esic"/>
-			<property name="javax.persistence.jdbc.password" value="esic"/>
+			<property name="javax.persistence.jdbc.password" value="KhaGwX7VSwvtPtzH"/>
 			<property name="dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
 			<property name="connection.driver_class" value="com.mysql.jdbc.Driver"/>
-			<property name="connection.url" value="jdbc:mysql://localhost:3306/esic"/>
+			<property name="connection.url" value="jdbc:mysql://172.28.64.30:3306/esic"/>
 			<property name="connection.username" value="esic"/>
-			<property name="connection.password" value="esic"/>
+			<property name="connection.password" value="KhaGwX7VSwvtPtzH"/>
 			<property name="hbm2ddl.auto" value="create"/>
 			<property name="show_sql" value="true"/>
 			<property name="hibernate.ejb.cfgfile" value="META-INF/hibernate.cfg.xml"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
 			<property name="hibernate.connection.driver_class" value="org.gjt.mm.mysql.Driver"/>
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/esic"/>
+			<property name="hibernate.connection.url" value="jdbc:mysql://172.28.64.30:3306/esic"/>
 			<property name="hibernate.connection.username" value="esic"/>
-			<property name="hibernate.connection.password" value="esic"/>
+			<property name="hibernate.connection.password" value="KhaGwX7VSwvtPtzH"/>
 		</properties>
 	</persistence-unit>
 </persistence>

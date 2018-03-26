@@ -49,6 +49,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
+	/**
+	 * Função save
+	 * 
+	 * Salva uma lista de competências caso o usuário tenha permissão.
+	 * @return
+	 */
 	public String save() {
 		if(verificaPermissao()) {
 			for (Competencias comp : listCompetencias) {
@@ -58,16 +64,37 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		return "/Alterar/alterar_competencias";
 	}
 	
+	/**
+	 * Função consultarCompetencias
+	 * 
+	 * Lista todas as competências da entidade da entidade utilizada na classe.
+	 * Entidade passada através de parâmetros. 
+	 * @return
+	 */
+	//Alterar, utilizar metodo com entidade vindo no parâmetro
 	public String consultarCompetencias() {
 		listCompetencias = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
 		return "/Alterar/alterar_competencias" ;
 	}
 
+	/**
+	 * Função filtarCompetenciasEntidade
+	 * Filtra competências de uma entidade selecionada na tela.
+	 * 
+	 * @param e - método é chamado a partir de um evento Ajax.
+	 */
 	public void filtrarCompetenciasEntidade(AjaxBehaviorEvent e) {
 		List<Competencias> compEnt = new ArrayList<Competencias>(EntidadesDAO.find(idEntidade).getCompetenciases());
 		listCompetencias = compEnt;	
 	}	
 	
+	/**
+	 * Função filtrarCompetencias
+	 * 
+	 * Instancializa a lista de competências ligadas a uma ação especifica.
+	 * 
+	 * @param e - método é chamado a partir de um evento Ajax.
+	 */
 	public void filtrarCompetencias(AjaxBehaviorEvent e) {
 		if(idAcoes != 0) {
 			listCompetencias = CompetenciasDAO.filtrarCompetencias(idAcoes);
@@ -78,6 +105,13 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		
 	}	
 	
+	/**
+	 * Função filtraEntidades
+	 * 
+	 * Instancializa a lista de entidades ligadas.
+	 * 
+	 * @param e - método é chamado a partir de um evento Ajax.
+	 */
 	public void filtraEntidades(AjaxBehaviorEvent e){
 		if(idEntidade != 0) {
 			listEntidades = EntidadesDAO.listPersonalizada(idEntidade);
@@ -87,6 +121,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 	
 
+	/**
+	 * Função addLista
+	 * 
+	 * Antes de salvar, as competências são inseridas em listas e depois salvas no banco de dados.
+	 * 
+	 */
 	public void addLista() {
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
@@ -97,7 +137,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		idAcoes = 0;
 	}
 	
-	
+	/**
+	 * Função listaUpdate
+	 * 
+	 * Ao salvar uma competência, remove a ação ligada a ela para que não 
+	 * haja duplicidade na entidade/[porgão.
+	 */
 	private void listaAcoesUpdate(){
 		Iterator<Acoes> a = AcoesBean.acoes.iterator();
 		while(a.hasNext()) {
@@ -108,6 +153,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 			}
 		}
 	}
+	
 	
 	public void listaCompetenciasUpdate(){
 		Iterator<Competencias> c = listCompetencias.iterator();

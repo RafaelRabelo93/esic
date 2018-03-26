@@ -15,172 +15,198 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 		
-		<h:form id="form" styleClass="ficha" style="padding: 2vh 1vw">
-		
-<!-- 			<div class="ficha"> -->
-
-				<h:outputText value="Solicitações" style="color:#1a568c; font-size:25px; padding-bottom: 1vw;" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
-
-				<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
-					<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
-						emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
-						expandableRowGroups="false" resizableColumns="true" liveResize="true"
-						value="#{solicitacao.filteredSolicitacoes}"
-						rowStyleClass="#{slt.status}" style="margin-bottom:1vw; width: 95vw"
-						filteredValue="#{solicitacao.solicitacoesFiltradas}"
-						paginator="true" rows="50" styleClass=""
-						currentPageReportTemplate="(Página {currentPage} de {totalPages})" 
-						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}">
-						
-						<f:facet name="header">
-					        <p:commandLink id="toggler" style="float:left" styleClass="togglerBtn">
-					        	<i class="fa fa-columns"/>
-					        	<h:outputText value="Colunas" />
-					        </p:commandLink>
-					        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
-					        
-					        <p:outputPanel styleClass="searchPanel">
-								<i class="fa fa-search" style="color: white; margin-right: .5em"/>
-				                <p:inputText id="globalFilter" onkeyup="PF('slt').filter()" style="width:50%" placeholder="Insira campo a ser pesquisado"/>
-				            </p:outputPanel>
-					    </f:facet>
+		<h:form id="form">
+				
+				<h:panelGroup styleClass="ficha">
+	
+					<h:outputText value="Solicitações" style="color:#1a568c; font-size:25px; padding-bottom: 1vh; align-self: center" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
+					
+					<h:panelGroup id="legendaPanel" styleClass="legendaPanel" rendered="true" style="max-width: 100%; width: 100%; padding-top: 0;">
+				
+					    <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+					    	<i class="fa fa-question fa-2x" />
+					    </button>
 					    
-					    <f:facet name="filter">
-						    <p:calendar  pattern="dd/MM/yyyy">
-						        <p:ajax event="dateSelect" oncomplete="PF('slt').filter()"/>
-						    </p:calendar>
-						</f:facet>
-
-						<p:column ariaHeaderText="Icones" width="20" toggleable="false" style="text-align:center;">
-							<h:panelGroup id="iconDenuncia" rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
-								<p:tooltip for="iconDenuncia" value="Denúncia" position="right"/>
-							<h:panelGroup id="iconInfo" rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
-								<p:tooltip for="iconInfo" value="Pedido de Informação" position="right"/>
-							<h:panelGroup id="iconSol" rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup>
-								<p:tooltip for="iconSol" value="Solicitação" position="right"/>
-							<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup>
-								<p:tooltip for="iconElogio" value="Elogio" position="right"/>
-							<h:panelGroup id="iconSugestao" rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup>
-								<p:tooltip for="iconSugestao" value="Sugestão" position="right"/>
-							<h:panelGroup id="iconReclama" rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup>
-								<p:tooltip for="iconReclama" value="Reclamação" position="right"/>
-						</p:column>
-											
-						<p:column headerText="Protocolo" width="150" filterBy="#{slt.protocolo}" filterable="false">
-							<h:outputText value="#{slt.protocolo}" />
-						</p:column>
-
-						<p:column headerText="Órgão" width="80" sortBy="#{slt.entidades.sigla}" filterBy="#{slt.entidades.sigla}" filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.entidades.sigla}" />
-						</p:column>
-
-						<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" filterBy="#{slt.titulo}" filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.titulo}" />
-						</p:column>
-
-						<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" filterBy="#{slt.tipo}" filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.tipo}" />
-						</p:column>
+					    <div id="legenda" class="legendaBox" style="display: none; width: -webkit-fill-available; width: -moz-available; width: fill-available;">
+					    	<p class="title">Status da solicitação</p>
+							<p>Aberta - Solicitação realizada ainda sem resposta do órgão competente;</p>
+							<p>Respondida - Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
+							<p>Finalizada - Solicitação negada ou respondida e concluída.</p>
+					    </div>
+				    
+				    </h:panelGroup>
 						
-						<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}" filterBy="#{slt.acoes.titulo}" filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.acoes.titulo}" />
-						</p:column>
-						
-						<p:column headerText="Status" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center">
-							<h:outputText value="#{slt.status}" />
-						</p:column>
-
-						<p:column headerText="Cidadão" width="150" visible="false" sortBy="#{slt.cidadao.usuario.nome}" rendered="#{usuario.usuario.perfil ne '3' }" filterBy="#{slt.cidadao.usuario.nome}" filterMatchMode="contains" filterable="false">
-							<h:outputText value="#{slt.cidadao.usuario.nome}" />
-						</p:column>
-
-						<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="100" style="text-align:center" filterBy="#{slt.dataLimite}" filterMatchMode="exact" filterable="false"
-						styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
-							<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-							</h:outputText>
-							<h:outputText value=" ----------- " rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}"/>
-						</p:column>
-						
-						<p:column headerText="Data final" sortBy="#{slt.datafim}" width="100" style="text-align:center" filterBy="#{slt.datafim}" filterMatchMode="exact" filterable="false">
-							<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}" style="color: #c0c0c0;"/>
-							<h:outputText value="#{slt.datafim}" rendered="#{slt.datafim ne null}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-							</h:outputText>
-						</p:column>
-
-						<p:column style="width:32px; text-align: center" toggleable="false" >
-							<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
-								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-								<p:ajax listener="#{solicitacao.popularMensagens}"/>
-								<i class="fa fa-search" />
-								<f:setPropertyActionListener value="#{slt}"
-									target="#{solicitacao.solicitacao}" />
-								<f:setPropertyActionListener value="#{slt}" target="#{mensagem.solicitacao}" />
-								<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.solicitacao}" />
-							</p:commandLink>
-						</p:column>
-
-					</p:dataTable>
-
+					<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}">
+						<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
+							emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
+							expandableRowGroups="false" resizableColumns="true" liveResize="true"
+							value="#{solicitacao.filteredSolicitacoes}"
+							rowStyleClass="#{slt.status}" style="margin-bottom:1vw;"
+							filteredValue="#{solicitacao.solicitacoesFiltradas}"
+							paginator="true" rows="50" reflow="true"
+							currentPageReportTemplate="(Página {currentPage} de {totalPages})" 
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,25,50,100" rowKey="#{slt.idSolicitacao}" scrollable="true">
+							
+							<f:facet name="header">
+						        <p:commandLink id="toggler" style="float:left" styleClass="togglerBtn">
+						        	<i class="fa fa-columns"/>
+						        	<h:outputText value="Colunas" />
+						        </p:commandLink>
+						        <p:columnToggler datasource="solicitacoes" trigger="toggler" />
+						        
+						        <p:outputPanel styleClass="searchPanel">
+									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('slt').filter()" style="width:50%" placeholder="Insira campo a ser pesquisado"/>
+					            </p:outputPanel>
+						    </f:facet>
+						    
+						    <f:facet name="filter">
+							    <p:calendar  pattern="dd/MM/yyyy">
+							        <p:ajax event="dateSelect" oncomplete="PF('slt').filter()"/>
+							    </p:calendar>
+							</f:facet>
+	
+							<p:column ariaHeaderText="Icones" width="20" toggleable="false" style="text-align:center;">
+								<h:panelGroup id="iconDenuncia" rendered="#{slt.tipo eq 'Denúncia'}"> <i class="fa fa-exclamation-circle"/> </h:panelGroup> 
+									<p:tooltip for="iconDenuncia" value="Denúncia" position="right"/>
+								<h:panelGroup id="iconInfo" rendered="#{slt.tipo eq 'Informação'}"> <i class="fa fa-info"/> </h:panelGroup>
+									<p:tooltip for="iconInfo" value="Pedido de Informação" position="right"/>
+								<h:panelGroup id="iconSol" rendered="#{slt.tipo eq 'Solicitação'}"> <i class="fa fa-hand-o-up"/> </h:panelGroup>
+									<p:tooltip for="iconSol" value="Solicitação" position="right"/>
+								<h:panelGroup id="iconElogio" rendered="#{slt.tipo eq 'Elogio'}"> <i class="fa fa-thumbs-o-up"/> </h:panelGroup>
+									<p:tooltip for="iconElogio" value="Elogio" position="right"/>
+								<h:panelGroup id="iconSugestao" rendered="#{slt.tipo eq 'Sugestão'}"> <i class="fa fa-comments"/> </h:panelGroup>
+									<p:tooltip for="iconSugestao" value="Sugestão" position="right"/>
+								<h:panelGroup id="iconReclama" rendered="#{slt.tipo eq 'Reclamação'}"> <i class="fa fa-thumbs-o-down"/> </h:panelGroup>
+									<p:tooltip for="iconReclama" value="Reclamação" position="right"/>
+							</p:column>
+												
+							<p:column headerText="Protocolo" width="150" filterBy="#{slt.protocolo}" filterable="false">
+								<h:outputText value="#{slt.protocolo}" />
+							</p:column>
+	
+							<p:column headerText="Órgão" width="80" sortBy="#{slt.entidades.sigla}" filterBy="#{slt.entidades.sigla}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.entidades.sigla}" />
+							</p:column>
+	
+							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" filterBy="#{slt.titulo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.titulo}" />
+							</p:column>
+	
+							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" filterBy="#{slt.tipo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.tipo}" />
+							</p:column>
+							
+							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}" filterBy="#{slt.acoes.titulo}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.acoes.titulo}" />
+							</p:column>
+							
+							<p:column headerText="Status" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center">
+								<h:outputText value="#{slt.status}" />
+							</p:column>
+	
+							<p:column headerText="Cidadão" width="150" visible="false" sortBy="#{slt.cidadao.usuario.nome}" rendered="#{usuario.usuario.perfil ne '3' }" filterBy="#{slt.cidadao.usuario.nome}" filterMatchMode="contains" filterable="false">
+								<h:outputText value="#{slt.cidadao.usuario.nome}" />
+							</p:column>
+	
+							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}" width="100" style="text-align:center" filterBy="#{slt.dataLimite}" filterMatchMode="exact" filterable="false"
+							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
+								<h:outputText value="#{slt.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+								<h:outputText value=" ----------- " rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}"/>
+							</p:column>
+							
+							<p:column headerText="Data final" sortBy="#{slt.datafim}" width="100" style="text-align:center" filterBy="#{slt.datafim}" filterMatchMode="exact" filterable="false">
+								<h:outputText value=" ----------- " rendered="#{slt.datafim eq null}" style="color: #c0c0c0;"/>
+								<h:outputText value="#{slt.datafim}" rendered="#{slt.datafim ne null}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+							</p:column>
+	
+							<p:column style="width:32px; text-align: center" toggleable="false" >
+								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
+									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+									<p:ajax listener="#{solicitacao.popularMensagens}"/>
+									<i class="fa fa-search" />
+									<f:setPropertyActionListener value="#{slt}"
+										target="#{solicitacao.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}" target="#{mensagem.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.solicitacao}" />
+								</p:commandLink>
+							</p:column>
+	
+						</p:dataTable>
+	
+					</h:panelGroup>
+	
 				</h:panelGroup>
-
-<!-- 			</div> -->
+				
+		</h:form>
 			
-			</h:form>
 
-		<!-- Dialog Detalhe Solicitação -->
+			<!-- Dialog Detalhe Solicitação -->
 			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
 				header="#{solicitacao.solicitacao.titulo}" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
-				onHide="PF('detalheDialog').toggleMaximize();"
+				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
 				styleClass="solicitacaoDialog">
-				<p:outputPanel id="solicitacaoDetalhe" style="display:flex; flex-flow: row; overflow-x: hidden;">
+				<p:outputPanel id="solicitacaoDetalhe"
+					style="display:flex; flex-flow: row; overflow-x: hidden;">
 					<h:panelGroup id="conteudo" style="padding: 10px">
-					<p:panelGrid columns="2" layout="grid" style="border: none; width: 100%;">
+						<p:panelGrid columns="2" layout="grid"
+							style="border: none; width: 100%;">
 
-						<h:outputText value="Protocolo:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+							<h:outputText value="Protocolo:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
 
-						<h:outputText value="Orgao/ Entidade:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
+							<h:outputText value="Orgao/ Entidade:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText
+								value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
 
-						<h:outputText value="Forma de Recebimento da resposta:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.formaRecebimentoString}"/>
-						
-						<h:outputText value="Tipo de solicitacao:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.tipo}" />
+							<h:outputText value="Forma de Recebimento da resposta:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.formaRecebimentoString}" />
 
-						<h:outputText value="Status:" style="color:#1a568c; font-size:18px" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
-						<h:outputText value="#{solicitacao.solicitacao.status}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
+							<h:outputText value="Tipo de solicitacao:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}" />
 
-						<h:outputText value="Instancia:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.instancia}" />
+							<h:outputText value="Status:"
+								style="color:#1a568c; font-size:18px"
+								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
+							<h:outputText value="#{solicitacao.solicitacao.status}"
+								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
 
-						<h:outputText value="Data de Solicitacao:"
-							style="color:#1a568c; font-size:18px" />
-						<h:outputText value="#{solicitacao.solicitacao.dataIni}">
-							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-						</h:outputText>
+							<h:outputText value="Instancia:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}" />
 
-						<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}"/>
-						<h:outputText value="#{solicitacao.solicitacao.dataLimite}" rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
-							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-						</h:outputText>
+							<h:outputText value="Data de Solicitacao:"
+								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.dataIni}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							</h:outputText>
 
-					</p:panelGrid>
+							<h:outputText value="Data Limite:"
+								style="color:#1a568c; font-size:18px"
+								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"
+								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							</h:outputText>
 
-					<!-- Caixa de mensagens -->
+						</p:panelGrid>
+
+						<!-- Caixa de mensagens -->
 
 						<p:tabView dynamic="true" cache="true">
 							<p:tab title="Mensagens">
+							
 									<p:dataScroller value="#{mensagem.mensagensSolicitacao}"
 										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -204,214 +230,259 @@
 												</h:outputText>
 											</div>
 											<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
-											
-											<p:dataList value="#{anexo.listarAnexos(msg)}" var="anx" rendered="#{msg.anexos.size() ne '0'}">
-												<h:outputLink id="anexo" value="#{anexo.downloadAnexo(msg)}">
-													<h:outputText value="#{anx.nome}" />
-											        <p:graphicImage value="#{anexo.downloadAnexo(msg)}" width="300" />
-												</h:outputLink>
-											</p:dataList>
-
 										</p:outputPanel>
 
 									</p:dataScroller>
 							</p:tab>
-							<p:tab title="Histórico da Solicitação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">
-								<p:dataScroller value="#{mensagem.mensagensHistorico}"
-										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
+							<p:tab title="Histórico da Solicitação"
+								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">
+								<p:dataScroller value="#{mensagem.mensagensHistorico}" var="msg"
+									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
-										<f:facet name="loader">
-											<p:commandLink id="outrasMsgs">
-												<h:outputText value="Outras Mensagens" />
-												<br />
-												<i class="fa fa-caret-down" />
-											</p:commandLink>
-											<p:tooltip id="toolTipOutrasMsgs"
-												value="Visualizar mensagens anteriores" for="outrasMsgs"
-												position="top" style="box-shadow:none" />
-										</f:facet>
+									<f:facet name="loader">
+										<p:commandLink id="outrasMsgs">
+											<h:outputText value="Outras Mensagens" />
+											<br />
+											<i class="fa fa-caret-down" />
+										</p:commandLink>
+										<p:tooltip id="toolTipOutrasMsgs"
+											value="Visualizar mensagens anteriores" for="outrasMsgs"
+											position="top" style="box-shadow:none" />
+									</f:facet>
 
-										<p:outputPanel style="margin-top: 1vw;">
-											<div class="mensagem">
-												<h:outputText value="#{msg.usuario.nome}"
-													style="color:#1a568c" />
-												<h:outputText value="#{msg.data}" style="color:#1a568c">
-													<f:convertDateTime pattern="d/M/yy - hh:mm"
-														timeZone="GMT-03:00" />
-												</h:outputText>
-											</div>
-											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
+									<p:outputPanel style="margin-top: 1vw;">
+										<div class="mensagem">
+											<h:outputText value="#{msg.usuario.nome}"
+												style="color:#1a568c" />
+											<h:outputText value="#{msg.data}" style="color:#1a568c">
+												<f:convertDateTime pattern="d/M/yy - hh:mm"
+													timeZone="GMT-03:00" />
+											</h:outputText>
+										</div>
+										<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
-											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}">
-													<h:outputText value="#{anexo.nomeView}" />
-												</h:outputLink>
-											</p:dataList>
+									</p:outputPanel>
 
-										</p:outputPanel>
+								</p:dataScroller>
 
-									</p:dataScroller>
-									
 							</p:tab>
-							<p:tab title="Trâmite Interno" rendered="#{usuario.usuario.perfil eq '2' and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}">
-								<p:dataScroller value="#{mensagem.mensagensTramites}"
-										var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
+							<p:tab title="Trâmite Interno"
+								rendered="#{usuario.usuario.perfil eq '2' and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}">
+								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"
+									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
-										<f:facet name="loader">
-											<p:commandLink id="outrasMsgs">
-												<h:outputText value="Outras Mensagens" />
-												<br />
-												<i class="fa fa-caret-down" />
-											</p:commandLink>
-											<p:tooltip id="toolTipOutrasMsgs"
-												value="Visualizar mensagens anteriores" for="outrasMsgs"
-												position="top" style="box-shadow:none" />
-										</f:facet>
+									<f:facet name="loader">
+										<p:commandLink id="outrasMsgs">
+											<h:outputText value="Outras Mensagens" />
+											<br />
+											<i class="fa fa-caret-down" />
+										</p:commandLink>
+										<p:tooltip id="toolTipOutrasMsgs"
+											value="Visualizar mensagens anteriores" for="outrasMsgs"
+											position="top" style="box-shadow:none" />
+									</f:facet>
 
-										<p:outputPanel style="margin-top: 1vw;">
-											<div class="mensagem">
-												<h:outputText value="#{msg.usuario.nome}"
-													style="color:#1a568c" />
-												<h:outputText value="#{msg.data}" style="color:#1a568c">
-													<f:convertDateTime pattern="d/M/yy - hh:mm"
-														timeZone="GMT-03:00" />
-												</h:outputText>
-											</div>
-											<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
+									<p:outputPanel style="margin-top: 1vw;">
+										<div class="mensagem">
+											<h:outputText value="#{msg.usuario.nome}"
+												style="color:#1a568c" />
+											<h:outputText value="#{msg.data}" style="color:#1a568c">
+												<f:convertDateTime pattern="d/M/yy - hh:mm"
+													timeZone="GMT-03:00" />
+											</h:outputText>
+										</div>
+										<h:outputText value="#{msg.texto}" style="margin-left:1vw" />
 
-											<p:dataList value="#{msg.anexos}" rendered="#{msg.anexos.size() ne '0'}" var="anx">
-												<h:outputLink value="#{anexo.downloadAnexo(msg)}" >
-													<h:outputText value="#{anexo.nomeView}" />
-												</h:outputLink>
-											</p:dataList>
+									</p:outputPanel>
 
-										</p:outputPanel>
-
-									</p:dataScroller>
+								</p:dataScroller>
 							</p:tab>
 						</p:tabView>
 
-					<h:form enctype="multipart/form-data">
-						<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
-							<div id="Resposta" class="box aba" style="display:none; padding: 1vh 1vw">
-								<p:outputLabel value="Mensagem de Resposta:" for="mensagem"  style="margin-bottom: 5px"/>
-								<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField respostaField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel ">
-									<h:outputText value="Enviar" />
-									<i class="fa fa-arrow-up" style="margin-left: 3px"/>
-									<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
-								</p:commandLink>
-							</div>
-							
-							<div id="Prorrogar" class="box aba" style="display:none; padding: 1vh 1vw">
-								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<h:outputText id="display" />
-		
-								<p:commandLink class="botaoLink"  style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel" action="#{solicitacao.prorrogar}"  oncomplete="PF('dlg3').hide();">
-									<h:outputText value="Salvar" />
-									<f:setPropertyActionListener value="Prorrogada" target="#{solicitacao.status}" />
-									<i class="fa fa-check" style="padding-left: 3px" />
-								</p:commandLink>
-							</div>
-							
-							<div id="Recurso" class="box aba" style="display:none; padding: 1vh 1vw">
-								<p:outputLabel value="Descrição:" for="descr2" />
-								<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200"	autoResize="false" style="width:100%" required="true" counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<h:outputText id="display2" />
-		
-								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
-									<h:outputText value="Salvar" />
-									<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
-									<i class="fa fa-check" style="padding-left: 3px" />
-								</p:commandLink>
-							</div>
-							
-							<div id="Encaminhar" class="box aba" style="display:none; padding: 1vh 1vw">	
-								<p:outputLabel value="Órgão/Entidade de destino" for="destino"/>
-								<p:selectOneMenu id="destino" value="#{solicitacao.idEntidades}" styleClass="abaField encaminharField">
-										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"/>
-										<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-										<f:selectItems value="#{entidades.exibirEntidadesEncaminhamento()}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-								</p:selectOneMenu>
-	
-								<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
-								<p:inputTextarea id="justCid" cols="100" rows="8" counter="display3" maxlength="200" autoResize="false" style="width:100%" required="true"
-									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField encaminharField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<h:outputText id="display3" />
-	
-								<p:outputLabel value="Justificativa Interna:" for="justInt" />
-								<p:inputTextarea id="justInt" cols="100" rows="8" counter="display4" maxlength="200" autoResize="false" style="width:100%" required="true"
-									counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagemEncaminhar.texto}" styleClass="abaField encaminharField">
-									<f:validateLength maximum="200" />
-								</p:inputTextarea>
-								<h:outputText id="display4" />
-	
-								<p:commandLink class="botaoLink"  style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.encaminhar()}" update="@all" oncomplete="PF('dlg2').hide();">
-									<h:outputText value="Salvar" />
-									<i class="fa fa-check" style="padding-left: 3px" />
-								</p:commandLink>
-							</div>
-						</p:outputPanel>
-					</h:form>
-					
+						<h:form enctype="multipart/form-data">
+							<p:outputPanel id="responderSolicitacao"
+								rendered="#{usuario.usuario.perfil gt '1'}">
+								<div id="Resposta" class="box aba"
+									style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"
+										style="margin-bottom: 5px" />
+									<p:inputTextarea id="mensagem"
+										value="#{mensagem.mensagem.texto}" maxlength="200"
+										required="true" style="width:99%"
+										styleClass="abaField respostaField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<p:fileUpload value="#{mensagem.file}" label="Enviar Anexo"
+										mode="simple" skinSimple="true"
+										style="display: flex;  align-items: center; margin-top: 15px"
+										allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
+										invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
+										sizeLimit="512"
+										invalidSizeMessage="O tamanho máximo permitido de 1MB." />
+									<p:commandLink class="botaoLink" action="#{mensagem.save}"
+										ajax="false" style="margin-top: 5px"
+										update="form:solicitacao_panel ">
+										<h:outputText value="Enviar" />
+										<i class="fa fa-arrow-up" style="margin-left: 3px" />
+										<f:setPropertyActionListener
+											value="#{solicitacao.solicitacao}"
+											target="#{mensagem.solicitacao}" />
+									</p:commandLink>
+								</div>
+
+								<div id="Prorrogar" class="box aba"
+									style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Descrição:" for="descr" />
+									<p:inputTextarea id="descr" cols="100" rows="8"
+										counter="display" maxlength="200" required="true"
+										style="width: 98%" counterTemplate="{0} caracteres restantes."
+										value="#{solicitacao.mensagem.texto}"
+										styleClass="abaField prorrogarField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<h:outputText id="display" />
+
+									<p:commandLink class="botaoLink"
+										style="margin-top:1vh; justify-self: flex-end;"
+										update="form:solicitacao_panel"
+										action="#{solicitacao.prorrogar}"
+										oncomplete="PF('dlg3').hide();">
+										<h:outputText value="Salvar" />
+										<f:setPropertyActionListener value="Prorrogada"
+											target="#{solicitacao.status}" />
+										<i class="fa fa-check" style="padding-left: 3px" />
+									</p:commandLink>
+								</div>
+
+								<div id="Recurso" class="box aba"
+									style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Descrição:" for="descr2" />
+									<p:inputTextarea id="descr2" cols="100" rows="8"
+										counter="display2" maxlength="200" autoResize="false"
+										style="width:100%" required="true"
+										counterTemplate="{0} caracteres restantes."
+										value="#{solicitacao.mensagem.texto}"
+										styleClass="abaField recursoField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<h:outputText id="display2" />
+
+									<p:commandLink class="botaoLink"
+										style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"
+										action="#{solicitacao.recurso}" update="@all"
+										oncomplete="PF('dlg2').hide();">
+										<h:outputText value="Salvar" />
+										<f:setPropertyActionListener value="Recurso"
+											target="#{mensagem.status}" />
+										<i class="fa fa-check" style="padding-left: 3px" />
+									</p:commandLink>
+								</div>
+
+								<div id="Encaminhar" class="box aba"
+									style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Órgão/Entidade de destino" for="destino" />
+									<p:selectOneMenu id="destino"
+										value="#{solicitacao.idEntidades}"
+										styleClass="abaField encaminharField">
+										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}" />
+										<f:selectItem itemLabel="Selecione Orgão Relacionado"
+											noSelectionOption="true" />
+										<f:selectItems
+											value="#{entidades.exibirEntidadesEncaminhamento()}"
+											var="orgao" itemLabel="#{orgao.nome}"
+											itemValue="#{orgao.idEntidades}" />
+									</p:selectOneMenu>
+
+									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
+									<p:inputTextarea id="justCid" cols="100" rows="8"
+										counter="display3" maxlength="200" autoResize="false"
+										style="width:100%" required="true"
+										counterTemplate="{0} caracteres restantes."
+										value="#{solicitacao.mensagem.texto}"
+										styleClass="abaField encaminharField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<h:outputText id="display3" />
+
+									<p:outputLabel value="Justificativa Interna:" for="justInt" />
+									<p:inputTextarea id="justInt" cols="100" rows="8"
+										counter="display4" maxlength="200" autoResize="false"
+										style="width:100%" required="true"
+										counterTemplate="{0} caracteres restantes."
+										value="#{solicitacao.mensagemEncaminhar.texto}"
+										styleClass="abaField encaminharField">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+									<h:outputText id="display4" />
+
+									<p:commandLink class="botaoLink"
+										style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"
+										action="#{solicitacao.encaminhar()}" update="@all"
+										oncomplete="PF('dlg2').hide();">
+										<h:outputText value="Salvar" />
+										<i class="fa fa-check" style="padding-left: 3px" />
+									</p:commandLink>
+								</div>
+							</p:outputPanel>
+						</h:form>
+
 					</h:panelGroup>
-					
-<!-- 				Barra de ações -->
+
+					<!-- 				Barra de ações -->
 					<h:panelGroup id="barraBtns">
-						
+
 						<!-- Botão Resposta -->
-						<p:commandLink id="RespostaAba" onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')" 
-								rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
-								styleClass="blankSquareBtn">
+						<p:commandLink id="RespostaAba"
+							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}"
+							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
 						</p:commandLink>
-						
+
 						<!-- Botão Prorrogar -->
-						<p:commandLink id="ProrrogarAba" class="botaoAba" onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')" 
-								styleClass="blankSquareBtn" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-								disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'
+						<p:commandLink id="ProrrogarAba" class="botaoAba"
+							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
+							styleClass="blankSquareBtn"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'
 								 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}">
-							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px"/>
+							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
-						
+
 						<!-- Botão Encaminhar -->
-						<p:commandLink id="EncaminharAba" class="botaoAba"  onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-									rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-									disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
-									styleClass="blankSquareBtn">
-							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
+						<p:commandLink id="EncaminharAba" class="botaoAba"
+							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
+							styleClass="blankSquareBtn">
+							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{entidades.solicitacao}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+								target="#{entidades.solicitacao}" />
 						</p:commandLink>
-						
+
 						<!-- Botão Recurso -->
-						<p:commandLink id="RecursoAba" onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')" 
-								rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and solicitacao.solicitacao.tipo eq 'Informação'}" 
-								disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}" 
-								update="form:solicitacao_panel" styleClass="blankSquareBtn">
-							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px"/>
+						<p:commandLink id="RecursoAba"
+							onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')"
+							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and solicitacao.solicitacao.tipo eq 'Informação'}"
+							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}"
+							update="form:solicitacao_panel" styleClass="blankSquareBtn">
+							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Realizar Recurso" />
-							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+							<f:setPropertyActionListener value="Recurso"
+								target="#{solicitacao.status}" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
-					
+
 					</h:panelGroup>
 				</p:outputPanel>
 			</p:dialog>
-			
 <!-- JAVASCRIPT -->
 <script>
 
@@ -447,6 +518,7 @@
 	    	y[i].disabled = false;
 	    }
 	}
+
 </script>
 
 

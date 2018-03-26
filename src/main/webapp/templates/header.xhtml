@@ -34,14 +34,16 @@
 							<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5vw" width="140" height="50" />
 						</h:outputLink>
 	
-						<h:outputLink value="../../esic/index.xhtml" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
+						<h:outputLink value="#{usuario.redirecionarIndex()}" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
 <!-- 							<h:outputText value="e-SIC" /> -->
 							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
 						</h:outputLink>
+						
+						<h:outputText value="Versão Teste" style="color: white; margin-left: 10px" />
 					</h:panelGroup>
 					
 					<ul id="menuSM">
-						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
+						<li><h:outputLink value="#{usuario.redirecionarIndex()}">Início</h:outputLink></li>
 						
 						<li><h:outputLink value="../../esic/Menu/sobre.xhtml">Sobre</h:outputLink></li>
 						
@@ -53,7 +55,7 @@
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
 								<p:password placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
-								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all growl "/>
+								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.loginSistema()}" update="@all growl "/>
 							</h:panelGrid>
 						</p:overlayPanel>
 
@@ -143,6 +145,7 @@
 			</div>
 			
 	</h:form>
+	
 	
 	<script language="javascript">  
 	    var tam=1;
