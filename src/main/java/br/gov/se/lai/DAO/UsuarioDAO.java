@@ -48,10 +48,10 @@ public class UsuarioDAO {
         }
     }    
     
+    @SuppressWarnings("unchecked")
     public static Usuario buscarUsuario(String nick) {      	
     	Query query = em.createQuery("FROM Usuario as usu WHERE usu.nick= :nickParam");
     	query.setParameter("nickParam", nick);    	
-    	@SuppressWarnings("unchecked")
     	List<Usuario> results = query.getResultList();
 
     	if(results.isEmpty()){

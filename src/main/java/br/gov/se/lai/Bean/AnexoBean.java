@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +20,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContainerInitializer;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -29,7 +36,7 @@ import br.gov.se.lai.entity.Mensagem;
 
 @ManagedBean(name = "anexo")
 @SessionScoped
-public class AnexoBean implements Serializable {
+public class AnexoBean  implements Serializable {
 
 	private static final long serialVersionUID = 106779207846313149L;
 	private Anexo anexo;
@@ -120,38 +127,24 @@ public class AnexoBean implements Serializable {
 
 	}
 	
-	/*
-	 * Ainda está dando erro
-	 */
-	
-	public void redirecionar(Mensagem msg){
-	      try {
-//	          FacesContext.getCurrentInstance().getExternalContext().redirect(downloadAnexo(msg));
-	          FacesContext.getCurrentInstance().getExternalContext().redirect("file:///C:/Users/msmachado/Pictures/coentro.png");
-//	          FacesContext.getCurrentInstance().getExternalContext().redirect("http://google.com");
-	      } catch (IOException ex) {
-	    	  ex.printStackTrace();
-	      }
-	  }
-	
-	/*
-	 * Ainda está dando erro
-	 */
-	
-	
-	public StreamedContent downloadArquivo(Mensagem msg) {
-        try {
-        	File arquivo = new File(downloadAnexo(msg).getPath());
-        	fileDownload = (StreamedContent) arquivo;
-            InputStream stream;
-            stream = new FileInputStream(arquivo);
 
-            StreamedContent file2 = new DefaultStreamedContent(stream, fileDownload.getContentType(), "download_anexo");
-            return file2;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+	
+	/**
+	 * Função de download de arquivo.
+	 * @param msg
+	 */
+	
+	
+	public void downloadArquivo(Mensagem msg) {	
+		try {
+			File file = downloadAnexo(msg);
+			InputStream in = new FileInputStream(file);
+			String contentType = Files.probeContentType(file.toPath());
+			String[] extensao =contentType.split("/")[1].split("-");
+			fileDownload =  new DefaultStreamedContent(in, contentType, "download."+extensao[extensao.length-1]);
+		} catch (IOException e) {
+			System.out.println("Erro:"+ e.getMessage());
+		}
     }
 
 	/**
@@ -170,6 +163,7 @@ public class AnexoBean implements Serializable {
 	}
 	
 	 /**
+	  * 
 	  * Função listarAnexos
 	  * Lista todos os anexos ligados a uma mensagem.
 	  *  
@@ -180,9 +174,30 @@ public class AnexoBean implements Serializable {
 		return (List<Anexo>)AnexoDAO.listarAnexoMensagem(mensagem.getIdMensagem());
 	}
 	
+	void goGet(HttpServletRequest request, HttpServletResponse response) {
+		File arquivo = new File("C:\\Users\\msmachado\\Pictures\\profile_github.png");
+		int tamanho = (int) arquivo.length();
+		
+		HttpServletResponse response1 = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		
+		response1.setContentType("image/png");
+		response1.setContentLength(tamanho);
+		response1.setHeader("Content-Disposition", "attachment); filename=profile.png");
+		
+		OutputStream output;
+		try {
+			output = response1.getOutputStream();
+			Files.copy(arquivo.toPath(), output);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	
 
 	public Anexo getAnexo() {
 		return anexo;
