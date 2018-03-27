@@ -147,15 +147,15 @@ public class SolicitacaoBean implements Serializable {
 			
 			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null);
 	
-//			if (!(file.getContents().length == 0)) {
-//				AnexoBean anx = new AnexoBean();
-//				try {
-//					anx.save(anexo, mensagem, file);
-//				} catch (Exception e) {
-//					FacesContext.getCurrentInstance().addMessage(null,
-//							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-//				}
-//			}
+			if (!(file.getContents().length == 0)) {
+				AnexoBean anx = new AnexoBean();
+				try {
+					anx.save(anexo, mensagem, file);
+				} catch (Exception e) {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
+				}
+			}
 	
 			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
