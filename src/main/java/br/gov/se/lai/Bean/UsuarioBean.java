@@ -410,17 +410,24 @@ public class UsuarioBean implements Serializable {
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 				logout();
 			} else {
-				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
-					loadEmail();
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
-					acessoUsuario(this.usuario);
-					nomeCompleto(usuario.getNome());
-					retorno = "/index.xhtml?faces-redirect=true";
-				}else {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
-				}
+//				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
+//					loadEmail();
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+//					acessoUsuario(this.usuario);
+//					nomeCompleto(usuario.getNome());
+//					retorno = "/index.xhtml?faces-redirect=true";
+//				}else {
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
+//				}
+				
+				loadEmail();
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+				acessoUsuario(this.usuario);
+				nomeCompleto(usuario.getNome());
+				retorno = "/index.xhtml?faces-redirect=true";
 		}
 		}
 		
@@ -602,7 +609,7 @@ public class UsuarioBean implements Serializable {
 	 * @param email
 	 * @return
 	 */
-	public boolean tratarEmail(String email) {
+	public static boolean tratarEmail(String email) {
 		int retorno = 0;
 		String[] emailSplit = email.split("@");
 		String dominios = emailSplit[1].replace(".", "_");
@@ -612,13 +619,7 @@ public class UsuarioBean implements Serializable {
 				retorno += 1;
 			}
 		}
-
-		if (retorno >= 1) {
-			return true;
-		} else {
-			return false;
-		}
-
+		return (retorno >= 1);
 	}
 
 	/**

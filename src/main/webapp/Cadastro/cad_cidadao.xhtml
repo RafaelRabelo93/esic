@@ -58,7 +58,7 @@
 						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 							<h:panelGroup styleClass="column" >
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email"  value="#{cidadao.cidadao.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>

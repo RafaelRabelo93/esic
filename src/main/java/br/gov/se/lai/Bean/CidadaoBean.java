@@ -61,7 +61,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail())) {
+		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
 			
 			this.usuario = usuarioBean.getUsuario();
 			
@@ -173,6 +173,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		}
 		return retorno;
 	}
+	
+	/**
+	 * Função que verifica se o email que o cidadao está inserindo é email pessoal.
+	 * @param email
+	 * @return
+	 */
+	public boolean emailPessoal(String email) {
+		if (UsuarioBean.tratarEmail(email)) {
+			mensagemErro = "Email inválido";
+			mensagemErro2 = "Por favor insira um email pessoal.";
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
 
 	/**
 	 * Função ehRepresentanteCidadao
