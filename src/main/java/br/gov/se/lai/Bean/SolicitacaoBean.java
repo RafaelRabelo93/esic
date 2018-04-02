@@ -157,7 +157,6 @@ public class SolicitacaoBean implements Serializable {
 				}
 			}
 	
-			NotificacaoEmail.enviarNotificacao(solicitacao, userBean.getUsuario());
 			enviarMensagemAutomatica();
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
