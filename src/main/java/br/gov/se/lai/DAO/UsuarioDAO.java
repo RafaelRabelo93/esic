@@ -22,7 +22,7 @@ public class UsuarioDAO {
     			em.merge(usuario);
     		}
             em.getTransaction().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuario "+ usuario.getNome()+" salvo(a) com sucesso!"));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuario "+ usuario.getNome()+" salvo(a) com sucesso!"));
             return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar usuario "+ usuario.getNome()));
@@ -48,10 +48,10 @@ public class UsuarioDAO {
         }
     }    
     
+    @SuppressWarnings("unchecked")
     public static Usuario buscarUsuario(String nick) {      	
     	Query query = em.createQuery("FROM Usuario as usu WHERE usu.nick= :nickParam");
     	query.setParameter("nickParam", nick);    	
-    	@SuppressWarnings("unchecked")
     	List<Usuario> results = query.getResultList();
 
     	if(results.isEmpty()){

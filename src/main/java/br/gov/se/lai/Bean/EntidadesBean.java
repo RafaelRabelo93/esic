@@ -258,7 +258,6 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		this.solicitacao = solicitacao;
 	}
 
-
 	public List<Entidades> getTodasEntidadesAtivas() {
 		return todasEntidadesAtivas;
 	}
@@ -266,7 +265,8 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void setTodasEntidadesAtivas(List<Entidades> todasEntidadesAtivas) {
 		this.todasEntidadesAtivas = todasEntidadesAtivas;
 	}
-		public List<Entidades> getEntidadesFiltradas() {
+
+	public List<Entidades> getEntidadesFiltradas() {
 		return entidadesFiltradas;
 	}
 

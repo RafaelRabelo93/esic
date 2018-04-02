@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
@@ -42,8 +44,16 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
 		acoes = new ArrayList<Acoes>(acoesVinculadas);
 		acoes.addAll(acoesNaoVinculadas);		
-
 	}
+	
+	/**
+	 * Método carregarLista
+	 * 
+	 * Método estático que instancia a variável global acoes  com
+	 * o idAcoes disponibilizados na classe CompetenciasBean. 
+	 * Caso não haja nenhum idAcoes selecionado, a variável não
+	 * é instanciada.
+	 */
 	
 	public static void carregarLista() {
 		if(CompetenciasBean.idAcoes == 0) {
@@ -53,10 +63,22 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 *  
+	 */
+	
 	public void limpaAcao() {
 		acao = new Acoes();
 	}
 	
+	/**
+	 *  Salva uma nova ação. Verifica o perfil do usuário que está salvando.
+	 * 	Caso seja um gestor do sistema salva com status de não-vinculada
+	 * 	visto que ainda não está vinculada a uma entidade/órgao.
+	 * 	Caso seja um responsável salva como pendente e ainda fica indisponível para
+	 * 	uso no sistema.
+	 *	Caso seja cidadão não salva a ação e joga aviso de usuário sem permissão.
+	 */
 	public void save() {
 		if(verificaPermissao() ) {
 			if(usuarioBean.verificaGestor()) {
@@ -69,9 +91,22 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 				AcoesDAO.saveOrUpdate(acao);
 				getAcoesPendentes().add(acao);
 			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
 		}
 		acao = new Acoes();
 	}
+	
+	/**
+	 * Função remove
+	 * 
+	 * Verifica se o usuário tem permissão para excluir ação.
+	 * Somente ações com status Pendente e Não-Vinculada podem ser removidas.
+	 * 
+	 * @param acao - ação a ser removida
+	 * 
+	 */
 	
 	public void remove(Acoes acao) {
 		if(verificaPermissao() ) {
@@ -84,7 +119,20 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			AcoesDAO.delete(acao);
 		}
 	}
-
+	
+	/**
+	 * Função filtrarAcoes
+	 * Filtra a lista de ações que aparecem para o usuário em relação
+	 * às ações que já estão vinculadas a uma entidade/órgao.
+	 * Para não disponibilizar ações que já são vinculadas, a função
+	 * verifica quais as competências e comparam com as ações que existem.
+	 * As que já forem vinculadas são removidas da visualização.
+	 *  
+	 * 
+	 * @param comps - lista de competências da entidade/órgão
+	 * @return
+	 */
+	
 	public String filtrarAcoes(List<Competencias> comps){
 		Iterator<Acoes> a = acoes.iterator();
 		for (Competencias competencias : comps) {
@@ -99,18 +147,39 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return "cad_competencias2";
 	}
 	
+	/**
+	 * Função listarAcoesPendentes
+	 * Lista ações com status Pendente.
+	 */
 	public void listarAcoesPendentes(){
 		acoesPendentes = AcoesDAO.listPorStatus("Pendente");
 	}
+	
+	/**
+	 * Função listarAcoesNãoVinculadas
+	 * Lista ações com status NãoVinculada.
+	 */
 
 	public void listarAcoesNaoVinculadas(){
 		acoesNaoVinculadas = AcoesDAO.listPorStatus("Não-vinculada");
 	}
-
+	
+	/**
+	 * Função listarAcoesVinculadas
+	 * Lista ações com status Vinculada.
+	 */
+	
 	public void listarAcoesVinculadas(){
 		acoesVinculadas = AcoesDAO.listPorStatus("Vinculada");
 	}
 	
+	
+	/**
+	 * Função acaoLigadaEntidadeAtiva
+	 * Função para verificar quais ações estão vinculadas a entidades ativas.
+	 * 
+	 * @return uma lista somente de ações que estão vinculadas a entidades ativas. 
+	 */
 	public List<Acoes> acaoLigadaEntidadeAtiva() {
 
 		Iterator<Acoes> a = acoes.iterator();
@@ -131,12 +200,23 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		return acoes;
 	}
 	
+	/**
+	 * Função autenticaAcao
+	 * Função que torna o status de Pendente para Não-vinculada.
+	 * A função remove a ação da lista de ações pendentes e a 
+	 * insere na lista de ações não vinculadas.
+	 * 
+	 * @param acao - a ação que terá o sttaus alterado
+	 */
+	
 	public void autenticaAcao(Acoes acao) {
-		acao.setStatus("Não-vinculada");
-		AcoesDAO.saveOrUpdate(acao);
-		getAcoesPendentes().remove(acao);
-		getAcoesNaoVinculadas().add(acao);
-		getAcoes().add(acao);
+		if(usuarioBean.verificaGestor()) {
+			acao.setStatus("Não-vinculada");
+			AcoesDAO.saveOrUpdate(acao);
+			getAcoesPendentes().remove(acao);
+			getAcoesNaoVinculadas().add(acao);
+			getAcoes().add(acao);
+		}
 	}
 	
 
