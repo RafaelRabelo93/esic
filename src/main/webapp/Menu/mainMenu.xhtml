@@ -25,9 +25,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/megaphone.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Denúncia" />
-								<p>Realizar denúncia</p>
-								<f:setPropertyActionListener value="Denúncia"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -44,9 +42,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/info.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Informação" />
-								<p>Realizar pedido de informação</p>
-								<f:setPropertyActionListener value="Informação"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -63,9 +59,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/chat.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
-								<p>Realizar solicitação</p>
-								<f:setPropertyActionListener value="Solicitação"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -82,9 +76,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/like.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Elogio" />
-								<p>Realizar elogio</p>
-								<f:setPropertyActionListener value="Elogio"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Elogio"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -101,9 +93,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/sugestion.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
-								<p>Realizar sugestão</p>
-								<f:setPropertyActionListener value="Sugestão"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -121,9 +111,7 @@
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/dislike.png']}" width="60%" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
-								<p>Realizar reclamação</p>
-								<f:setPropertyActionListener value="Reclamação"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Reclamação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -322,18 +310,18 @@
 			
 			<h:panelGroup styleClass="legendaPanel">
 			
-				 <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+				<h:commandLink id="showBtn" disabled="true" class="legendaButton">
 			    	<i class="fa fa-question fa-2x" />
-			    </button>
+			    </h:commandLink>
 			    
-			    <div id="legenda" class="legendaBox" style="display: none;">
+			    <p:tooltip id="toolTipContent" for="showBtn" position="bottom">
 			    	<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao Cidadão) permite que qualquer pessoa, física ou jurídica,
 			    	encaminhe pedidos de acesso a informação pública para os órgãos e entidades do Poder Executivo Estadual.</p>
 		
 					<p>Por meio do sistema, além de fazer o pedido, é possível acompanhar o prazo e receber a resposta da solicitação por e-mail; entrar com recursos e consultar as respostas recebidas.</p>
 					
 					<p>Antes de solicitar uma informação, leia o Manual do Usuário e conheça os procedimentos que devem ser adotados para fazer sua solicitação.</p>
-			    </div>
+			    </p:tooltip>
 		    
 		    </h:panelGroup>
 

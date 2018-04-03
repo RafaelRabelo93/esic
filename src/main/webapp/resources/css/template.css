@@ -1035,8 +1035,8 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 
  /* Cores de prazo */
 td.prazo.verde {
-    background-color: #c8f5c8;
-	border-bottom: 3px solid #00aa00;
+/*     background-color: #c8f5c8; */
+/* 	border-bottom: 3px solid #00aa00; */
 }
 
 td.prazo.amarelo {
@@ -1051,7 +1051,7 @@ td.prazo.vermelho {
 
 td.prazo.branco {
 	background-color: #ffffff;
-	color: #c0c0c0;
+/* 	color: #c0c0c0; */
 	border: 1px solid #a8a8a8
 }
 
@@ -1576,7 +1576,7 @@ h1, h2, h3 {
 	-ms-flex-flow: column nowrap;
 	flex-flow: column nowrap;
 	
-	max-width: 450px;
+/* 	max-width: 450px; */
 	padding: 1em;
 }
 
@@ -1615,7 +1615,38 @@ h1, h2, h3 {
     min-width: 200px;
 }
 
+td.Aberta > .statusBox {
+	background: #2196f3;
+}
 
+td.Respondida > .statusBox  {
+	background: #489106;
+}
+
+td.Negada > .statusBox  {
+	background: #d30e03;
+}
+
+td.Reencaminhada > .statusBox  {
+	background: #824fbf;
+}
+
+td.Finalizada > .statusBox  {
+	background: #858f9c;
+}
+
+.statusBox {
+	color: white;
+	padding:0 3px;
+	border-radius: 3px;
+}
+
+.legendaTooltip > .ui-tooltip-text {
+    padding: 3px 10px;
+    background-color: #ffffff !important;
+    color: #4c4c4c !important;
+    border: 1px solid silver;
+}
 
 
 /* ========================== */
