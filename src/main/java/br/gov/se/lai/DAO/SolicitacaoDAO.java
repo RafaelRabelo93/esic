@@ -114,12 +114,32 @@ public class SolicitacaoDAO {
 	}	
 		
 	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPorTipo(String tipo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo,em)); 
+	}	
+
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPorTipoStatus(String tipo, String status) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status,em)); 
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPorTipoStatusMes(String tipo, String status, int mes) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status+" AND data LIKE %-0"+mes+"-%",em)); 
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPorTipoMes(String tipo, int mes) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND data LIKE %-0"+mes+"-%",em)); 
+	}	
+	
+	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarPorEntidade(int idEntidade) {
 		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarGeral() {
+	public static List<Solicitacao> listarGeralFinalizada() {
 		String status = "Finalizada";
 		Query query = em.createQuery("FROM Solicitacao as slt WHERE slt.status !=  :sltParam");
 		query.setParameter("sltParam", status);
@@ -127,6 +147,14 @@ public class SolicitacaoDAO {
     	List<Solicitacao> results = query.getResultList();
     	return results;    	
     } 
+
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarGeral() {
+		Query query = em.createQuery("FROM Solicitacao as slt ");
+		
+		List<Solicitacao> results = query.getResultList();
+		return results;    	
+	} 
 		
 
 }
