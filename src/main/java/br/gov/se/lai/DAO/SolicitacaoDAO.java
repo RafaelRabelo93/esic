@@ -124,13 +124,13 @@ public class SolicitacaoDAO {
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listPorTipoStatusMes(String tipo, String status, int mes) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status+" AND data LIKE %-0"+mes+"-%",em)); 
+	public static List<Solicitacao> listPorTipoStatusPeriodo(String tipo, String status, String periodo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status+" AND data LIKE "+periodo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listPorTipoMes(String tipo, int mes) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND data LIKE %-0"+mes+"-%",em)); 
+	public static List<Solicitacao> listPorTipoPeriodo(String tipo, String periodo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND data LIKE "+periodo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")

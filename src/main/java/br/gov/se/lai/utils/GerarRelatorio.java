@@ -36,10 +36,14 @@ public class GerarRelatorio implements Serializable {
 			int[] dados = {dadosRelacionadosBase[i]};
 			dadosChart.put(baseChart[i], dados);
 		}
+		
 		return dadosChart;
 	}
 	
-	
+	/**
+	 * Função para filtrar os dados referentes aos pedidos de informação em cada mês.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoMensalPedidoInformacao(){
 		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
 		int mesAtual = Calendar.MONTH;
@@ -49,9 +53,9 @@ public class GerarRelatorio implements Serializable {
 		for(int i = 0; i <= mesAtual; i++) {
 			base.add(meses[0]);
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoMes("Informação", i).size());
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusMes("Informação", "Aberta", i).size());
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusMes("Informação", "Finalizada", i).size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", "%-0"+i+"-%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", "%-0"+i+"-%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", "%-0"+i+"-%").size());
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
 		
@@ -60,5 +64,12 @@ public class GerarRelatorio implements Serializable {
 		}
 		return dadosChart;
 	}
-		
+	
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualPedidoInformacao(){
+		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
+		int anoAtual = Calendar.YEAR;
+		return dadosChart;
+
+	}	
 }
