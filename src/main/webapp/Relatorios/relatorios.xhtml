@@ -21,69 +21,120 @@
 				<h:panelGroup>
 
 					<h1 style="margin-bottom: 0;">Relatórios Estatísticos</h1>
-					<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
+					<p:separator styleClass="separator"/>
 					
 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p>
 					
-					
-					<h:panelGroup styleClass="organize" style="margin-top: -2vw;">
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Acompanhamento geral dos pedidos</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
+					<h:panelGroup id="parametros" styleClass="inline" style="width: 100%; margin-bottom: 1em">
+						<h:panelGroup styleClass="column">
+							<p:outputLabel value="Métrica" for="metrica"/>
+							<p:selectOneMenu id="metrica" value="">
+					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+					            <f:selectItem itemLabel="Tempo" itemValue="" />
+					            <f:selectItem itemLabel="Tipo de Órgão" itemValue="" />
+					            <f:selectItem itemLabel="Local" itemValue="" />
+					            <f:selectItem itemLabel="Assunto" itemValue="" />
+					            <f:selectItem itemLabel="Tipo de Pessoa" itemValue="" />
+					        </p:selectOneMenu>
 						</h:panelGroup>
-					
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Acompanhamento mensal dos pedidos</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>	
 						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Acompanhamento anual dos pedidos</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
+						<h:panelGroup styleClass="column" style="margin-left: 3vw" >
+							<p:outputLabel value="Gráfico" for="grafico"/>
+							<p:selectOneMenu id="grafico" value="">
+					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+					            <f:selectItem itemLabel="Barra" itemValue="" />
+					            <f:selectItem itemLabel="Coluna" itemValue="" />
+					            <f:selectItem itemLabel="Pizza" itemValue="" />
+					        </p:selectOneMenu>
+						</h:panelGroup>
+						
+						<!-- TEMPO -->
+						<h:panelGroup styleClass="inline" rendered="false">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Data Inicial " for="dataIni" />
+								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" yearRange="2012:c"
+									showOn="button" locale="pt_BR" effect="slideDown" navigator="true"
+									pattern="dd/MM/yyyy" mask="true" timeInput="false">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Data Final " for="dataFim" />
+								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" yearRange="2012:c"
+									showOn="button" locale="pt_BR" effect="slideDown" navigator="true"
+									pattern="dd/MM/yyyy" mask="true" timeInput="false">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Meses" for="meses" />
+								<p:selectCheckboxMenu id="meses" label="Meses" >
+						            <f:selectItem itemLabel="Janeiro"  itemValue="0"/>
+	                                <f:selectItem itemLabel="Fevereiro" itemValue="1"/>
+	                                <f:selectItem itemLabel="Março" itemValue="2"/>
+	                                <f:selectItem itemLabel="Abril" itemValue="3"/>
+	                                <f:selectItem itemLabel="Maio" itemValue="4"/>
+	                                <f:selectItem itemLabel="Junho" itemValue="5"/>
+	                                <f:selectItem itemLabel="Julho" itemValue="6"/>
+	                                <f:selectItem itemLabel="Agosto" itemValue="7"/>
+	                                <f:selectItem itemLabel="Setembro" itemValue="8"/>
+	                                <f:selectItem itemLabel="Outubro" itemValue="9"/>
+	                                <f:selectItem itemLabel="Novembro" itemValue="10"/>
+	                                <f:selectItem itemLabel="Dezembro" itemValue="11"/>
+						        </p:selectCheckboxMenu>
+					        </h:panelGroup>
+					        
+						</h:panelGroup>
+						
+						<!-- Tipo de Órgão -->
+						<h:panelGroup styleClass="inline" rendered="false">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+								<p:outputLabel value="Tipo: " for="tipoOrgao" />
+								<p:selectOneRadio id="tipoOrgao" value="" required="true">
+	<!-- 								<p:ajax event="change" listener="" update="selectOrgao"/> -->
+									<f:selectItem itemLabel="Órgão" itemValue="#{true}"  />
+									<f:selectItem itemLabel="Entidade" itemValue="#{false}" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							
+							<h:panelGroup id="selectOrgao" styleClass="column" rendered="true" style="margin-left: 2vw">
+								<p:outputLabel value="Administração Direta" />
+								<p:selectCheckboxMenu id="orgao" label="Órgãos">
+									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+									<f:selectItems />
+								</p:selectCheckboxMenu>
+							</h:panelGroup>
+							
+							<h:panelGroup id="selectEntidade" styleClass="column" rendered="false" style="margin-left: 2vw">
+								<p:outputLabel value="Administração Indireta" />
+								<p:selectCheckboxMenu id="ent" label="Entidades">
+									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+									<f:selectItems />
+								</p:selectCheckboxMenu>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<!-- Assunto -->
+						<h:panelGroup styleClass="inline" rendered="true">
+
+							<h:panelGroup styleClass="column" rendered="true" style="margin-left: 2vw">
+								<p:outputLabel value="Assuntos" />
+								<p:selectCheckboxMenu id="ass" label="Assuntos">
+									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+									<f:selectItems />
+								</p:selectCheckboxMenu>
+							</h:panelGroup>
+							
 						</h:panelGroup>
 							
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Acompanhamento anual acumulado dos pedidos</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Pedidos por Órgão da Administração Direta*</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-													
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Pedidos por Órgão da Administração Indireta*</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Pedidos por Ente Federativo</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Pedidos por Assunto</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Pedidos por tipo de pessoa</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Entidade por avaliação</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin: 2vw; width: 500px">
-							<h2>Responsável por avaliação</h2>
-							<div style="width: 400px; height:300px; border: 1px solid silver;  background: rgba(255, 255, 255, 0.5);">Gráfico aqui</div>
-						</h:panelGroup>
-						
+						<p:commandLink value="OK" styleClass="botaoLink" update="parametros" style="width: 50px; height: 14px; margin-left: 2vw; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"/>
 					</h:panelGroup>
+					
+					
+					
+					<p:separator styleClass="separator2"/>
 					
 				</h:panelGroup>
 

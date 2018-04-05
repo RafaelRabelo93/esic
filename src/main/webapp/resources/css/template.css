@@ -1560,6 +1560,19 @@ i.fa.fa-home {
 	margin: 1em 0;
 }
 
+.separator {
+	margin-top: 0;
+    margin-bottom: 2em;
+    border: 2px solid #4086d8;
+}
+
+.separator2 {
+	width: 30%;
+	margin-top: 0;
+    margin-bottom: 2em;
+    border: 1px solid #4086d8;
+}
+
 .sobre {
 /* 	width: 90%; */
 	padding: 3vh;
@@ -1569,6 +1582,25 @@ i.fa.fa-home {
 	border: 1px solid silver;
 	max-width: 800px;
 }
+
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	margin-bottom: 5px !important;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label{
+	padding-left: 3em !important;
+}
+
+.ui-selectcheckboxmenu-label.ui-corner-all.ui-state-hover, .ui-selectcheckboxmenu-label.ui-corner-all{
+	color: inherit !important;
+	background: none !important;
+	font-weight: normal !important;
+	box-shadow: none !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+} 
+
 
 p {
 	margin-top: 0;
