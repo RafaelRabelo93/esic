@@ -410,17 +410,24 @@ public class UsuarioBean implements Serializable {
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 				logout();
 			} else {
-				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
-					loadEmail();
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
-					acessoUsuario(this.usuario);
-					nomeCompleto(usuario.getNome());
-					retorno = "/index.xhtml?faces-redirect=true";
-				}else {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
-				}
+//				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
+//					loadEmail();
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+//					acessoUsuario(this.usuario);
+//					nomeCompleto(usuario.getNome());
+//					retorno = "/index.xhtml?faces-redirect=true";
+//				}else {
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
+//				}
+				
+				loadEmail();
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+				acessoUsuario(this.usuario);
+				nomeCompleto(usuario.getNome());
+				retorno = "/index.xhtml?faces-redirect=true";
 
 		}
 		}
