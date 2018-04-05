@@ -87,6 +87,10 @@ public class  EntidadesDAO {
     public static List<Entidades> listOrgaos() {		
     	return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.orgao = "+1,em));
     }
+    @SuppressWarnings("unchecked")
+    public static List<Entidades> listEntidades() {		
+    	return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.orgao = "+0,em));
+    }
     
     
 	@SuppressWarnings("unchecked")

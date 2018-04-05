@@ -11,12 +11,15 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.ChartSeries;
 
 import br.com.caelum.stella.inwords.Messages;
+import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
+import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Solicitacao;
 
 public class GerarRelatorio implements Serializable {
 	
 	protected final static String[] meses = {"Janeiro", "Fevereiro", "Março", "Maio", "Abril", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+	protected final static int anoInicial = 2012;
 	
 	/**
 	 * Gerar Relatório Final 
@@ -46,16 +49,18 @@ public class GerarRelatorio implements Serializable {
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoMensalPedidoInformacao(){
 		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
-		int mesAtual = Calendar.MONTH;
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 		
 		for(int i = 0; i <= mesAtual; i++) {
 			base.add(meses[0]);
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", "%-0"+i+"-%").size());
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", "%-0"+i+"-%").size());
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", "%-0"+i+"-%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual+"-0"+i+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual+"-0"+i+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual+"-0"+i+"%").size());
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
 		
@@ -65,11 +70,95 @@ public class GerarRelatorio implements Serializable {
 		return dadosChart;
 	}
 	
-	
+	/**
+	 * Função para retornar valores de pedidos de informação não acumulado dos anos de 2012 até o ano atual.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualPedidoInformacao(){
 		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
-		int anoAtual = Calendar.YEAR;
+		Calendar c = Calendar.getInstance();
+		int anoAtual = c.get(Calendar.YEAR);
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		for(int i = anoInicial; i <= anoAtual ; i++) {
+			base.add(String.valueOf(i));
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", i+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", i+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", i+"%").size());
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(0));
+		}
+		
 		return dadosChart;
-
 	}	
+	
+	public static  Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualAcumuladoPedidoInformacao(){
+		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int anoAtual = c.get(Calendar.YEAR);
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		for(int i = anoInicial; i <= anoAtual ; i++) {
+			base.add(String.valueOf(i));
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			int pedidosTotalPeriodo = 0;
+			int pedidosAbertoPeriodo = 0;
+			int pedidosFinalizadosPeriodo = 0;
+			for (int ano = anoInicial; ano <= i; ano++) {
+				pedidosTotalPeriodo += SolicitacaoDAO.listPorTipoPeriodo("Informação", ano+"%").size();
+				pedidosAbertoPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", ano+"%").size();
+				pedidosFinalizadosPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", ano+"%").size();
+			}
+			dadosEspecificos.add(pedidosTotalPeriodo);
+			dadosEspecificos.add(pedidosAbertoPeriodo);
+			dadosEspecificos.add(pedidosFinalizadosPeriodo);
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(0));
+		}
+		
+		return dadosChart;
+	}
+	
+	
+	
+	public static  Map<String, ArrayList<Integer>> gerarAcompanhamentoOrgaoPedidoInformacao(){
+		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listOrgaos());
+		
+		for (Entidades entidades : orgaos) {
+			base.add(entidades.getSigla());
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(),"Informação", anoAtual+"-0"+mesAtual+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual+"-0"+mesAtual+"%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual+"-0"+mesAtual+"%").size());
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(0));
+		}
+		
+		return dadosChart;
+	}
+
+	public static  Map<String, ArrayList<Integer>> nome(){
+		Map<String,ArrayList<Integer>> dadosChart = new HashMap<>();
+		return dadosChart;
+	}
 }

@@ -120,23 +120,29 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoStatus(String tipo, String status) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status+" AND slt.tipo = "+tipo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoStatusPeriodo(String tipo, String status, String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND slt.tipo = "+status+" AND data LIKE "+periodo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status+" AND slt.tipo = "+tipo+" AND dataIni LIKE "+periodo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoPeriodo(String tipo, String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo+" AND data LIKE "+periodo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = "+tipo+" AND dataIni LIKE "+periodo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarPorEntidade(int idEntidade) {
 		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade,em)); 
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarPorEntidade(int idEntidade,String tipo, String periodo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND dataIni LIKE "+periodo,em)); 
+	}	
+	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarGeralFinalizada() {
