@@ -1,10 +1,29 @@
+#page {
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+    
+    min-height: -webkit-fill-available;
+    min-height: -moz-available;
+    min-height: fill-available;
+}
+
 #content1 {
-    min-height: 54.5vh;
+/*     min-height: 54.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
 #content2 {
-    min-height: 50.5vh;
+/*     min-height: 50.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -213,6 +232,32 @@
  	-webkit-justify-content: center;
  	justify-content: center;
 	
+}
+
+.organize {
+    display: -ms-flexbox;
+    display: -moz-flexbox;
+    display: -webkit-flex;
+    display: -o-flex;
+    display: flex;
+    
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    -o-flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    
+    -moz-justify-content: space-between;
+    -ms-justify-content: space-between;
+    -o-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    
+    -moz-align-content: center;
+    -ms-align-content: center;
+    -o-align-content: center;
+    -webkit-align-content: center;
+    align-content: center;
 }
 
 .botaoLink {
@@ -1646,6 +1691,10 @@ td.Finalizada > .statusBox  {
     background-color: #ffffff !important;
     color: #4c4c4c !important;
     border: 1px solid silver;
+}
+
+.relatorioBtn {
+	
 }
 
 
