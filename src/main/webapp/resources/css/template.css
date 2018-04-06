@@ -1,10 +1,29 @@
+#page {
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+    
+    min-height: -webkit-fill-available;
+    min-height: -moz-available;
+    min-height: fill-available;
+}
+
 #content1 {
-    min-height: 54.5vh;
+/*     min-height: 54.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
 #content2 {
-    min-height: 50.5vh;
+/*     min-height: 50.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -213,6 +232,32 @@
  	-webkit-justify-content: center;
  	justify-content: center;
 	
+}
+
+.organize {
+    display: -ms-flexbox;
+    display: -moz-flexbox;
+    display: -webkit-flex;
+    display: -o-flex;
+    display: flex;
+    
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    -o-flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    
+    -moz-justify-content: space-between;
+    -ms-justify-content: space-between;
+    -o-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    
+    -moz-align-content: center;
+    -ms-align-content: center;
+    -o-align-content: center;
+    -webkit-align-content: center;
+    align-content: center;
 }
 
 .botaoLink {
@@ -1515,6 +1560,19 @@ i.fa.fa-home {
 	margin: 1em 0;
 }
 
+.separator {
+	margin-top: 0;
+    margin-bottom: 2em;
+    border: 2px solid #4086d8;
+}
+
+.separator2 {
+	width: 30%;
+	margin-top: 0;
+    margin-bottom: 2em;
+    border: 1px solid #4086d8;
+}
+
 .sobre {
 /* 	width: 90%; */
 	padding: 3vh;
@@ -1524,6 +1582,25 @@ i.fa.fa-home {
 	border: 1px solid silver;
 	max-width: 800px;
 }
+
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	margin-bottom: 5px !important;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label{
+	padding-left: 3em !important;
+}
+
+.ui-selectcheckboxmenu-label.ui-corner-all.ui-state-hover, .ui-selectcheckboxmenu-label.ui-corner-all{
+	color: inherit !important;
+	background: none !important;
+	font-weight: normal !important;
+	box-shadow: none !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+} 
+
 
 p {
 	margin-top: 0;
@@ -1646,6 +1723,10 @@ td.Finalizada > .statusBox  {
     background-color: #ffffff !important;
     color: #4c4c4c !important;
     border: 1px solid silver;
+}
+
+.relatorioBtn {
+	
 }
 
 
