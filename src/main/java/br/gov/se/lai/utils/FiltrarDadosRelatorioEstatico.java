@@ -2,9 +2,14 @@ package br.gov.se.lai.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -13,7 +18,9 @@ import org.primefaces.model.chart.ChartSeries;
 import br.com.caelum.stella.inwords.Messages;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
+import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Solicitacao;
 
 public class FiltrarDadosRelatorioEstatico implements Serializable {
 
@@ -99,7 +106,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		}
 
 		for (int i = 0; i < base.size(); i++) {
-			dadosChart.put(base.get(i), dadosRelacionadorBase.get(0));
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
 		}
 
 		return dadosChart;
@@ -132,7 +139,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		}
 
 		for (int i = 0; i < base.size(); i++) {
-			dadosChart.put(base.get(i), dadosRelacionadorBase.get(0));
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
 		}
 
 		return dadosChart;
@@ -166,9 +173,126 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 
 		return dadosChart;
 	}
-
-	public static Map<String, ArrayList<Integer>> nome() {
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPedidoInformacao(){
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		String periodo = anoAtual+"-"+mesAtual+"%";
+
+		Set<String> uf = new HashSet<>();
+		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
+		if(estados != null) {
+			uf = estados.stream().collect(Collectors.toSet());
+			uf.remove("");
+		}
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		for (String estadoEnviado : uf) {
+			base.add(estadoEnviado);
+			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(estados, estadoEnviado)))));
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	}
+
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTipoPessoaGeneroPedidoInformacao(){
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		String periodo = anoAtual+"-"+mesAtual+"%";
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		ArrayList<Cidadao> pessoas= new ArrayList<>(SolicitacaoDAO.listarCidadao("Informação", periodo));
+		int numeroJuridica = 0;
+		int numeroFisicaFeminino = 0;
+		int numeroFisicaMasculino = 0;
+		for (Cidadao cidadao : pessoas) {
+			if(cidadao.getTipo().equals(true)) {
+				switch (cidadao.getSexo()) {
+				case "F":
+					numeroFisicaFeminino++;
+					break;
+				case "M":
+					numeroFisicaMasculino++;
+					break;
+				default:
+					break;
+				}
+			}else{
+				numeroJuridica++;
+			}
+		}
+		
+		base.add("Pessoa Jurídica");
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroJuridica)));
+		base.add("Pessoa Física Feminino");
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaFeminino)));
+		base.add("Pessoa Física Masculino");
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaMasculino)));
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAssuntoPedidoInformacao(){
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		String periodo = anoAtual+"-"+mesAtual+"%";
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		Set<String> assunto = new HashSet<>();
+		ArrayList<String> assuntos =  new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", periodo));
+		
+		if(assuntos!= null) {
+			assunto = assuntos.stream().collect(Collectors.toSet());
+			assunto.remove("");
+		}
+		
+		for (String ass : assunto) {
+			base.add(ass);
+			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(assuntos, ass)))));
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		
+		return dadosChart;
+	}
+
+	public static Map<String, ArrayList<Integer>> nome(){
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		String periodo = anoAtual+"-"+mesAtual+"%";
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		Set<String> uf = new HashSet<>();
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		
 		return dadosChart;
 	}
 }

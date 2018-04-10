@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/templateSemMenu.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form style="padding: 1.5vw 15vw">
+
+				<h:panelGroup>
+
+					<h1 style="margin-bottom: 0;">Relatórios Estatísticos</h1>
+					<p:separator styleClass="separator"/>
+					
+					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p>
+					
+<!-- 					<h:panelGroup id="parametros" styleClass="inline" style="width: 100%; margin-bottom: 1em"> -->
+<!-- 						<h:panelGroup styleClass="column"> -->
+<!-- 							<p:outputLabel value="Métrica" for="metrica"/> -->
+<!-- 							<p:selectOneMenu id="metrica" value=""> -->
+<!-- 					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" /> -->
+<!-- 					            <f:selectItem itemLabel="Tempo" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Tipo de Órgão" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Local" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Assunto" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Tipo de Pessoa" itemValue="" /> -->
+<!-- 					        </p:selectOneMenu> -->
+<!-- 						</h:panelGroup> -->
+						
+<!-- 						<h:panelGroup styleClass="column" style="margin-left: 3vw" > -->
+<!-- 							<p:outputLabel value="Gráfico" for="grafico"/> -->
+<!-- 							<p:selectOneMenu id="grafico" value=""> -->
+<!-- 					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" /> -->
+<!-- 					            <f:selectItem itemLabel="Barra" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Coluna" itemValue="" /> -->
+<!-- 					            <f:selectItem itemLabel="Pizza" itemValue="" /> -->
+<!-- 					        </p:selectOneMenu> -->
+<!-- 						</h:panelGroup> -->
+						
+<!-- 						TEMPO -->
+<!-- 						<h:panelGroup styleClass="inline" rendered="false"> -->
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Data Inicial " for="dataIni" /> -->
+<!-- 								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" yearRange="2012:c" -->
+<!-- 									showOn="button" locale="pt_BR" effect="slideDown" navigator="true" -->
+<!-- 									pattern="dd/MM/yyyy" mask="true" timeInput="false"> -->
+<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+<!-- 								</p:calendar> -->
+<!-- 							</h:panelGroup> -->
+							
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Data Final " for="dataFim" /> -->
+<!-- 								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" yearRange="2012:c" -->
+<!-- 									showOn="button" locale="pt_BR" effect="slideDown" navigator="true" -->
+<!-- 									pattern="dd/MM/yyyy" mask="true" timeInput="false"> -->
+<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+<!-- 								</p:calendar> -->
+<!-- 							</h:panelGroup> -->
+							
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Meses" for="meses" /> -->
+<!-- 								<p:selectCheckboxMenu id="meses" label="Meses" > -->
+<!-- 						            <f:selectItem itemLabel="Janeiro"  itemValue="0"/> -->
+<!-- 	                                <f:selectItem itemLabel="Fevereiro" itemValue="1"/> -->
+<!-- 	                                <f:selectItem itemLabel="Março" itemValue="2"/> -->
+<!-- 	                                <f:selectItem itemLabel="Abril" itemValue="3"/> -->
+<!-- 	                                <f:selectItem itemLabel="Maio" itemValue="4"/> -->
+<!-- 	                                <f:selectItem itemLabel="Junho" itemValue="5"/> -->
+<!-- 	                                <f:selectItem itemLabel="Julho" itemValue="6"/> -->
+<!-- 	                                <f:selectItem itemLabel="Agosto" itemValue="7"/> -->
+<!-- 	                                <f:selectItem itemLabel="Setembro" itemValue="8"/> -->
+<!-- 	                                <f:selectItem itemLabel="Outubro" itemValue="9"/> -->
+<!-- 	                                <f:selectItem itemLabel="Novembro" itemValue="10"/> -->
+<!-- 	                                <f:selectItem itemLabel="Dezembro" itemValue="11"/> -->
+<!-- 						        </p:selectCheckboxMenu> -->
+<!-- 					        </h:panelGroup> -->
+					        
+<!-- 						</h:panelGroup> -->
+						
+<!-- 						Tipo de Órgão -->
+<!-- 						<h:panelGroup styleClass="inline" rendered="false"> -->
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Tipo: " for="tipoOrgao" /> -->
+<!-- 								<p:selectOneRadio id="tipoOrgao" value="" required="true"> -->
+<!-- 								<p:ajax event="change" listener="" update="selectOrgao"/> --> 
+<!-- 									<f:selectItem itemLabel="Órgão" itemValue="#{true}"  /> -->
+<!-- 									<f:selectItem itemLabel="Entidade" itemValue="#{false}" /> -->
+<!-- 								</p:selectOneRadio> -->
+<!-- 							</h:panelGroup> -->
+							
+<!-- 							<h:panelGroup id="selectOrgao" styleClass="column" rendered="true" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Administração Direta" /> -->
+<!-- 								<p:selectCheckboxMenu id="orgao" label="Órgãos"> -->
+<!-- 									<f:selectItem itemLabel="Todos" noSelectionOption="true" /> -->
+<!-- 									<f:selectItems /> -->
+<!-- 								</p:selectCheckboxMenu> -->
+<!-- 							</h:panelGroup> -->
+							
+<!-- 							<h:panelGroup id="selectEntidade" styleClass="column" rendered="false" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Administração Indireta" /> -->
+<!-- 								<p:selectCheckboxMenu id="ent" label="Entidades"> -->
+<!-- 									<f:selectItem itemLabel="Todos" noSelectionOption="true" /> -->
+<!-- 									<f:selectItems /> -->
+<!-- 								</p:selectCheckboxMenu> -->
+<!-- 							</h:panelGroup> -->
+<!-- 						</h:panelGroup> -->
+						
+<!-- 						Assunto -->
+<!-- 						<h:panelGroup styleClass="inline" rendered="true"> -->
+
+<!-- 							<h:panelGroup styleClass="column" rendered="true" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Assuntos" /> -->
+<!-- 								<p:selectCheckboxMenu id="ass" label="Assuntos"> -->
+<!-- 									<f:selectItem itemLabel="Todos" noSelectionOption="true" /> -->
+<!-- 									<f:selectItems /> -->
+<!-- 								</p:selectCheckboxMenu> -->
+<!-- 							</h:panelGroup> -->
+							
+<!-- 						</h:panelGroup> -->
+							
+<!-- 						<p:commandLink value="OK" styleClass="botaoLink" update="parametros" style="width: 50px; height: 14px; margin-left: 2vw; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"/> -->
+<!-- 					</h:panelGroup> -->
+					
+					
+					<p:outputLabel value="Relatório de Geral"/>
+					<f:setPropertyActionListener value="Geral" target="#{relatorioOrgao.relatorioDe}" />
+					<p:chart type="bar" model="#{relatorioOrgao.barModel}" style="height:300px"/>
+					<p:separator styleClass="separator2"/>
+
+					<p:outputLabel value="Relatório Mensal"/>
+					<f:setPropertyActionListener value="Mensal" target="#{relatorioOrgao.relatorioDe}" />
+					<p:chart type="bar" model="#{relatorioOrgao.barModel}" style="height:300px"/>
+					<p:separator styleClass="separator2"/>
+					
+				</h:panelGroup>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import br.gov.se.lai.Bean.UsuarioBean;
+import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
@@ -110,7 +111,7 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorStatus(String status) {
-			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status,em)); 
+			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"'",em)); 
 	}	
 		
 	@SuppressWarnings("unchecked")
@@ -125,12 +126,12 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoStatusPeriodo(String tipo, String status, String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status+" AND slt.tipo = "+tipo+" AND dataIni LIKE "+periodo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"' AND slt.tipo = '"+tipo+"' AND dataIni LIKE '"+periodo+"'",em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoPeriodo(String tipo, String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = "+tipo+" AND dataIni LIKE "+periodo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = '"+tipo+"' AND dataIni LIKE '"+periodo+"'",em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -140,7 +141,43 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarPorEntidade(int idEntidade,String tipo, String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND dataIni LIKE "+periodo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = '"+idEntidade+"' AND slt.tipo = '"+tipo+"' AND dataIni LIKE '"+periodo+"'",em)); 
+	}	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarPorEntidade(int idEntidade,String tipo, String status, String periodo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND slt.tipo = '"+tipo+"' AND slt.status = '"+status+"' AND dataIni LIKE '"+periodo+"'",em)); 
+	}	
+
+	@SuppressWarnings("unchecked")
+	public static List<String> listarPorFederacao(String tipo, String periodo) {
+		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
+					"JOIN  solicitacao.cidadao as cidadao "+
+					"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+					"AND solicitacao.dataIni LIKE '"+periodo+"'"+
+					"AND solicitacao.tipo = "+tipo;
+		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
+	}	
+
+	
+	@SuppressWarnings("unchecked")
+	public static List<Cidadao> listarCidadao(String tipo, String periodo) {
+		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
+				"JOIN  solicitacao.cidadao as cidadao "+
+				"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+				"AND solicitacao.dataIni LIKE '"+periodo+"'"+
+				"AND solicitacao.tipo = '"+tipo+"'";
+		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
+	}	
+	
+
+	@SuppressWarnings("unchecked")
+	public static List<String> listarAssuntos(String tipo, String periodo) {
+		String HQL= "SELECT solicitacao.acoes.titulo FROM  Solicitacao as solicitacao "+
+				"JOIN  solicitacao.acoes as acoes "+
+				"WHERE solicitacao.acoes.idAcoes = acoes.idAcoes "+
+				"AND solicitacao.dataIni LIKE '"+periodo+"'"+
+				"AND solicitacao.tipo = '"+tipo+"'";
+		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
 	
 	
