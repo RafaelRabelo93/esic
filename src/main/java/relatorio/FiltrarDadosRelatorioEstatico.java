@@ -1,4 +1,4 @@
-package br.gov.se.lai.utils;
+package relatorio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,16 +37,16 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 * gráfico de barras, onde a base são os status dos pedidos de informação e os
 	 * valores são os números totais referentes.
 	 */
-	public static Map<String, int[]> gerarAcompanhamentoGeralDosPedidosInformacao() {
+	public static Map<String,  ArrayList<Integer>> gerarAcompanhamentoGeralDosPedidosInformacao() {
 		int numeroTotal = SolicitacaoDAO.listarGeral().size();
 		int numeroTotalAtendimentos = SolicitacaoDAO.listarGeralFinalizada().size();
 		int numeroTotalAberto = SolicitacaoDAO.listPorStatus("Aberta").size();
 
 		String[] baseChart = { "Pedido", "Em aberto", "Atendimentos" };
 		int[] dadosRelacionadosBase = { numeroTotal, numeroTotalAberto, numeroTotalAtendimentos };
-		Map<String, int[]> dadosChart = new HashMap<>();
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		for (int i = 0; i < baseChart.length; i++) {
-			int[] dados = { dadosRelacionadosBase[i] };
+			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));
 			dadosChart.put(baseChart[i], dados);
 		}
 

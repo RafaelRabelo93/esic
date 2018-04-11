@@ -175,7 +175,7 @@ public class SolicitacaoDAO {
 		String HQL= "SELECT solicitacao.acoes.titulo FROM  Solicitacao as solicitacao "+
 				"JOIN  solicitacao.acoes as acoes "+
 				"WHERE solicitacao.acoes.idAcoes = acoes.idAcoes "+
-				"AND solicitacao.dataIni LIKE '"+periodo+"'"+
+				"AND solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
@@ -184,7 +184,7 @@ public class SolicitacaoDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarGeralFinalizada() {
 		String status = "Finalizada";
-		Query query = em.createQuery("FROM Solicitacao as slt WHERE slt.status !=  :sltParam");
+		Query query = em.createQuery("FROM Solicitacao as slt WHERE slt.status =  :sltParam");
 		query.setParameter("sltParam", status);
     	
     	List<Solicitacao> results = query.getResultList();

@@ -1,4 +1,4 @@
-package br.gov.se.lai.utils;
+package relatorio;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,25 +13,23 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
-@ManagedBean(name = "relatorioOrgao")
+@ManagedBean(name = "barChartClass")
 @SessionScoped
-public class RelatorioOrgao {
+public class DrawBarChart {
 
 	    private BarChartModel barModel;
-	    public String tipoRelatorio;
-	    public String relatorioDe;
 	 
-	    @PostConstruct
-	    public void init() {
-	        createBarModels();
-	    }
-	 
+//	    @PostConstruct
+//	    public void init() {
+//	        createBarModels();
+//	    }
+//	 
 	    public BarChartModel getBarModel() {
 	        return barModel;
 	    }
 	     
 	 
-	    private BarChartModel initBarModel() {
+	    private BarChartModel initBarModel(Map<String, ArrayList<Integer>> dadosChart, long tipoDados ) {
 	        BarChartModel model = new BarChartModel();
 	 
 	        ArrayList<ChartSeries> variaveis = new ArrayList<>();
@@ -48,25 +46,18 @@ public class RelatorioOrgao {
 		    variaveis.add(aberto);
 		    variaveis.add(atendido);
 
-		    switch (relatorioDe) {
-			case "Mensal":
-				variaveis = graficoMensal(variaveis);	
-				break;
-			case "Geral":
-				variaveis = graficoGeral(variaveis);	
+		    switch ((int)tipoDados) {
+		    case 1:
+		    	variaveis = graficoGeral(variaveis, dadosChart);	
+		    	break;
+			case 2:
+				variaveis = graficoMensal(variaveis, dadosChart);	
 				break;
 
 			default:
+				variaveis = graficoComSeries(variaveis, dadosChart);
 				break;
 			}
-	        
-
-	        
-//		    for(String key : dadosChart.keySet()) {
-//		    	for(int i=0; i < series.size(); i++) {
-//			       	series.get(i).set(key, dadosChart.get(key).get(0));
-//		    	}
-//		    }
 
 	        for (ChartSeries chartSeries : variaveis) {
 	        	model.addSeries(chartSeries);
@@ -75,14 +66,14 @@ public class RelatorioOrgao {
 	        return model;
 	    }
 	     
-	    private void createBarModels() {
-	        createBarModel();
-	    }
+//	    private void createBarModels() {
+//	        createBarModel();
+//	    }
 	     
-	    private void createBarModel() {
-	        barModel = initBarModel();
+	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
+	        barModel = initBarModel(dadosChart, tipoDados );
 	         
-	        barModel.setTitle("Bar Chart");
+	        barModel.setTitle(title);
 	        barModel.setLegendPosition("ne");
 	         
 	        Axis xAxis = barModel.getAxis(AxisType.X);
@@ -91,25 +82,20 @@ public class RelatorioOrgao {
 	        Axis yAxis = barModel.getAxis(AxisType.Y);
 	        yAxis.setLabel("Quantidade");
 	        yAxis.setMin(0);
-	        yAxis.setMax(80);
+	        yAxis.setMax(valorMaior);
+	        
+	        return barModel;
 	    }
 
 	    
-	    public ArrayList<ChartSeries> graficoGeral(ArrayList<ChartSeries> series ){
-	        Map<String, int[]> dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralDosPedidosInformacao();
-
+	    public ArrayList<ChartSeries> graficoGeral(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ){
 		    for(String key : dadosChart.keySet()) {
-//		    	for(int i=0; i < series.size(); i++) {
-//			       	series.get(i).set(key, dadosChart.get(key)[0]);
-//		    	}
-		    	series.get(0).set(key, dadosChart.get(key)[0]);
+		    	series.get(0).set(key, dadosChart.get(key).get(0));
 		    }
 	    	return series;
 	    }
 
-	    public ArrayList<ChartSeries> graficoMensal(ArrayList<ChartSeries> series ){
-	    	Map<String, ArrayList<Integer>> dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPedidoInformacao();
-	    	
+	    public ArrayList<ChartSeries> graficoMensal(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
 	        for(int mes = 0; mes < dadosChart.size(); mes++) {
 	        	String key = FiltrarDadosRelatorioEstatico.meses[mes];
 	        	for(int i=0; i < series.size(); i++) {
@@ -120,22 +106,15 @@ public class RelatorioOrgao {
 	    	return series;
 	    }
 	    
-		public String getTipoRelatorio() {
-			return tipoRelatorio;
-		}
-
-
-		public void setTipoRelatorio(String tipoRelatorio) {
-			this.tipoRelatorio = tipoRelatorio;
-		}
-
-		public String getRelatorioDe() {
-			return relatorioDe;
-		}
-
-		public void setRelatorioDe(String relatorioDe) {
-			this.relatorioDe = relatorioDe;
-		}
+	    public ArrayList<ChartSeries> graficoComSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ) {
+	    	for(String key : dadosChart.keySet()) {
+		    	for(int i=0; i < series.size(); i++) {
+			       	series.get(i).set(key, dadosChart.get(key).get(i));
+		    	}
+		    }
+	    	
+	    	return series;
+	    }
 	    
 	    
 }
