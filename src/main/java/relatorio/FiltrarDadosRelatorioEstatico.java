@@ -174,6 +174,35 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 
 		return dadosChart;
 	}
+
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEntidadePedidoInformacao() {
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listEntidades());
+		
+		for (Entidades entidades : orgaos) {
+			base.add(entidades.getSigla());
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
+					anoAtual + "-0" + mesAtual + "%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
+					"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		
+		return dadosChart;
+	}
 	
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPedidoInformacao(){
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();

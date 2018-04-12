@@ -20,7 +20,9 @@ public class Relatorios {
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
 	public static String[] tipo = {"Pedidos totais do E-SIC", "Pedidos mensais do E-SIC", "Pedidos anuais do E-SIC", "Pedidos anuais acumulados do E-SIC",
-									"Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC", "Pedidos por assunto do E-SIC", "Pedidos por tipo de pessoa do E-SIC", "Pedidos por estado do E-SIC"};
+									"Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC", "Pedidos por assunto do E-SIC", "Pedidos por tipo de pessoa do E-SIC", 
+									"Pedidos por estado do E-SIC"};
+	public int metricas;
 	
 	@PostConstruct
 	public void Relatorios() {
@@ -37,7 +39,6 @@ public class Relatorios {
 	 * 7- pedidos por assuntos
 	 * 8 - pedidos por tipo de pessoa
 	 * 9- uf
-	 * @return 
 	 * @return 
 	 */
 	
@@ -60,7 +61,7 @@ public class Relatorios {
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoOrgaoPedidoInformacao();
 			break;
 		case 6:
-			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoOrgaoPedidoInformacao();
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEntidadePedidoInformacao();
 			break;
 		case 7:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPedidoInformacao();
