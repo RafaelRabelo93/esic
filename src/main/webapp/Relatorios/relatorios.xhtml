@@ -49,7 +49,7 @@
 						</h:panelGroup>
 						
 						<!-- TEMPO -->
-						<h:panelGroup styleClass="inline" rendered="false">
+						<h:panelGroup styleClass="inline" rendered="true">
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Data Inicial " for="dataIni" />
 								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" yearRange="2012:c"
@@ -89,7 +89,7 @@
 						</h:panelGroup>
 						
 						<!-- Tipo de Órgão -->
-						<h:panelGroup styleClass="inline" rendered="false">
+						<h:panelGroup styleClass="inline" rendered="true">
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Tipo: " for="tipoOrgao" />
 								<p:selectOneRadio id="tipoOrgao" value="" required="true">
@@ -107,7 +107,7 @@
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 							
-							<h:panelGroup id="selectEntidade" styleClass="column" rendered="false" style="margin-left: 2vw">
+							<h:panelGroup id="selectEntidade" styleClass="column" rendered="true" style="margin-left: 2vw">
 								<p:outputLabel value="Administração Indireta" />
 								<p:selectCheckboxMenu id="ent" label="Entidades">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
@@ -133,7 +133,7 @@
 					</h:panelGroup>
 					
 					
-					<p:chart type="bar" model="#{relatorioOrgao.barModel}" style="height:300px"/>
+					<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" style="height:300px"/>
 					<p:separator styleClass="separator2"/>
 					
 				</h:panelGroup>

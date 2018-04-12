@@ -153,8 +153,8 @@ public class SolicitacaoDAO {
 		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
 					"JOIN  solicitacao.cidadao as cidadao "+
 					"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-					"AND solicitacao.dataIni LIKE '"+periodo+"'"+
-					"AND solicitacao.tipo = "+tipo;
+					"AND solicitacao.dataIni LIKE '"+periodo+"' "+
+					"AND solicitacao.tipo = 'Informação'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
 
@@ -164,7 +164,7 @@ public class SolicitacaoDAO {
 		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
 				"JOIN  solicitacao.cidadao as cidadao "+
 				"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-				"AND solicitacao.dataIni LIKE '"+periodo+"'"+
+				"AND solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
 	}	

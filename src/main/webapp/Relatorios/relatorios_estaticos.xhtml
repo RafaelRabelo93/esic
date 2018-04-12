@@ -25,26 +25,41 @@
 					
 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p>
 	
-						<p:outputLabel value="Relatório de Geral"/>
-						<p:chart type="bar" model="#{relatorios.desenhar(1)}"  responsive="true"  style="height:300px"/>
+												<p:outputLabel value="Relatório de Geral"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 						<p:outputLabel value="Relatório de Mensal"/>
-						<p:chart type="bar" model="#{relatorios.desenhar(2)}"  responsive="true" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 						<p:outputLabel value="Relatório de Anual"/>
-						<p:chart type="bar" model="#{relatorios.desenhar(3)}"  responsive="true" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 						<p:outputLabel value="Relatório de Anual Acumulado"/>
-						<p:chart type="bar" model="#{relatorios.desenhar(4)}"  responsive="true" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
 						<p:outputLabel value="Relatório de Órgão"/>
-						<p:chart type="bar" model="#{relatorios.desenhar(5)}"  responsive="true"  style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
-						
+
+							<p:outputLabel value="Relatório de Entidade"/>
+							<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}"  style="height:300px"/>
+							<p:separator styleClass="separator2"/>
+
+							<p:outputLabel value="Relatório de Assuntos"/>
+							<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}"   style="width:700px;height:500px"/>
+							<p:separator styleClass="separator2"/>	
+
+							<p:outputLabel value="Relatório de Tipo de Pessoa"/>
+							<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}"   style="width:700px;height:500px"/>
+							<p:separator styleClass="separator2"/>
+
+							<p:outputLabel value="Relatório de Estado"/>
+							<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}"  style="width:700px;height:500px"/>
+							<p:separator styleClass="separator2"/>
 
 				</h:panelGroup>
 

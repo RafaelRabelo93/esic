@@ -19,11 +19,11 @@ public class DrawBarChart {
 
 	    private BarChartModel barModel;
 	 
-//	    @PostConstruct
-//	    public void init() {
+	    @PostConstruct
+	    public void init() {
 //	        createBarModels();
-//	    }
-//	 
+	    }
+	 
 	    public BarChartModel getBarModel() {
 	        return barModel;
 	    }
@@ -88,14 +88,14 @@ public class DrawBarChart {
 	    }
 
 	    
-	    public ArrayList<ChartSeries> graficoGeral(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ){
+	    private ArrayList<ChartSeries> graficoGeral(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ){
 		    for(String key : dadosChart.keySet()) {
 		    	series.get(0).set(key, dadosChart.get(key).get(0));
 		    }
 	    	return series;
 	    }
 
-	    public ArrayList<ChartSeries> graficoMensal(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
+	    private ArrayList<ChartSeries> graficoMensal(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
 	        for(int mes = 0; mes < dadosChart.size(); mes++) {
 	        	String key = FiltrarDadosRelatorioEstatico.meses[mes];
 	        	for(int i=0; i < series.size(); i++) {
@@ -106,7 +106,7 @@ public class DrawBarChart {
 	    	return series;
 	    }
 	    
-	    public ArrayList<ChartSeries> graficoComSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ) {
+	    private ArrayList<ChartSeries> graficoComSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ) {
 	    	for(String key : dadosChart.keySet()) {
 		    	for(int i=0; i < series.size(); i++) {
 			       	series.get(i).set(key, dadosChart.get(key).get(i));

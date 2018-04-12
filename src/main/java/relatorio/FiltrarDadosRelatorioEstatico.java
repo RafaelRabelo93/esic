@@ -180,7 +180,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH);
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual+"-"+mesAtual+"%";
+		String periodo = anoAtual+"-0"+mesAtual+"%";
 
 		Set<String> uf = new HashSet<>();
 		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
@@ -208,7 +208,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH);
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual+"-"+mesAtual+"%";
+		String periodo = anoAtual+"-0"+mesAtual+"%";
 		
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -253,7 +253,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH);
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual+"-"+mesAtual+"%";
+		String periodo = anoAtual+"-0"+mesAtual+"%";
 		
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -283,7 +283,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH);
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual+"-"+mesAtual+"%";
+		String periodo = anoAtual+"-0"+mesAtual+"%";
 		
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
