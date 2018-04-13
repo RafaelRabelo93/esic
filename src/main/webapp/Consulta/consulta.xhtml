@@ -221,9 +221,8 @@
 							<h:outputText
 								value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
 
-							<h:outputText value="Forma de Recebimento da resposta:"
-								style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.formaRecebimentoString}" />
+							<h:outputText value="Forma de Recebimento da resposta:"	style="color:#1a568c; font-size:18px" rendered="#{solicitacao.formaRecebimentoString ne '...'}" />
+							<h:outputText value="#{solicitacao.formaRecebimentoString}" rendered="#{solicitacao.formaRecebimentoString ne '...'}" />
 
 							<h:outputText value="Tipo de solicitacao:"
 								style="color:#1a568c; font-size:18px" />
@@ -231,9 +230,9 @@
 
 							<h:outputText value="Status:"
 								style="color:#1a568c; font-size:18px"
-								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
+								rendered="#{solicitacao.tipo eq 'Informação' or solicitacao.tipo eq 'Solicitação'}" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"
-								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
+								rendered="#{solicitacao.tipo eq 'Informação' or solicitacao.tipo eq 'Solicitação'}" />
 
 							<h:outputText value="Instancia:"
 								style="color:#1a568c; font-size:18px" />
@@ -245,11 +244,8 @@
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 
-							<h:outputText value="Data Limite:"
-								style="color:#1a568c; font-size:18px"
-								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}" />
-							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"
-								rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 

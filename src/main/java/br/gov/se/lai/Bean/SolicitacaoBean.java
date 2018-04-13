@@ -156,8 +156,9 @@ public class SolicitacaoBean implements Serializable {
 							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
 				}
 			}
-	
-			enviarMensagemAutomatica();
+			
+//			enviarMensagemAutomatica();
+			NotificacaoEmail.emailNovaSolicitacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			e.printStackTrace();

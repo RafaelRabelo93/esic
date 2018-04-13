@@ -396,13 +396,13 @@ public class ResponsavelBean implements Serializable{
 		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 		if(idDestinatario != -1) {
 			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario, mensagem);
+			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario);
 			return "/index.xhtml?faces-redirect=true";
 		}else {
 			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
 			if(idDestinatario != -1) {
 				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario, mensagem);
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
 				//Busca
