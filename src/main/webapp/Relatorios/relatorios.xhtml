@@ -21,93 +21,113 @@
 				<h:panelGroup>
 
 					<h1 style="margin-bottom: 0;">Relatórios Estatísticos</h1>
-					<p:separator styleClass="separator"/>
-					
-					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p>
-					
-					<h:panelGroup id="parametros" styleClass="inline" style="width: 100%; margin-bottom: 1em">
-						<h:panelGroup styleClass="column">
-							<p:outputLabel value="Métrica" for="metrica"/>
-							<p:selectOneMenu id="metrica" value="">
-					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-					            <f:selectItem itemLabel="Tempo" itemValue="" />
-					            <f:selectItem itemLabel="Tipo de Órgão" itemValue="" />
-					            <f:selectItem itemLabel="Local" itemValue="" />
-					            <f:selectItem itemLabel="Assunto" itemValue="" />
-					            <f:selectItem itemLabel="Tipo de Pessoa" itemValue="" />
-					        </p:selectOneMenu>
-						</h:panelGroup>
-						
-						<h:panelGroup styleClass="column" style="margin-left: 3vw" >
-							<p:outputLabel value="Gráfico" for="grafico"/>
-							<p:selectOneMenu id="grafico" value="">
-					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-					            <f:selectItem itemLabel="Barra" itemValue="" />
-					            <f:selectItem itemLabel="Coluna" itemValue="" />
-					            <f:selectItem itemLabel="Pizza" itemValue="" />
-					        </p:selectOneMenu>
-						</h:panelGroup>
-						
+					<p:separator styleClass="separator" />
+
+					<p>Relatórios estatisticos do sistema bla bla bla descrição da
+						página.</p>
+
+					<h:panelGroup id="parametros" styleClass="inline"
+						style="width: 100%; margin-bottom: 1em">
+						<!-- 						<h:panelGroup styleClass="column"> -->
+						<!-- 							<p:outputLabel value="Métrica" for="metrica"/> -->
+						<!-- 							<p:selectOneMenu id="metrica" value="#{relatorios.metricas}" > -->
+						<!-- 								<p:ajax update="@all"/> -->
+						<!-- 					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" /> -->
+						<!-- 					            <f:selectItem itemLabel="Tempo" itemValue="1" /> -->
+						<!-- 					            <f:selectItem itemLabel="Tipo de Órgão" itemValue="2" /> -->
+						<!-- 					            <f:selectItem itemLabel="Local" itemValue="3" /> -->
+						<!-- 					            <f:selectItem itemLabel="Assunto" itemValue="4" /> -->
+						<!-- 					            <f:selectItem itemLabel="Tipo de Pessoa" itemValue="5" /> -->
+						<!-- 					        </p:selectOneMenu> -->
+						<!-- 						</h:panelGroup> -->
+
+						<!-- 						<h:panelGroup styleClass="column" style="margin-left: 3vw" > -->
+						<!-- 							<p:outputLabel value="Gráfico" for="grafico"/> -->
+						<!-- 							<p:selectOneMenu id="grafico" value=""> -->
+						<!-- 					            <f:selectItem itemLabel="Selecione" noSelectionOption="true" /> -->
+						<!-- 					            <f:selectItem itemLabel="Barra" itemValue="" /> -->
+						<!-- 					            <f:selectItem itemLabel="Coluna" itemValue="" /> -->
+						<!-- 					            <f:selectItem itemLabel="Pizza" itemValue="" /> -->
+						<!-- 					        </p:selectOneMenu> -->
+						<!-- 						</h:panelGroup> -->
+
+						<p:selectManyCheckbox id="basic" value="#{relatorios.metricas}">
+							<p:ajax listener="#{relatorios.verificarBool()}" update="especificacaoPanel"/>
+							<f:selectItem itemLabel="Data" itemValue="1" />
+							<f:selectItem itemLabel="Órgão" itemValue="2" />
+							<f:selectItem itemLabel="Entidade" itemValue="3" />
+							<f:selectItem itemLabel="Estados" itemValue="4" />
+							<f:selectItem itemLabel="Assunto" itemValue="5" />
+							<f:selectItem itemLabel="Tipo de Pessoa" itemValue="6" />
+						</p:selectManyCheckbox>
+
+					</h:panelGroup>
+					<h:panelGroup id="especificacaoPanel">
 						<!-- TEMPO -->
-						<h:panelGroup styleClass="inline" rendered="true">
+						<h:panelGroup styleClass="inline"
+							rendered="#{relatorios.dataBool}">
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Data Inicial " for="dataIni" />
-								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" yearRange="2012:c"
-									showOn="button" locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd/MM/yyyy" mask="true" timeInput="false">
+								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12"
+									yearRange="2012:c" showOn="button" locale="pt_BR"
+									effect="slideDown" navigator="true" pattern="dd/MM/yyyy"
+									mask="true" timeInput="false">
 									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</p:calendar>
 							</h:panelGroup>
-							
+
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Data Final " for="dataFim" />
-								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" yearRange="2012:c"
-									showOn="button" locale="pt_BR" effect="slideDown" navigator="true"
-									pattern="dd/MM/yyyy" mask="true" timeInput="false">
+								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12"
+									yearRange="2012:c" showOn="button" locale="pt_BR"
+									effect="slideDown" navigator="true" pattern="dd/MM/yyyy"
+									mask="true" timeInput="false">
 									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</p:calendar>
 							</h:panelGroup>
-							
+
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Meses" for="meses" />
-								<p:selectCheckboxMenu id="meses" label="Meses" >
-						            <f:selectItem itemLabel="Janeiro"  itemValue="0"/>
-	                                <f:selectItem itemLabel="Fevereiro" itemValue="1"/>
-	                                <f:selectItem itemLabel="Março" itemValue="2"/>
-	                                <f:selectItem itemLabel="Abril" itemValue="3"/>
-	                                <f:selectItem itemLabel="Maio" itemValue="4"/>
-	                                <f:selectItem itemLabel="Junho" itemValue="5"/>
-	                                <f:selectItem itemLabel="Julho" itemValue="6"/>
-	                                <f:selectItem itemLabel="Agosto" itemValue="7"/>
-	                                <f:selectItem itemLabel="Setembro" itemValue="8"/>
-	                                <f:selectItem itemLabel="Outubro" itemValue="9"/>
-	                                <f:selectItem itemLabel="Novembro" itemValue="10"/>
-	                                <f:selectItem itemLabel="Dezembro" itemValue="11"/>
-						        </p:selectCheckboxMenu>
-					        </h:panelGroup>
-					        
+								<p:selectCheckboxMenu id="meses" label="Meses">
+									<f:selectItem itemLabel="Janeiro" itemValue="0" />
+									<f:selectItem itemLabel="Fevereiro" itemValue="1" />
+									<f:selectItem itemLabel="Março" itemValue="2" />
+									<f:selectItem itemLabel="Abril" itemValue="3" />
+									<f:selectItem itemLabel="Maio" itemValue="4" />
+									<f:selectItem itemLabel="Junho" itemValue="5" />
+									<f:selectItem itemLabel="Julho" itemValue="6" />
+									<f:selectItem itemLabel="Agosto" itemValue="7" />
+									<f:selectItem itemLabel="Setembro" itemValue="8" />
+									<f:selectItem itemLabel="Outubro" itemValue="9" />
+									<f:selectItem itemLabel="Novembro" itemValue="10" />
+									<f:selectItem itemLabel="Dezembro" itemValue="11" />
+								</p:selectCheckboxMenu>
+							</h:panelGroup>
+
 						</h:panelGroup>
-						
+
 						<!-- Tipo de Órgão -->
-						<h:panelGroup styleClass="inline" rendered="true">
+						<h:panelGroup styleClass="inline" rendered="#{relatorios.orgaoBool eq true or relatorios.entidadeBool eq true }">
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Tipo: " for="tipoOrgao" />
 								<p:selectOneRadio id="tipoOrgao" value="" required="true">
-	<!-- 								<p:ajax event="change" listener="" update="selectOrgao"/> -->
-									<f:selectItem itemLabel="Órgão" itemValue="#{true}"  />
+									<!-- 								<p:ajax event="change" listener="" update="selectOrgao"/> -->
+									<f:selectItem itemLabel="Órgão" itemValue="#{true}" />
 									<f:selectItem itemLabel="Entidade" itemValue="#{false}" />
 								</p:selectOneRadio>
 							</h:panelGroup>
-							
-							<h:panelGroup id="selectOrgao" styleClass="column" rendered="true" style="margin-left: 2vw">
+
+							<h:panelGroup id="selectOrgao" styleClass="column"
+								rendered="true" style="margin-left: 2vw">
 								<p:outputLabel value="Administração Direta" />
 								<p:selectCheckboxMenu id="orgao" label="Órgãos">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 									<f:selectItems />
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
-							
-							<h:panelGroup id="selectEntidade" styleClass="column" rendered="true" style="margin-left: 2vw">
+
+							<h:panelGroup id="selectEntidade" styleClass="column"
+								rendered="true" style="margin-left: 2vw">
 								<p:outputLabel value="Administração Indireta" />
 								<p:selectCheckboxMenu id="ent" label="Entidades">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
@@ -115,27 +135,31 @@
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 						</h:panelGroup>
-						
-						<!-- Assunto -->
-						<h:panelGroup styleClass="inline" rendered="true">
 
-							<h:panelGroup styleClass="column" rendered="true" style="margin-left: 2vw">
+						<!-- Assunto -->
+						<h:panelGroup styleClass="inline" rendered="#{relatorios.assuntoBool}">
+
+							<h:panelGroup styleClass="column" rendered="true"
+								style="margin-left: 2vw">
 								<p:outputLabel value="Assuntos" />
 								<p:selectCheckboxMenu id="ass" label="Assuntos">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 									<f:selectItems />
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
-							
+
 						</h:panelGroup>
-							
-						<p:commandLink value="OK" styleClass="botaoLink" update="parametros" style="width: 50px; height: 14px; margin-left: 2vw; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"/>
+
+						<p:commandLink value="OK" styleClass="botaoLink"
+							update="parametros"
+							style="width: 50px; height: 14px; margin-left: 2vw; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" />
 					</h:panelGroup>
-					
-					
-					<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" style="height:300px"/>
-					<p:separator styleClass="separator2"/>
-					
+
+
+					<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}"
+						style="height:300px" />
+					<p:separator styleClass="separator2" />
+
 				</h:panelGroup>
 
 			</h:form>

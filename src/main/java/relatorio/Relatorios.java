@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.PieChartModel;
@@ -22,11 +23,16 @@ public class Relatorios {
 	public static String[] tipo = {"Pedidos totais do E-SIC", "Pedidos mensais do E-SIC", "Pedidos anuais do E-SIC", "Pedidos anuais acumulados do E-SIC",
 									"Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC", "Pedidos por assunto do E-SIC", "Pedidos por tipo de pessoa do E-SIC", 
 									"Pedidos por estado do E-SIC"};
-	public int metricas;
+	public int[] metricas;
+	public boolean dataBool;
+	public boolean orgaoBool;
+	public boolean entidadeBool;
+	public boolean estadosBool;
+	public boolean assuntoBool;
+	public boolean tipoPessoaBool;
 	
 	@PostConstruct
 	public void Relatorios() {
-		
 	}
 	
 	/**
@@ -110,6 +116,33 @@ public class Relatorios {
 		return (valorMaior+10);
 	}
 	
+	
+	public void verificarBool() {
+		for (int i : metricas) {
+			switch (i) {
+			case 1:
+				alternarDataBool();
+				break;
+			case 2:
+				alternarOrgaoBool();
+				break;
+			case 3:
+				alternarEntidadeBool();
+				break;
+			case 4:
+				alternarEstadosBool();
+				break;
+			case 5:
+				alternarAssuntoBool();
+				break;
+			case 6:
+				alternarTipoPessoaBool();
+				break;
+			}
+		}
+	}
+	
+
 	public int getTipoRelatorio() {
 		return tipoRelatorio;
 	}
@@ -123,4 +156,88 @@ public class Relatorios {
 		this.tipoGrafico = tipoGrafico;
 	}
 
+	public boolean isDataBool() {
+		return dataBool;
+	}
+
+	public void alternarDataBool() {
+		if(dataBool) {
+			dataBool = false;
+		}else{
+			dataBool = true;
+		};
+	}
+
+	public boolean isOrgaoBool() {
+		return orgaoBool;
+	}
+
+	public void alternarOrgaoBool() {
+		if(orgaoBool){
+			orgaoBool = false;
+		}else {
+			orgaoBool = true;
+		}
+	}
+
+	public boolean isEntidadeBool() {
+		return entidadeBool;
+	}
+
+	public void alternarEntidadeBool() {
+		if(entidadeBool) {
+			entidadeBool = false;
+		}else {
+			entidadeBool = true;
+		}
+		
+	}
+
+	public boolean isEstadosBool() {
+		return estadosBool;
+	}
+
+	public void alternarEstadosBool() {
+		if(estadosBool) {
+			estadosBool = false;;
+		}else {
+			estadosBool = true;
+		}
+	}
+
+	public boolean isAssuntoBool() {
+		return assuntoBool;
+	}
+
+	public void alternarAssuntoBool() {
+		if(assuntoBool){
+			assuntoBool = false;;
+		}else {
+			assuntoBool = true;
+		}
+	}
+
+	public boolean isTipoPessoaBool() {
+		return tipoPessoaBool;
+	}
+
+	public void alternarTipoPessoaBool() {
+		if(tipoPessoaBool){
+			tipoPessoaBool = false;
+		}else {
+			tipoPessoaBool = true;
+		}
+	}
+
+	public int[] getMetricas() {
+		return metricas;
+	}
+
+	public void setMetricas(int[] metricas) {
+		this.metricas = metricas;
+	}
+
+	
+
+	
 }
