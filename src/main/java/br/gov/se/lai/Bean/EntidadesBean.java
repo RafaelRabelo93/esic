@@ -39,6 +39,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private boolean forOrgao = true;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
+	private List<Entidades> listOrgaosAtivos;
 	private List<Entidades> todasEntidades;
 	private List<Entidades> todasEntidadesAtivas;
 	private List<Entidades> entidadesFiltradas;
@@ -49,6 +50,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		entidades = new Entidades();
 		todasEntidades = EntidadesDAO.list();
 		todasEntidadesAtivas = EntidadesDAO.listAtivas();
+		listOrgaosAtivos = EntidadesDAO.listOrgaos();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
 	
@@ -272,6 +274,14 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setEntidadesFiltradas(List<Entidades> entidadesFiltradas) {
 		this.entidadesFiltradas = entidadesFiltradas;
+	}
+
+	public List<Entidades> getListOrgaosAtivos() {
+		return listOrgaosAtivos;
+	}
+
+	public void setListOrgaosAtivos(List<Entidades> listOrgaosAtivos) {
+		this.listOrgaosAtivos = listOrgaosAtivos;
 	}
 	
 	
