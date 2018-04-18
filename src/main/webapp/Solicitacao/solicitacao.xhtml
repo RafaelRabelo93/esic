@@ -236,7 +236,7 @@
 						<p:outputLabel value="Mensagem:" for="mensagem" />
 						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
 
-						<p:fileUpload value="#{solicitacao.file}" mode="simple" auto="true"  />
+						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo"  mode="simple" auto="true" skinSimple="true" style="margin-top: 1em"/>
 					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" ajax="false" action="#{solicitacao.save}" update="mainMenu">

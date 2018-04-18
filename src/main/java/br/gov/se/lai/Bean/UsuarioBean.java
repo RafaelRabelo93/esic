@@ -73,7 +73,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private static String sessionId;
-	private boolean perfilAlterarCidadaoResponsavel;
+	public boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
 

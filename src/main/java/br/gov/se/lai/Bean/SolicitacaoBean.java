@@ -88,7 +88,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
-	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
+	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada" };
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -637,6 +637,17 @@ public class SolicitacaoBean implements Serializable {
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		mensagem = new Mensagem();
 
+	}
+	
+	public void negar() {
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 4);
+		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		MensagemDAO.saveOrUpdate(mensagem);
+		MensagemBean.attMensagemSolicitacao(mensagem);
+		mensagem = new Mensagem();
+		finalizarSolicitacao();
 	}
 
 

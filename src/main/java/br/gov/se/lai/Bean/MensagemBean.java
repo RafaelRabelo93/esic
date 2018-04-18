@@ -126,15 +126,15 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 			
 		case "Prorrogada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 
 		case "Negada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
 			break;
 
 		case "Finalizada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Encaminhada":
@@ -147,16 +147,16 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			
 		case "Status Denuncia 1":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 2":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 3":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			tipoAux = 0;
 			break;
 

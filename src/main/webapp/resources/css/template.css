@@ -806,6 +806,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 	box-shadow:none;
 }
 
+
 .ui-outputlabel.ui-state-error {
     border: 0 none;
     text-decoration: underline #cd0a0a;
@@ -1712,6 +1713,10 @@ td.Finalizada > .statusBox  {
 	background: #858f9c;
 }
 
+td.Recurso > .statusBox  {
+	background: #eab90f;
+}
+
 .statusBox {
 	color: white;
 	padding:0 3px;
@@ -1723,6 +1728,24 @@ td.Finalizada > .statusBox  {
     background-color: #ffffff !important;
     color: #4c4c4c !important;
     border: 1px solid silver;
+}
+
+
+.legendaTooltip > .ui-tooltip-bottom .ui-tooltip-arrow {
+    left: initial !important;
+    right: 8% !important;
+    border-bottom-color: white;
+}
+
+.legendaTooltip > .ui-tooltip-bottom.ui-tooltip-arrow:after {
+	content: '';
+	width: 0;
+	height: 0;
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent;
+	border-right: 3px solid red;
+	position: absolute;
+	right: 8% !important;
 }
 
 .relatorioBtn {
