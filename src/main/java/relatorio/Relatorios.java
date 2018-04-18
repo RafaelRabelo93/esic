@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,16 +39,16 @@ public class Relatorios {
 	public boolean tipoPessoaBool;
 	public Date periodoIni;
 	public Date periodoFim;
-	public int[] meses;
-	public int[] anosSelecionados;
-	public int[] orgaos;
-	public int[] entidades;
-	public int[] assuntos;
-	public int tipoPessoa;
+	public String[] meses ;
+	public String[] anosSelecionados;
+	public String[] orgaos;
+	public String[] entidades;
+	public String[] assuntos;
+	public String tipoPessoa;
 	public String[] estado;
-	public int tipoSolicitacao;
-	public int tempo;
-	public int status;
+	public String tipoSolicitacao;
+	public String tempo;
+	public String status;
 	public ArrayList<Integer> anos;
 	
 	
@@ -230,35 +231,64 @@ public class Relatorios {
 		}
 	}
 	
+	@SuppressWarnings("unused")
+	public void botao() {
+		Map<String, ArrayList<String>> dados = new HashMap<>();
+		String[] keys = {"data", "meses", "anos","orgao", "entidade", "estados", "assunto", "tipoPesso"};
+//		List<List<String>> variaveis = new ArrayList<List<String>>() {
+//			{
+//				add(Arrays.asList(new String[] {periodoIni.toString(), periodoFim.toString()}));
+//				add(Arrays.asList(meses));
+//				add(Arrays.asList(anosSelecionados));
+//				add(Arrays.asList(orgaos));
+//				add(Arrays.asList(entidades));
+//				add(Arrays.asList(estado));
+//				add(Arrays.asList(assuntos));
+//				add(Arrays.asList(new String[] {tipoPessoa}));
+//			}
+//		};
+//		
+		ArrayList<String> a = new ArrayList<>();
+		for (String item : anosSelecionados) {
+			a.add(item);
+		}
+		for (int itemEscolhido : metricas) {
+			dados.put(keys[itemEscolhido-1], a);
+		}
+
+		
+		String retorno = metodo(tipoSolicitacao, tempo, status, dados);
+	}
+	
 	
 	public String metodo(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados) {
 		String query = "SELECT idSolicitacao FROM Solicitacao as slt";
 		if(dados.containsKey("tipoPessoa") || dados.containsKey("estados") ) {
-			query.concat("JOIN solicitacao.cidadao as cidadao WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "
+			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao "
 						+ "AND slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status+"'");
 		}else {
-			query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status+"'");
+			query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status+"'");
 		}
 			
 		ArrayList<String> base = new ArrayList<>();
 		if (dados.containsKey(tempo)) {
 			if (!dados.get(tempo).get(0).equals("Todos")) {
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				ArrayList<String> keysValues = dados.get(tempo);
 				if (tempo.equals("meses")) {
 					for (String t : keysValues) {
 						base.add(t);
-						query.concat("dataIni LIKE '%-" + t + "-%'");
+						query = query.concat("dataIni LIKE '%-" + t + "-%'");
 						if (!(keysValues.indexOf(t) == (keysValues.size() - 1))) {
-							query.concat(" OR ");
+							query = query.concat(" OR ");
 						}
 					}
 				} else {
 					for (String t : keysValues) {
 						base.add(t);
-						query.concat("dataIni LIKE '" + t + "%'");
+						query = query.concat("dataIni LIKE '" + t + "%'");
 						if (!(keysValues.indexOf(t) == (keysValues.size() - 1))) {
-							query.concat(" OR ");
+							query = query.concat(" OR ");
 						}
 					}
 				}
@@ -269,77 +299,77 @@ public class Relatorios {
 		for ( String key : dados.keySet()) {
 			switch (key) {
 			case "data":
-				query.concat(" AND slt.dataIni >= '"+dados.get(key).get(0)+"' AND dataIni <= '"+dados.get(key).get(1)+"'");
+				query = query.concat(" AND slt.dataIni >= '"+dados.get(key).get(0)+"' AND dataIni <= '"+dados.get(key).get(1)+"'");
 				break;
 			case "meses":
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
-						query.concat(" OR slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
+					if(i != 0) {
+						query = query.concat(" OR slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
 					}else {
-						query.concat(" slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
+						query = query.concat(" slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
 					}
 				}
 				break;
 			case "anos":
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
-						query.concat(" OR slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
+					if(i != 0) {
+						query = query.concat(" OR slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
 					}else {
-						query.concat(" slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
+						query = query.concat(" slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
 					}
 				}
 				break;
 			case "orgao" :
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
-						query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+					if(i != 0) {
+						query = query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}else {
-						query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}
 				}
 				break;
 			case "entidade" :
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
-						query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+					if(i != 0) {
+						query = query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}else {
-						query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}
 				}
 				break;
 			case "estados" :
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
-						query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
+					if(i != 0) {
+						query = query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
 					}else {
-						query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
 					}
 				}
 				break;
 				
 			case "tipoPessoa" :
-//				query.concat(" AND ");
+//				query = query.concat(" AND ");
 //				for(int i = 0 ; i <dados.get(key).size(); i++) {
 //					if(i == 0) {
-//						query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
+//						query = query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
 //					}else {
-//						query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
+//						query = query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
 //					}
 //				}
 				break;
 				
 			case "assunto" :
-				query.concat(" AND ");
+				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i == 0) {
-						query.concat(" OR slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" OR slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");
 					}else {
-						query.concat(" slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");
 					}
 				}
 				break;
@@ -463,43 +493,43 @@ public class Relatorios {
 		this.periodoFim = periodoFim;
 	}
 
-	public int[] getMeses() {
+	public String[] getMeses() {
 		return meses;
 	}
 
-	public void setMeses(int[] meses) {
+	public void setMeses(String[] meses) {
 		this.meses = meses;
 	}
 
-	public int[] getOrgaos() {
+	public String[] getOrgaos() {
 		return orgaos;
 	}
 
-	public void setOrgaos(int[] orgaos) {
+	public void setOrgaos(String[] orgaos) {
 		this.orgaos = orgaos;
 	}
 
-	public int[] getEntidades() {
+	public String[] getEntidades() {
 		return entidades;
 	}
 
-	public void setEntidades(int[] entidades) {
+	public void setEntidades(String[] entidades) {
 		this.entidades = entidades;
 	}
 
-	public int[] getAssuntos() {
+	public String[] getAssuntos() {
 		return assuntos;
 	}
 
-	public void setAssuntos(int[] assuntos) {
+	public void setAssuntos(String[] assuntos) {
 		this.assuntos = assuntos;
 	}
 
-	public int getTipoPessoa() {
+	public String getTipoPessoa() {
 		return tipoPessoa;
 	}
 
-	public void setTipoPessoa(int tipoPessoa) {
+	public void setTipoPessoa(String tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
 	}
 
@@ -511,27 +541,27 @@ public class Relatorios {
 		this.estado = estado;
 	}
 
-	public int getTipoSolicitacao() {
+	public String  getTipoSolicitacao() {
 		return tipoSolicitacao;
 	}
 
-	public void setTipoSolicitacao(int tipoSolicitacao) {
+	public void setTipoSolicitacao(String  tipoSolicitacao) {
 		this.tipoSolicitacao = tipoSolicitacao;
 	}
 
-	public int getTempo() {
+	public String  getTempo() {
 		return tempo;
 	}
 
-	public void setTempo(int tempo) {
+	public void setTempo(String  tempo) {
 		this.tempo = tempo;
 	}
 
-	public int getStatus() {
+	public String  getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String  status) {
 		this.status = status;
 	}
 
@@ -543,11 +573,11 @@ public class Relatorios {
 		this.anos = anos;
 	}
 
-	public int[] getAnosSelecionados() {
+	public String[] getAnosSelecionados() {
 		return anosSelecionados;
 	}
 
-	public void setAnosSelecionados(int[] anosSelecionados) {
+	public void setAnosSelecionados(String[] anosSelecionados) {
 		this.anosSelecionados = anosSelecionados;
 	}
 

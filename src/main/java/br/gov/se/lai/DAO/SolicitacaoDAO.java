@@ -157,6 +157,10 @@ public class SolicitacaoDAO {
 					"AND solicitacao.tipo = 'Informação'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
+	@SuppressWarnings("unchecked")
+	public static List<String> queryDinamica(String query) {
+		return (List<String>) Consultas.buscaPersonalizada(query, em); 
+	}	
 
 	
 	@SuppressWarnings("unchecked")

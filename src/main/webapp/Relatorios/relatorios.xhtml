@@ -31,14 +31,13 @@
 						<h:panelGroup styleClass="column">
 							<p:outputLabel value="Tipo de Solicitação" for="tipoSolicitacao" />
 							<p:selectOneMenu id="tipoSolicitacao" value="#{relatorios.tipoSolicitacao}">
-								<p:ajax update="@all" />
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-								<f:selectItem itemLabel="Pedido de Informação" itemValue="1" />
-								<f:selectItem itemLabel="Solicitacao" itemValue="2" />
-								<f:selectItem itemLabel="Elogio" itemValue="3" />
-								<f:selectItem itemLabel="Sugestão" itemValue="4" />
-								<f:selectItem itemLabel="Reclamação" itemValue="5" />
-								<f:selectItem itemLabel="Denúncia" itemValue="6" />
+								<f:selectItem itemLabel="Pedido de Informação" itemValue="Informação" />
+								<f:selectItem itemLabel="Solicitacao" itemValue="Solicitação" />
+								<f:selectItem itemLabel="Elogio" itemValue="Elogio" />
+								<f:selectItem itemLabel="Sugestão" itemValue="Sugestão" />
+								<f:selectItem itemLabel="Reclamação" itemValue="Reclamação" />
+								<f:selectItem itemLabel="Denúncia" itemValue="Denúncia" />
 							</p:selectOneMenu>
 						</h:panelGroup>
 
@@ -46,9 +45,9 @@
 							<p:outputLabel value="Medida de tempo" for="tempo" />
 							<p:selectOneMenu id="tempo" value="#{relatorios.tempo}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-								<f:selectItem itemLabel="Mês" itemValue="1" />
-								<f:selectItem itemLabel="Ano" itemValue="2" />
-								<f:selectItem itemLabel="Total" itemValue="3" />
+								<f:selectItem itemLabel="Mês" itemValue="mes" />
+								<f:selectItem itemLabel="Ano" itemValue="ano" />
+								<f:selectItem itemLabel="Total" itemValue="total" />
 							</p:selectOneMenu>
 						</h:panelGroup>
 
@@ -56,12 +55,12 @@
 							<p:outputLabel value="Status da Solicitação" for="status" />
 							<p:selectOneMenu id="status" value="#{relatorios.status}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-								<f:selectItem itemLabel="Pendente" itemValue="1" />
-								<f:selectItem itemLabel="Aberta" itemValue="2" />
-								<f:selectItem itemLabel="Recurso" itemValue="3" />
-								<f:selectItem itemLabel="Respondida" itemValue="4" />
-								<f:selectItem itemLabel="Negada" itemValue="5" />
-								<f:selectItem itemLabel="Finalizada" itemValue="6" />
+								<f:selectItem itemLabel="Pendente" itemValue="Pendente" />
+								<f:selectItem itemLabel="Aberta" itemValue="Aberta" />
+								<f:selectItem itemLabel="Recurso" itemValue="Recurso" />
+								<f:selectItem itemLabel="Respondida" itemValue="Respondida" />
+								<f:selectItem itemLabel="Negada" itemValue="Negada" />
+								<f:selectItem itemLabel="Finalizada" itemValue="Finalizada" />
 							</p:selectOneMenu>
 						</h:panelGroup>
 
@@ -139,7 +138,7 @@
 								<p:selectCheckboxMenu id="anos" value="#{relatorios.anosSelecionados}"
 									label="Anos">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-									<f:selectItems value="#{relatorios.anos}" var="anos" itemLabel="#{anos}" itemValue="#{anos}" />
+									<f:selectItems value="#{relatorios.anos}" var="anos" itemLabel="#{anos}" itemValue="#{anos.toString()}" />
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 
@@ -253,7 +252,7 @@
 						</h:panelGroup>
 
 						<p:commandLink value="OK" styleClass="botaoLink"
-							update="parametros"
+							update="parametros" action="#{relatorios.botao()}"
 							style="width: 50px; height: 14px; margin-left: 2vw; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" />
 					</h:panelGroup>
 

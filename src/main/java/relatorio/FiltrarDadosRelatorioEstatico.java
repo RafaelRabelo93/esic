@@ -312,12 +312,8 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
-	public static Map<String, ArrayList<Integer>> nome() {
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoDinamico(String query) {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
-		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-0" + mesAtual + "%";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -328,6 +324,25 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
 		}
 
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> nome() {
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		String periodo = anoAtual + "-0" + mesAtual + "%";
+		
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		Set<String> uf = new HashSet<>();
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		
 		return dadosChart;
 	}
 
