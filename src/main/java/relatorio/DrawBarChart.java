@@ -75,6 +75,7 @@ public class DrawBarChart {
 	         
 	        barModel.setTitle(title);
 	        barModel.setLegendPosition("ne");
+	        barModel.setZoom(true);
 	         
 	        Axis xAxis = barModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Órgãos");

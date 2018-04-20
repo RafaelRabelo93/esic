@@ -50,6 +50,7 @@ public class Relatorios {
 	public String tempo;
 	public String status;
 	public ArrayList<Integer> anos;
+	public BarChartModel barModel;;
 	
 	
 	
@@ -234,34 +235,105 @@ public class Relatorios {
 	@SuppressWarnings("unused")
 	public void botao() {
 		Map<String, ArrayList<String>> dados = new HashMap<>();
-		String[] keys = {"data", "meses", "anos","orgao", "entidade", "estados", "assunto", "tipoPesso"};
-//		List<List<String>> variaveis = new ArrayList<List<String>>() {
-//			{
-//				add(Arrays.asList(new String[] {periodoIni.toString(), periodoFim.toString()}));
-//				add(Arrays.asList(meses));
-//				add(Arrays.asList(anosSelecionados));
-//				add(Arrays.asList(orgaos));
-//				add(Arrays.asList(entidades));
-//				add(Arrays.asList(estado));
-//				add(Arrays.asList(assuntos));
-//				add(Arrays.asList(new String[] {tipoPessoa}));
-//			}
-//		};
-//		
-		ArrayList<String> a = new ArrayList<>();
-		for (String item : anosSelecionados) {
-			a.add(item);
-		}
-		for (int itemEscolhido : metricas) {
-			dados.put(keys[itemEscolhido-1], a);
+		ArrayList<String> aux = new ArrayList<>();
+		String[] keys = {"data", "mes", "ano","orgao", "entidade", "estados", "assunto", "tipoPesso"};
+		List<List<String>> variaveis = new ArrayList<List<String>>();
+		for (int metrica : metricas) {
+			switch (metrica) {
+			case 1:
+				aux = new ArrayList<>();
+					aux.add(periodoIni.toString());
+					aux.add(periodoFim.toString());
+				break;
+			case 2:
+				aux = new ArrayList<>();
+				for (String mes : meses) {
+					aux.add(mes);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 3:
+				aux = new ArrayList<>();
+				for (String ano : anosSelecionados) {
+					aux.add(ano);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 4:
+				aux = new ArrayList<>();
+				for (String orgao : orgaos) {
+					aux.add(orgao);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 5:
+				aux = new ArrayList<>();
+				for (String entidade : entidades) {
+					aux.add(entidade);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 6:
+				aux = new ArrayList<>();
+				for (String uf : estado) {
+					aux.add(uf);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 7:
+				aux = new ArrayList<>();
+				for (String assunto : assuntos) {
+					aux.add(assunto);
+				}
+				dados.put(keys[metrica-1], aux);
+				break;
+			case 8:
+				aux = new ArrayList<>();
+				aux.add(tipoPessoa);
+				dados.put(keys[metrica-1], aux);
+				break;
+			default:
+				break;
+			}
 		}
 
+		ArrayList<String> medidaTempo = new ArrayList<>();
+		if(tempo.equals("mes")) {
+			if(Arrays.asList(metricas).contains(2)) {
+				for (String mes : meses) {
+					medidaTempo.add(mes);
+				}
+			}else {
+				Calendar instance = Calendar.getInstance();
+				int mesAtual = instance.get(Calendar.MONTH);
+				for(int i = 1; i <= mesAtual; i++) {
+					medidaTempo.add(FiltrarDadosRelatorioEstatico.meses[i]);
+				}
+			}
+		}else if(tempo.equals("ano")) {
+			if(Arrays.asList(metricas).contains(3)) {
+				for (String anos : anosSelecionados) {
+					medidaTempo.add(anos);
+				}
+			}else {
+				Calendar instance = Calendar.getInstance();
+				int anoAtual = instance.get(Calendar.YEAR);
+				for(int i = 2012; i <= anoAtual; i++) {
+					medidaTempo.add(Integer.toString(i));
+				}
+			}
+		}
 		
-		String retorno = metodo(tipoSolicitacao, tempo, status, dados);
+		String retorno = metodo(tipoSolicitacao, tempo, status, dados, medidaTempo);
+		dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
+		int valorMaior = identificarValorMaximoGrafico(dadosChart);
+		DrawBarChart model = new DrawBarChart();
+		barModel = model.createBarModel(tipo[0], dadosChart, (long)1, valorMaior);
 	}
 	
 	
-	public String metodo(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados) {
+	public String metodo(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados, ArrayList<String> medidaTempo) {
+		boolean escritaDeUmOrgaoOuEntidade = false;
 		String query = "SELECT idSolicitacao FROM Solicitacao as slt";
 		if(dados.containsKey("tipoPessoa") || dados.containsKey("estados") ) {
 			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao "
@@ -270,84 +342,67 @@ public class Relatorios {
 			query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status+"'");
 		}
 			
-		ArrayList<String> base = new ArrayList<>();
-		if (dados.containsKey(tempo)) {
-			if (!dados.get(tempo).get(0).equals("Todos")) {
-				query = query.concat(" AND ");
-				ArrayList<String> keysValues = dados.get(tempo);
-				if (tempo.equals("meses")) {
-					for (String t : keysValues) {
-						base.add(t);
-						query = query.concat("dataIni LIKE '%-" + t + "-%'");
-						if (!(keysValues.indexOf(t) == (keysValues.size() - 1))) {
-							query = query.concat(" OR ");
-						}
-					}
-				} else {
-					for (String t : keysValues) {
-						base.add(t);
-						query = query.concat("dataIni LIKE '" + t + "%'");
-						if (!(keysValues.indexOf(t) == (keysValues.size() - 1))) {
-							query = query.concat(" OR ");
-						}
-					}
-				}
-			}
-			dados.remove(tempo);
-		}
+
 		
 		for ( String key : dados.keySet()) {
 			switch (key) {
-			case "data":
-				query = query.concat(" AND slt.dataIni >= '"+dados.get(key).get(0)+"' AND dataIni <= '"+dados.get(key).get(1)+"'");
-				break;
-			case "meses":
-				query = query.concat(" AND ");
-				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i != 0) {
-						query = query.concat(" OR slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
-					}else {
-						query = query.concat(" slt.dataIni LIKE '%-"+dados.get(key).get(i)+"-%'");
-					}
-				}
-				break;
-			case "anos":
-				query = query.concat(" AND ");
-				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i != 0) {
-						query = query.concat(" OR slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
-					}else {
-						query = query.concat(" slt.dataIni LIKE '"+dados.get(key).get(i)+"-%'");
-					}
-				}
-				break;
+
 			case "orgao" :
-				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i != 0) {
 						query = query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}else {
-						query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						if(escritaDeUmOrgaoOuEntidade) {
+							query = query.concat(" OR");
+							query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						}else {
+							query = query.concat(" AND ");
+							query = query.concat("( slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						}
 					}
+				}
+				if(dados.containsKey("entidade")) {
+					if(escritaDeUmOrgaoOuEntidade) {
+						query = query.concat(")");
+					}else {
+						escritaDeUmOrgaoOuEntidade = true;
+					}
+				}else {
+					query = query.concat(")");
 				}
 				break;
 			case "entidade" :
-				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i != 0) {
 						query = query.concat(" OR slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
 					}else {
-						query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						if(escritaDeUmOrgaoOuEntidade) {
+							query = query.concat(" OR");
+							query = query.concat(" slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						}else {
+							query = query.concat(" AND ");
+							query = query.concat("( slt.entidades.idEntidades = '"+dados.get(key).get(i)+"'");
+						}
 					}
+				}
+
+				if(dados.containsKey("orgao")) {
+					if(escritaDeUmOrgaoOuEntidade) {
+						query = query.concat(")");
+					}else {
+						escritaDeUmOrgaoOuEntidade = true;
+					}
+				}else{
+					query = query.concat(")");
 				}
 				break;
 			case "estados" :
 				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i != 0) {
-						query = query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" OR sltcidadao.estado = '"+dados.get(key).get(i)+"'");
 					}else {
-						query = query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" slt.cidadao.estado = '"+dados.get(key).get(i)+"'");
 					}
 				}
 				break;
@@ -579,6 +634,14 @@ public class Relatorios {
 
 	public void setAnosSelecionados(String[] anosSelecionados) {
 		this.anosSelecionados = anosSelecionados;
+	}
+
+	public BarChartModel getBarModel() {
+		return barModel;
+	}
+
+	public void setBarModel(BarChartModel barModel) {
+		this.barModel = barModel;
 	}
 
 	
