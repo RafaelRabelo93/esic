@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 @ManagedBean(name = "relatorios")
@@ -128,6 +129,14 @@ public class Relatorios {
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
 		return model.createBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
+		
+	}
+
+	public HorizontalBarChartModel desenharBarChartHorizontal( long tipoDados) {
+		redirecionarFiltroDados(tipoDados);
+		int valorMaior = identificarValorMaximoGrafico(dadosChart);
+		DrawBarChart model = new DrawBarChart();
+		return model.createHorizontalBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
 		
 	}
 	

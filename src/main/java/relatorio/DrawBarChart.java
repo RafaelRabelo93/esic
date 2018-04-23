@@ -12,12 +12,14 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 
 @ManagedBean(name = "barChartClass")
 @SessionScoped
 public class DrawBarChart {
 
 	    private BarChartModel barModel;
+	    private HorizontalBarChartModel horizontalBarModel;
 	 
 	    @PostConstruct
 	    public void init() {
@@ -30,8 +32,7 @@ public class DrawBarChart {
 	     
 	 
 	    private BarChartModel initBarModel(Map<String, ArrayList<Integer>> dadosChart, long tipoDados ) {
-	        BarChartModel model = new BarChartModel();
-	 
+	     	BarChartModel model = new BarChartModel();
 	        ArrayList<ChartSeries> variaveis = new ArrayList<>();
 	    	
 	        ChartSeries pedido = new ChartSeries();
@@ -65,20 +66,76 @@ public class DrawBarChart {
 	         
 	        return model;
 	    }
+	    private HorizontalBarChartModel initHorizontalBarModel( Map<String, ArrayList<Integer>> dadosChart, long tipoDados ) {
+	    	HorizontalBarChartModel model =  new HorizontalBarChartModel();
+	    	ArrayList<ChartSeries> variaveis = new ArrayList<>();
+	    	
+	    	ChartSeries pedido = new ChartSeries();
+	    	ChartSeries aberto = new ChartSeries();
+	    	ChartSeries atendido = new ChartSeries();
+	    	
+	    	pedido.setLabel("Pedido");
+	    	aberto.setLabel("Em aberto");
+	    	atendido.setLabel("Atendidos");
+	    	
+	    	variaveis.add(pedido);
+	    	variaveis.add(aberto);
+	    	variaveis.add(atendido);
+	    	
+	    	switch ((int)tipoDados) {
+	    	case 1:
+	    		variaveis = graficoGeral(variaveis, dadosChart);	
+	    		break;
+	    	case 2:
+	    		variaveis = graficoMensal(variaveis, dadosChart);	
+	    		break;
+	    		
+	    	default:
+	    		variaveis = graficoComSeries(variaveis, dadosChart);
+	    		break;
+	    	}
+	    	
+	    	for (ChartSeries chartSeries : variaveis) {
+	    		model.addSeries(chartSeries);
+	    	}
+	    	
+	    	return model;
+	    }
+	    
+	    public HorizontalBarChartModel createHorizontalBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior) {
+	        
+	        horizontalBarModel = initHorizontalBarModel(dadosChart, tipoDados);
+	         
+	        horizontalBarModel.setTitle(title);
+	        horizontalBarModel.setLegendPosition("e");
+	        horizontalBarModel.setStacked(true);
+	        horizontalBarModel.setZoom(true);
+
+	         
+	        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
+	        xAxis.setLabel("Metrica");
+	        xAxis.setMin(0);
+	        xAxis.setMax(valorMaior);
+	         
+	        Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
+	        yAxis.setLabel("Quantidade");    
+	        return horizontalBarModel;
+	    }
 	     
 //	    private void createBarModels() {
 //	        createBarModel();
 //	    }
 	     
 	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
-	        barModel = initBarModel(dadosChart, tipoDados );
+	   
+	    	barModel = initBarModel( dadosChart, tipoDados );
 	         
 	        barModel.setTitle(title);
 	        barModel.setLegendPosition("ne");
 	        barModel.setZoom(true);
 	         
 	        Axis xAxis = barModel.getAxis(AxisType.X);
-	        xAxis.setLabel("Órgãos");
+	        xAxis.setLabel("Metrica");
 	         
 	        Axis yAxis = barModel.getAxis(AxisType.Y);
 	        yAxis.setLabel("Quantidade");
