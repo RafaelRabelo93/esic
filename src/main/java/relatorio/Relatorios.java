@@ -159,6 +159,8 @@ public class Relatorios {
 				add(4);
 				add(5);
 				add(6);
+				add(7);
+				add(8);
 			}
 		};
 
@@ -236,7 +238,7 @@ public class Relatorios {
 	public void botao() {
 		Map<String, ArrayList<String>> dados = new HashMap<>();
 		ArrayList<String> aux = new ArrayList<>();
-		String[] keys = {"data", "mes", "ano","orgao", "entidade", "estados", "assunto", "tipoPesso"};
+		String[] keys = {"data", "mes", "ano","orgao", "entidade", "estados", "assunto", "tipoPessoa"};
 		List<List<String>> variaveis = new ArrayList<List<String>>();
 		for (int metrica : metricas) {
 			switch (metrica) {
@@ -306,7 +308,7 @@ public class Relatorios {
 			}else {
 				Calendar instance = Calendar.getInstance();
 				int mesAtual = instance.get(Calendar.MONTH);
-				for(int i = 1; i <= mesAtual; i++) {
+				for(int i = 0; i <= mesAtual; i++) {
 					medidaTempo.add(FiltrarDadosRelatorioEstatico.meses[i]);
 				}
 			}
@@ -325,7 +327,7 @@ public class Relatorios {
 		}
 		
 		String retorno = metodo(tipoSolicitacao, tempo, status, dados, medidaTempo);
-		dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
+		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
 		barModel = model.createBarModel(tipo[0], dadosChart, (long)1, valorMaior);
@@ -334,7 +336,7 @@ public class Relatorios {
 	
 	public String metodo(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados, ArrayList<String> medidaTempo) {
 		boolean escritaDeUmOrgaoOuEntidade = false;
-		String query = "SELECT idSolicitacao FROM Solicitacao as slt";
+		String query = "FROM Solicitacao as slt";
 		if(dados.containsKey("tipoPessoa") || dados.containsKey("estados") ) {
 			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao "
 						+ "AND slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status+"'");
@@ -400,7 +402,7 @@ public class Relatorios {
 				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i != 0) {
-						query = query.concat(" OR sltcidadao.estado = '"+dados.get(key).get(i)+"'");
+						query = query.concat(" OR slt.cidadao.estado = '"+dados.get(key).get(i)+"'");
 					}else {
 						query = query.concat(" slt.cidadao.estado = '"+dados.get(key).get(i)+"'");
 					}
@@ -408,20 +410,33 @@ public class Relatorios {
 				break;
 				
 			case "tipoPessoa" :
-//				query = query.concat(" AND ");
-//				for(int i = 0 ; i <dados.get(key).size(); i++) {
-//					if(i == 0) {
-//						query = query.concat(" OR cidadao.estado = '"+dados.get(key).get(i)+"'");
-//					}else {
-//						query = query.concat(" cidadao.estado = '"+dados.get(key).get(i)+"'");
-//					}
-//				}
+				query = query.concat(" AND ");
+				switch(dados.get("tipoPessoa").get(0)) {
+					case "F":
+						query = query.concat(" (cidadao.tipo = '1')");
+						break;
+					case "FF":
+						query = query.concat(" (cidadao.tipo = '1' AND cidadao.sexo = 'F')");
+						break;
+					case "FM":
+						query = query.concat(" (cidadao.tipo = '1' AND cidadao.sexo = 'M')");
+						break;
+					case "J":
+						query = query.concat(" (cidadao.tipo = '0')");
+						break;
+					case "JF":
+						query = query.concat(" (cidadao.tipo = '0' AND cidadao.sexo = 'F')");
+						break;
+					case "JM":
+						query = query.concat(" (cidadao.tipo = '0' AND cidadao.sexo = 'M')");
+						break;
+						
+				}
 				break;
-				
 			case "assunto" :
 				query = query.concat(" AND ");
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
-					if(i == 0) {
+					if(i!=0) {
 						query = query.concat(" OR slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");
 					}else {
 						query = query.concat(" slt.acoes.idAcoes = '"+dados.get(key).get(i)+"'");

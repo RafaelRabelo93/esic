@@ -158,8 +158,8 @@ public class SolicitacaoDAO {
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
 	@SuppressWarnings("unchecked")
-	public static List<String> queryDinamica(String query) {
-		return (List<String>) Consultas.buscaPersonalizada(query, em); 
+	public static List<Solicitacao> queryDinamica(String query) {
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(query, em); 
 	}	
 
 	

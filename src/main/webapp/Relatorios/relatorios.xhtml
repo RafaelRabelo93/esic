@@ -30,7 +30,7 @@
 						style="width: 100%; margin-bottom: 1em">
 						<h:panelGroup styleClass="column">
 							<p:outputLabel value="Tipo de Solicitação" for="tipoSolicitacao" />
-							<p:selectOneMenu id="tipoSolicitacao" value="#{relatorios.tipoSolicitacao}">
+							<p:selectOneMenu id="tipoSolicitacao" value="#{relatorios.tipoSolicitacao}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Pedido de Informação" itemValue="Informação" />
 								<f:selectItem itemLabel="Solicitacao" itemValue="Solicitação" />
@@ -43,7 +43,7 @@
 
 						<h:panelGroup styleClass="column" style="margin-left: 3vw">
 							<p:outputLabel value="Medida de tempo" for="tempo" />
-							<p:selectOneMenu id="tempo" value="#{relatorios.tempo}">
+							<p:selectOneMenu id="tempo" value="#{relatorios.tempo}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Mês" itemValue="mes" />
 								<f:selectItem itemLabel="Ano" itemValue="ano" />
@@ -53,7 +53,7 @@
 
 						<h:panelGroup styleClass="column" style="margin-left: 3vw">
 							<p:outputLabel value="Status da Solicitação" for="status" />
-							<p:selectOneMenu id="status" value="#{relatorios.status}">
+							<p:selectOneMenu id="status" value="#{relatorios.status}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Pendente" itemValue="Pendente" />
 								<f:selectItem itemLabel="Aberta" itemValue="Aberta" />
@@ -73,7 +73,7 @@
 						<p:selectManyCheckbox id="basic" value="#{relatorios.metricas}">
 							<p:ajax listener="#{relatorios.verificarBool()}"
 								update="especificacaoPanel" />
-							<f:selectItem itemLabel="Data" itemValue="1" />
+<!-- 							<f:selectItem itemLabel="Data" itemValue="1" /> -->
 							<f:selectItem itemLabel="Meses" itemValue="2" />
 							<f:selectItem itemLabel="Anos" itemValue="3" />
 							<f:selectItem itemLabel="Órgão" itemValue="4" />
@@ -85,29 +85,30 @@
 					</h:panelGroup>
 					
 					<h:panelGroup id="especificacaoPanel">
-						<!-- TEMPO -->
-						<h:panelGroup styleClass="inline"
-							rendered="#{relatorios.dataBool}">
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
-								<p:outputLabel value="Data Inicial " for="dataIni" />
-								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12"
-									yearRange="2012:c" showOn="button" locale="pt_BR"
-									effect="slideDown" navigator="true" pattern="dd/MM/yyyy"
-									mask="true" timeInput="false" value="#{relatorios.periodoIni}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</p:calendar>
-							</h:panelGroup>
+<!-- 						TEMPO -->
+<!-- 					Ajeitarei depois -->
+<!-- 						<h:panelGroup styleClass="inline" -->
+<!-- 							rendered="#{relatorios.dataBool}"> -->
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Data Inicial " for="dataIni" /> -->
+<!-- 								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" -->
+<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
+<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
+<!-- 									mask="true" timeInput="false" value="#{relatorios.periodoIni}"> -->
+<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+<!-- 								</p:calendar> -->
+<!-- 							</h:panelGroup> -->
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
-								<p:outputLabel value="Data Final " for="dataFim" />
-								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12"
-									yearRange="2012:c" showOn="button" locale="pt_BR"
-									effect="slideDown" navigator="true" pattern="dd/MM/yyyy"
-									mask="true" timeInput="false" value="#{relatorios.periodoFim}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</p:calendar>
-							</h:panelGroup>
-						</h:panelGroup>
+<!-- 							<h:panelGroup styleClass="column" style="margin-left: 2vw"> -->
+<!-- 								<p:outputLabel value="Data Final " for="dataFim" /> -->
+<!-- 								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" -->
+<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
+<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
+<!-- 									mask="true" timeInput="false" value="#{relatorios.periodoFim}"> -->
+<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+<!-- 								</p:calendar> -->
+<!-- 							</h:panelGroup> -->
+<!-- 						</h:panelGroup> -->
 						
 						<h:panelGroup styleClass="inline" rendered="#{relatorios.mesesBool}">
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
@@ -241,13 +242,13 @@
 							<p:outputLabel value="tipoPessoa" for="tipoPessoa" />
 							<p:selectOneMenu id="tipoPessoa" value="#{relatorios.tipoPessoa}"
 								label="Tipo de Pessoa">
-								<f:selectItem itemLabel="Física" itemValue="0" />
-								<f:selectItem itemLabel="Física Feminino" itemValue="1" />
-								<f:selectItem itemLabel="Física Masculino" itemValue="2" />
-								<f:selectItem itemLabel="Jurídica" itemValue="3" />
-								<f:selectItem itemLabel="Jurídica Feminino" itemValue="4" />
-								<f:selectItem itemLabel="Jurídica Masculino" itemValue="5" />
-								<f:selectItem itemLabel="Todos" itemValue="6" />
+								<f:selectItem itemLabel="Física" itemValue="F" />
+								<f:selectItem itemLabel="Física Feminino" itemValue="FF" />
+								<f:selectItem itemLabel="Física Masculino" itemValue="FM" />
+								<f:selectItem itemLabel="Jurídica" itemValue="J" />
+								<f:selectItem itemLabel="Jurídica Feminino" itemValue="JF" />
+								<f:selectItem itemLabel="Jurídica Masculino" itemValue="JM" />
+								<f:selectItem itemLabel="Todos" itemValue="Todos" />
 							</p:selectOneMenu>
 						</h:panelGroup>
 
