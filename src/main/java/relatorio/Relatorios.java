@@ -51,7 +51,8 @@ public class Relatorios {
 	public String tempo;
 	public String status;
 	public ArrayList<Integer> anos;
-	public BarChartModel barModel;;
+	public BarChartModel barModel;
+	public HorizontalBarChartModel hBarModel;;
 	
 	
 	
@@ -124,11 +125,11 @@ public class Relatorios {
 	}
 	
 	
-	public BarChartModel desenharBarChart( long tipoDados) {
+	public HorizontalBarChartModel desenharBarChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
-		return model.createBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
+		return model.createHorizontalBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
 		
 	}
 
@@ -339,7 +340,8 @@ public class Relatorios {
 		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
-		barModel = model.createBarModel(tipo[0], dadosChart, (long)1, valorMaior);
+		barModel= model.createBarModel(tipo[0], dadosChart, (long)1, valorMaior);
+		hBarModel = model.createHorizontalBarModel(tipo[0], dadosChart, (long)1, valorMaior);
 	}
 	
 	
@@ -357,7 +359,6 @@ public class Relatorios {
 		
 		for ( String key : dados.keySet()) {
 			switch (key) {
-
 			case "orgao" :
 				for(int i = 0 ; i <dados.get(key).size(); i++) {
 					if(i != 0) {
@@ -665,10 +666,17 @@ public class Relatorios {
 	}
 
 	public void setBarModel(BarChartModel barModel) {
-		this.barModel = barModel;
+		this.barModel =  barModel;
 	}
 
-	
+	public HorizontalBarChartModel gethBarModel() {
+		return hBarModel;
+	}
+
+	public void sethBarModel(HorizontalBarChartModel hBarModel) {
+		this.hBarModel = hBarModel;
+	}
+
 
 	
 }

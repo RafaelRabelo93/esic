@@ -17,6 +17,7 @@ import org.quartz.JobExecutionException;
 import com.sun.mail.imap.protocol.MailboxInfo;
 
 import br.gov.se.lai.Bean.ResponsavelBean;
+import br.gov.se.lai.Bean.UsuarioBean;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -113,7 +114,7 @@ public class NotificacaoEmail implements Job{
 	
 	public static String[] destinatarioEmail(Usuario usuario, Solicitacao solicitacao) {
 		String[] envio = new String[3];
-		if(usuario.getPerfil() == 3) {
+		if(usuario.getPerfil() == 3 || (usuario.getPerfil() == 4 && UsuarioBean.perfilAlterarCidadaoResponsavel == false) ) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());	
 			envio[0] = listCidadao.get(0).getUsuario().getNome();
 			int respId = ResponsavelBean.responsavelDisponivel(solicitacao.getInstancia(), solicitacao.getEntidades().getIdEntidades());
@@ -149,7 +150,7 @@ public class NotificacaoEmail implements Job{
 			}
 				
 		}else {
-			if(usuario.getPerfil() == 2) {
+			if(usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && UsuarioBean.perfilAlterarCidadaoResponsavel == true)) {
 				@SuppressWarnings("unchecked")
 				List<Responsavel> r = new ArrayList<Responsavel>(usuario.getResponsavels());
 				for (Responsavel resp : r) {

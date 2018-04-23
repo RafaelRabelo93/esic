@@ -262,6 +262,10 @@
 						style="height:300px"  rendered="#{relatorios.barModel ne null}"/>
 					<p:separator styleClass="separator2" />
 					
+					<p:chart type="bar" id="barChartId2"  model="#{relatorios.hBarModel}"
+						style="height:300px"  rendered="#{relatorios.hBarModel ne null}"/>
+					<p:separator styleClass="separator2" />
+					
 					<h:commandLink>
                 <p:graphicImage name="/demo/images/excel.png" width="24"/>
                		 <p:dataExporter type="xls" target="barChartId" fileName="cars" />
