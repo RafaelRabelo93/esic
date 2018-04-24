@@ -87,17 +87,17 @@ public class UsuarioBean implements Serializable {
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
-		try {
-			Scheduler scheduler = shedFact.getScheduler();
-			scheduler.start();
-			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-			scheduler.scheduleJob(job, trigger);
-		} catch (SchedulerException e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			Scheduler scheduler = shedFact.getScheduler();
+//			scheduler.start();
+//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+//					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
+//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
+//					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
+//			scheduler.scheduleJob(job, trigger);
+//		} catch (SchedulerException e) {
+//			System.out.println(e.getMessage());
+//		}
 	}
 
 	public void redirectPages(String pageUrl) throws IOException {
@@ -634,7 +634,8 @@ public class UsuarioBean implements Serializable {
 				if (!resp.equals(null)) {
 					acessoUsuario(resp.getUsuario());
 					String accessKey = resp.getUsuario().getSessionId();
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
+					String nomeUser = resp.getUsuario().getNick();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect, nomeUser);
 					usuario = new Usuario();
 					valor = true;
 				}
@@ -644,7 +645,8 @@ public class UsuarioBean implements Serializable {
 				if (!cid.equals(null)) {
 					acessoUsuario(cid.getUsuario());
 					String accessKey = cid.getUsuario().getSessionId();
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
+					String nomeUser = cid.getUsuario().getNick();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect, nomeUser);
 					usuario = new Usuario();
 					valor = true;
 				}
@@ -847,6 +849,10 @@ public class UsuarioBean implements Serializable {
 		t.finalizarSolicitacao();
 		return "/index.xhtml?faces-redirect=true";                          
 	}
+	
+//	public void emailTeste() {
+//		NotificacaoEmail.emailNovaSolicitacao();
+//	}
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

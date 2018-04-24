@@ -111,7 +111,23 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public int tipoMensagem() {
 		return 1;
 	}
-	
+
+	public String negar() {
+		mensagem.setUsuario(usuario);
+		mensagem.setData(new Date(System.currentTimeMillis()));
+		mensagem.setSolicitacao(solicitacao);
+		mensagem.setTipo((short)2);
+		solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
+		if(MensagemDAO.saveOrUpdate(mensagem)) {
+			mensagensSolicitacao.add(mensagem);
+		}
+		solicitacao.setStatus("Negada");
+		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+			salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+		}
+		mensagem = new Mensagem();	
+		return "/Consulta/consulta?faces-redirect=true";
+	}
 
 	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha) {
 		int tipoAux = 4;
@@ -126,15 +142,15 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 			
 		case "Prorrogada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 
 		case "Negada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
 			break;
 
 		case "Finalizada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Encaminhada":
@@ -147,16 +163,16 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			
 		case "Status Denuncia 1":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 2":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 3":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			tipoAux = 0;
 			break;
 
@@ -203,6 +219,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public static void attMensagemTramites(Mensagem mensagem) {
 		mensagensTramites.add(mensagem);
 	}
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 
