@@ -425,9 +425,9 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
-	public List<Entidades> entidadesSolicitacaoResponsavel(){
+	public Set entidadesSolicitacaoResponsavel(){
 		Set ids = new HashSet<>(ResponsavelDAO.listEntidadePossuemGestores());
-		return EntidadesDAO.listAtivas();
+		return ids;
 	}
 	
 	
