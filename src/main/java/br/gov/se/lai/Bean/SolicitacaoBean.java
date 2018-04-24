@@ -601,7 +601,7 @@ public class SolicitacaoBean implements Serializable {
 
 	public boolean recursoLiberado() {
 		try {
-			if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+			if (!verificaSeLimiteRecurso(solicitacao) && (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada"))) {
 				return true;
 			} else {
 				return false;
@@ -610,6 +610,7 @@ public class SolicitacaoBean implements Serializable {
 			return false;
 		}
 	}
+	
 
 	public void prorrogar() {
 		this.mensagem.setSolicitacao(solicitacao);
@@ -636,20 +637,8 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		mensagem = new Mensagem();
-
 	}
 	
-	public void negar() {
-		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short) 4);
-		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
-		this.mensagem.setData(new Date(System.currentTimeMillis()));
-		MensagemDAO.saveOrUpdate(mensagem);
-		MensagemBean.attMensagemSolicitacao(mensagem);
-		mensagem = new Mensagem();
-		finalizarSolicitacao();
-	}
-
 
 	public void onRowSelect(SelectEvent event) {
 		int rownum = filteredSolicitacoes.indexOf((Solicitacao) event.getObject());

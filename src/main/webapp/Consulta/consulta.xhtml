@@ -39,16 +39,19 @@
 								<p> <span class="statusBox" style="background: #489106; margin-right: .5em">Respondida</span> Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em">Negada</span> Solicitação negada ou respondida e concluída.</p>
+								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em">Negada</span> Solicitação imprópria ou sem resposta disponível negada pelo órgão.</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Reencaminhada</span> Solicitação negada ou respondida e concluída.</p>
+								<p> <span class="statusBox" style="background: #5bc0de; margin-right: .5em">Reencaminhada</span> Solicitação reecaminhada para órgão competente.</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em">Recurso</span> Solicitação negada ou respondida e concluída.</p>
+								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em">Recurso</span> Solicitação em recurso solicitado pelo cidadão.</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em">Finalizada</span> Solicitação negada ou respondida e concluída.</p>
+								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em">Finalizada</span> Solicitação finalizada pelo sistema.</p>
+							</h:panelGroup>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Prorrogada</span> Solicitação com prazo prorrogado pelo órgão competente.</p>
 							</h:panelGroup>
 					    </p:tooltip>
 				    
@@ -263,7 +266,7 @@
 
 							<h:outputText value="Instancia:"
 								style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.instancia}" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" />
 
 							<h:outputText value="Data de Solicitacao:"
 								style="color:#1a568c; font-size:18px" />
@@ -414,14 +417,14 @@
 								
 								<div id="Negar" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="justNega" style="margin-bottom: 5px" />
-									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%"	styleClass="abaField NegarField">
+									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%"	styleClass="abaField negarField">
 										<f:validateLength maximum="200" />
 									</p:inputTextarea>
 									
-									<p:commandLink class="botaoLink" action="#{solicitacao.negar}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
-										<f:setPropertyActionListener value="Negada" target="#{mensagem.status}" />
+										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
 									</p:commandLink>
 								</div>
 
@@ -514,7 +517,7 @@
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Respondida'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -522,7 +525,7 @@
 						
 						<!-- Botão Negar -->
 						<p:commandLink id="NegarAba"
-							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('NegarField')"
+							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
@@ -547,7 +550,7 @@
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida'}">
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
@@ -558,7 +561,7 @@
 						<!-- Botão Recurso -->
 						<p:commandLink id="RecursoAba"
 							onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')"
-							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and solicitacao.solicitacao.tipo eq 'Informação'}"
+							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}"
 							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}"
 							update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />

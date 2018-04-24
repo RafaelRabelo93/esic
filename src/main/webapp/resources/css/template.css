@@ -1698,15 +1698,15 @@ td.Aberta > .statusBox {
 }
 
 td.Respondida > .statusBox  {
-	background: #489106;
+	background: #5cb85c;
 }
 
 td.Negada > .statusBox  {
-	background: #d30e03;
+	background: #d9534f;
 }
 
 td.Reencaminhada > .statusBox  {
-	background: #824fbf;
+	background: #5bc0de;
 }
 
 td.Finalizada > .statusBox  {
@@ -1715,6 +1715,10 @@ td.Finalizada > .statusBox  {
 
 td.Recurso > .statusBox  {
 	background: #eab90f;
+}
+
+td.Prorrogada > .statusBox  {
+	background: #824fbf;
 }
 
 .statusBox {
@@ -1750,6 +1754,66 @@ td.Recurso > .statusBox  {
 
 .relatorioBtn {
 	
+}
+
+.menuDashboard {
+	border: 1px solid silver;
+	border-top: 5px solid #165389;
+	border-radius: 3px;
+	
+	margin-bottom: 3vh;
+}
+
+.dashboard {
+/* 	border: 1px solid silver; */
+/* 	border-top: 5px solid #165389; */
+/* 	border-radius: 3px; */
+	background: white;
+/* 	padding: 1em; */
+}
+
+.dashboard > .panel {
+	margin: 2em 1.5em;
+	text-align: center;
+	min-width: 100px;
+}
+
+.panel > .ui-separator {
+	border: 1px solid #e3e3e3;
+	border-bottom: none;
+}
+
+.btnConsulta2 {
+    background-color: #296099;
+    background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
+    background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
+    background: -o-linear-gradient(top left, #135186, #3d6ea9);
+    background: linear-gradient(to bottom right, #135186, #3d6ea9);
+    
+    -webkit-transition: background-position 1s;
+    -o-transition: background-position 1s;
+    transition: background-position 1s;
+    
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	
+	padding: .3em;
+	
+/* 	Estilo do link */
+	text-decoration: none;
+	color: white;
+	text-decoration: none;	
+	font-size: 25px;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: left;
+}
+ 	
+.btnConsulta2:hover {
+   	background-position: -100% 0;
+   	background: linear-gradient(to bottom right, #135186, #3078cf);
+   	color: #135186 #3078cf;
 }
 
 
