@@ -104,6 +104,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 			}
+			SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
 		}
 		mensagem.setTipo((short)2);
 	}
@@ -125,6 +126,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 			salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
+		SolicitacaoBean.addQuantidadeSolicitacaoNegada();
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";
 	}
@@ -180,6 +182,10 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			break;
 			
+		case "Visualizada":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi visualizada por um responsável.");
+			break;
+			
 		default:
 			mensagem.setTexto("Nova solicitacao no sistema.");
 			break;
@@ -189,6 +195,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		try {
 			MensagemBean.attMensagemHistorico(mensagem);
+			mensagem = new Mensagem();
 		}catch (NullPointerException e) {
 			mensagem = new Mensagem();
 		}

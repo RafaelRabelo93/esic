@@ -76,10 +76,25 @@ public class PrazosSolicitacao {
 	 * 1 ou 2 dias ao prazo final. 
 	 * 
 	 * @param status - para recuperar quantidade de dias de prazo variante do tipo de solicitação.
+	 * @param dataLimite 
 	 * @return
 	 */
 	
-	public static Date diaUtilDataLimite(String status) {
+	public static Date diaUtilDataLimite(String status, Date dataLimite) {
+		
+		Calendar limite = Calendar.getInstance();
+		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+		limite.setTime(dataLimite);
+		limite.add(Calendar.DATE,limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status));
+		
+		
+		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
+			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
+		}
+		
+		return limite.getTime();
+	}
+	public static Date gerarDiaUtilDataLimite(String status) {
 		
 		Calendar limite = Calendar.getInstance();
 		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);

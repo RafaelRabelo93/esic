@@ -87,17 +87,17 @@ public class UsuarioBean implements Serializable {
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
-//		try {
-//			Scheduler scheduler = shedFact.getScheduler();
-//			scheduler.start();
-//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-//					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
-//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-//					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-//			scheduler.scheduleJob(job, trigger);
-//		} catch (SchedulerException e) {
-//			System.out.println(e.getMessage());
-//		}
+		try {
+			Scheduler scheduler = shedFact.getScheduler();
+			scheduler.start();
+			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 50 11 * * ?")).build();
+			scheduler.scheduleJob(job, trigger);
+		} catch (SchedulerException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void redirectPages(String pageUrl) throws IOException {
@@ -390,6 +390,7 @@ public class UsuarioBean implements Serializable {
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 					acessoUsuario(this.usuario);
+					SolicitacaoBean.calcularQuantitativoSolicitacao();
 					nomeCompleto(usuario.getNome());
 					return "/index?faces-redirect=true";
 				}
@@ -426,6 +427,8 @@ public class UsuarioBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
+				SolicitacaoBean.calcularQuantitativoSolicitacao();
+
 				nomeCompleto(usuario.getNome());
 				retorno = "/index.xhtml?faces-redirect=true";
 		}
@@ -989,6 +992,7 @@ public class UsuarioBean implements Serializable {
 
 	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavelNovo) {
 		perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavelNovo;
+		SolicitacaoBean.calcularQuantitativoSolicitacao();
 	}
 
 	public String getSigla() {

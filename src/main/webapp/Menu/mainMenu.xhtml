@@ -21,22 +21,22 @@
 				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoTotal}" />
 							<p:separator />
 							<h:outputText value="Total" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoPendente}" />
 							<p:separator />
 							<h:outputText value="Pendentes" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoNegada}" />
 							<p:separator />
 							<h:outputText value="Negadas" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
 							<p:separator />
 							<h:outputText value="Respondidas" />
 						</h:panelGroup>
@@ -245,25 +245,27 @@
 
 
 				<!-- ====== MENU REPRESENTANTE ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
+				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel  and responsavel.temPerfilAtivo()) 
+				or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoTotal}" />
 							<p:separator />
 							<h:outputText value="Total" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoPendente}" />
 							<p:separator />
 							<h:outputText value="Pendentes" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoNegada}" />
 							<p:separator />
 							<h:outputText value="Negadas" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="0" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
 							<p:separator />
 							<h:outputText value="Respondidas" />
 						</h:panelGroup>
@@ -277,7 +279,9 @@
 				</h:panelGroup>
 				
 				<h:panelGroup class="menuBtn"
-					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
+					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo()) 
+					 or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 					<!-- LAI -->
 <!-- 					<h:panelGroup class="botao"> -->
@@ -291,7 +295,8 @@
 
 <!-- 					Cadastro de usuário -->
 <!-- 					<h:panelGroup class="botao" -->
-<!-- 						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> -->
+<!-- 						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') 
+							or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> -->
 <!-- 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario"> -->
 <!-- 							<p:graphicImage styleClass="icone" -->
 <!-- 								value="#{resource['img/icon/clipboard.png']}" width="70%" /> -->

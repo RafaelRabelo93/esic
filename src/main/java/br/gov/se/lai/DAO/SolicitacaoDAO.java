@@ -12,6 +12,7 @@ import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
+import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Consultas;
 import br.gov.se.lai.utils.HibernateUtil;
 
@@ -73,7 +74,7 @@ public class SolicitacaoDAO {
 				{
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
 					
-					String query = "FROM Solicitacao as slt WHERE   ";
+					String query = "FROM Solicitacao as slt WHERE (  ";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
@@ -82,7 +83,7 @@ public class SolicitacaoDAO {
 							}
 							query += " slt.entidades.idEntidades = ";
 							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
-							for (int j = 2 ;  j <= usuarioBean.getResponsavel().getNivel(); j++) {
+							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
 							query += ")";
@@ -95,7 +96,7 @@ public class SolicitacaoDAO {
 
 					}
 					
-					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
+					return (List<Solicitacao>) Consultas.buscaPersonalizada(query+")",em);
 				}else 
 				{
 					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();		
@@ -108,12 +109,55 @@ public class SolicitacaoDAO {
 		}  
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listStatus(String status) {
+		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		if(usuarioBean != null) 
+		{
+			if(usuarioBean.getUsuario().getPerfil() == 3 || usuarioBean.getUsuario().getPerfil() == 4 && !usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
+			{
+				return (List<Solicitacao>)  Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status
+						+ "' AND slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
+			}else 
+			{
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
+				{
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query = "FROM Solicitacao as slt WHERE  slt.status = '"+status+"' AND (" ;
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += " slt.entidades.idEntidades = ";
+							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
+							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
+								query = query+" OR slt.instancia = "+ j;
+							}
+							query += ")";
+						}
+					}
+					
+					return (List<Solicitacao>)  Consultas.buscaPersonalizada(query+")",em);
+				}else 
+				{
+					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao as slt WHERE  slt.status = '"+status+"' ", Solicitacao.class).getResultList();		
+				}
+				
+			} 
+		}else
+		{	
+			return null;
+		}  
+	}	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorStatus(String status) {
 			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"'",em)); 
 	}	
-		
+
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipo(String tipo) {
 		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo,em)); 

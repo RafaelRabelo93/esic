@@ -93,6 +93,10 @@ public class SolicitacaoBean implements Serializable {
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
 	private CidadaoBean cidadaoBean;
+	public static int solicitacaoTotal;
+	public static int solicitacaoPendente;
+	public static int solicitacaoNegada;
+	public static int solicitacaoRespondida;
 
 	@PostConstruct
 	public void init() { 
@@ -106,7 +110,6 @@ public class SolicitacaoBean implements Serializable {
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		
 	}
 	
 	/**
@@ -157,8 +160,11 @@ public class SolicitacaoBean implements Serializable {
 				}
 			}
 			
+			addQuantidadeSolicitacaoTotal();
+			addQuantidadeSolicitacaoPendente();
 //			enviarMensagemAutomatica();
 			NotificacaoEmail.emailNovaSolicitacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -207,7 +213,7 @@ public class SolicitacaoBean implements Serializable {
 			this.solicitacao.setStatus("Finalizada");
 
 		} else {
-			this.solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getTipo()));
+			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarDiaUtilDataLimite(solicitacao.getTipo()));
 			this.solicitacao.setStatus("Aberta");
 		}
 	}
@@ -519,6 +525,61 @@ public class SolicitacaoBean implements Serializable {
 			SolicitacaoDAO.saveOrUpdate(slt);
 		}
 	}
+	
+	
+	public static void calcularQuantitativoSolicitacao() {
+		List aux = new ArrayList<>();
+		
+		aux =  SolicitacaoDAO.list();
+		solicitacaoTotal = aux != null ? aux.size() : 0;
+		
+		aux = SolicitacaoDAO.listStatus("Respondida") ;
+		solicitacaoRespondida = aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Finalizada") ;
+		solicitacaoRespondida += aux != null ? aux.size() : 0;
+		
+		aux = SolicitacaoDAO.listStatus("Aberta");
+		solicitacaoPendente = aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Recurso");
+		solicitacaoPendente += aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Reencaminhada");
+		solicitacaoPendente += aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Prorrogada");
+		solicitacaoPendente += aux != null ? aux.size() : 0;
+		
+		aux = SolicitacaoDAO.listStatus("Negada");
+		solicitacaoNegada = aux != null ? aux.size() : 0;
+	}
+	
+	public static void addQuantidadeSolicitacaoTotal() {
+		solicitacaoTotal++;
+	}
+	public static void addQuantidadeSolicitacaoPendente() {
+		solicitacaoPendente++;
+	}
+	public static void addQuantidadeSolicitacaoNegada() {
+		solicitacaoNegada++;
+	}
+
+	public static void addQuantidadeSolicitacaoRespondida() {
+		solicitacaoRespondida++;
+	}
+	
+	public void visualizouSolicitacao(AjaxBehaviorEvent e) {
+		if (((userBean.getUsuario().getPerfil() == (short) 2)
+				|| (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
+			if (!solicitacao.isVisualizada()) {
+				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null);
+				solicitacao.setVisualizada(true);
+				SolicitacaoDAO.saveOrUpdate(solicitacao);
+			} else if (solicitacao.getStatus().equals("Reencaminhada")) {
+				solicitacao.setStatus("Aberta");
+				solicitacao.setVisualizada(true);
+				SolicitacaoDAO.saveOrUpdate(solicitacao);
+				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null);
+			}
+		}
+	}
 
 	// +++++++++++++++++++++++++++ Tipologias das solicitações - Tratamentos específicos
 
@@ -561,7 +622,7 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status));
+			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status, solicitacao.getDataLimite()));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
@@ -569,19 +630,24 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public boolean ehProrrogavel() {
-		Calendar hoje = Calendar.getInstance();
-
-		Calendar limiteMin = Calendar.getInstance();
-		limiteMin.setTime(solicitacao.getDataLimite());
-		limiteMin.add(Calendar.DATE, -5);
-		
-		Calendar limite = Calendar.getInstance();
-		limite.setTime(solicitacao.getDataLimite());
-		
-		if (!verificaSeProrrogada(solicitacao) && hoje.after(limite) && hoje.before(limite)) {
+		if(solicitacao.getDataLimite() != null) {
+			
+			Calendar hoje = Calendar.getInstance();
+	
+			Calendar limiteMin = Calendar.getInstance();
+			limiteMin.setTime(solicitacao.getDataLimite());
+			limiteMin.add(Calendar.DATE, -5);
+			
+			Calendar limite = Calendar.getInstance();
+			limite.setTime(solicitacao.getDataLimite());
+			
+			if (!verificaSeProrrogada(solicitacao) && hoje.after(limite) && hoje.before(limite)) {
+				return true;
+			} else {
+				return false;
+			}
+		}else {
 			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -613,6 +679,7 @@ public class SolicitacaoBean implements Serializable {
 	
 
 	public void prorrogar() {
+		alterarPrazo(solicitacao);
 		this.mensagem.setSolicitacao(solicitacao);
 		this.mensagem.setTipo((short) 2);
 		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
@@ -746,6 +813,7 @@ public class SolicitacaoBean implements Serializable {
 
 				this.solicitacao.setEntidades(entReencaminhar);
 				solicitacao.setEncaminhada(true);
+				solicitacao.setStatus("Reencaminhada");
 
 				if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 					this.mensagemEncaminhar.setSolicitacao(solicitacao);
@@ -1011,6 +1079,42 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public int getSolicitacaoTotal() {
+		return solicitacaoTotal;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoTotal(int solicitacaoTotal) {
+		this.solicitacaoTotal = solicitacaoTotal;
+	}
+
+	public int getSolicitacaoPendente() {
+		return solicitacaoPendente;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoPendente(int solicitacaoPendente) {
+		this.solicitacaoPendente = solicitacaoPendente;
+	}
+
+	public int getSolicitacaoNegada() {
+		return solicitacaoNegada;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoNegada(int solicitacaoNegada) {
+		this.solicitacaoNegada = solicitacaoNegada;
+	}
+
+	public int getSolicitacaoRespondida() {
+		return solicitacaoRespondida;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoRespondida(int solicitacaoRespondida) {
+		this.solicitacaoRespondida = solicitacaoRespondida;
 	}
 
 	

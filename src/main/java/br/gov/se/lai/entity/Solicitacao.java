@@ -41,6 +41,7 @@ public class Solicitacao implements java.io.Serializable {
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private short prazoTipo;
 	private boolean encaminhada;
+	private boolean visualizada;
 	private Integer formaRecebimento;
 
 	public Solicitacao() {
@@ -52,7 +53,7 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento) {
+			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento, boolean visualizada) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 		this.acoes = acoes;
@@ -67,6 +68,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.mensagems = mensagems;
 		this.prazoTipo = prazoTipo;
 		this.formaRecebimento = formaRecebimento;
+		this.visualizada = visualizada;
 	}
 
 	@Id
@@ -220,6 +222,15 @@ public class Solicitacao implements java.io.Serializable {
 
 	public void setFormaRecebimento(Integer formaRecebimento) {
 		this.formaRecebimento = formaRecebimento;
+	}
+
+	@Column(name = "visualizada", length = 1)
+	public boolean isVisualizada() {
+		return visualizada;
+	}
+
+	public void setVisualizada(boolean visualizada) {
+		this.visualizada = visualizada;
 	}
 	
 	

@@ -386,13 +386,6 @@ public class ResponsavelBean implements Serializable{
 	public String requisitarCadastroResponsavel() {
 		Entidades ent = pegarEntidade();
 		String hashcode=UsuarioBean.generateSessionId();
-		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
-						  + "\n\n >> Dados do usuário:"
-						  + "\n\n Usuario: "+usuario.getNome()
-						  + "\n\n Nick: "+getNick()
-						  +"\n Email: "+getEmail()
-						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
-						  + "\n\n Clique aqui: ";
 		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 		if(idDestinatario != -1) {
 			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();

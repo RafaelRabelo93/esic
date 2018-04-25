@@ -46,7 +46,8 @@ public class NotificacaoEmail implements Job{
 		
 		String[] envio = destinatarioEmail(usuario, solicitacao);
 		String remetente = envio[0];
-		String destinatario = envio[1];
+//		String destinatario = envio[1];
+		String destinatario = DadosAutenticacao.getEmailteste();
 		String titulo = "Solicitação "+ solicitacao.getProtocolo() + " - " + solicitacao.getTitulo().toString();
 
 //		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
@@ -259,7 +260,7 @@ public class NotificacaoEmail implements Job{
 		emailHtml.setDebug(true);
 		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());  
 		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
-		emailHtml.addTo(((ResponsavelBean) resp).getEmail().toString());
+		emailHtml.addTo((resp).get(0).getEmail().toString());
 		emailHtml.setFrom(respRemetente.getEmail()); //será passado o email que você fará a autenticação
 		emailHtml.setSubject("Solicitação encaminhada — esic-SE");
 		
