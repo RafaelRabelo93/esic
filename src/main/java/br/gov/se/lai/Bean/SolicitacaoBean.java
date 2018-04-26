@@ -564,6 +564,19 @@ public class SolicitacaoBean implements Serializable {
 	public static void addQuantidadeSolicitacaoRespondida() {
 		solicitacaoRespondida++;
 	}
+	public static void rmvQuantidadeSolicitacaoTotal() {
+		solicitacaoTotal--;
+	}
+	public static void rmvQuantidadeSolicitacaoPendente() {
+		solicitacaoPendente--;
+	}
+	public static void rmvQuantidadeSolicitacaoNegada() {
+		solicitacaoNegada--;
+	}
+	
+	public static void rmvQuantidadeSolicitacaoRespondida() {
+		solicitacaoRespondida--;
+	}
 	
 	public void visualizouSolicitacao(AjaxBehaviorEvent e) {
 		if (((userBean.getUsuario().getPerfil() == (short) 2)

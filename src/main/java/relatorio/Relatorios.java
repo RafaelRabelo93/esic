@@ -18,6 +18,9 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
+import br.gov.se.lai.Bean.EntidadesBean;
+import br.gov.se.lai.entity.Entidades;
+
 @ManagedBean(name = "relatorios")
 @SessionScoped
 public class Relatorios {
@@ -48,7 +51,7 @@ public class Relatorios {
 	public String tipoPessoa;
 	public String[] estado;
 	public String tipoSolicitacao;
-	public String tempo;
+	public String param;
 	public String status;
 	public ArrayList<Integer> anos;
 	public BarChartModel barModel;
@@ -234,6 +237,8 @@ public class Relatorios {
 				}
 			}
 		} else {
+			setMesesBool(false);
+			setAnosBool(false);
 			setAssuntoBool(false);
 			setDataBool(false);
 			setEntidadeBool(false);
@@ -309,35 +314,46 @@ public class Relatorios {
 			}
 		}
 
-		ArrayList<String> medidaTempo = new ArrayList<>();
-		if(tempo.equals("mes")) {
+		ArrayList<String> baseGerada = new ArrayList<>();
+		if (param.equals("mes")) {
 			if(Arrays.asList(metricas).contains(2)) {
 				for (String mes : meses) {
-					medidaTempo.add(mes);
+					baseGerada.add(mes);
 				}
 			}else {
 				Calendar instance = Calendar.getInstance();
 				int mesAtual = instance.get(Calendar.MONTH);
 				for(int i = 0; i <= mesAtual; i++) {
-					medidaTempo.add(FiltrarDadosRelatorioEstatico.meses[i]);
+					baseGerada.add(FiltrarDadosRelatorioEstatico.meses[i]);
 				}
 			}
-		}else if(tempo.equals("ano")) {
+		}else if(param.equals("ano")) {
 			if(Arrays.asList(metricas).contains(3)) {
 				for (String anos : anosSelecionados) {
-					medidaTempo.add(anos);
+					baseGerada.add(anos);
 				}
 			}else {
 				Calendar instance = Calendar.getInstance();
 				int anoAtual = instance.get(Calendar.YEAR);
 				for(int i = 2012; i <= anoAtual; i++) {
-					medidaTempo.add(Integer.toString(i));
+					baseGerada.add(Integer.toString(i));
+				}
+			}
+		}else if(param.equals("entidades")) {
+			if(Arrays.asList(metricas).contains(5)) {
+				for(String entidade : entidades) {
+					baseGerada.add(entidade);
+				}
+			}else {
+				List<Entidades> entidadesAtivas = new EntidadesBean().getTodasEntidadesAtivas();
+				for (Entidades ent : entidadesAtivas) {
+					baseGerada.add(ent.getSigla());
 				}
 			}
 		}
 		
-		String retorno = metodo(tipoSolicitacao, tempo, status, dados, medidaTempo);
-		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
+		String retorno = metodo(tipoSolicitacao, param, status, dados, baseGerada);
+		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, baseGerada, param, dados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
 		barModel= model.createBarModel(tipo[0], dadosChart, (long)1, valorMaior);
@@ -345,7 +361,7 @@ public class Relatorios {
 	}
 	
 	
-	public String metodo(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados, ArrayList<String> medidaTempo) {
+	public String metodo(String tipoSolicitacao, String param, String status, Map<String, ArrayList<String>> dados, ArrayList<String> baseGerada) {
 		boolean escritaDeUmOrgaoOuEntidade = false;
 		String query = "FROM Solicitacao as slt";
 		if(dados.containsKey("tipoPessoa") || dados.containsKey("estados") ) {
@@ -630,11 +646,11 @@ public class Relatorios {
 	}
 
 	public String  getTempo() {
-		return tempo;
+		return param;
 	}
 
-	public void setTempo(String  tempo) {
-		this.tempo = tempo;
+	public void setTempo(String  param) {
+		this.param = param;
 	}
 
 	public String  getStatus() {

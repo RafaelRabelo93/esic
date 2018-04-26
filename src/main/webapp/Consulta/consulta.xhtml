@@ -197,7 +197,6 @@
 								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 									<p:ajax listener="#{solicitacao.popularMensagens}" />
-									<p:ajax listener="#{solicitacao.visualizouSolicitacao}"/>
 									<i class="fa fa-search" />
 									<f:setPropertyActionListener value="#{slt}"
 										target="#{solicitacao.solicitacao}" />
@@ -223,11 +222,12 @@
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
 				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
-				styleClass="solicitacaoDialog">
+				styleClass="solicitacaoDialog" >
 				
-<!-- 				<f:facet name="header"> -->
+				<f:facet name="header">
+									<p:ajax listener="#{solicitacao.visualizouSolicitacao}"/>
 <!-- 			        <h:outputText value="#{solicitacao.solicitacao.titulo}" /> -->
-<!-- 			    </f:facet> -->
+			    </f:facet>
 				
 				<p:outputPanel id="solicitacaoDetalhe"
 					style="display:flex; flex-flow: row; overflow-x: hidden;">

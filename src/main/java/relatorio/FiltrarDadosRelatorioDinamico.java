@@ -31,7 +31,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 
 
 
-	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoDinamico(String query, ArrayList<String> baseRecebida, String tempo, Map<String, ArrayList<String>> dados) {
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoDinamico(String query, ArrayList<String> baseRecebida, String param, Map<String, ArrayList<String>> dados) {
 
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -40,14 +40,15 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		ArrayList<String> base = new ArrayList<>();
 		String queryTempo = query;
 		
-		if (dados.containsKey(tempo)) {
+		if (dados.containsKey(param)) {
 			dadosRelacionadorBase = new ArrayList<>();
-			if (!dados.get(tempo).get(0).equals("Todos")) {
-				keysValues = dados.get(tempo);
-				if (tempo.equals("mes")) {
+			if (!dados.get(param).get(0).equals("Todos")) {
+				keysValues = dados.get(param);
+				if (param.equals("mes")) {
 					for (String t : keysValues) {
-						base.add(meses[Integer.parseInt(t)-1]);
-						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, t, dados));
+						String mes =meses[Integer.parseInt(t)-1]; 
+						base.add(mes);
+						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, mes, dados));
 					}
 				} else {
 					for (String t : keysValues) {
@@ -58,14 +59,14 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 			}
 			
 
-			dados.remove(tempo);
-		}else if(!dados.containsKey(tempo) || dados.get(tempo).get(0).equals("Todos") ) {
+			dados.remove(param);
+		}else if(!dados.containsKey(param) || dados.get(param).get(0).equals("Todos") ) {
 			base = baseRecebida;
 			dadosRelacionadorBase = new ArrayList<>();
 			for(String t : base) {
-				if(tempo.equals("ano")) {
+				if(param.equals("ano")) {
 					dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoMes(queryTempo, query, t, dados));
-				}else if (tempo.equals("mes")) {
+				}else if (param.equals("mes")) {
 					dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, t, dados));
 				}
 			}
@@ -95,7 +96,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				aux.add(auxQuery!= null ? auxQuery.size() : 0);
 			}
 		}else {
-			queryTempo = query.concat(" AND dataIni LIKE '" + t + "%'");
+			queryTempo = query.concat(" AND dataIni LIKE '" + Arrays.asList(meses).indexOf(t)+1 + "%'");
 			List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 			aux.add(auxQuery!= null ? auxQuery.size() : 0);
 		}
@@ -109,14 +110,14 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		ArrayList<String> keysValues = new ArrayList<>();
 		ArrayList<Integer> aux = new ArrayList<>();
 		
-		if(dados.containsKey("anos") && dados.get("anos") != null) {
-			for ( String ano : dados.get("anos") ) {
-				queryTempo = query.concat(" AND dataIni LIKE '"+ano+"-0" + t + "-%'");
+		if(dados.containsKey("ano") && dados.get("ano") != null) {
+			for ( String ano : dados.get("ano") ) {
+				queryTempo = query.concat(" AND dataIni LIKE '"+ano+"-0" + (int)(Arrays.asList(meses).indexOf(t)+1) + "-%'");
 				List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 				aux.add(auxQuery!= null ? auxQuery.size() : 0);
 			}
 		}else {
-			queryTempo = query.concat(" AND dataIni LIKE '%-0" + t + "-%'");
+			queryTempo = query.concat(" AND dataIni LIKE '%-0" +  (int)(Arrays.asList(meses).indexOf(t)+1) + "-%'");
 			List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 			aux.add(auxQuery!= null ? auxQuery.size() : 0);
 		}

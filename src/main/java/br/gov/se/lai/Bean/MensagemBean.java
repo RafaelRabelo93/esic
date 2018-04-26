@@ -105,6 +105,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 			}
 			SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
+			SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
 		}
 		mensagem.setTipo((short)2);
 	}
@@ -126,6 +127,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 			salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 		}
+		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
 		SolicitacaoBean.addQuantidadeSolicitacaoNegada();
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";
@@ -192,8 +194,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
-		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		try {
+			NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			MensagemBean.attMensagemHistorico(mensagem);
 			mensagem = new Mensagem();
 		}catch (NullPointerException e) {
