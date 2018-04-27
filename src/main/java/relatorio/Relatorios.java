@@ -125,11 +125,11 @@ public class Relatorios {
 	}
 	
 	
-	public HorizontalBarChartModel desenharBarChart( long tipoDados) {
+	public BarChartModel desenharBarChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
-		return model.createHorizontalBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
+		return model.createBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
 		
 	}
 
