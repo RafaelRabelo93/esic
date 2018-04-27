@@ -210,7 +210,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 */
 	
 	public void autenticaAcao(Acoes acao) {
-		if(usuarioBean.verificaGestor()) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaAdmin()) {
 			acao.setStatus("Não-vinculada");
 			AcoesDAO.saveOrUpdate(acao);
 			getAcoesPendentes().remove(acao);

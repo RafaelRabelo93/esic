@@ -8,7 +8,7 @@
 
 <h:body>
 
-	<ui:composition template="/templates/templateSemMenu.xhtml">
+	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
@@ -87,13 +87,7 @@
 							<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="width:700px;height:500px"/>
 							<p:separator styleClass="separator2"/>	
 
-							<p:outputLabel value="Relatório de Tipo de Pessoa"/>
-							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartPessoa')" style="margin-left: 10px">
-								<f:ajax execute="dlg" />
-								<i class="fa fa-external-link" />
-							</h:commandLink>
-							<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartPessoa"  style="width:700px;height:500px"/>
-							<p:separator styleClass="separator2"/>
+
 
 							<p:outputLabel value="Relatório de Estado"/>
 							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartEstado')" style="margin-left: 10px">

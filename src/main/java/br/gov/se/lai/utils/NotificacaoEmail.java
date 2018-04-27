@@ -260,7 +260,7 @@ public class NotificacaoEmail implements Job{
 		emailHtml.setDebug(true);
 		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());  
 		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
-		emailHtml.addTo((resp).get(0).getEmail().toString());
+		emailHtml.addTo(respDestinatario.getEmail());
 		emailHtml.setFrom(respRemetente.getEmail()); //será passado o email que você fará a autenticação
 		emailHtml.setSubject("Solicitação encaminhada — esic-SE");
 		

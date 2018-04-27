@@ -33,7 +33,7 @@
 				
 					<h:panelGroup id="competencias_panel">
 
-						<p:dataTable id="table" var="comp" value="#{competencias.listCompetencias}" rowKey="#{comp.idCompetencias}">
+						<p:dataTable id="table" var="comp" value="#{competencias.listCompetencias2}" rowKey="#{comp.idCompetencias}">
 
 							<f:facet name="header">
 							  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
@@ -89,7 +89,8 @@
 			</p:dialog>
 		
 		<!-- Dialog Nova Competência -->
-			<p:dialog widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+			<p:dialog widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" 
+			hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onShow="#{competencias.limparCompetencia()}">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 700px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">

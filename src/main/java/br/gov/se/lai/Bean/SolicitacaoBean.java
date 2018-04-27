@@ -186,7 +186,7 @@ public class SolicitacaoBean implements Serializable {
 	public void finalizarSolicitacao() {
 		this.solicitacao = new Solicitacao();
 		this.mensagem = new Mensagem();
-		CompetenciasBean.listCompetencias = null;
+		new CompetenciasBean().listCompetencias = null;
 		CompetenciasBean.listEntidades = null;
 		CompetenciasBean.idAcoes = 0;
 		CompetenciasBean.idEntidade = 0;

@@ -8,7 +8,7 @@
 
 <h:body>
 
-	<ui:composition template="/templates/templateSemMenu.xhtml">
+	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
@@ -245,9 +245,6 @@
 						<h:panelGroup style="width:100%" styleClass="column">
 							<p:chart type="bar" id="barChartId"  model="#{relatorios.barModel}"
 								 rendered="#{relatorios.barModel ne null}"/>
-							
-							<p:chart type="bar" id="barChartId2"  model="#{relatorios.hBarModel}"
-								rendered="#{relatorios.hBarModel ne null}"/>
 							
 							<h:commandLink>
 			                	<p:graphicImage name="/demo/images/excel.png" width="24"/>

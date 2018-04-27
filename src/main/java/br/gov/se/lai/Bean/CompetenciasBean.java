@@ -31,7 +31,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private Competencias competencias;
 	private List<Entidades> entidades;
 	public static List<Entidades> listEntidades;
-	public static List<Competencias> listCompetencias;
+	public List<Competencias> listCompetencias;
+	public  List<Competencias> listCompetencias2;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	public static int idAcoes;
@@ -46,6 +47,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		listCompetencias= new ArrayList<Competencias>();
+		listCompetencias2= new ArrayList<Competencias>();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
@@ -57,10 +59,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 */
 	public String save() {
 		if(verificaPermissao()) {
-			for (Competencias comp : listCompetencias) {
+			for (Competencias comp : listCompetencias2) {
 				CompetenciasDAO.saveOrUpdate(comp);
 			}	
 		}
+		
 		return "/Alterar/alterar_competencias";
 	}
 	
@@ -73,7 +76,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 */
 	//Alterar, utilizar metodo com entidade vindo no parâmetro
 	public String consultarCompetencias() {
-		listCompetencias = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
+		listCompetencias2 = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
+		listCompetencias = listCompetencias2;
 		return "/Alterar/alterar_competencias.xhtml?faces-redirect=true" ;
 	}
 
@@ -130,7 +134,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void addLista() {
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
-		listCompetencias.add(competencias);
+		listCompetencias2.add(competencias);
 		save();
 		listaAcoesUpdate();
 		competencias = new Competencias();
@@ -203,6 +207,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}	
 	}
 
+	public void limparCompetencia() {
+		competencias = new Competencias();
+	}
 	
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -268,12 +275,21 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		idAcoes = NovaIdAcoes;
 	}
 
-	public List<Competencias> getListCompetencias() {
-		return CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
-	}
-
 	public void setListCompetencias(List<Competencias> NovalistCompetencias) {
 		listCompetencias = NovalistCompetencias;
+	}
+
+	public  List<Competencias> getListCompetencias() {
+		return listCompetencias;
+	}
+
+	
+	public List<Competencias> getListCompetencias2() {
+		return listCompetencias2;
+	}
+
+	public void setListCompetencias2(List<Competencias> listCompetencias2) {
+		this.listCompetencias2 = listCompetencias2;
 	}
 
 	public void setCompetencias(Competencias competencias) {

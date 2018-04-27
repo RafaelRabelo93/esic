@@ -185,7 +185,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 			
 		case "Visualizada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi visualizada por um responsável.");
+			UsuarioBean usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario"));
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi visualizada por "+ usuario.getNomeCompleto());
 			break;
 			
 		default:
@@ -193,13 +194,15 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 		}
 		mensagem.setTipo((short)tipoAux);
-		MensagemDAO.saveOrUpdate(mensagem);
 		try {
+			MensagemDAO.saveOrUpdate(mensagem);
 			NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			MensagemBean.attMensagemHistorico(mensagem);
 			mensagem = new Mensagem();
 		}catch (NullPointerException e) {
+		}finally {
 			mensagem = new Mensagem();
+			
 		}
 	}
 

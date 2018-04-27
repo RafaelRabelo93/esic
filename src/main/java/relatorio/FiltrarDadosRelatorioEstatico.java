@@ -62,7 +62,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoMensalPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -149,7 +149,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoOrgaoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 
 		ArrayList<String> base = new ArrayList<>();
@@ -180,7 +180,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEntidadePedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 
 		ArrayList<String> base = new ArrayList<>();
@@ -211,7 +211,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 		String periodo = anoAtual + "-0" + mesAtual + "%";
 
@@ -240,7 +240,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTipoPessoaGeneroPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 		String periodo = anoAtual + "-0" + mesAtual + "%";
 
@@ -285,7 +285,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAssuntoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 		String periodo = anoAtual + "-0" + mesAtual + "%";
 
@@ -315,7 +315,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	public static Map<String, ArrayList<Integer>> nome() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH);
+		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
 		String periodo = anoAtual + "-0" + mesAtual + "%";
 		

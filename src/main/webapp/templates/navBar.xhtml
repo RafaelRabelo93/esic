@@ -88,6 +88,18 @@
 			</div>
 		</h:panelGroup>
 		
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+			<h:commandLink class="dropbtn">
+				<i class="fa fa-building" />
+				<h:outputText value="Gráficos" style="margin:0 7px"/>
+				<i class="fa fa-caret-down"/>
+			</h:commandLink>
+			<div class="dropdown-content">
+				<h:commandLink value="Relatório" action="/Relatorios/relatorios_estaticos"/>
+				<h:commandLink value="Gráficos" action="/Relatorios/relatorios" />
+			</div>
+		</h:panelGroup>
+		
 <!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
 		
 		<!-- Ações -->
