@@ -494,7 +494,7 @@ public class NotificacaoEmail implements Job{
 	}
 
 	public static void enviarEmailRequisicaoResponsavel(Usuario usuario, Entidades entidade, int idUser, int idEntidade, String emailUser, String hashcode, String dest) {
-		String link = DadosAutenticacao.getEndereco()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
+		String link = DadosAutenticacao.getEnderecolocal()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
 																								+"&user="+idUser
 																								+"&identidade="+idEntidade
 																								+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())
@@ -577,7 +577,7 @@ public class NotificacaoEmail implements Job{
 		msg.append("</html>");
 		
 		try {
-			enviarEmailHTML("michael.mendonca@cge.se.gov.br", "Nova requisição de responsável", msg.toString());
+			enviarEmailHTML("mayara.machado@cge.se.gov.br", "Nova requisição de responsável", msg.toString());
 			
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block

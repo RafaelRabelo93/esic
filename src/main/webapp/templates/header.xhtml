@@ -65,7 +65,7 @@
 								<br/>
 								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Responsável" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Gestor" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Gestor do Sistema" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 							</p:commandLink>
 						</li>
