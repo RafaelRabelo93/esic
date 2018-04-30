@@ -157,6 +157,10 @@ public class SolicitacaoDAO {
 	public static List<Solicitacao> listPorStatus(String status) {
 			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"'",em)); 
 	}	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listPorNaoFinalizada() {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status != 'Finalizada'",em)); 
+	}	
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipo(String tipo) {

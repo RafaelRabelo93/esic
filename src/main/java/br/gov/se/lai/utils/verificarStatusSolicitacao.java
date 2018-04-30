@@ -21,7 +21,7 @@ public class verificarStatusSolicitacao implements Job {
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		System.out.println("Entrou em verificacoes");
-		for (Solicitacao solicitacao : SolicitacaoDAO.listarGeral()) {
+		for (Solicitacao solicitacao : SolicitacaoDAO.listPorNaoFinalizada()) {
 			try {
 				updatePrazoTipo(solicitacao);
 				updateStatusSolicitacao(solicitacao);
@@ -108,8 +108,9 @@ public class verificarStatusSolicitacao implements Job {
 		
 			Date now = new Date();
 			if (now.after(solicitacao.getDataLimite())) {
-				// System.out.println("Finalizou");
+				 System.out.println("Finalizou");
 				if ((solicitacao.getStatus().equals("Respondida")
+						|| solicitacao.getStatus().equals("Negada")
 						|| ((solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short) 3))))) {
 	
 						System.out.println("Finalizou");
@@ -119,8 +120,9 @@ public class verificarStatusSolicitacao implements Job {
 						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 
 					} else {
-						if ((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada")
-								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3))) {
+						if ((solicitacao.getStatus().equals("Aberta") ||  solicitacao.getStatus().equals("Prorrogada")
+								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3)
+								|| solicitacao.getStatus().equals("Reencaminhada"))) {
 							solicitacao.setStatus("Negada");
 							solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus(), solicitacao.getDataLimite()));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);

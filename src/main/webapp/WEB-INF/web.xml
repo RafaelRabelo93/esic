@@ -45,7 +45,7 @@
 	
 	<error-page>
     	<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-   		<location>/index.xhtml</location>
+   		<location>/index.xhtml?faces-redirect=true</location>
 	</error-page>
 
 </web-app>

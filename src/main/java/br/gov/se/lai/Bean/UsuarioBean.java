@@ -93,7 +93,7 @@ public class UsuarioBean implements Serializable {
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
 					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 50 11 * * ?")).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 12 * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
@@ -852,11 +852,7 @@ public class UsuarioBean implements Serializable {
 		t.finalizarSolicitacao();
 		return "/index.xhtml?faces-redirect=true";                          
 	}
-	
-	public String expirou() {
-		logout();
-		return "/Menu/erroEmail.xhtml";
-	}
+
 	
 //	public void emailTeste() {
 //		NotificacaoEmail.emailNovaSolicitacao();
