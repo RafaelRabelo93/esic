@@ -853,6 +853,11 @@ public class UsuarioBean implements Serializable {
 		return "/index.xhtml?faces-redirect=true";                          
 	}
 	
+	public String expirou() {
+		logout();
+		return "/Menu/erroEmail.xhtml";
+	}
+	
 //	public void emailTeste() {
 //		NotificacaoEmail.emailNovaSolicitacao();
 //	}

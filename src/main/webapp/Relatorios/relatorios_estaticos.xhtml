@@ -68,7 +68,7 @@
 							<f:ajax execute="dlg" />
 							<i class="fa fa-external-link" />
 						</h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao"  style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(5)}" widgetVar="chartOrgao"  style="height:400px"/>
 						<p:separator styleClass="separator2"/>
 
 							<p:outputLabel value="Relatório de Entidade"/>
@@ -76,7 +76,7 @@
 								<f:ajax execute="dlg" />
 								<i class="fa fa-external-link" />
 							</h:commandLink>
-							<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:300px"/>
+							<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:500px"/>
 							<p:separator styleClass="separator2"/>
 
 							<p:outputLabel value="Relatório de Assuntos"/>

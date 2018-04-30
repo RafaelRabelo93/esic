@@ -32,6 +32,7 @@ public class Mensagem implements java.io.Serializable {
 	private String texto;
 	private Date data;
 	private short tipo;
+	private float nota;
 	private Set<Anexo> anexos = new HashSet<Anexo>(0);
 
 	public Mensagem() {
@@ -111,6 +112,15 @@ public class Mensagem implements java.io.Serializable {
 		this.tipo = tipo;
 	}
 
+	
+	@Column(name = "nota")
+	public float getNota() {
+		return nota;
+	}
+
+	public void setNota(float nota) {
+		this.nota = nota;
+	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
 	public Set<Anexo> getAnexos() {

@@ -54,6 +54,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private final int constanteTempo = 10;
 	private Usuario usuario;
 	private UploadedFile file;
+	private float nota;
 
  
 	@PostConstruct
@@ -232,6 +233,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagensTramites.add(mensagem);
 	}
 	
+	
+	public void avaliarResposta(Mensagem mensagem) {
+		if(mensagem.getTipo().equals((short)2)) {
+			mensagem.setNota(nota);
+		}
+	}
+	
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 
@@ -319,7 +328,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setMensagensTramites(List<Mensagem> mensagensTramites) {
 		MensagemBean.mensagensTramites = mensagensTramites;
+	}
+
+	public float getNota() {
+		return nota;
+	}
+
+	public void setNota(float nota) {
+		this.nota = nota;
 	}	
-	
 	
 }
