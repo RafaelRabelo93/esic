@@ -15,9 +15,52 @@
 			<h:panelGroup class="mainMenu">
 				
 			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
+				
 				<!-- ====== MENU CIDADÃO ====== -->
-				<h:panelGroup class="menuBtn"
-					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+					<!-- Consulta (Cidadão) -->
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+					<h:panelGroup styleClass="dashboard inline">
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Total" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Pendentes" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Negadas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Respondidas" />
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.verificaCidadaoConsulta}">
+						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
+						<p style="margin: 0; margin-left: .5em">Acompanhar solicitações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="false">
+					<p:graphicImage styleClass="icone"
+						value="#{resource['img/icon/search.png']}" width="100px" />
+
+					<h:panelGroup styleClass="column">
+						<h:outputText styleClass="titulo" value="Consulta" />
+						<h:outputText styleClass="subTitulo"
+							value="Acompanhar andamento da manifestação realizada" />
+					</h:panelGroup>
+				</h:commandLink>
+
+					<!-- Nova solicitação -->
+				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					<h:panelGroup class="container">
 						<h:commandLink id="btnDenuncia" styleClass="link card"
 							action="#{solicitacao.Denuncia()}">
@@ -122,20 +165,6 @@
 
 				</h:panelGroup>
 
-				<!-- Consulta (Cidadão) -->
-				<h:commandLink styleClass="btnConsulta inline"
-					action="#{solicitacao.verificaCidadaoConsulta}"
-					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
-					<p:graphicImage styleClass="icone"
-						value="#{resource['img/icon/search.png']}" width="100px" />
-
-					<h:panelGroup styleClass="column">
-						<h:outputText styleClass="titulo" value="Consulta" />
-						<h:outputText styleClass="subTitulo"
-							value="Acompanhar andamento da manifestação realizada" />
-					</h:panelGroup>
-				</h:commandLink>
-
 
 				<!-- ====== MENU LOGOFF ====== -->
 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '1'}">
@@ -216,6 +245,37 @@
 
 
 				<!-- ====== MENU REPRESENTANTE ====== -->
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup styleClass="dashboard inline">
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Total" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Pendentes" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Negadas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="0" />
+							<p:separator />
+							<h:outputText value="Respondidas" />
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
+						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
+						<p style="margin: 0; margin-left: .5em">Acompanhar solicitações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
 				<h:panelGroup class="menuBtn"
 					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
@@ -244,7 +304,7 @@
 
 
 					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao">
+					<h:panelGroup class="botao" rendered="false">
 						<h:commandLink styleClass="link"
 							action="#{solicitacao.consultarSolicitacao}">
 							<f:setPropertyActionListener value="0"
