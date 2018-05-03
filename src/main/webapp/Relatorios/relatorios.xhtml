@@ -28,7 +28,7 @@
 					<h:panelGroup id="parametrosObrigatorios" styleClass="inline" style="width: 100%; margin-bottom: 1em">
 						<h:panelGroup styleClass="column">
 							<p:outputLabel value="Tipo de Solicitação" for="tipoSolicitacao" />
-							<p:selectOneMenu id="tipoSolicitacao" value="#{relatorios.tipoSolicitacao}" required="true">
+							<p:selectOneMenu id="tipoSolicitacao" value="#{relatorioDinamico.tipoSolicitacao}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Pedido de Informação" itemValue="Informação" />
 								<f:selectItem itemLabel="Solicitacao" itemValue="Solicitação" />
@@ -41,7 +41,7 @@
 
 						<h:panelGroup styleClass="column" style="margin-left: 3vw">
 							<p:outputLabel value="Medida de tempo" for="tempo" />
-							<p:selectOneMenu id="tempo" value="#{relatorios.tempo}" required="true">
+							<p:selectOneMenu id="tempo" value="#{relatorioDinamico.tempo}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Mês" itemValue="mes" />
 								<f:selectItem itemLabel="Ano" itemValue="ano" />
@@ -51,7 +51,7 @@
 
 						<h:panelGroup styleClass="column" style="margin-left: 3vw">
 							<p:outputLabel value="Status da Solicitação" for="status" />
-							<p:selectOneMenu id="status" value="#{relatorios.status}" required="true">
+							<p:selectOneMenu id="status" value="#{relatorioDinamico.status}" required="true">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Pendente" itemValue="Pendente" />
 								<f:selectItem itemLabel="Aberta" itemValue="Aberta" />
@@ -77,8 +77,8 @@
 							<p:commandButton id="filterBtn" value="Filtros" icon="fa fa-filter" iconPos="right" styleClass="inline" type="button" style="border: 1px solid silver; border-radius: 3px; padding: 5px; border-bottom: 3px solid #3272bd"/>
 						
 							<p:overlayPanel id="filterOptions" for="filterBtn" hideEffect="fade" my="right" at="left">
-								<p:selectManyCheckbox id="basic" value="#{relatorios.metricas}">
-									<p:ajax listener="#{relatorios.verificarBool()}" update="filterParametros" />
+								<p:selectManyCheckbox id="basic" value="#{relatorioDinamico.metricas}">
+									<p:ajax listener="#{relatorioDinamico.verificarBool()}" update="filterParametros" />
 		<!-- 						//	<f:selectItem itemLabel="Data" itemValue="1" /> -->
 									<f:selectItem itemLabel="Meses" itemValue="2" />
 									<f:selectItem itemLabel="Anos" itemValue="3" />
@@ -94,13 +94,13 @@
 	<!-- 						TEMPO -->
 	<!-- 					Ajeitarei depois -->
 	<!-- 						<h:panelGroup styleClass="inline" -->
-	<!-- 							rendered="#{relatorios.dataBool}"> -->
+	<!-- 							rendered="#{relatorioDinamico.dataBool}"> -->
 	<!-- 							<h:panelGroup styleClass="column" > -->
 	<!-- 								<p:outputLabel value="Data Inicial " for="dataIni" /> -->
 	<!-- 								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" -->
 	<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
 	<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
-	<!-- 									mask="true" timeInput="false" value="#{relatorios.periodoIni}"> -->
+	<!-- 									mask="true" timeInput="false" value="#{relatorioDinamico.periodoIni}"> -->
 	<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
 	<!-- 								</p:calendar> -->
 	<!-- 							</h:panelGroup> -->
@@ -110,26 +110,26 @@
 	<!-- 								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" -->
 	<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
 	<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
-	<!-- 									mask="true" timeInput="false" value="#{relatorios.periodoFim}"> -->
+	<!-- 									mask="true" timeInput="false" value="#{relatorioDinamico.periodoFim}"> -->
 	<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
 	<!-- 								</p:calendar> -->
 	<!-- 							</h:panelGroup> -->
 	<!-- 						</h:panelGroup> -->
 							
 							<!-- Anos -->
-							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorios.anosBool}">
+							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.anosBool}">
 								<p:outputLabel value="Ano" for="anos" style="margin-top: 0"/>
-								<p:selectCheckboxMenu id="anos" value="#{relatorios.anosSelecionados}"
+								<p:selectCheckboxMenu id="anos" value="#{relatorioDinamico.anosSelecionados}"
 									label="Anos">
 									<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-									<f:selectItems value="#{relatorios.anos}" var="anos" itemLabel="#{anos}" itemValue="#{anos.toString()}" />
+									<f:selectItems value="#{relatorioDinamico.anos}" var="anos" itemLabel="#{anos}" itemValue="#{anos.toString()}" />
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 							
 							<!-- Meses -->
-							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorios.mesesBool}">
+							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.mesesBool}">
 								<p:outputLabel value="Mês" for="meses" />
-								<p:selectCheckboxMenu id="meses" value="#{relatorios.meses}" label="Meses">
+								<p:selectCheckboxMenu id="meses" value="#{relatorioDinamico.meses}" label="Meses">
 									<f:selectItem itemLabel="Janeiro" itemValue="1" />
 									<f:selectItem itemLabel="Fevereiro" itemValue="2" />
 									<f:selectItem itemLabel="Março" itemValue="3" />
@@ -155,9 +155,9 @@
 								<!-- 								</p:selectOneRadio> -->
 								<!-- 							</h:panelGroup> -->
 	
-							<h:panelGroup id="selectOrgao" styleClass="column" style="width: 100%" rendered="#{relatorios.orgaoBool}">
+							<h:panelGroup id="selectOrgao" styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.orgaoBool}">
 								<p:outputLabel value="Administração Direta" />
-								<p:selectCheckboxMenu id="orgao" value="#{relatorios.orgaos}"
+								<p:selectCheckboxMenu id="orgao" value="#{relatorioDinamico.orgaos}"
 									label="Órgãos">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 									<f:selectItems value="#{entidades.listOrgaosAtivos}" var="ent"
@@ -166,9 +166,9 @@
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 
-							<h:panelGroup id="selectEntidade" styleClass="column" style="width: 100%" rendered="#{relatorios.entidadeBool}">
+							<h:panelGroup id="selectEntidade" styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.entidadeBool}">
 								<p:outputLabel value="Administração Indireta" />
-								<p:selectCheckboxMenu id="ent" value="#{relatorios.entidades}"
+								<p:selectCheckboxMenu id="ent" value="#{relatorioDinamico.entidades}"
 									label="Entidades">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 									<f:selectItems value="#{entidades.todasEntidades}" var="ent"
@@ -178,9 +178,9 @@
 							</h:panelGroup>
 	
 							<!-- Estado -->
-							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorios.estadosBool}">
+							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.estadosBool}">
 								<p:outputLabel value="Estado: " for="uf" />
-								<p:selectCheckboxMenu id="uf" value="#{relatorios.estado}" widgetVar="estado">
+								<p:selectCheckboxMenu id="uf" value="#{relatorioDinamico.estado}" widgetVar="estado">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
 									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -212,9 +212,9 @@
 							</h:panelGroup>
 	
 							<!-- Assunto -->
-							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorios.assuntoBool}">
+							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.assuntoBool}">
 								<p:outputLabel value="Assuntos" />
-								<p:selectCheckboxMenu id="ass" value="#{relatorios.assuntos}"
+								<p:selectCheckboxMenu id="ass" value="#{relatorioDinamico.assuntos}"
 									label="Assuntos">
 									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 									<f:selectItems value="#{acoes.acoesVinculadas}" var="ac"
@@ -224,9 +224,9 @@
 	
 	
 							<!-- Tipo Pessoa -->
-							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorios.tipoPessoaBool}">
+							<h:panelGroup styleClass="column" style="width: 100%" rendered="#{relatorioDinamico.tipoPessoaBool}">
 								<p:outputLabel value="Tipo de Pessoa" for="tipoPessoa" />
-								<p:selectOneMenu id="tipoPessoa" value="#{relatorios.tipoPessoa}" label="Tipo de Pessoa">
+								<p:selectOneMenu id="tipoPessoa" value="#{relatorioDinamico.tipoPessoa}" label="Tipo de Pessoa">
 									<f:selectItem itemLabel="Física" itemValue="F" />
 									<f:selectItem itemLabel="Física Feminino" itemValue="FF" />
 									<f:selectItem itemLabel="Física Masculino" itemValue="FM" />
@@ -244,10 +244,10 @@
 						
 						<h:panelGroup style="width:100%" styleClass="column">
 							<p:chart type="bar" id="barChartId"  model="#{relatorioDinamico.barModel}"
-								 rendered="#{relatorios.barModel ne null}"/>
+								 rendered="#{relatorioDinamico.barModel ne null}"/>
 							
 							<p:chart type="bar" id="barChartId2"  model="#{relatorioDinamico.hBarModel}"
-								rendered="#{relatorios.hBarModel ne null}"/>
+								rendered="#{relatorioDinamico.hBarModel ne null}"/>
 							
 							<h:commandLink>
 			                	<p:graphicImage name="/demo/images/excel.png" width="24"/>
