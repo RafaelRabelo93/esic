@@ -82,8 +82,6 @@
 		<!-- 						//	<f:selectItem itemLabel="Data" itemValue="1" /> -->
 									<f:selectItem itemLabel="Meses" itemValue="2" />
 									<f:selectItem itemLabel="Anos" itemValue="3" />
-									<f:selectItem itemLabel="Órgão" itemValue="4" />
-									<f:selectItem itemLabel="Entidade" itemValue="5" />
 									<f:selectItem itemLabel="Estados" itemValue="6" />
 									<f:selectItem itemLabel="Assunto" itemValue="7" />
 									<f:selectItem itemLabel="Tipo de Pessoa" itemValue="8" />
@@ -142,38 +140,6 @@
 									<f:selectItem itemLabel="Outubro" itemValue="10" />
 									<f:selectItem itemLabel="Novembro" itemValue="11" />
 									<f:selectItem itemLabel="Dezembro" itemValue="12" />
-								</p:selectCheckboxMenu>
-							</h:panelGroup>
-	
-							<!-- Tipo de Órgão -->
-								<!-- 							<h:panelGroup styleClass="column" > -->
-								<!-- 								<p:outputLabel value="Tipo: " for="tipoOrgao" /> -->
-								<!-- 								<p:selectOneRadio id="tipoOrgao" value="" required="true"> -->
-								<!-- 																	<p:ajax event="change"  update="selectOrgao"/> -->
-								<!-- 									<f:selectItem itemLabel="Órgão" itemValue="#{true}" /> -->
-								<!-- 									<f:selectItem itemLabel="Entidade" itemValue="#{false}" /> -->
-								<!-- 								</p:selectOneRadio> -->
-								<!-- 							</h:panelGroup> -->
-	
-							<h:panelGroup id="selectOrgao" styleClass="column" style="width: 100%" rendered="#{relatorios.orgaoBool}">
-								<p:outputLabel value="Administração Direta" />
-								<p:selectCheckboxMenu id="orgao" value="#{relatorios.orgaos}"
-									label="Órgãos">
-									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
-									<f:selectItems value="#{entidades.listOrgaosAtivos}" var="ent"
-										itemLabel="#{ent.sigla} - #{ent.nome}"
-										itemValue="#{ent.idEntidades}" />
-								</p:selectCheckboxMenu>
-							</h:panelGroup>
-
-							<h:panelGroup id="selectEntidade" styleClass="column" style="width: 100%" rendered="#{relatorios.entidadeBool}">
-								<p:outputLabel value="Administração Indireta" />
-								<p:selectCheckboxMenu id="ent" value="#{relatorios.entidades}"
-									label="Entidades">
-									<f:selectItem itemLabel="Todos" noSelectionOption="true" />
-									<f:selectItems value="#{entidades.todasEntidades}" var="ent"
-										itemLabel="#{ent.sigla} - #{ent.nome}"
-										itemValue="#{ent.idEntidades}" />
 								</p:selectCheckboxMenu>
 							</h:panelGroup>
 	
@@ -237,16 +203,16 @@
 								</p:selectOneMenu>
 							</h:panelGroup>
 	
-						<p:commandLink value="OK" styleClass="botaoLink" update="@all" action="#{relatorioDinamico.desenharBarChartModel()}"
+						<p:commandLink value="OK" styleClass="botaoLink" update="@all" action="#{relatorios.botao()}"
 							style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" />
 						</h:panelGroup>
 						</h:panelGroup>
 						
 						<h:panelGroup style="width:100%" styleClass="column">
-							<p:chart type="bar" id="barChartId"  model="#{relatorioDinamico.barModel}"
+							<p:chart type="bar" id="barChartId"  model="#{relatorios.barModel}"
 								 rendered="#{relatorios.barModel ne null}"/>
 							
-							<p:chart type="bar" id="barChartId2"  model="#{relatorioDinamico.hBarModel}"
+							<p:chart type="bar" id="barChartId2"  model="#{relatorios.hBarModel}"
 								rendered="#{relatorios.hBarModel ne null}"/>
 							
 							<h:commandLink>
