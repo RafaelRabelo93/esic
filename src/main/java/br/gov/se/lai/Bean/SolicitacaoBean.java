@@ -207,7 +207,7 @@ public class SolicitacaoBean implements Serializable {
 	 * o prazo inicia a contar no primeiro dia da semana.
 	 */
 	public void gerarDataLimite() {
-		if (solicitacao.getTipo().equals("Sugestao") || solicitacao.getTipo().equals("Elogio")) {
+		if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Elogio")) {
 			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
 			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 			this.solicitacao.setStatus("Finalizada");
