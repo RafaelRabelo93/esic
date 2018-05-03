@@ -125,10 +125,6 @@
 	margin-top: 1em;
 }
 
-.ui-selectmanycheckbox .ui-chkbox .ui-chkbox-box {
-    margin-bottom: 17px;
-}
-
 .tituloBox {
 	color: #1a568c;
 	font-size:25px;
@@ -1568,7 +1564,7 @@ i.fa.fa-home {
 .separator {
 	margin-top: 0;
     margin-bottom: 2em;
-    border: 1px solid #4086d8;
+    border: 2px solid #4086d8;
 }
 
 .separator2 {
@@ -1591,10 +1587,6 @@ i.fa.fa-home {
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
 	margin-bottom: 5px !important;
-}
-
-.ui-selectcheckboxmenu-label {
-    margin: 0 !important;
 }
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label{

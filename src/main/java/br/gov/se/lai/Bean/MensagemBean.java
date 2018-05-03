@@ -240,7 +240,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
 

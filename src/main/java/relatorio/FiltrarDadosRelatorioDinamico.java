@@ -46,9 +46,8 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				keysValues = dados.get(param);
 				if (param.equals("mes")) {
 					for (String t : keysValues) {
-						String mes =meses[Integer.parseInt(t)-1]; 
-						base.add(mes);
-						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, mes, dados));
+						base.add(meses[Integer.parseInt(t)-1]);
+						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, meses[Integer.parseInt(t)-1], dados));
 					}
 				} else {
 					for (String t : keysValues) {
@@ -80,9 +79,6 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 
 		return dadosChart;
 	}
-	
-	
-	
 	
 	public ArrayList<Integer> verificaTempoMes(String queryTempo, String query, String t, Map<String, ArrayList<String>> dados) {
 		ArrayList<String> keysValues = new ArrayList<>();
@@ -123,6 +119,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		}
 		return aux;
 	}
+	
 	
 	
 	
