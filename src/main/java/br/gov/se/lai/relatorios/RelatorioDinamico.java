@@ -1,5 +1,5 @@
 
-package relatorio;
+package br.gov.se.lai.relatorios;
 
 import java.util.ArrayList;
 import java.util.Arrays;

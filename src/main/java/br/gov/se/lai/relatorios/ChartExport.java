@@ -1,4 +1,4 @@
-package relatorio;
+package br.gov.se.lai.relatorios;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

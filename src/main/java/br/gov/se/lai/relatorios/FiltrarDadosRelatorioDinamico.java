@@ -1,4 +1,4 @@
-package relatorio;
+package br.gov.se.lai.relatorios;
 
 import java.io.Serializable;
 import java.util.ArrayList;

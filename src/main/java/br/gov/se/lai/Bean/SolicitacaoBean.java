@@ -51,10 +51,10 @@ import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.relatorios.RelatorioDinamico;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PrazosSolicitacao;
-import relatorio.RelatorioDinamico;
 
 @ManagedBean(name = "solicitacao")
 @SessionScoped
