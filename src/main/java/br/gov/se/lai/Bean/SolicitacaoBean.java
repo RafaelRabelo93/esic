@@ -54,6 +54,7 @@ import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PrazosSolicitacao;
+import relatorio.RelatorioDinamico;
 
 @ManagedBean(name = "solicitacao")
 @SessionScoped
@@ -783,6 +784,10 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 
+	public String redirecionarEstatistica() {
+		RelatorioDinamico.limparGrafico();
+		return "/Relatorios/relatorios-especificos.xhtml";
+	}
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

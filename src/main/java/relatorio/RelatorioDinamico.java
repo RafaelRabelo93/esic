@@ -62,9 +62,14 @@ public class RelatorioDinamico {
 
 	@PostConstruct
 	public void RelatorioDinamico() {
+		barModel = new BarChartModel();
+		hBarModel = new  HorizontalBarChartModel();
 	}
 
 
+	public static void limparGrafico() {
+		new RelatorioDinamico();
+	}
 	public int identificarValorMaximoGrafico(Map<String, ArrayList<Integer>> dadosChart) {
 		int valorMaior = 0;
 		for (String key : dadosChart.keySet()) {

@@ -88,10 +88,10 @@
 							</p:column>
 
 							<p:column headerText="Estatistica" width="90" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{relatorioDinamico.desenharBarChartModel()}"
+								<p:commandLink class="botaoLinkIcon" id="consEst" action="#{solicitacao.redirecionarEstatistica()}"
 										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}"
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
-									<i class="fa fa-list" />
+									<i class="fa fa-bar-chart" />
 									<f:setPropertyActionListener value="#{orgaos}" target="#{relatorioDinamico.ent}" />
 								</p:commandLink>
 							</p:column>
