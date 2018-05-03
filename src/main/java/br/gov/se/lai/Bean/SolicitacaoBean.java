@@ -89,7 +89,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
-	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada" };
+	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada" };
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -157,8 +157,9 @@ public class SolicitacaoBean implements Serializable {
 							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
 				}
 			}
-	
-			enviarMensagemAutomatica();
+			
+//			enviarMensagemAutomatica();
+			NotificacaoEmail.emailNovaSolicitacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -601,7 +602,7 @@ public class SolicitacaoBean implements Serializable {
 
 	public boolean recursoLiberado() {
 		try {
-			if (!verificaSeLimiteRecurso(solicitacao) && solicitacao.getStatus().equals("Respondida")) {
+			if (!verificaSeLimiteRecurso(solicitacao) && (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada"))) {
 				return true;
 			} else {
 				return false;
@@ -610,6 +611,7 @@ public class SolicitacaoBean implements Serializable {
 			return false;
 		}
 	}
+	
 
 	public void prorrogar() {
 		this.mensagem.setSolicitacao(solicitacao);
@@ -636,9 +638,8 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		mensagem = new Mensagem();
-
 	}
-
+	
 
 	public void onRowSelect(SelectEvent event) {
 		int rownum = filteredSolicitacoes.indexOf((Solicitacao) event.getObject());

@@ -26,88 +26,90 @@
 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p>
 	
 						<p:dialog widgetVar="dlg" showEffect="fade" closeOnEscape="true" modal="false" resizable="false" width="800px">
-						    <p>Para salvar, clique na imagem com o botã direito do mouse e selecione "Salvar imagem como..."</p>
+						    <p>Para salvar, clique na imagem com o botão direito do mouse e selecione "Salvar imagem como..."</p>
 						    <p:outputPanel id="output" />
 						</p:dialog>
-						
-									
+					    
 						<p:outputLabel value="Relatório de Geral"/>
-						<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartGeral')" style="margin-left: 10px">
-							<f:ajax execute="dlg" />
-							<i class="fa fa-external-link" />
-						</h:commandLink>
+						
+						<h:commandLink onclick="exportChartBean('chartGeral')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
 						<p:outputLabel value="Relatório de Mensal"/>
-						<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartMensal')" style="margin-left: 10px">
-							<f:ajax execute="dlg" />
-							<i class="fa fa-external-link" />
-						</h:commandLink>
+						<h:commandLink onclick="exportChartBean('chartMensal')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 						<p:outputLabel value="Relatório de Anual"/>
-						<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartAnual')" style="margin-left: 10px">
-							<f:ajax execute="dlg" />
-							<i class="fa fa-external-link" />
-						</h:commandLink>
+						<h:commandLink onclick="exportChartBean('chartAnual')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 						<p:outputLabel value="Relatório de Anual Acumulado"/>
-						<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartAnualAcumulado')" style="margin-left: 10px">
-							<f:ajax execute="dlg" />
-							<i class="fa fa-external-link" />
-						</h:commandLink>
+						<h:commandLink onclick="exportChartBean('chartAnualAcumulado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
 						<p:outputLabel value="Relatório de Órgão"/>
-						<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartOrgao')" style="margin-left: 10px">
-							<f:ajax execute="dlg" />
-							<i class="fa fa-external-link" />
-						</h:commandLink>
+						<h:commandLink onclick="exportChartBean('chartOrgao')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
-							<p:outputLabel value="Relatório de Entidade"/>
-							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartEntidade')" style="margin-left: 10px">
-								<f:ajax execute="dlg" />
-								<i class="fa fa-external-link" />
-							</h:commandLink>
-							<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:300px"/>
-							<p:separator styleClass="separator2"/>
+						<p:outputLabel value="Relatório de Entidade"/>
+						<h:commandLink onclick="exportChartBean('chartEntidade')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:300px"/>
+						<p:separator styleClass="separator2"/>
 
-							<p:outputLabel value="Relatório de Assuntos"/>
-							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartAssunto')" style="margin-left: 10px">
-								<f:ajax execute="dlg" />
-								<i class="fa fa-external-link" />
-							</h:commandLink>
-							<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="width:700px;height:500px"/>
-							<p:separator styleClass="separator2"/>	
+						<p:outputLabel value="Relatório de Assuntos"/>
+						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="width:700px;height:500px"/>
+						<p:separator styleClass="separator2"/>	
 
-							<p:outputLabel value="Relatório de Tipo de Pessoa"/>
-							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartPessoa')" style="margin-left: 10px">
-								<f:ajax execute="dlg" />
-								<i class="fa fa-external-link" />
-							</h:commandLink>
-							<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartPessoa"  style="width:700px;height:500px"/>
-							<p:separator styleClass="separator2"/>
+						<p:outputLabel value="Relatório de Tipo de Pessoa"/>
+						<h:commandLink onclick="exportChartBean('chartPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartPessoa"  style="width:700px;height:500px"/>
+						<p:separator styleClass="separator2"/>
 
-							<p:outputLabel value="Relatório de Estado"/>
-							<h:commandLink styleClass="botaoLinkIcon" onclick="exportChart('chartEstado')" style="margin-left: 10px">
-								<f:ajax execute="dlg" />
-								<i class="fa fa-external-link" />
-							</h:commandLink>
-							<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" style="width:700px;height:500px"/>
-							<p:separator styleClass="separator2"/>
-
+						<p:outputLabel value="Relatório de Estado"/>
+						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" style="width:700px;height:500px"/>
+						<p:separator styleClass="separator2"/>
+						
+<!-- 						Botão exportar direto (não funciona) -->
+						<p:commandButton id="exp" value="Export" icon="ui-icon-extlink" onclick="exportChartBean('chartGeral')"  actionListener="#{chartExport.submittedBase64Str}" />
+						<h:inputHidden id="b64" value="#{chartExport.base64Str}" />
 				</h:panelGroup>
 
 	<script type="text/javascript">
-	
-	
+		
 	function exportChart(chart) {
 	    //export image
 	    $('#form\\:output').empty().append(PF(chart).exportAsImage());
@@ -115,6 +117,11 @@
 	    //show the dialog
 	    PF('dlg').show();
 	}
+
+	function exportChartBean(chart) {
+        // exportAsImage() will return a base64 png encoded string
+        document.getElementById('form:b64').value = PF(chart).exportAsImage().src;
+    }
 
 	</script>
 			</h:form>
