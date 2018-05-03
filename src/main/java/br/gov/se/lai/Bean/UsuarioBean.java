@@ -742,6 +742,7 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
+	
 
 	/**
 	 * Função getGeneroString

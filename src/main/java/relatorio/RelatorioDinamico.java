@@ -19,6 +19,11 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
+import br.gov.se.lai.Bean.UsuarioBean;
+import br.gov.se.lai.entity.Entidades;
+import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.utils.HibernateUtil;
+
 @ManagedBean(name = "relatorioDinamico")
 @SessionScoped
 public class RelatorioDinamico {
@@ -52,10 +57,11 @@ public class RelatorioDinamico {
 	public String status;
 	public ArrayList<Integer> anos;
 	public BarChartModel barModel;
-	public HorizontalBarChartModel hBarModel;;
+	public HorizontalBarChartModel hBarModel;
+	public Entidades ent;
 
 	@PostConstruct
-	public void Relatorios() {
+	public void RelatorioDinamico() {
 	}
 
 
@@ -220,9 +226,23 @@ public class RelatorioDinamico {
 				break;
 			}
 		}
+		
 		return dados;
 	}
 	
+	public Map<String, ArrayList<String>> addEntidadeEmDados() {
+		Map<String, ArrayList<String>> dados = selecionarDados();
+		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		if(usuario!= null &&
+		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))) {
+			ArrayList<String> idEntidade = new ArrayList<String>();
+			idEntidade.add(String.valueOf(ent.getIdEntidades()));
+ 			dados.put("entidade", idEntidade);
+ 			return dados;
+		}else {
+			return dados;
+		}
+	}
 	
 	public ArrayList<String> definirMedidaTempo() {
 		ArrayList<String> medidaTempo = new ArrayList<>();
@@ -256,7 +276,7 @@ public class RelatorioDinamico {
 	}
 	
 	public void desenharBarChartModel() {
-		Map<String, ArrayList<String>> dados = selecionarDados();
+		Map<String, ArrayList<String>> dados = addEntidadeEmDados();
 		ArrayList<String> medidaTempo = definirMedidaTempo();
 		String retorno = definirStringQuery(tipoSolicitacao, tempo, status, dados, medidaTempo);
 		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
@@ -268,13 +288,18 @@ public class RelatorioDinamico {
 
 	public String definirStringQuery(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados,
 			ArrayList<String> medidaTempo) {
+		status = "Realizados";
 		boolean escritaDeUmOrgaoOuEntidade = false;
 		String query = "FROM Solicitacao as slt";
 		if (dados.containsKey("tipoPessoa") || dados.containsKey("estados")) {
 			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao "
 					+ "AND slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status + "'");
 		} else {
-			query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status + "'");
+			if(!status.equals("Realizados")) {
+				query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status + "'");
+			}else {
+				query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao+"'");
+			}
 		}
 
 		for (String key : dados.keySet()) {
@@ -599,4 +624,17 @@ public class RelatorioDinamico {
 		this.hBarModel = hBarModel;
 	}
 
+
+	public Entidades getEnt() {
+		return ent;
+	}
+
+
+	public void setEnt(Entidades ent) {
+		this.ent = ent;
+	}
+
+
+
+	
 }
