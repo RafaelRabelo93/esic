@@ -47,7 +47,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				if (tempo.equals("mes")) {
 					for (String t : keysValues) {
 						base.add(meses[Integer.parseInt(t)-1]);
-						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, t, dados));
+						dadosRelacionadorBase.add(new FiltrarDadosRelatorioDinamico().verificaTempoAno(queryTempo, query, meses[Integer.parseInt(t)-1], dados));
 					}
 				} else {
 					for (String t : keysValues) {
@@ -80,9 +80,6 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		return dadosChart;
 	}
 	
-	
-	
-	
 	public ArrayList<Integer> verificaTempoMes(String queryTempo, String query, String t, Map<String, ArrayList<String>> dados) {
 		ArrayList<String> keysValues = new ArrayList<>();
 		ArrayList<Integer> aux = new ArrayList<>();
@@ -95,7 +92,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				aux.add(auxQuery!= null ? auxQuery.size() : 0);
 			}
 		}else {
-			queryTempo = query.concat(" AND dataIni LIKE '" + t + "%'");
+			queryTempo = query.concat(" AND dataIni LIKE '" + Arrays.asList(meses).indexOf(t)+1 + "%'");
 			List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 			aux.add(auxQuery!= null ? auxQuery.size() : 0);
 		}
@@ -109,19 +106,20 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		ArrayList<String> keysValues = new ArrayList<>();
 		ArrayList<Integer> aux = new ArrayList<>();
 		
-		if(dados.containsKey("anos") && dados.get("anos") != null) {
-			for ( String ano : dados.get("anos") ) {
-				queryTempo = query.concat(" AND dataIni LIKE '"+ano+"-0" + t + "-%'");
+		if(dados.containsKey("ano") && dados.get("ano") != null) {
+			for ( String ano : dados.get("ano") ) {
+				queryTempo = query.concat(" AND dataIni LIKE '"+ano+"-0" + (int)(Arrays.asList(meses).indexOf(t)+1) + "-%'");
 				List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 				aux.add(auxQuery!= null ? auxQuery.size() : 0);
 			}
 		}else {
-			queryTempo = query.concat(" AND dataIni LIKE '%-0" + t + "-%'");
+			queryTempo = query.concat(" AND dataIni LIKE '%-0" +  (int)(Arrays.asList(meses).indexOf(t)+1) + "-%'");
 			List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 			aux.add(auxQuery!= null ? auxQuery.size() : 0);
 		}
 		return aux;
 	}
+	
 	
 	
 	
