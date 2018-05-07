@@ -87,6 +87,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 						Set<Anexo> setAnexo = new HashSet<>();
 						setAnexo.add(anx.getAnexo());
 						mensagem.setAnexos(setAnexo);
+						MensagemDAO.saveOrUpdate(mensagem);
 					}
 				}catch (Exception e) {
 					e.getMessage();

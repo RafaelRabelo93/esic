@@ -319,7 +319,7 @@
 											style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<h:form>
-												<p:commandButton value="Anexo" ajax="false" actionListener="#{anexo.downloadArquivo(msg)}">
+												<p:commandButton value="Anexo" ajax="false" rendered="#{anexo.verificaExistencia(msg)}" actionListener="#{anexo.downloadArquivo(msg)}">
 													<p:fileDownload value="#{anexo.fileDownload}" />
 												</p:commandButton>
 										</h:form>
