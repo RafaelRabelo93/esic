@@ -97,9 +97,11 @@ public class SolicitacaoDAO {
 					}
 					
 					return (List<Solicitacao>) Consultas.buscaPersonalizada(query+")",em);
-				}else 
+				}else if(usuarioBean.getUsuario().getPerfil() != 1)
 				{
-					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();		
+					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao ", Solicitacao.class).getResultList();		
+				}else {
+					return null;
 				}
 				
 			} 
@@ -141,9 +143,11 @@ public class SolicitacaoDAO {
 					}
 					
 					return (List<Solicitacao>)  Consultas.buscaPersonalizada(query+")",em);
-				}else 
+				}else if(usuarioBean.getUsuario().getPerfil() != 1)
 				{
 					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao as slt WHERE  slt.status = '"+status+"' ", Solicitacao.class).getResultList();		
+				}else {
+					return null;
 				}
 				
 			} 

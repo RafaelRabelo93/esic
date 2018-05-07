@@ -46,8 +46,8 @@ public class NotificacaoEmail implements Job{
 		
 		String[] envio = destinatarioEmail(usuario, solicitacao);
 		String remetente = envio[0];
-//		String destinatario = envio[1];
-		String destinatario = DadosAutenticacao.getEmailteste();
+		String destinatario = envio[1];
+//		String destinatario = DadosAutenticacao.getEmailteste();
 		String titulo = "Solicitação "+ solicitacao.getProtocolo() + " - " + solicitacao.getTitulo().toString();
 
 //		List<Mensagem> mensagens = new ArrayList<Mensagem>(MensagemDAO.list(solicitacao.getIdSolicitacao()));	
@@ -424,7 +424,7 @@ public class NotificacaoEmail implements Job{
 
 	
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String email, String nomeUser) {
-		String link = "http://esic.se.gov.br/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
+		String link = DadosAutenticacao.getEnderecohomologacao()+"/Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
 		
 		StringBuffer msg = new StringBuffer();
 		msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
@@ -577,7 +577,7 @@ public class NotificacaoEmail implements Job{
 		msg.append("</html>");
 		
 		try {
-			enviarEmailHTML("mayara.machado@cge.se.gov.br", "Nova requisição de responsável", msg.toString());
+			enviarEmailHTML(dest, "Nova requisição de responsável", msg.toString());
 			
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block

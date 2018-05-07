@@ -386,7 +386,7 @@ public class UsuarioBean implements Serializable {
 					return null;
 					
 				}else {
-					loadEmail();
+					loadEmail(this.usuario);
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 					acessoUsuario(this.usuario);
@@ -412,7 +412,7 @@ public class UsuarioBean implements Serializable {
 				logout();
 			} else {
 //				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
-//					loadEmail();
+//					loadEmail(this.usuario);
 //					FacesContext.getCurrentInstance().addMessage(null,
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 //					acessoUsuario(this.usuario);
@@ -423,7 +423,7 @@ public class UsuarioBean implements Serializable {
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
 //				}
 				
-				loadEmail();
+				loadEmail(this.usuario);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
@@ -469,7 +469,7 @@ public class UsuarioBean implements Serializable {
 	 *
 	 *Busca o email daquele usuario, retorna string.
 	 */
-	public void loadEmail() {
+	public void loadEmail(Usuario usuario) {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 			setEmailCid(listCidadao.get(0).getEmail());
@@ -596,7 +596,7 @@ public class UsuarioBean implements Serializable {
 	 */
 	public String alterarDadosUsuario() {
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
-			return "Alterar/alterar_usuario";
+			return "/Alterar/alterar_usuario";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Usuário básico.", "Por favor complete seu cadastro."));
@@ -851,7 +851,7 @@ public class UsuarioBean implements Serializable {
 	public String redirecionarIndex() {
 		SolicitacaoBean t = new SolicitacaoBean();
 		t.finalizarSolicitacao();
-		return "/index.xhtml?faces-redirect=true";                          
+		return "../esic/index";                          
 	}
 
 	

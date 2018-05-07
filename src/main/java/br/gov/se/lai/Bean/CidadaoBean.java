@@ -1,9 +1,11 @@
 package br.gov.se.lai.Bean;
 
 import java.util.List;
+import java.util.Set;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -83,6 +85,9 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 			cidadao.setUsuario(this.usuario);
 			
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
+				Set<Cidadao> cidadaos = new HashSet<Cidadao>();
+				cidadaos.add(cidadao);
+				usuario.setCidadaos(cidadaos);
 				usuarioBean.setEmail(cidadao.getEmail());
 				// usuario.getCidadaos().add(cidadao);
 				if (ehRepresentanteCidadao(usuario)) {
@@ -91,6 +96,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 					this.usuario.setPerfil((short) 3);
 				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
+				usuarioBean.loadEmail(this.usuario);
 				return "/index";
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,

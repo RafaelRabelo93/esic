@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -82,6 +84,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 						System.out.println(anexo.toString());
 						AnexoBean anx = new AnexoBean();
 						anx.save(anexo, mensagem, file);
+						Set<Anexo> setAnexo = new HashSet<>();
+						setAnexo.add(anx.getAnexo());
+						mensagem.setAnexos(setAnexo);
 					}
 				}catch (Exception e) {
 					e.getMessage();
