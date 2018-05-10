@@ -132,7 +132,6 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
-		this.solicitacao.setEncaminhada(false);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 	
 		try {

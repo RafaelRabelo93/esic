@@ -33,6 +33,9 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private List<Acoes>  acoesPendentes;
 	private List<Acoes>  acoesNaoVinculadas;
 	private List<Acoes>  acoesVinculadas;
+	private List<Acoes>  acoesPendentesFilter;
+	private List<Acoes>  acoesNaoVinculadasFilter;
+	private List<Acoes>  acoesVinculadasFilter;
 	
 	
 	@PostConstruct
@@ -302,6 +305,30 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 		public void setAcoesVinculadas(List<Acoes> acoesVinculadas) {
 			this.acoesVinculadas = acoesVinculadas;
+		}
+
+		public List<Acoes> getAcoesPendentesFilter() {
+			return acoesPendentesFilter;
+		}
+
+		public void setAcoesPendentesFilter(List<Acoes> acoesPendentesFilter) {
+			this.acoesPendentesFilter = acoesPendentesFilter;
+		}
+
+		public List<Acoes> getAcoesNaoVinculadasFilter() {
+			return acoesNaoVinculadasFilter;
+		}
+
+		public void setAcoesNaoVinculadasFilter(List<Acoes> acoesNaoVinculadasFilter) {
+			this.acoesNaoVinculadasFilter = acoesNaoVinculadasFilter;
+		}
+
+		public List<Acoes> getAcoesVinculadasFilter() {
+			return acoesVinculadasFilter;
+		}
+
+		public void setAcoesVinculadasFilter(List<Acoes> acoesVinculadasFilter) {
+			this.acoesVinculadasFilter = acoesVinculadasFilter;
 		}
 
 		

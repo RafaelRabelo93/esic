@@ -851,7 +851,7 @@ public class UsuarioBean implements Serializable {
 	public String redirecionarIndex() {
 		SolicitacaoBean t = new SolicitacaoBean();
 		t.finalizarSolicitacao();
-		return "/index.xhtml?faces-redirect=true";                          
+		return "../../esic/index.xhtml?faces-redirect=true";                          
 	}
 
 	

@@ -561,6 +561,7 @@
 }
 
 .solicitacaoDialog.ui-dialog {
+	height: auto !important;
 	height: -webkit-fit-content !important;
     height: -moz-fit-content !important;
     height: fit-content !important;
@@ -1143,6 +1144,7 @@ td.prazo.branco {
 }
 
 #conteudo {
+	width: 100%;
 	width: -webkit-fill-available;
 	width: -moz-available;
 /* 	border-right: 1px solid silver; */
@@ -1383,7 +1385,7 @@ i.fa.fa-home {
  	
  	margin: 2vh 2vw;
  	min-height: 400px;
-    min-width: 250px;
+    width: 270px;
 }
 
 .loginForm .titulo {
@@ -1939,8 +1941,7 @@ td.Prorrogada > .statusBox  {
 /* CSS ADMIN LOGIN */
 
 html {
-    height: 100%;
-    
+/*     height: 100%; */
 }
 
 body {

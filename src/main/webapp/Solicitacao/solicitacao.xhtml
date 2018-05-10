@@ -28,7 +28,8 @@
 
 					<h:panelGroup styleClass="box" style="margin-top: 1em">
 
-						<h:outputText value="Realizar Solicitação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						<h:outputText value="Realizar #{solicitacao.solicitacao.tipo}" rendered="#{solicitacao.solicitacao.tipo ne 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						<h:outputText value="Realizar Pedido de Informação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						
 						<p:outputLabel value="Orgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />

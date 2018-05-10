@@ -44,7 +44,7 @@
 					
 					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.verificaCidadaoConsulta}">
 						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
-						<p style="margin: 0; margin-left: .5em">Acompanhar solicitações</p>
+						<p style="margin: 0; margin-left: .5em">Acompanhar manifestações</p>
 					</h:commandLink>
 				</h:panelGroup>
 				
@@ -59,38 +59,21 @@
 					</h:panelGroup>
 				</h:commandLink>
 
-					<!-- Nova solicitação -->
+				<!-- Nova solicitação -->
 				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
-					<h:panelGroup class="container">
-						<h:commandLink id="btnDenuncia" styleClass="link card"
-							action="#{solicitacao.Denuncia()}">
-							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/megaphone.png']}" width="60%" />
-								<h:outputText styleClass="tituloMenu" value="Denúncia" />
-								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
-							</div>
-
-							<div class="face back">
-								<p>Comunicação de prática de ato ilícito cuja solução
-									dependa da atuação de órgãos de controle interno ou externo</p>
-							</div>
-						</h:commandLink>
-					</h:panelGroup>
-
+					
 					<h:panelGroup class="container">
 						<h:commandLink id="btnInfo" styleClass="link card"
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/info.png']}" width="60%" />
+									value="#{resource['img/icon/acessInfo.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Informação" />
 								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
-								<p>Fornece orientação ou esclarecimento sobre assuntos
-									relacionados à administração pública estadual</p>
+								<p>Pedido de informação ou documentos com base na Lei de Acesso à Informação (Lei nº 12.527/2011)</p>
 							</div>
 						</h:commandLink>
 					</h:panelGroup>
@@ -100,7 +83,7 @@
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/chat.png']}" width="60%" />
+									value="#{resource['img/icon/chat.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
 								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.tipo}" />
 							</div>
@@ -113,28 +96,11 @@
 					</h:panelGroup>
 
 					<h:panelGroup class="container">
-						<h:commandLink id="btnElogio" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
-							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/like.png']}" width="60%" />
-								<h:outputText styleClass="tituloMenu" value="Elogio" />
-								<f:setPropertyActionListener value="Elogio"	target="#{solicitacao.tipo}" />
-							</div>
-
-							<div class="face back">
-								<p>Demonstração, reconhecimento ou satisfação sobre o
-									serviço oferecido ou atendimento recebido</p>
-							</div>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<h:panelGroup class="container">
 						<h:commandLink id="btnSugestao" styleClass="link card"
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/sugestion.png']}" width="60%" />
+									value="#{resource['img/icon/sugestion.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
 								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.tipo}" />
 							</div>
@@ -152,13 +118,47 @@
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/dislike.png']}" width="60%" />
+									value="#{resource['img/icon/dislike.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
 								<f:setPropertyActionListener value="Reclamação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
 								<p>Demonstração de insatisfação relativa ao serviço público</p>
+							</div>
+						</h:commandLink>
+					</h:panelGroup>
+
+					<h:panelGroup class="container">
+						<h:commandLink id="btnElogio" styleClass="link card"
+							action="#{solicitacao.iniciarSolicitacao()}">
+							<div class="face front link">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/like.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Elogio" />
+								<f:setPropertyActionListener value="Elogio"	target="#{solicitacao.tipo}" />
+							</div>
+
+							<div class="face back">
+								<p>Demonstração, reconhecimento ou satisfação sobre o
+									serviço oferecido ou atendimento recebido</p>
+							</div>
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<h:panelGroup class="container">
+						<h:commandLink id="btnDenuncia" styleClass="link card"
+							action="#{solicitacao.Denuncia()}">
+							<div class="face front link">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/megaphone.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Denúncia" />
+								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
+							</div>
+
+							<div class="face back">
+								<p>Comunicação de prática de ato ilícito cuja solução
+									dependa da atuação de órgãos de controle interno ou externo</p>
 							</div>
 						</h:commandLink>
 					</h:panelGroup>
@@ -173,17 +173,16 @@
 <!-- 					<h:panelGroup class="botao"> -->
 <!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
 <!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
-<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
+<!-- 								width="150px" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
 <!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado	de Sergipe</p> -->
 <!-- 						</a> -->
 <!-- 					</h:panelGroup> -->
 
 					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao"
-						rendered="#{usuario.usuario.perfil eq '0'}">
-						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
+						<h:commandLink action="/Cadastro/cad_usuario">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="70%" />
+								value="#{resource['img/icon/clipboard.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
@@ -192,11 +191,10 @@
 					</h:panelGroup>
 
 					<!-- Continuar Cadastro Cidadão -->
-					<h:panelGroup class="botao" layout="block"
-						rendered="#{usuario.usuario.perfil eq '1'}">
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
 						<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/contract.png']}" width="70%" />
+								value="#{resource['img/icon/contract.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
 
@@ -207,7 +205,7 @@
 					<!-- Continuar Cadastro Responsável -->
 					<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
 					<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
-					<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="70%" /> -->
+					<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="150px" /> -->
 
 					<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
 
@@ -216,13 +214,11 @@
 					<!-- 				</h:panelGroup> -->
 
 					<!-- Manifestação -->
-					<h:panelGroup class="botao"
-						rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link"
-							action="#{solicitacao.verificaCidadaoSolicitacao}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+						<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
 
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/hand.png']}" width="70%" />
+								value="#{resource['img/icon/hand.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Manifestação" />
 
@@ -283,31 +279,6 @@
 					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo()) 
 					 or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
-					<!-- LAI -->
-<!-- 					<h:panelGroup class="botao"> -->
-<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
-<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
-<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
-<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado -->
-<!-- 								de Sergipe</p> -->
-<!-- 						</a> -->
-<!-- 					</h:panelGroup> -->
-
-<!-- 					Cadastro de usuário -->
-<!-- 					<h:panelGroup class="botao" -->
-<!-- 						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') 
-							or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> -->
-<!-- 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario"> -->
-<!-- 							<p:graphicImage styleClass="icone" -->
-<!-- 								value="#{resource['img/icon/clipboard.png']}" width="70%" /> -->
-
-<!-- 							<h:outputText styleClass="tituloMenu" value="Cadastro" /> -->
-
-<!-- 							<p>Registrar usuário</p> -->
-<!-- 						</h:commandLink> -->
-<!-- 					</h:panelGroup> -->
-
-
 					<!-- Consulta (Representante) -->
 					<h:panelGroup class="botao" rendered="false">
 						<h:commandLink styleClass="link"
@@ -315,7 +286,7 @@
 							<f:setPropertyActionListener value="0"
 								target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/monitor.png']}" width="70%" />
+								value="#{resource['img/icon/monitor.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Solicitações" />
 							<p>Acompanhamento de solicitações</p>
@@ -326,7 +297,7 @@
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/office.png']}" width="70%" />
+								value="#{resource['img/icon/office.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Entidades" />
 							<p>Gerir entidades ou ógrãos</p>
@@ -337,7 +308,7 @@
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/businessman.png']}" width="70%" />
+								value="#{resource['img/icon/businessman.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Responsáveis" />
 
@@ -349,7 +320,7 @@
 					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/exchange.png']}" width="70%" />
+								value="#{resource['img/icon/exchange.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Ações" />
 
@@ -361,7 +332,7 @@
 					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="70%" />
+								value="#{resource['img/icon/clipboard.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
@@ -379,7 +350,7 @@
 			    	<i class="fa fa-question fa-2x" />
 			    </h:commandLink>
 			    
-			    <p:tooltip id="toolTipContent" for="showBtn" position="bottom">
+			    <p:tooltip id="toolTipContent" styleClass="legendaTooltip" for="showBtn" position="bottom">
 			    	<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao Cidadão) permite que qualquer pessoa, física ou jurídica,
 			    	encaminhe pedidos de acesso a informação pública para os órgãos e entidades do Poder Executivo Estadual.</p>
 		
