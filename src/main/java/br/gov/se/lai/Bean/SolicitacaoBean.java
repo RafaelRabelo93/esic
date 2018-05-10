@@ -161,8 +161,10 @@ public class SolicitacaoBean implements Serializable {
 				}
 			}
 			
-			addQuantidadeSolicitacaoTotal();
-			addQuantidadeSolicitacaoPendente();
+			if(!solicitacao.getCidadao().getUsuario().getIdUsuario().equals(0)) {
+				addQuantidadeSolicitacaoTotal();
+				addQuantidadeSolicitacaoPendente();
+			}
 //			enviarMensagemAutomatica();
 			NotificacaoEmail.emailNovaSolicitacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			
@@ -244,7 +246,7 @@ public class SolicitacaoBean implements Serializable {
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
-				solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
+				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
 			}else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
@@ -598,7 +600,7 @@ public class SolicitacaoBean implements Serializable {
 	// +++++++++++++++++++++++++++ Tipologias das solicitações - Tratamentos específicos
 
 	public String Denuncia() {
-		solicitacao.setEntidades(EntidadesDAO.find(1));
+		solicitacao.setEntidades(EntidadesDAO.FindSigla("CGE").get(0));
 		solicitacao.setTipo("Denúncia");
 		setModoAnonimo(true);
 		CompetenciasBean.idAcoes = 0;
@@ -867,7 +869,7 @@ public class SolicitacaoBean implements Serializable {
 	
 
 	public String redirecionarEstatistica() {
-		RelatorioDinamico.limparGrafico();
+		RelatorioDinamico rel = new RelatorioDinamico();
 		return "/Relatorios/relatorios-especificos.xhtml";
 	}
 	// GETTERS E SETTERS
