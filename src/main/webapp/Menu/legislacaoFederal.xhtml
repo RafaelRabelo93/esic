@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/templateSemMenu.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form style="padding: 1.5vw 15vw">
+
+					<h1 style="margin-bottom: 0;">Legislação Federal</h1>
+					<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
+
+					<h:outputLink styleClass="link" value="http://www.cge.se.gov.br/images/arquivos/lo_12527-2011_atualizada_23-11-11.pdf">Lei nº 12.527, de 18 de Novembro de 2011</h:outputLink>
+					<p style="margin-left: 20px;">Regula o acesso a informações previsto no inciso XXXIII do art. 5º, no inciso II do § 3º do art. 37 e no § 2º do art. 216 da Constituição Federal; altera a Lei nº 8.112, de 11 de dezembro de 1990; revoga a Lei nº 11.111, de 5 de maio de 2005, e dispositivos da Lei nº 8.159, de 8 de janeiro de 1991; e dá outras providências.</p>
+
+					<h:outputLink styleClass="link" value="http://www.cge.se.gov.br/images/arquivos/decreto_7724_16-05-12__laip.pdf">Decreto nº 7.724, de 16 de Maio de 2012</h:outputLink>
+					<p style="margin-left: 20px;">(Regulamenta a Lei no 12.527, de 18 de novembro de 2011, que dispõe sobre o acesso a informações previsto no inciso XXXIII do caput do art. 5o, no inciso II do § 3o do art. 37 e no § 2o do art.216 da Constituição).</p>
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>
