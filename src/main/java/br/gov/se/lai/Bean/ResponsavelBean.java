@@ -101,6 +101,8 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+
+	
 	public void delete() {
 		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
 		if(verificaAcesso()) {

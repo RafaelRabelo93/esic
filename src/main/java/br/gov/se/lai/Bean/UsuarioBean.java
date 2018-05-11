@@ -73,6 +73,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private static String sessionId;
+	public List<Usuario> filteredGestores;
 	public static boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
@@ -258,6 +259,10 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	public void limparUsuarioNovo() {
+		usuarioNovo = new Usuario();
+	}
+	
 
 //	public String delete() {
 //		UsuarioDAO.delete(usuario);
@@ -305,6 +310,13 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public void editarGestor() {
+	
+		if(usuario.getPerfil() == (short)6) {
+			UsuarioDAO.saveOrUpdate(usuario);
+		}
 	}
 
 	/**
@@ -854,6 +866,9 @@ public class UsuarioBean implements Serializable {
 		return "../esic/index";                          
 	}
 
+	public List<Usuario> listarGestores(){
+		return UsuarioDAO.listarGestoresSistema();
+	}
 	
 //	public void emailTeste() {
 //		NotificacaoEmail.emailNovaSolicitacao();
@@ -1028,6 +1043,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setSenhaAtual(String senhaAtual) {
 		this.senhaAtual = senhaAtual;
+	}
+
+	public List<Usuario> getFilteredGestores() {
+		return filteredGestores;
+	}
+
+	public void setFilteredGestores(List<Usuario> filteredGestore) {
+		this.filteredGestores = filteredGestore;
 	}
 	
 	
