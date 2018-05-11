@@ -19,8 +19,9 @@
 				
 				<h:form id="cadForm" rendered="#{usuario.usuario.perfil eq '0'}">
 					<h:panelGroup  styleClass="loginForm">
-						<h:outputText value="Cadastre-se" styleClass="tituloBox" style="align-self: flex-start;" />
-								
+						<h:outputText value="Não tenho cadastro" styleClass="tituloBox" style="align-self: flex-start; margin:0 !important" />
+						<p style="font-size:.9em; color:gray; margin-bottom:2em">Caso ainda não tenha cadastro, realize seu registro para acessar o sistema.</p>
+						
 						<p:outputLabel value="Nome completo: " for="nome" />
 						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="30"> 
 							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
@@ -54,7 +55,8 @@
 			
 				<h:form id="Loginform">
 					<h:panelGroup styleClass="loginForm">
-						<h:outputText value="Login" styleClass="tituloBox" style="align-self: flex-start;"/>
+						<h:outputText value="Já tenho cadastro" styleClass="tituloBox" style="align-self: flex-start; margin:0 !important"/>
+						<p style="font-size:.9em; color:gray; margin-bottom:2em">Acesse o sistema com seus dados cadastrados</p>
 						
 						<p:outputLabel value="Usuário:" for="user" required="true"/>
 						<p:inputText id="user" value="#{usuario.nick}" size="30" />
@@ -62,7 +64,7 @@
 						<p:outputLabel value="Senha:" for="senha" />
 						<p:password id="senha" value="#{usuario.senha}" size="30"/>
 						
-						<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
+						<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:.9em; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
 						<p:commandLink styleClass="botaoLink" action="#{usuario.login}" update="@all growl">
 							<h:outputText value="Entrar" />
 							<i class="fa fa-user-circle" style="color: white; padding-left: 5px" />

@@ -30,14 +30,21 @@
 				<p:accordionPanel id="tab" activeIndex="1">
 					
 					<p:tab title="Ações Solicitadas" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'   and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
-						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
+						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" widgetVar="novasAcoes" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
 						 currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
 							
-							<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+							<f:facet name="header">
+					            <p:outputPanel styleClass="searchPanel">
+									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('novasAcoes').filter()" style="width:50%" placeholder="Insira pesquisa"/>
+					            </p:outputPanel>
+					        </f:facet>
+							
+							<p:column headerText="Título" sortBy="#{ac.titulo}" filterBy="#{ac.titulo}" filterMatchMode="contains" filterable="false" width="300">
 								<h:outputText value="#{ac.titulo}" />
 							</p:column>
 		
-							<p:column headerText="Descrição">
+							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
 								<h:outputText value="#{ac.descricao}" />
 							</p:column>
 							
@@ -59,14 +66,21 @@
 					</p:tab>
 	
 					<p:tab title="Ações Ativas" >
-						<p:dataTable id="acoes"  emptyMessage="Não há ações cadastradas." var="ac" value="#{acoes.acoesVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
+						<p:dataTable id="acoes" emptyMessage="Ações não encontradas." var="ac" widgetVar="acoes" filteredValue="#{acoes.acoesVinculadasFilter}" value="#{acoes.acoesVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
 						currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 							
-							<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+							<f:facet name="header">
+					            <p:outputPanel styleClass="searchPanel">
+									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('acoes').filter()" style="width:50%" placeholder="Insira pesquisa"/>
+					            </p:outputPanel>
+					        </f:facet>
+							
+							<p:column headerText="Título" sortBy="#{ac.titulo}" filterBy="#{ac.titulo}" filterMatchMode="contains" filterable="false" width="300">
 								<h:outputText value="#{ac.titulo}" />
 							</p:column>
 		
-							<p:column headerText="Descrição">
+							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
 								<h:outputText value="#{ac.descricao}" />
 							</p:column>
 							
@@ -81,14 +95,21 @@
 					</p:tab>
 					
 					<p:tab title="Ações Inativas">
-						<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" value="#{acoes.acoesNaoVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" rows="10" rowsPerPageTemplate="10,15,30,50"
+						<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" widgetVar="acoesInativas" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesNaoVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" rows="10" rowsPerPageTemplate="10,15,30,50"
 						paginator="true" currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 							
-							<p:column headerText="Título" sortBy="#{ac.titulo}" width="300">
+							<f:facet name="header">
+					            <p:outputPanel styleClass="searchPanel">
+									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('acoesInativas').filter()" style="width:50%" placeholder="Insira pesquisa"/>
+					            </p:outputPanel>
+					        </f:facet>
+							
+							<p:column headerText="Título" sortBy="#{ac.titulo}" filterBy="#{ac.titulo}" filterMatchMode="contains" filterable="false" width="300">
 								<h:outputText value="#{ac.titulo}" />
 							</p:column>
 		
-							<p:column headerText="Descrição">
+							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
 								<h:outputText value="#{ac.descricao}" />
 							</p:column>
 							

@@ -31,11 +31,19 @@
 
 	margin-left: 0px;
 	
-	background-color: #296099;
-	background: -webkit-gradient(linear, left top, right top, from(#145187), to(#296098));
-	background: -webkit-linear-gradient(left, #145187, #296098);
-	background: -o-linear-gradient(left, #145187, #296098);
-	background: linear-gradient(to right, #145187, #296098);
+/* 	Cores Produção */	
+/* 	background-color: #296099; */
+/* 	background: -webkit-gradient(linear, left top, right top, from(#145187), to(#296098)); */
+/* 	background: -webkit-linear-gradient(left, #145187, #296098); */
+/* 	background: -o-linear-gradient(left, #145187, #296098); */
+/* 	background: linear-gradient(to right, #145187, #296098); */
+	
+/* 	Cores Homologação */
+	background-color: #2a0845;
+	background: -webkit-gradient(linear, left top, right top, from(#2a0845), to(#422e69));
+	background: -webkit-linear-gradient(left, #2a0845, #422e69);
+	background: -o-linear-gradient(left, #2a0845, #422e69);
+	background: linear-gradient(to right, #2a0845, #422e69);
 }
 
 #menuAcess ul li { display: inline; }
@@ -143,11 +151,19 @@
 	margin-left: 0px;	
 	padding-right: 3%;
 	
+/* 	Cores Produção */
 	background-color: #296099;
 	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
 	background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
 	background: -o-linear-gradient(top left, #135186, #3d6ea9);
 	background: linear-gradient(to bottom right, #135186, #3d6ea9);
+
+/* 	Cores Homologação */
+	background-color: #296099;
+	background: -webkit-gradient(linear, left top, right bottom, from(#2a0845), to(#59538d));
+	background: -webkit-linear-gradient(top left, #2a0845, #59538d);
+	background: -o-linear-gradient(top left, #2a0845, #59538d);
+	background: linear-gradient(to bottom right, #2a0845, #59538d);
 }
 
 #barraNav ul {

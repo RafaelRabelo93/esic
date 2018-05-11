@@ -863,7 +863,7 @@ public class UsuarioBean implements Serializable {
 	public String redirecionarIndex() {
 		SolicitacaoBean t = new SolicitacaoBean();
 		t.finalizarSolicitacao();
-		return "../esic/index";                          
+		return "../../esic/index.xhtml?faces-redirect=true";                          
 	}
 
 	public List<Usuario> listarGestores(){
