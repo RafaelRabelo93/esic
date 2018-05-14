@@ -33,7 +33,22 @@
 						
 						<p:outputLabel value="Orgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />
-
+						
+						<h:panelGroup styleClass="column" style="max-width:780px;" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
+						
+								<p style="margin-bottom:0; text-align: left;">Denúncias sem a identificação do denunciante são consideradas anônimas, sendo aceitas somente após análise preliminar.</p>
+								<p style="text-align: left;">As falta de dados do denunciante na denúncia anônima impossibilita uma resposta final e pode dificultar ou inviabilizar a conclusão desse processo.</p>
+								
+								<p style="margin-bottom:0;text-align: left">As denúncias sigilosas são aquelas em que os dados de identificação do denunciante são mantidos em sigilo.</p>
+								<p style="margin-bottom:0;text-align: left">Desta forma, sua demanda poderá ser analisada com mais eficiência, além de garantir uma resposta no final do processo.</p>
+								<p style="text-align: left;">Para melhor realização do processo, informe o máximo de dados possível em seu cadastro, identificando-se corretamente.</p>
+							
+							<p:selectOneRadio value="#{solicitacao.modoAnonimo}" disabled="#{usuario.usuario.nick eq null}">
+					            <f:selectItem itemLabel="Realizar denúncia anônima" itemValue="true" />
+					            <f:selectItem itemLabel="Realizar denúncia sigilosa" itemValue="false" />
+					        </p:selectOneRadio>
+						</h:panelGroup>
+						
 						<p:outputLabel value="Assunto:" />
 						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
 						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
@@ -222,13 +237,6 @@
 							</h:panelGroup>
 							
 						</h:panelGroup>
-						</h:panelGroup>
-
-						<h:panelGroup styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-							<h:outputLabel value="Realizar denúncia anonimamente: " />
-							<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"
-								disabled="#{usuario.usuario.nick eq null}">
-							</p:selectBooleanCheckbox>
 						</h:panelGroup>
 
 						<p:outputLabel value="Título:" for="titulo" />

@@ -1210,10 +1210,14 @@ td.prazo.branco {
 	background: none;
 }
 
- a.blankSquareBtn:hover  {
+a.blankSquareBtn:hover  {
 	text-decoration: none;
 	background-color: #396ba6 !important;
 	color: white;
+}
+
+a.blankSquareBtn:hover .fa-inverse {
+	color: #4f4f4f;
 }
 
 .active {

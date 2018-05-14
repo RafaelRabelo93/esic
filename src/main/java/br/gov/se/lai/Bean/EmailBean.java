@@ -23,7 +23,7 @@ public class EmailBean {
 	private final static String destinatario = "michael.mendonca@cge.se.gov.br";
 	
 	public static void enviarEmail() {
-		String mensagemFinal = "Mensagem de: " +nome+ "\n E-mail:" +email+ "\n\n" +mensagem;
+		String mensagemFinal = "Remetente: " +nome+ "\nE-mail: " +email+ "\n\n" +mensagem;
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso. ","Seu e-mail foi encaminhado a Controladoria-Geral do Estado, em breve entraremos em contato."));
 		
 		try {
@@ -32,6 +32,11 @@ public class EmailBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		nome = new String();
+		email = new String();
+		assunto = new String();
+		mensagem = new String();
 	}
 	
 	public String getNome() {
