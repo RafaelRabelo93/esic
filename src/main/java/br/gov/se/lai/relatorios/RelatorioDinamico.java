@@ -78,6 +78,15 @@ public class RelatorioDinamico {
 		}
 		return anos;
 	}
+	
+	public String redirecionarRelatorio() {
+		barModel = null;
+		return "/Relatorios/relatorios";
+	}
+	public String redirecionarRelatorioEspecifico() {
+		barModel = null;
+		return "/Relatorios/relatorios-especificos";
+	}
 
 	public void limparGrafico(AjaxBehaviorEvent e) {
 		barModel = new BarChartModel();
@@ -255,8 +264,10 @@ public class RelatorioDinamico {
 		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))
 		  || usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6) {
 			ArrayList<String> idEntidade = new ArrayList<String>();
-			idEntidade.add(String.valueOf(ent.getIdEntidades()));
- 			dados.put("entidade", idEntidade);
+			if(ent != null) {
+				idEntidade.add(String.valueOf(ent.getIdEntidades()));
+				dados.put("entidade", idEntidade);
+			}
  			return dados;
 		}else {
 			return dados;
