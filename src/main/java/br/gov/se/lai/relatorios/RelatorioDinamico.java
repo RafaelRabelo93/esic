@@ -252,7 +252,8 @@ public class RelatorioDinamico {
 		Map<String, ArrayList<String>> dados = selecionarDados();
 		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		if(usuario!= null &&
-		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))) {
+		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))
+		  || usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6) {
 			ArrayList<String> idEntidade = new ArrayList<String>();
 			idEntidade.add(String.valueOf(ent.getIdEntidades()));
  			dados.put("entidade", idEntidade);

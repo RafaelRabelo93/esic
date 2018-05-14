@@ -42,6 +42,7 @@ public class Solicitacao implements java.io.Serializable {
 	private short prazoTipo;
 	private boolean encaminhada;
 	private boolean visualizada;
+	private boolean sigilo;
 	private Integer formaRecebimento;
 	private float avaliacao;
 
@@ -240,6 +241,15 @@ public class Solicitacao implements java.io.Serializable {
 
 	public void setAvaliacao(float avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	@Column(name = "sigilo", length = 1)
+	public boolean isSigilo() {
+		return sigilo;
+	}
+
+	public void setSigilo(boolean sigilo) {
+		this.sigilo = sigilo;
 	}
 	
 	

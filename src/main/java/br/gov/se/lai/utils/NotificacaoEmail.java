@@ -577,7 +577,7 @@ public class NotificacaoEmail implements Job{
 		msg.append("</html>");
 		
 		try {
-			enviarEmailHTML(dest, "Nova requisição de responsável", msg.toString());
+			enviarEmailHTML("mayara.machado@cge.se.gov.br", "Nova requisição de responsável", msg.toString());
 			
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block

@@ -86,7 +86,7 @@ public class SolicitacaoDAO {
 							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
-							query += ")";
+							query += ") AND slt.tipo != 'Denúncia')";
 						}
 //						if(i == ListResp.size()-1) {
 //							query += ")";
@@ -96,7 +96,7 @@ public class SolicitacaoDAO {
 
 					}
 					
-					return (List<Solicitacao>) Consultas.buscaPersonalizada(query+")",em);
+					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
 				}else if(usuarioBean.getUsuario().getPerfil() != 1)
 				{
 					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao ", Solicitacao.class).getResultList();		
