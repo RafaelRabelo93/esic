@@ -1818,6 +1818,15 @@ td.Prorrogada > .statusBox  {
    	color: #135186 #3078cf;
 }
 
+.link {
+	text-decoration: none;
+	font-weight: bold;
+	color: #135186; 
+}
+
+.link:hover {
+	color: #3078cf; 
+}
 
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */

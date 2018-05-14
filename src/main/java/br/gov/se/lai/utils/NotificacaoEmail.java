@@ -36,7 +36,6 @@ import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 
 public class NotificacaoEmail implements Job{
-	
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -673,7 +672,7 @@ public class NotificacaoEmail implements Job{
 	
 	
 	//+++++++++++++++++++ Email simples
-	public static void enviarEmail(String destinatario, String titulo, String mensagem) throws EmailException {
+	public static void enviarEmail(String remetente, String destinatario, String titulo, String mensagem) throws EmailException {
 		
 		Email email = new SimpleEmail();
 		EmailAttachment attachment = new EmailAttachment();
@@ -685,9 +684,9 @@ public class NotificacaoEmail implements Job{
 //		email.setSmtpPort(465);
 //		email.addTo(resp.getEmail().toString()); //pode ser qualquer email  
 		email.addTo(destinatario); //pode ser qualquer email  
-		email.setFrom(DadosAutenticacao.getEmailFrom());//será passado o email que você fará a autenticação 
+		email.setFrom(remetente);//será passado o email que você fará a autenticação 
 		email.setSubject(titulo);  
-		email.setMsg(mensagem+"\n\n\n\n\n\n destinatario: "+destinatario);  // só para teste  
+		email.setMsg(mensagem);  // só para teste  
 		email.send();  
 		
 	}
