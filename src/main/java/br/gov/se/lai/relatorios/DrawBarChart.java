@@ -1,6 +1,7 @@
 package br.gov.se.lai.relatorios;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -52,7 +53,10 @@ public class DrawBarChart {
 		    	variaveis = graficoGeral(variaveis, dadosChart);	
 		    	break;
 			case 2:
-				variaveis = graficoMensal(variaveis, dadosChart);	
+				variaveis = graficoMensalComSeries(variaveis, dadosChart);	
+				break;
+			case 3:
+				variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
 				break;
 
 			default:
@@ -87,7 +91,10 @@ public class DrawBarChart {
 	    		variaveis = graficoGeral(variaveis, dadosChart);	
 	    		break;
 	    	case 2:
-	    		variaveis = graficoMensal(variaveis, dadosChart);	
+	    		variaveis = graficoMensalComSeries(variaveis, dadosChart);	
+	    		break;
+	    	case 3:
+	    		variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
 	    		break;
 	    		
 	    	default:
@@ -153,7 +160,7 @@ public class DrawBarChart {
 	    	return series;
 	    }
 
-	    private ArrayList<ChartSeries> graficoMensal(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
+	    private ArrayList<ChartSeries> graficoMensalComSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
 	        for(int mes = 0; mes < dadosChart.size(); mes++) {
 	        	String key = FiltrarDadosRelatorioEstatico.meses[mes];
 	        	for(int i=0; i < series.size(); i++) {
@@ -161,6 +168,19 @@ public class DrawBarChart {
 		    	}
 	        	
 	        }
+	    	return series;
+	    }
+
+	    private ArrayList<ChartSeries> graficoMensalSemSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
+	    	for(int mes = 0; mes < dadosChart.size(); mes++) {
+	    		for(String m : FiltrarDadosRelatorioEstatico.meses ) {
+	    			if(!series.get(0).getData().containsKey(m) && dadosChart.containsKey(m)) {
+	    				series.get(0).set(m, dadosChart.get(m).get(0));
+	    				break;
+	    			}
+	    		}
+	    		
+	    	}
 	    	return series;
 	    }
 	    

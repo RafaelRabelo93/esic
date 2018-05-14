@@ -60,6 +60,15 @@ public class CidadaoDAO {
     	List<Cidadao> results = query.getResultList();
   	 	return results.get(0);
     }
+    
+    @SuppressWarnings("unchecked")
+    public static Cidadao findIdCidadao(int id) {
+    	Query query = em.createQuery("FROM Cidadao as cid WHERE cid.idCidadao= :idParam");
+    	query.setParameter("idParam", id);  
+    	
+    	List<Cidadao> results = query.getResultList();
+    	return results.get(0);
+    }
    
   	 	
     @SuppressWarnings("unchecked")

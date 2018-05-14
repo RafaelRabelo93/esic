@@ -101,6 +101,8 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+
+	
 	public void delete() {
 		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
 		if(verificaAcesso()) {
@@ -384,23 +386,29 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String requisitarCadastroResponsavel() {
-		Entidades ent = pegarEntidade();
-		String hashcode=UsuarioBean.generateSessionId();
-		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
-		if(idDestinatario != -1) {
-			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario);
-			return "/index.xhtml?faces-redirect=true";
-		}else {
-			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+		if(UsuarioBean.tratarEmail(email)) {
+			Entidades ent = pegarEntidade();
+			String hashcode=UsuarioBean.generateSessionId();
+			int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 			if(idDestinatario != -1) {
 				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario);
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
-				//Busca
-				return "/index.xhtml?faces-redirect=true";
+				idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+				if(idDestinatario != -1) {
+					String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+					NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario);
+					return "/index.xhtml?faces-redirect=true";
+				}else {
+					//Busca
+					return "/index.xhtml?faces-redirect=true";
+				}
 			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Utilize o email institucional.", "Por favor não utilize seu email pessoal em um perfil de responsável."));
+			return null;
 		}
 	}
 	

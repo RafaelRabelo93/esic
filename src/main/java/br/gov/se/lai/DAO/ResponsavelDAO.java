@@ -114,10 +114,12 @@ public class  ResponsavelDAO {
     @SuppressWarnings("unchecked")
     public static List<Responsavel> list() {		
     	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.ativo = 1 OR resp.ativo = 0");
-    	
     	List<Responsavel> results = query.getResultList();
     	return results;    	
-    }   
+    } 
+   
+    
+    
     
     @SuppressWarnings("unchecked")
     public static List<Responsavel> listar(){

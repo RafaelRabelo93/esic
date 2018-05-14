@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.BarChartModel;
@@ -64,11 +65,31 @@ public class RelatorioDinamico {
 	public void RelatorioDinamico() {
 		barModel = new BarChartModel();
 		hBarModel = new  HorizontalBarChartModel();
+		popularAnos();
+		
 	}
 
+	public ArrayList<Integer> popularAnos() {
+		anos = new ArrayList<>();
+		Calendar instance = Calendar.getInstance();
+		int anoAtual = instance.get(Calendar.YEAR);
+		for (int i = 2012; i <= anoAtual; i++) {
+			anos.add(i);
+		}
+		return anos;
+	}
+	
+	public String redirecionarRelatorio() {
+		barModel = null;
+		return "/Relatorios/relatorios";
+	}
+	public String redirecionarRelatorioEspecifico() {
+		barModel = null;
+		return "/Relatorios/relatorios-especificos";
+	}
 
-	public static void limparGrafico() {
-		new RelatorioDinamico();
+	public void limparGrafico(AjaxBehaviorEvent e) {
+		barModel = new BarChartModel();
 	}
 	
 	public int identificarValorMaximoGrafico(Map<String, ArrayList<Integer>> dadosChart) {
@@ -240,10 +261,13 @@ public class RelatorioDinamico {
 		Map<String, ArrayList<String>> dados = selecionarDados();
 		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		if(usuario!= null &&
-		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))) {
+		  (usuario.getPerfil() == (short)2 || (usuario.getPerfil() == (short)4 && UsuarioBean.perfilAlterarCidadaoResponsavel))
+		  || usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6) {
 			ArrayList<String> idEntidade = new ArrayList<String>();
-			idEntidade.add(String.valueOf(ent.getIdEntidades()));
- 			dados.put("entidade", idEntidade);
+			if(ent != null) {
+				idEntidade.add(String.valueOf(ent.getIdEntidades()));
+				dados.put("entidade", idEntidade);
+			}
  			return dados;
 		}else {
 			return dados;
@@ -288,8 +312,14 @@ public class RelatorioDinamico {
 		dadosChart = FiltrarDadosRelatorioDinamico.gerarAcompanhamentoDinamico(retorno, medidaTempo, tempo, dados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
-		barModel = model.createBarModel(tipo[0], dadosChart, (long) 1, valorMaior);
-		hBarModel = model.createHorizontalBarModel(tipo[0], dadosChart, (long) 1, valorMaior);
+		long tipoGrafico = 1;
+		if(tempo.equals("ano")) {
+			tipoGrafico = 1;
+		}else if (tempo.equals("mes")){
+			tipoGrafico = 3;
+		}
+		barModel = model.createBarModel(tipo[0], dadosChart,tipoGrafico, valorMaior);
+		hBarModel = model.createHorizontalBarModel(tipo[0], dadosChart, tipoGrafico, valorMaior);
 	}
 
 	public String definirStringQuery(String tipoSolicitacao, String tempo, String status, Map<String, ArrayList<String>> dados,
@@ -298,16 +328,25 @@ public class RelatorioDinamico {
 		boolean escritaDeUmOrgaoOuEntidade = false;
 		String query = "FROM Solicitacao as slt";
 		if (dados.containsKey("tipoPessoa") || dados.containsKey("estados")) {
-			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao "
-					+ "AND slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status + "'");
-		} else {
-			if(!status.equals("Realizados")) {
-				query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "' AND slt.status = '" + status + "'");
-			}else {
-				query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao+"'");
-			}
+			query = query.concat(" JOIN slt.cidadao as cidadao WHERE slt.cidadao.idCidadao = cidadao.idCidadao ");
 		}
-
+		
+		if(!tipoSolicitacao.equals("Todos")) {
+				query = query.concat(" WHERE slt.tipo = '" + tipoSolicitacao + "'");
+		}
+		
+		if (!status.equals("Realizados")) {
+			if(query.contains("WHERE")){
+				query = query.concat(" AND slt.status = '" + status + "'");
+			}else {
+				query = query.concat(" WHERE slt.status = '" + status + "'");
+				}
+			}
+		
+		if(!query.contains("WHERE")) {
+			query = query.concat(" WHERE ");
+		}
+		
 		for (String key : dados.keySet()) {
 			switch (key) {
 			case "orgao":

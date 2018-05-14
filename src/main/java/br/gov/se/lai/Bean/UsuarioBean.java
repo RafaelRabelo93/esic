@@ -73,6 +73,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private static String sessionId;
+	public List<Usuario> filteredGestores;
 	public static boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
@@ -258,6 +259,10 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	public void limparUsuarioNovo() {
+		usuarioNovo = new Usuario();
+	}
+	
 
 //	public String delete() {
 //		UsuarioDAO.delete(usuario);
@@ -305,6 +310,13 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public void editarGestor() {
+	
+		if(usuario.getPerfil() == (short)6) {
+			UsuarioDAO.saveOrUpdate(usuario);
+		}
 	}
 
 	/**
@@ -386,7 +398,7 @@ public class UsuarioBean implements Serializable {
 					return null;
 					
 				}else {
-					loadEmail();
+					loadEmail(this.usuario);
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 					acessoUsuario(this.usuario);
@@ -412,7 +424,7 @@ public class UsuarioBean implements Serializable {
 				logout();
 			} else {
 //				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
-//					loadEmail();
+//					loadEmail(this.usuario);
 //					FacesContext.getCurrentInstance().addMessage(null,
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 //					acessoUsuario(this.usuario);
@@ -423,7 +435,7 @@ public class UsuarioBean implements Serializable {
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
 //				}
 				
-				loadEmail();
+				loadEmail(this.usuario);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
@@ -469,7 +481,7 @@ public class UsuarioBean implements Serializable {
 	 *
 	 *Busca o email daquele usuario, retorna string.
 	 */
-	public void loadEmail() {
+	public void loadEmail(Usuario usuario) {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 			setEmailCid(listCidadao.get(0).getEmail());
@@ -596,7 +608,7 @@ public class UsuarioBean implements Serializable {
 	 */
 	public String alterarDadosUsuario() {
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
-			return "Alterar/alterar_usuario";
+			return "/Alterar/alterar_usuario";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Usuário básico.", "Por favor complete seu cadastro."));
@@ -852,6 +864,9 @@ public class UsuarioBean implements Serializable {
 		return "../../esic/index.xhtml?faces-redirect=true";                          
 	}
 
+	public List<Usuario> listarGestores(){
+		return UsuarioDAO.listarGestoresSistema();
+	}
 	
 //	public void emailTeste() {
 //		NotificacaoEmail.emailNovaSolicitacao();
@@ -1026,6 +1041,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setSenhaAtual(String senhaAtual) {
 		this.senhaAtual = senhaAtual;
+	}
+
+	public List<Usuario> getFilteredGestores() {
+		return filteredGestores;
+	}
+
+	public void setFilteredGestores(List<Usuario> filteredGestore) {
+		this.filteredGestores = filteredGestore;
 	}
 	
 	

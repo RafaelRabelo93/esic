@@ -28,7 +28,7 @@
 						</h:commandLink>
 				
 						<p:dataTable id="responsaveis" var="resp" widgetVar="respTable"
-						emptyMessage="Não há entidades" 
+						emptyMessage="Não há Responsáveis" 
 						filteredValue="#{responsavel.responsaveisFiltrados}"
 						sortBy="#{resp.entidades.idOrgaos}" expandableRowGroups="false"
 						value="#{responsavel.todosResponsaveis}" resizableColumns="true" liveResize="true"
@@ -84,6 +84,41 @@
 
 					</p:dataTable>
 					
+						<p:dataTable id="gestores" var="gestor" widgetVar="gestorTable"
+						emptyMessage="Não há Gestores do Sistema" 
+						filteredValue="#{usuario.filteredGestores}"
+						sortBy="#{gestor.idUsuario}" expandableRowGroups="false"
+						value="#{usuario.listarGestores()}" resizableColumns="true" liveResize="true"
+						rowStyleClass="#{gestor.nome}" paginator="true"
+						currentPageReportTemplate="(Página {currentPage} de {totalPages})"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
+						style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '6'}">
+						
+						<f:facet name="header">
+				            <p:outputPanel styleClass="searchPanel">
+								<i class="fa fa-search" style="color: white; margin-right: .5em"/>
+				                <p:inputText id="globalFilter" onkeyup="PF('respTable').filter()" style="width:50%" placeholder="Insira informação que deseja pesquisar"/>
+				            </p:outputPanel>
+				        </f:facet>
+
+						<p:column headerText="Nome" sortBy="#{gestor.nome}" width="70" filterBy="#{gestor.nome}" filterMatchMode="contains" filterable="false">
+							<h:outputText value="#{gestor.nome}" />
+						</p:column>
+
+						<p:column headerText="Nick" sortBy="#{gestor.nick}" width="70" filterBy="#{gestor.nick}" filterMatchMode="contains" filterable="false">
+							<h:outputText value="#{gestor.nick}" />
+						</p:column>
+						
+						<p:column headerText="Editar" width="15" style="text-align: center" rendered="#{usuario.usuario.perfil eq '6' }" >
+							<p:commandLink class="botaoLinkIcon" update="dialog2" onclick="PF('editDialog2').show();">
+								<i class="fa fa-pencil-square-o" />
+								<f:setPropertyActionListener value="#{gestor}" target="#{usuario.usuarioNovo}" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					
 					</h:form>
 					
 					<!-- Dialog Editar Responsável -->
@@ -124,8 +159,48 @@
 							</p:outputPanel>
 						</h:form>
 					</p:dialog>
-			
-			</h:panelGroup>
+
+				<!-- Dialog Editar 	Gestor -->
+				<p:dialog widgetVar="editDialog2" header="Editar Gestor"
+					rendered="#{usuario.usuario.perfil eq '6' }" modal="true"
+					showHeader="true" fitViewport="true" showEffect="fade"
+					hideEffect="fade" resizable="false" maximizable="false"
+					draggable="false" closeOnEscape="true" onHide="#{usuario.limparUsuarioNovo()}">
+					<h:form id="dialog2" styleClass="dialog">
+						<p:outputPanel id="gestorEdit" styleClass="box"
+							style="display:flex; flex-flow: column;  margin: 0; border: none; padding: 0">
+							
+							<p:outputLabel value="Nome completo: " for="nome" />
+								<p:inputText id="nome" value="#{usuario.usuarioNovo.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+									<f:validateLength minimum="5" maximum="65" />
+								<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuarioNovo.nome)}" update="nick" />
+									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
+								</p:inputText>
+
+							<p:outputLabel value="Nick de usuário: " for="nick" />
+							<h:outputText id="nick" required="true" readonly="true"
+								value="#{usuario.usuarioNovo.nick}" maxlength="50" />
+							<p:message for="nick" display="text" />
+
+							<p:outputLabel value="Nova senha:" for="senha1" />
+							<p:password id="senha1" match="senha2" 
+								placeholder="Digite nova senha" value="#{usuario.senha}" />
+
+							<p:outputLabel value="Confirmar nova senha:" for="senha2" />
+							<p:password id="senha2"
+								placeholder="Digite nova senha" />
+								
+							<p:commandLink class="botaoLink"
+								action="#{usuario.editarGestor()}"
+								oncomplete="PF('editDialog2').hide();" update="form:gestores">
+								<h:outputText value="Salvar" />
+								<i class="fa fa-check" style="color: white; padding-left: 3px" />
+							</p:commandLink>
+						</p:outputPanel>
+					</h:form>
+				</p:dialog>
+
+			</h:panelGroup>,
 
 		</ui:define>
 	</ui:composition>

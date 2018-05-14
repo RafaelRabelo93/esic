@@ -102,6 +102,11 @@ public class  EntidadesDAO {
 	public static List<Entidades> listAtivas() {		
         return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1,em));
     }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Entidades>  FindSigla(String sigla) {		
+		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.sigla = '"+sigla+"'",em));
+	}
 
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listPersonalizada(int idEntidades) {

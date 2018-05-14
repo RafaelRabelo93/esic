@@ -86,7 +86,7 @@ public class SolicitacaoDAO {
 							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
-							query += ")";
+							query += ") AND slt.tipo != 'Denúncia')";
 						}
 //						if(i == ListResp.size()-1) {
 //							query += ")";
@@ -96,10 +96,12 @@ public class SolicitacaoDAO {
 
 					}
 					
-					return (List<Solicitacao>) Consultas.buscaPersonalizada(query+")",em);
-				}else 
+					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
+				}else if(usuarioBean.getUsuario().getPerfil() != 1)
 				{
-					return  em.createNativeQuery("SELECT * FROM esic.solicitacao", Solicitacao.class).getResultList();		
+					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao ", Solicitacao.class).getResultList();		
+				}else {
+					return null;
 				}
 				
 			} 
@@ -141,9 +143,11 @@ public class SolicitacaoDAO {
 					}
 					
 					return (List<Solicitacao>)  Consultas.buscaPersonalizada(query+")",em);
-				}else 
+				}else if(usuarioBean.getUsuario().getPerfil() != 1)
 				{
 					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao as slt WHERE  slt.status = '"+status+"' ", Solicitacao.class).getResultList();		
+				}else {
+					return null;
 				}
 				
 			} 

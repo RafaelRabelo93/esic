@@ -164,7 +164,7 @@
 								rendered="#{usuario.usuario.perfil ne '3' }"
 								filterBy="#{slt.cidadao.usuario.nome}"
 								filterMatchMode="contains" filterable="false">
-								<h:outputText value="#{slt.cidadao.usuario.nome}" />
+								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" />
 							</p:column>
 
 							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
@@ -239,7 +239,8 @@
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
 							
 							<h:outputText value="Solicitante:"	style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.cidadao.usuario.nome}" />
+							<h:outputText value="#{solicitacao.solicitacao.sigilo eq false ? solicitacao.solicitacao.cidadao.usuario.nome  : 'Sigilo'}"/>
+							
 							
 							<h:outputText value="Título:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.titulo}" />
@@ -319,7 +320,7 @@
 											style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<h:form>
-												<p:commandButton value="Anexo" ajax="false" actionListener="#{anexo.downloadArquivo(msg)}">
+												<p:commandButton value="Anexo" ajax="false" rendered="#{anexo.verificaExistencia(msg)}" actionListener="#{anexo.downloadArquivo(msg)}">
 													<p:fileDownload value="#{anexo.fileDownload}" />
 												</p:commandButton>
 										</h:form>
@@ -328,7 +329,7 @@
 								</p:dataScroller>
 							</p:tab>
 							<p:tab title="Histórico da Solicitação"
-								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}">
+								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia'}">
 								<p:dataScroller value="#{mensagem.mensagensHistorico}" var="msg"
 									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -360,7 +361,7 @@
 
 							</p:tab>
 							<p:tab title="Trâmite Interno"
-								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}">
+								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
 								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"
 									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -482,10 +483,10 @@
 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}" />
 										<f:selectItem itemLabel="Selecione Orgão Relacionado"
 											noSelectionOption="true" />
-<!-- 										<f:selectItems -->
-<!-- 											value="#{entidades.exibirEntidadesEncaminhamento()}" -->
-<!-- 											var="orgao" itemLabel="#{orgao.nome}" -->
-<!-- 											itemValue="#{orgao.idEntidades}" /> -->
+										<f:selectItems
+											value="#{entidades.exibirEntidadesEncaminhamento()}"
+											var="orgao" itemLabel="#{orgao.nome}"
+											itemValue="#{orgao.idEntidades}" />
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
@@ -539,8 +540,8 @@
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') }"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -572,8 +573,8 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') }"
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' }"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
