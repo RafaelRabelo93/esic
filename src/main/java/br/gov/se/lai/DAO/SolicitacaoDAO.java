@@ -168,12 +168,12 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipo(String tipo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+tipo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = '"+tipo+"'",em)); 
 	}	
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoStatus(String tipo, String status) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = "+status+" AND slt.tipo = "+tipo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"' AND slt.tipo = "+tipo,em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")

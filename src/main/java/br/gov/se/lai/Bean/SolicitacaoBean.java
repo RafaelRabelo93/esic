@@ -162,7 +162,7 @@ public class SolicitacaoBean implements Serializable {
 				}
 			}
 
-			if (!solicitacao.getCidadao().getUsuario().getIdUsuario().equals(0)) {
+			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo")) {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
 			}
@@ -248,7 +248,14 @@ public class SolicitacaoBean implements Serializable {
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
-				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
+				Usuario usuarioAnonimo = new Usuario();
+				usuarioAnonimo.setNome("Anônimo");
+				usuarioAnonimo.setNick("anonimo");
+				usuarioAnonimo.setPerfil((short)3);
+				Cidadao cidadaoAnonimo = new Cidadao();
+				cidadaoAnonimo.setUsuario(usuarioAnonimo);;
+				solicitacao.setCidadao(cidadaoAnonimo);
+//				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(7));
 			} else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
@@ -447,13 +454,14 @@ public class SolicitacaoBean implements Serializable {
 		}
 
 		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
-			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("CGE").get(0))
+			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("CGE").get(0).getIdEntidades())
 					&& resp.getNivel() >= 2) {
-				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
+				ArrayList<Solicitacao> listDenuncia = new ArrayList<>(SolicitacaoDAO.listPorTipo("Denúncia"));
+				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorTipo("Denúncia")));
 			}
 		}
 
-		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 5) {
+		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
 			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
 		}
 

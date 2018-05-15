@@ -170,8 +170,7 @@
 							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
 								width="100" style="text-align:center"
 								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
-								filterable="false"
-		                        styleClass="prazo #{slt.status eq 'Finalizada' ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}">
+								filterable="false">
 								<h:outputText value="#{slt.dataLimite}"
 									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />

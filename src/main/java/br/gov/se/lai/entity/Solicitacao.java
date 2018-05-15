@@ -39,7 +39,6 @@ public class Solicitacao implements java.io.Serializable {
 	private String protocolo;
 	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
-	private short prazoTipo;
 	private boolean encaminhada;
 	private boolean visualizada;
 	private boolean sigilo;
@@ -68,7 +67,6 @@ public class Solicitacao implements java.io.Serializable {
 		this.instancia = instancia;
 		this.tipo = tipo;
 		this.mensagems = mensagems;
-		this.prazoTipo = prazoTipo;
 		this.formaRecebimento = formaRecebimento;
 		this.visualizada = visualizada;
 	}
@@ -199,14 +197,6 @@ public class Solicitacao implements java.io.Serializable {
 		this.instancia = instancia;
 	}
 
-	@Column(name = "prazoTipo", length = 1)
-	public short getPrazoTipo() {
-		return prazoTipo;
-	}
-
-	public void setPrazoTipo(short prazoTipo) {
-		this.prazoTipo = prazoTipo;
-	}
 
 	@Column(name = "encaminhada", length = 1)
 	public boolean isEncaminhada() {
