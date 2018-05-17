@@ -21,11 +21,19 @@
 					
 					<h:outputText value="Responsáveis" style="color:#1a568c; font-size:25px;" />
 					
-						<h:commandLink action="/Cadastro/cad_responsavel" styleClass="botaoLink" style="margin-bottom: 10px"
-						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
-							<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-							<h:outputText value="Novo Responsável" />
-						</h:commandLink>
+						<h:panelGroup styleClass="inline" style="-ms-flex-item-align: end;align-self: flex-end">
+							<h:commandLink action="/Cadastro/cad_responsavel" styleClass="botaoLink" style="margin-bottom: 10px"
+							rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
+								<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+								<h:outputText value="Novo Responsável" />
+							</h:commandLink>
+							
+							<h:commandLink action="/Cadastro/cad_gestor" styleClass="botaoLink" style="margin-bottom: 10px; margin-left: 10px;"
+							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+								<i class="fa fa-plus" style="color: white; padding-right: 7px" />
+								<h:outputText value="Novo Gestor do Sitema" />
+							</h:commandLink>
+						</h:panelGroup>
 				
 						<p:dataTable id="responsaveis" var="resp" widgetVar="respTable"
 						emptyMessage="Não há Responsáveis" 
@@ -143,7 +151,6 @@
 									<f:selectItem itemLabel="Autoridade 1" itemValue="2" itemDisabled="#{responsavel.responsavel.nivel ne '2'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 									<f:selectItem itemLabel="Gestor" itemValue="3" itemDisabled="#{responsavel.responsavel.nivel ne '3'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 									<f:selectItem itemLabel="Comissão Mista" itemValue="4" itemDisabled="#{responsavel.responsavel.nivel ne '4'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
-									<f:selectItem itemLabel="Gestor do Sistema" itemValue="5" itemDisabled="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}"/>
 								</p:selectOneRadio>
 								
 								<p:outputLabel value="Atividade: " for="ativo" />

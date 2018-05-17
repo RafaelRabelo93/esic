@@ -52,7 +52,7 @@
 		
 		<!-- Responsavel Gestor/Admin -->
 			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-				<h:commandLink  class="dropbtn">
+				<h:commandLink  class="dropbtn" action="/Consulta/consulta_responsavel">
 					<i class="fa fa-users" />
 					<h:outputText value="Responsável" style="margin:0 7px"/>
 					<i class="fa fa-caret-down" />
@@ -60,6 +60,7 @@
 				<div class="dropdown-content">
 					<h:commandLink value="Consultar Responsáveis" action="/Consulta/consulta_responsavel"/>
 					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
+					<h:commandLink value="Cadastrar Gestor do Sistema" action="#{responsavel.redirectCadastroGestor()}" rendered="#{usuario.usuario.perfil eq '5'}"/>
 				</div>
 			</h:panelGroup>
 			

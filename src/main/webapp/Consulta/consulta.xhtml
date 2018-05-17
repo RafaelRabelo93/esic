@@ -360,7 +360,7 @@
 
 							</p:tab>
 							<p:tab title="Trâmite Interno"
-								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
+								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)  and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
 								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"
 									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -539,7 +539,7 @@
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') }"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
@@ -549,7 +549,7 @@
 						<!-- Botão Reformula -->
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
@@ -562,7 +562,7 @@
 						<!-- Botão Negar -->
 						<p:commandLink id="NegarAba"
 							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-ban fa-3x" style="margin-bottom: 5px" />
@@ -572,7 +572,7 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') }"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
 							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' }"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
@@ -585,7 +585,7 @@
 						<p:commandLink id="ProrrogarAba" class="botaoAba"
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />

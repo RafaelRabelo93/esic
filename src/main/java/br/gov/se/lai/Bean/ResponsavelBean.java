@@ -330,6 +330,11 @@ public class ResponsavelBean implements Serializable{
 		return "/Cadastro/cad_responsavel.xhtml?faces-redirect=true";
 	}
 	
+	public String redirectCadastroGestor() {
+		usuario = new Usuario();
+		return "/Cadastro/cad_gestor.xhtml?faces-redirect=true";
+	}
+	
 	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
 		for (Responsavel respo : listRespDaEntidade) {
