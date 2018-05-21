@@ -56,7 +56,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private final int constanteTempo = 10;
 	private Usuario usuario;
 	private UploadedFile file;
-	private float nota;
+	private Integer nota;
 
  
 	@PostConstruct
@@ -71,7 +71,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public String save() {
 
 		if(verificaPermissao()) {
-			
+		
+			usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 			mensagem.setUsuario(usuario);
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
@@ -335,11 +336,11 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		MensagemBean.mensagensTramites = mensagensTramites;
 	}
 
-	public float getNota() {
+	public Integer getNota() {
 		return nota;
 	}
 
-	public void setNota(float nota) {
+	public void setNota(Integer nota) {
 		this.nota = nota;
 	}	
 	

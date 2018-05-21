@@ -99,7 +99,8 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoPendente;
 	public static int solicitacaoNegada;
 	public static int solicitacaoRespondida;
-
+	public Integer nota;
+	
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -638,6 +639,28 @@ public class SolicitacaoBean implements Serializable {
 				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null);
 			}
 		}
+	}
+	
+	
+	public void notaMensagem() {
+		Mensagem msg = MensagemDAO.listMensagens(solicitacao.getIdSolicitacao(), 2).get(0);
+		msg.setNota(nota);
+		MensagemDAO.saveOrUpdate(msg);
+		nota = 0;
+		
+		calcularNotaSolicitacao();
+	}
+	
+	public void calcularNotaSolicitacao() {
+		List<Mensagem> mensagens = MensagemDAO.listMensagens(solicitacao.getIdSolicitacao(), 2);
+		Integer nota = 0;
+		for (Mensagem m : mensagens) {
+			nota += m.getNota();
+		}
+		
+		nota = nota/mensagens.size();
+		solicitacao.setAvaliacao(nota);
+		SolicitacaoDAO.saveOrUpdate(solicitacao);
 	}
 
 	// +++++++++++++++++++++++++++ Tipologias das solicitações - Tratamentos
@@ -1194,5 +1217,15 @@ public class SolicitacaoBean implements Serializable {
 	public void setModoSigilo(boolean modoSigilo) {
 		this.modoSigilo = modoSigilo;
 	}
+
+	public Integer getNota() {
+		return nota;
+	}
+
+	public void setNota(Integer nota) {
+		this.nota = nota;
+	}
+	
+	
 
 }
