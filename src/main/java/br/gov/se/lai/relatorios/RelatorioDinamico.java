@@ -343,7 +343,7 @@ public class RelatorioDinamico {
 				}
 			}
 		
-		if(!query.contains("WHERE")) {
+		if(!dados.isEmpty() && !query.contains("WHERE")) {
 			query = query.concat(" WHERE ");
 		}
 		

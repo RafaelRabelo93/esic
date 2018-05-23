@@ -404,23 +404,34 @@ public class SolicitacaoBean implements Serializable {
 	 */
 	public String gerarProtocolo() {
 		Date now = new Date(System.currentTimeMillis());
-		SimpleDateFormat ft = new SimpleDateFormat("yyyyddssMs");
-		String protocolo = ft.format(now);
+		SimpleDateFormat ft = new SimpleDateFormat("yy");
+		String protocolo = String.valueOf(SolicitacaoDAO.listarGeral().size());
+		int loop = protocolo.length();
+		for (int i = 0; i<(5-loop); i++ ) {
+			protocolo = "0"+protocolo;
+		}
 		switch (this.solicitacao.getTipo()) {
 		case "Reclamação":
-			protocolo += "1";
+			protocolo += ".1";
+			break;
 		case "Denúncia":
-			protocolo += "2";
+			protocolo += ".2";
+			break;
 		case "Informação":
-			protocolo += "3";
+			protocolo += ".3";
+			break;
 		case "Solicitação":
-			protocolo += "4";
+			protocolo += ".4";
+			break;
 		case "Sugestão":
-			protocolo += "5";
+			protocolo += ".5";
+			break;
 		case "Elogio":
-			protocolo += "6";
+			protocolo += ".6";
+			break;
 		}
-
+		
+		protocolo += "/"+ft.format(now);
 		return protocolo;
 	}
 
