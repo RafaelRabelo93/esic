@@ -48,21 +48,21 @@ public class verificarStatusSolicitacao implements Job {
 			LocalDate vesperaPrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(1);
 			LocalDate vesperaPrazoGestor = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(2);
 			
-			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
+//			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
 			
 			
 			if(now.isEqual(inicioPrazo)) {
-				String corpoMensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
-				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
+				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
 			}else if (now.isEqual(metadePrazo)) {
-				String corpoMensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
+				String mensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
 			}else if(now.isEqual(vesperaPrazoGestor)) {
-				String corpoMensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
+				String mensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
 			}else if(now.isEqual(vesperaPrazo)) {
-				String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
+				String mensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
 			}
 		}		
 	} 

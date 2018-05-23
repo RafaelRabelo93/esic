@@ -216,22 +216,46 @@ html, body {height:100%}
 			</td>
 		</tr>
 		<tr>
-
-
 			<td bgcolor="#ffffff" style="padding: 40px; text-align: left; border: none; color: #606060">
-				<p style="font-size: 30px; margin-top: 0">Olá, " + nomeUser + "</p>
-				<h4 style="margin-bottom: 50px;">Se você esqueceu sua senha ou deseja redefini-la, utilize o botão abaixo para fazê-lo.</h4>
-				<table align="center">
-					<tr align="center" style="margin: 50px">
-						<a href=" + link + " style="margin: 20px; color: white; border-radius: 3px; border: 1px solid #1d4a74; padding: 10px; font-size: 20px; background-color: #296099; background: linear-gradient(to bottom right, #135186, #4087dc); text-decoration: none;">
-						Nova Senha
-						</a>
-					</tr>
-				</table>			
+			
+				<h4>Nova atualização na manifestação" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() + "."</h4>
+						<table>
+							<tr>
+							<td><h4 style="margin: 0">Protocolo: </h4></td>
+							<td><p style="margin: 0"> solicitacao.getProtocolo() + "</p></td>
+							</tr>
+						</table>
+						<table>
+							<tr>
+							<td><h4 style="margin: 0">Órgão: </h4></td>
+							<td><p style="margin: 0">" + solicitacao.getEntidades().getSigla() + " - "  + solicitacao.getEntidades().getNome() + "</p></td>
+							</tr>
+						</table>
+						<br/>
+						<table>
+							<tr>
+							<td><h4 style="margin: 0">Atualização: </h4></td>
+							<td><p style="margin: 0">" + solicitacao.getStatus() + "</p></td>
+							</tr>
+						</table>
+						<table>
+							<tr>
+							<td><h4 style="margin: 0">Data: </h4></td>
+							<td><p style="margin: 0">" + mensagem.getData() + "</p></td>
+							</tr>
+						</table>
+						<table>
+							<tr>
+							<td><h4 style="margin: 0"> Mensagem: </h4></td>
+							</tr>
+							<tr>
+							<td><p style="margin: 0">" " + mensagem.getTexto() + " "</p></td>
+							</tr>
+						</table>
+						<h5 style="margin-bottom: 0">Acesse o sistema para visualização completa:</h5>
+						<a href="http://esic.se.gov.br">http://esic.se.gov.br</a>
 				
-				<h5 style="margin-bottom: 0; margin-top: 50px; font-weight: normal">Caso o botão não funcione, clique ou copie o link a seguir no navegador:</h5>
-				<a href=" + link + ">"+ link +"</a>
-				<h5 style="margin-bottom: 0; font-weight: normal">Se você não requisitou a mudança de senha, ignore este e-mail. Apenas uma pessoa com acesso ao seu e-mail pode redefinir sua senha.</h5>
+				
 				<h5 style="margin-bottom: 0; font-weight: normal">Em caso de dúvida, entre em contato através do email controladoria@cge.se.gov.br ou telefone (79) 3179-3777</h5>
 				<h5 style="margin-bottom: 0; font-weight: normal">E-mail automático, favor não responder.</h5>
 			</td>

@@ -416,8 +416,7 @@
 								</div>
 								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Pedido de reformulação:" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)}" for="reformula"	style="margin-bottom: 5px" />
-									<p:outputLabel value="Reformulação de solicitação:" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false) }" for="reformula"	style="margin-bottom: 5px" />
+									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
 									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField reformulaField">
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>
@@ -522,11 +521,10 @@
 								
 								<div id="Avalia" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Avaliar resposta da manifestação:" for="avalia" style="margin-bottom: 5px" />
-									<p:rating id="avalia" cancel="false" value="#{solicitacao.nota}" styleClass="abaField encaminharField"/>
+									<p:rating id="avalia" cancel="false" styleClass="abaField encaminharField"/>
 									
-									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{solicitacao.notaMensagem()}"
-									update="form:solicitacao_panel ">
-										<h:outputText value="Avaliar" />
+									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
 									</p:commandLink>
 								</div>
@@ -541,8 +539,8 @@
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') }"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada'  or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -551,19 +549,15 @@
 						<!-- Botão Reformula -->
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
-							rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or (solicitacao.solicitacao.status eq 'Respondida' and usuario.usuario.perfil eq '2') or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
 							  <i class="fa fa-comment fa-stack-2x" />
 							  <i class="fa fa-repeat fa-stack-1x fa-inverse" />
 							</span>
-							<h:outputText value="Solicitar Reformulação" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)}" />
-							<h:outputText value="Reformular Solicitação" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}" />
+							<h:outputText value="Solicitar Reformulação" />
 						</p:commandLink>
-						
-						<!-- 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6') and solicitacao.solicitacao.tipo ne 'Denúncia'}" -->
-						
 						
 						<!-- Botão Negar -->
 						<p:commandLink id="NegarAba"
@@ -603,7 +597,7 @@
 						<!-- Botão Recurso -->
 						<p:commandLink id="RecursoAba"
 							onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}"
+							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}"
 							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}"
 							update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
@@ -617,7 +611,7 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida')}"
+							rendered="#{(usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4') and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida')}"
 							disabled="#{solicitacao.solicitacao.status eq 'Aberta'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />

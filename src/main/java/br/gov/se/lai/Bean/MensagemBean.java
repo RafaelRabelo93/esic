@@ -56,7 +56,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private final int constanteTempo = 10;
 	private Usuario usuario;
 	private UploadedFile file;
-	private Integer nota;
+	private float nota;
 
  
 	@PostConstruct
@@ -71,14 +71,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public String save() {
 
 		if(verificaPermissao()) {
-		
-			usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+			
 			mensagem.setUsuario(usuario);
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
 			mensagem.setTipo((short)2);
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
 				mensagensSolicitacao.add(mensagem);
+				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 				verificaMensagem();
 				try {
 					if ((file.getContents().length != 0 && !file.equals(null))) {
@@ -95,8 +95,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 				}
 				
 			}
-			
-		mensagem = new Mensagem();	
+		
+		mensagem = new Mensagem();
 		return "/Consulta/consulta?faces-redirect=true";
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuário sem permissão..",null));
@@ -130,6 +130,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
+			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 		}
 		solicitacao.setStatus("Negada");
 		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
@@ -137,6 +138,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
 		SolicitacaoBean.addQuantidadeSolicitacaoNegada();
+		
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";
 	}
@@ -204,7 +206,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setTipo((short)tipoAux);
 		try {
 			MensagemDAO.saveOrUpdate(mensagem);
-			NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+//			NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			MensagemBean.attMensagemHistorico(mensagem);
 			mensagem = new Mensagem();
 		}catch (NullPointerException e) {
@@ -336,11 +338,11 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		MensagemBean.mensagensTramites = mensagensTramites;
 	}
 
-	public Integer getNota() {
+	public float getNota() {
 		return nota;
 	}
 
-	public void setNota(Integer nota) {
+	public void setNota(float nota) {
 		this.nota = nota;
 	}	
 	

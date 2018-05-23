@@ -99,8 +99,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoPendente;
 	public static int solicitacaoNegada;
 	public static int solicitacaoRespondida;
-	public Integer nota;
-	
+
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -167,9 +166,8 @@ public class SolicitacaoBean implements Serializable {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
 			}
-			// enviarMensagemAutomatica();
-			NotificacaoEmail.emailNovaSolicitacao(solicitacao,
-					((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);
 
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		} catch (Exception e) {
@@ -385,17 +383,16 @@ public class SolicitacaoBean implements Serializable {
 		return "Solicitacao/questionario2.xhtml";
 	}
 
-	/**
-	 * Função enviarMensagemAutomatica
-	 * 
-	 * Envia notificação para o cidadão informando que a solicitação dele foi
-	 * recebida.
-	 */
-
-	public void enviarMensagemAutomatica() {
-		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática",
-				solicitacao.getTipo() + " recebido com sucesso.");
-	}
+//	/**
+//	 * Função enviarMensagemAutomatica
+//	 * 
+//	 * Envia notificação para o cidadão informando que a solicitação dele foi
+//	 * recebida.
+//	 */
+//
+//	public void enviarMensagemAutomatica() {
+//		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo() + " recebido com sucesso.");
+//	}
 
 	/**
 	 * Função gerarProtocolo
@@ -651,28 +648,6 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 	}
-	
-	
-	public void notaMensagem() {
-		Mensagem msg = MensagemDAO.listMensagens(solicitacao.getIdSolicitacao(), 2).get(0);
-		msg.setNota(nota);
-		MensagemDAO.saveOrUpdate(msg);
-		nota = 0;
-		
-		calcularNotaSolicitacao();
-	}
-	
-	public void calcularNotaSolicitacao() {
-		List<Mensagem> mensagens = MensagemDAO.listMensagens(solicitacao.getIdSolicitacao(), 2);
-		Integer nota = 0;
-		for (Mensagem m : mensagens) {
-			nota += m.getNota();
-		}
-		
-		nota = nota/mensagens.size();
-		solicitacao.setAvaliacao(nota);
-		SolicitacaoDAO.saveOrUpdate(solicitacao);
-	}
 
 	// +++++++++++++++++++++++++++ Tipologias das solicitações - Tratamentos
 	// específicos
@@ -814,6 +789,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
+		NotificacaoEmail.enviarEmailNotificacaoRecurso(solicitacao);
 		mensagem = new Mensagem();
 	}
 
@@ -904,7 +880,7 @@ public class SolicitacaoBean implements Serializable {
 
 			if (MensagemDAO.saveOrUpdate(mensagem)) {
 				MensagemBean.attMensagemSolicitacao(mensagem);
-				// NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 			}
 			;
 			mensagem = new Mensagem();
@@ -925,8 +901,7 @@ public class SolicitacaoBean implements Serializable {
 						MensagemBean.attMensagemTramites(mensagemEncaminhar);
 						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),
 								antigaEnt.getNome());
-						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,
-								respDestinatario);
+						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,	respDestinatario);
 					}
 				}
 			}
@@ -1228,15 +1203,5 @@ public class SolicitacaoBean implements Serializable {
 	public void setModoSigilo(boolean modoSigilo) {
 		this.modoSigilo = modoSigilo;
 	}
-
-	public Integer getNota() {
-		return nota;
-	}
-
-	public void setNota(Integer nota) {
-		this.nota = nota;
-	}
-	
-	
 
 }

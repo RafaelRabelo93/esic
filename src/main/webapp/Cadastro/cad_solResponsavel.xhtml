@@ -15,13 +15,13 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_responsavel" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '1'}">
+			<h:form id="cad_responsavel" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'}">
 
 				<div class="ficha">
 				
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
-					<h:panelGroup id="dataPanel" styleClass="box column" rendered="#{usuario.usuario.perfil eq '1'}">
+					<h:panelGroup id="dataPanel" styleClass="box column">
 						<h:outputText value="Solicitação de Cadastro como Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
 						<p:outputLabel value="Usuário: " for="nick" /> 

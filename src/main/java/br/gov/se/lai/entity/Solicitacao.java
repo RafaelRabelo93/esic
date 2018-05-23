@@ -43,7 +43,7 @@ public class Solicitacao implements java.io.Serializable {
 	private boolean visualizada;
 	private boolean sigilo;
 	private Integer formaRecebimento;
-	private Integer avaliacao;
+	private float avaliacao;
 
 	public Solicitacao() {
 	}
@@ -225,11 +225,11 @@ public class Solicitacao implements java.io.Serializable {
 		this.visualizada = visualizada;
 	}
 
-	public Integer getAvaliacao() {
+	public float getAvaliacao() {
 		return avaliacao;
 	}
 
-	public void setAvaliacao(Integer avaliacao) {
+	public void setAvaliacao(float avaliacao) {
 		this.avaliacao = avaliacao;
 	}
 
