@@ -166,9 +166,8 @@ public class SolicitacaoBean implements Serializable {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
 			}
-			// enviarMensagemAutomatica();
-			NotificacaoEmail.emailNovaSolicitacao(solicitacao,
-					((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);
 
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		} catch (Exception e) {
@@ -384,17 +383,16 @@ public class SolicitacaoBean implements Serializable {
 		return "Solicitacao/questionario2.xhtml";
 	}
 
-	/**
-	 * Função enviarMensagemAutomatica
-	 * 
-	 * Envia notificação para o cidadão informando que a solicitação dele foi
-	 * recebida.
-	 */
-
-	public void enviarMensagemAutomatica() {
-		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática",
-				solicitacao.getTipo() + " recebido com sucesso.");
-	}
+//	/**
+//	 * Função enviarMensagemAutomatica
+//	 * 
+//	 * Envia notificação para o cidadão informando que a solicitação dele foi
+//	 * recebida.
+//	 */
+//
+//	public void enviarMensagemAutomatica() {
+//		NotificacaoEmail.enviarEmailAutomatico(solicitacao, "Mensagem Automática", solicitacao.getTipo() + " recebido com sucesso.");
+//	}
 
 	/**
 	 * Função gerarProtocolo
@@ -780,6 +778,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
+		NotificacaoEmail.enviarEmailNotificacaoRecurso(solicitacao);
 		mensagem = new Mensagem();
 	}
 
@@ -870,7 +869,7 @@ public class SolicitacaoBean implements Serializable {
 
 			if (MensagemDAO.saveOrUpdate(mensagem)) {
 				MensagemBean.attMensagemSolicitacao(mensagem);
-				// NotificacaoEmail.enviarNotificacao(solicitacao, usuario);
+				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 			}
 			;
 			mensagem = new Mensagem();
@@ -891,8 +890,7 @@ public class SolicitacaoBean implements Serializable {
 						MensagemBean.attMensagemTramites(mensagemEncaminhar);
 						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),
 								antigaEnt.getNome());
-						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,
-								respDestinatario);
+						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,	respDestinatario);
 					}
 				}
 			}

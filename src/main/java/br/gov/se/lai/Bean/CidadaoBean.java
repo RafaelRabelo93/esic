@@ -18,6 +18,7 @@ import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "cidadao")
@@ -97,6 +98,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
 				usuarioBean.loadEmail(this.usuario);
+				NotificacaoEmail.enviarEmailCadastroCid(cidadao);
 				return "/index";
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,
