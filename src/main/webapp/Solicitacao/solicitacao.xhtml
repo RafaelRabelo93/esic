@@ -259,7 +259,7 @@
 						</h:panelGroup>
 
 						<p:outputLabel value="Título:" for="titulo" />
-						<p:inputText id="titulo" size="78" value="#{solicitacao.solicitacao.titulo}" />
+						<p:inputText id="titulo" size="78" maxlength="100" value="#{solicitacao.solicitacao.titulo}" />
 
 						<p:outputLabel value="Mensagem:" for="mensagem" />
 						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />

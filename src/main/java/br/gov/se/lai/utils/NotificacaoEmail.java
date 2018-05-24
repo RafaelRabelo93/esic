@@ -178,7 +178,7 @@ public class NotificacaoEmail implements Job{
 	}
 	
 	public static void enviarEmailNovaSolicitacaoResp(Solicitacao solicitacao) {
-		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades());
+		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), (short) 1);
 		
 		String titulo = "esic-SE - Nova manifestação para " + solicitacao.getEntidades().getSigla();
 		
@@ -286,7 +286,7 @@ public class NotificacaoEmail implements Job{
 	}
 	
 	public static void enviarEmailNotificacaoRecurso(Solicitacao solicitacao) {
-		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades());
+		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), (short) 1);
 		
 		String titulo = "esic-SE - Manifestação para " + solicitacao.getEntidades().getSigla() + " entrou em recurso.";
 		
@@ -423,8 +423,8 @@ public class NotificacaoEmail implements Job{
 		
 	}
 	
-	public static void enviarEmailPrazo(Solicitacao solicitacao, String mensagem) {
-		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades());
+	public static void enviarEmailPrazo(Solicitacao solicitacao, String mensagem, Short nivel) {
+		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), nivel);
 				
 		String titulo = "esic-SE - Notificação de prazo da manifestação " + solicitacao.getProtocolo();
 		
@@ -656,13 +656,13 @@ public class NotificacaoEmail implements Job{
 			return envio;
 		}
 		
-	//+++++++++++++++++++ Destinatário todos responsáveis
-		public static ArrayList<String> destinatarioResp(Entidades entidade) {
+	//+++++++++++++++++++ Destinatário todos responsáveis por nível (1 = Representante; 2 = Autoridade; 3 = Gestor)
+		public static ArrayList<String> destinatarioResp(Entidades entidade, Short nivel) {
 			List<Responsavel> listResp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades());
 			ArrayList<String> destinatarios = new ArrayList<String>();
 			
 			for (int i = 0; i < listResp.size(); i++) {
-				if (listResp.get(i).getNivel().shortValue() == 1) {
+				if (listResp.get(i).getNivel().shortValue() == nivel) {
 					destinatarios.add(listResp.get(i).getEmail());
 				}
 			}

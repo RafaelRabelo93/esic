@@ -167,6 +167,17 @@
 								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" />
 							</p:column>
 
+							<p:column headerText="Data inicial" sortBy="#{slt.dataIni}"
+								width="100" style="text-align:center"
+								filterBy="#{slt.dataIni}" filterMatchMode="exact"
+								filterable="false" visible="false">
+								<h:outputText value="#{slt.dataIni}"	rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+								<h:outputText value=" ----------- " style="color: #c0c0c0;"
+									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
+							</p:column>
+							
 							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
 								width="100" style="text-align:center"
 								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
@@ -175,7 +186,7 @@
 									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
-								<h:outputText value=" ----------- "
+								<h:outputText value=" ----------- " style="color: #c0c0c0;"
 									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
 							</p:column>
 <!-- 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}" -->
@@ -611,7 +622,7 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4') and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida')}"
+							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
 							disabled="#{solicitacao.solicitacao.status eq 'Aberta'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />
