@@ -42,7 +42,7 @@ public class MensagemDAO {
 				em.getTransaction().begin();
 				em.remove(msg);
 	            em.getTransaction().commit();
-	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Mensagem  exclu√≠da com sucesso!"));
+	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Mensagem  exclui≠da com sucesso!"));
 			}            
         } catch (Exception e) {
             em.getTransaction().rollback();

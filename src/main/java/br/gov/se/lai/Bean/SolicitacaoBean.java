@@ -135,6 +135,7 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setProtocolo(gerarProtocolo());
+		this.solicitacao.setAvaliacao(0);
 
 		try {
 

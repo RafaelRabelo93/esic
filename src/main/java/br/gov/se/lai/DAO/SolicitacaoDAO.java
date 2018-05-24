@@ -217,8 +217,8 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Cidadao> listarCidadao(String tipo, String periodo) {
-		String HQL= "SELECT cidadao FROM  Cidadao as cidadao "+
-				"JOIN  Solicitacao as solicitacao "+
+		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
+				"JOIN Cidadao as cidadao "+
 				"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
 				"AND solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
