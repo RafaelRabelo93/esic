@@ -53,16 +53,16 @@ public class verificarStatusSolicitacao implements Job {
 			
 			if(now.isEqual(inicioPrazo)) {
 				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
-				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if (now.isEqual(metadePrazo)) {
 				String mensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if(now.isEqual(vesperaPrazoGestor)) {
 				String mensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 3);
 			}else if(now.isEqual(vesperaPrazo)) {
 				String mensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}
 		}		
 	} 

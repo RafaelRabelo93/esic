@@ -85,7 +85,7 @@ public class RelatorioDinamico {
 	}
 	public String redirecionarRelatorioEspecifico() {
 		barModel = null;
-		return "/Relatorios/relatorios-especificos";
+		return "/Relatorios/relatorios_especificos";
 	}
 
 	public void limparGrafico(AjaxBehaviorEvent e) {
