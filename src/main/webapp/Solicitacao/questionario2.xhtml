@@ -20,14 +20,14 @@
 				<div class="ficha">
 
 					<p:steps activeIndex="1" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de solicitação" url="/index.xhtml" />
+						<p:menuitem value="Tipo de manifestação" url="/index.xhtml" />
 						<p:menuitem value="Determinar Órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
 						<p:menuitem value="Realizar Solicitação" url="#"/>
 					</p:steps>
 
 					<h:panelGroup styleClass="box" style="margin-bottom:1vw; width:50vw">
 
-					<h:outputText value="Determinar Órgão / Entidade" style="color:#1a568c; font-size:25px; margin: 0 5vw; align-self:center" />
+					<h:outputText value="Selecionar Órgão / Entidade" style="color:#1a568c; font-size:25px; margin: 0 5vw; align-self:center" />
 					<p style="text-align: left; align-self: center;">Caso não saiba para onde deseja encaminhar sua manifestação, preencha os campos de assunto e categoria abaixo para identificar os órgãos relacionados.</p>
 					
 					<h:panelGroup styleClass="inline">
@@ -45,7 +45,7 @@
 						
 							<p:outputLabel value="Assunto:" for="assunto" />
 	        				<p:selectOneMenu id="assunto" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat entidades_panel" />
+								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update="cat entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 								 <f:selectItems value="#{acoes.acaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
