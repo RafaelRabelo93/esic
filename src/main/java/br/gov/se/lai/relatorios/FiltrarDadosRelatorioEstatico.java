@@ -247,24 +247,27 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		ArrayList<Cidadao> pessoas = new ArrayList<>(SolicitacaoDAO.listarCidadao("Informação", periodo));
+		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadao("Informação", periodo));
 		int numeroJuridica = 0;
 		int numeroFisicaFeminino = 0;
 		int numeroFisicaMasculino = 0;
 		for (Cidadao cidadao : pessoas) {
-			if (cidadao.getTipo().equals(true)) {
-				switch (cidadao.getSexo()) {
-				case "F":
-					numeroFisicaFeminino++;
-					break;
-				case "M":
-					numeroFisicaMasculino++;
-					break;
-				default:
-					break;
+			try{
+				if (cidadao.getTipo().equals(true)) {
+					switch (cidadao.getSexo()) {
+					case "F":
+						numeroFisicaFeminino++;
+						break;
+					case "M":
+						numeroFisicaMasculino++;
+						break;
+					default:
+						break;
+					}
+				} else {
+					numeroJuridica++;
 				}
-			} else {
-				numeroJuridica++;
+			}catch (NullPointerException e) {
 			}
 		}
 

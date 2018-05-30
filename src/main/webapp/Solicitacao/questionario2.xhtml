@@ -43,19 +43,19 @@
 							<p style="margin:0">Realize a busca do órgão a ser realizado a manifestação de acordo com o assunto e categoria desejados.</p>
 							<p:outputLabel value="Buscar Órgão/Entidade:" style="font-weight: bold" />
 						
-							<p:outputLabel value="Assunto:" for="assunto" />
-	        				<p:selectOneMenu id="assunto" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "cat entidades_panel" />
+							<p:outputLabel value="Tema:" for="assunto" />
+	        				<p:selectOneMenu id="tema" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
+								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "assunto entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 								 <f:selectItems value="#{acoes.acaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
 							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
 
-							<p:outputLabel value="Categoria:" for="cat" />
-							<p:selectOneMenu id="cat" value="#{competencias.idEntidade}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
+							<p:outputLabel value="Assunto:" for="cat" />
+							<p:selectOneMenu id="assunto" value="#{competencias.idCompetencias}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />
-								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.entidades.idEntidades}"/>
+								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.idCompetencias}"/>
 							</p:selectOneMenu>
 							
 							<p:outputLabel value="Selecione o Órgão/Entidade:" />
@@ -76,7 +76,7 @@
 						<h:panelGroup id="select_orgao" styleClass="column" rendered="#{solicitacao.form}" style="margin-top: 15px;">
 							<p style="margin:0">Selecione diretamento o órgão a qual deseja direcionar a manifestação.</p>
 							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold" />
-   				            <p:selectOneMenu id="orgao" value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" style="width:300px" styleClass="field selectField" filter="true" filterMatchMode="contains">
+   				            <p:selectOneMenu id="orgao"  value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" style="width:300px" styleClass="field selectField" filter="true" filterMatchMode="contains">
                                 <p:ajax event="change" listener="#{competencias.filtrarCompetenciasEntidade}" update = "select_orgao" />
 <!--                                 <p:ajax listener="#{solicitacao.definirEntidadeDeSolicitacao}"/> -->
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
@@ -84,9 +84,9 @@
 							</p:selectOneMenu>
 							
 							<p:outputLabel value="Assunto:" for="assunto2" />
-	        				<p:selectOneMenu id="assunto2" value="#{competencias.idAcoes}" disabled="#{!(solicitacao.form)}" styleClass="field buscaField">
+	        				<p:selectOneMenu id="assunto2" value="#{competencias.idCompetencias}" disabled="#{!(solicitacao.form)}" styleClass="field buscaField">
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
-								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.acoes.titulo}" itemValue="#{comp.acoes.idAcoes}"/>
+								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.idCompetencias}"/>
 							</p:selectOneMenu> 
 						</h:panelGroup>
 						
@@ -97,6 +97,7 @@
 					<p:commandLink class="botaoLink" action="#{solicitacao.questionarioParaSolicitacao}">
 						<h:outputText value="Continuar" />
 						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
+						<f:setPropertyActionListener value="#{competencias.idCompetencias}" target="#{solicitacao.idCompetencias}" />
 						<f:setPropertyActionListener value="#{competencias.idEntidade}" target="#{solicitacao.idEntidades}"/>
 						
 						<i class="fa fa-arrow-right" style="margin-left: 5px" />

@@ -133,7 +133,6 @@ public class Relatorios {
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);
 		DrawBarChart model = new DrawBarChart();
 		return model.createBarModel(tipo[(int)tipoDados-1], dadosChart, tipoDados, valorMaior);
-		
 	}
 
 	public HorizontalBarChartModel desenharBarChartHorizontal( long tipoDados) {

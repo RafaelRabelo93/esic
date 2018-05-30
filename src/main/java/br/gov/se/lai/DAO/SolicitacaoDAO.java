@@ -204,8 +204,8 @@ public class SolicitacaoDAO {
 	public static List<String> listarPorFederacao(String tipo, String periodo) {
 		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
 					"JOIN  solicitacao.cidadao as cidadao "+
-					"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-					"AND solicitacao.dataIni LIKE '"+periodo+"' "+
+					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 					"AND solicitacao.tipo = 'Informação'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
@@ -218,9 +218,9 @@ public class SolicitacaoDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Cidadao> listarCidadao(String tipo, String periodo) {
 		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
-				"JOIN Cidadao as cidadao "+
-				"WHERE solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-				"AND solicitacao.dataIni LIKE '"+periodo+"' "+
+				"INNER JOIN Cidadao as cidadao "+
+				"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
@@ -230,8 +230,8 @@ public class SolicitacaoDAO {
 	public static List<String> listarAssuntos(String tipo, String periodo) {
 		String HQL= "SELECT solicitacao.acoes.titulo FROM  Solicitacao as solicitacao "+
 				"JOIN  solicitacao.acoes as acoes "+
-				"WHERE solicitacao.acoes.idAcoes = acoes.idAcoes "+
-				"AND solicitacao.dataIni LIKE '"+periodo+"' "+
+				"ON solicitacao.acoes.idAcoes = acoes.idAcoes "+
+				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}	

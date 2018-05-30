@@ -532,9 +532,11 @@
 								
 								<div id="Avalia" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Avaliar resposta da manifestação:" for="avalia" style="margin-bottom: 5px" />
-									<p:rating id="avalia" cancel="false" styleClass="abaField encaminharField"/>
+									<p:rating id="avalia" cancel="false" value="#{avaliacao.nota}" styleClass="abaField encaminharField"/>
+									<p:rating id="avaliac" cancel="false" value="#{solicitacao.solicitacao.avaliacao}" styleClass="abaField encaminharField"/>
 									
-									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{avaliacao.avaliarUltimaMensagem()}"	update="form:solicitacao_panel ">
+										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{avaliacao.solicitacao}" />
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
 									</p:commandLink>

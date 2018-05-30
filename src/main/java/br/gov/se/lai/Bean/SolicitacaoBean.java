@@ -37,6 +37,7 @@ import org.primefaces.model.UploadedFile;
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
+import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -63,6 +64,7 @@ public class SolicitacaoBean implements Serializable {
 
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
+	private int idCompetencias;
 	private List<Solicitacao> filteredSolicitacoes;
 	private List<Solicitacao> solicitacoesFiltradas;
 	private static List<Mensagem> mensagensSolicitacao;
@@ -131,7 +133,7 @@ public class SolicitacaoBean implements Serializable {
 		}
 
 		// Salvar Solicitação
-		this.solicitacao.setAcoes(getAcoesTemporaria());
+//		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setProtocolo(gerarProtocolo());
@@ -693,13 +695,13 @@ public class SolicitacaoBean implements Serializable {
 	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
 	public String questionarioParaSolicitacao() {
-		if (idAcao == 0 || idEntidades == 0) {
+		if (idCompetencias == 0 || idEntidades == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não permite campos vazios.", "Preencha os campos."));
 			return null;
 		} else {
 			solicitacao.setEntidades(EntidadesDAO.find(idEntidades));
-			solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
+			solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 			return "/Solicitacao/solicitacao.xhtml";
 		}
 	}
@@ -932,6 +934,11 @@ public class SolicitacaoBean implements Serializable {
 		RelatorioDinamico rel = new RelatorioDinamico();
 		return "/Relatorios/relatorios-especificos.xhtml";
 	}
+	
+	
+
+	
+	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1204,5 +1211,14 @@ public class SolicitacaoBean implements Serializable {
 	public void setModoSigilo(boolean modoSigilo) {
 		this.modoSigilo = modoSigilo;
 	}
+
+	public int getIdCompetencias() {
+		return idCompetencias;
+	}
+
+	public void setIdCompetencias(int idCompetencias) {
+		this.idCompetencias = idCompetencias;
+	}
+
 
 }

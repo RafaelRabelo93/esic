@@ -2,6 +2,7 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +24,7 @@ import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "entidades")
 @SessionScoped
-public class EntidadesBean implements Serializable, PermissaoUsuario{
+public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable<Entidades>{
 	
 	/**
 	 * 
@@ -49,7 +50,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		entidades = new Entidades();
 		todasEntidades = EntidadesDAO.list();
-		todasEntidadesAtivas = EntidadesDAO.listAtivas();
+		todasEntidadesAtivas = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		listOrgaosAtivos = EntidadesDAO.listOrgaos();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
@@ -282,6 +283,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setListOrgaosAtivos(List<Entidades> listOrgaosAtivos) {
 		this.listOrgaosAtivos = listOrgaosAtivos;
+	}
+
+	@Override
+	public int compareTo(Entidades e1) {
+		return this.entidades.getSigla().compareTo(e1.getSigla());
 	}
 	
 	

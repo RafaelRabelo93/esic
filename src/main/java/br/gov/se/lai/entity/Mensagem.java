@@ -32,7 +32,7 @@ public class Mensagem implements java.io.Serializable {
 	private String texto;
 	private Date data;
 	private short tipo;
-	private float nota;
+	private Integer nota;
 	private Set<Anexo> anexos = new HashSet<Anexo>(0);
 
 	public Mensagem() {
@@ -114,11 +114,11 @@ public class Mensagem implements java.io.Serializable {
 
 	
 	@Column(name = "nota")
-	public float getNota() {
+	public Integer getNota() {
 		return nota;
 	}
 
-	public void setNota(float nota) {
+	public void setNota(Integer nota) {
 		this.nota = nota;
 	}
 

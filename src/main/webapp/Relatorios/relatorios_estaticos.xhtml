@@ -116,30 +116,7 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
-						<p:outputLabel value="Relatório de Assuntos"/>
-						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
-					        <p:fileDownload value="#{chartExport.file}" />
-					        <i class="fa fa-download" />
-					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="width:700px;height:500px"/>
-						<p:separator styleClass="separator2"/>	
-
-						<p:outputLabel value="Relatório de Tipo de Pessoa"/>
-						<h:commandLink onclick="exportChartBean('chartPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
-					        <p:fileDownload value="#{chartExport.file}" />
-					        <i class="fa fa-download" />
-					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartPessoa"  style="width:700px;height:500px"/>
-						<p:separator styleClass="separator2"/>
-
-						<p:outputLabel value="Relatório de Estado"/>
-						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
-					        <p:fileDownload value="#{chartExport.file}" />
-					        <i class="fa fa-download" />
-					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" style="width:700px;height:500px"/>
-						<p:separator styleClass="separator2"/>
-						
+		
 				</h:panelGroup>
 
 	<script type="text/javascript">

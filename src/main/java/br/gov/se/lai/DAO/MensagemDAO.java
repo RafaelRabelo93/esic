@@ -77,4 +77,10 @@ public class MensagemDAO {
 		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<Mensagem> listMensagensTipo(int idSolicitacao, short tipo){
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = "+tipo+")";
+		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
+	}
+	
 }
