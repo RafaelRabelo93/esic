@@ -89,6 +89,7 @@ public class SolicitacaoBean implements Serializable {
 	private Acoes acoesTemporaria;
 	private boolean modoAnonimo;
 	private boolean modoSigilo;
+	private boolean modoIdentificavel;
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
@@ -128,19 +129,19 @@ public class SolicitacaoBean implements Serializable {
 		gerarDataFim(); // caso seja Elogio/Sugestão
 		if (solicitacao.getTipo().equals("Denúncia")) {
 			settarCidadaoDenuncia(); // Caso específico para Denuncia
+			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 		} else {
 			settarCidadao();
+			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 		}
 
 		// Salvar Solicitação
-//		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
 
 		try {
-
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 
 			if (solicitacao.getTipo().equals("Solicitação")) {
@@ -197,6 +198,7 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		CompetenciasBean.idAcoes = 0;
 		CompetenciasBean.idEntidade = 0;
+		idCompetencias = 0;
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;
@@ -660,25 +662,45 @@ public class SolicitacaoBean implements Serializable {
 		solicitacao.setTipo("Denúncia");
 		setModoAnonimo(false);
 		setModoSigilo(true);
+		setModoIdentificavel(false);
 
-		CompetenciasBean.idAcoes = 0;
+		CompetenciasBean.idCompetencias = 0;
 		AcoesBean.carregarLista();
 		return "/Solicitacao/solicitacao.xhtml?faces-redirect=true";
 	}
 	
-	public void DenunciaOuSigilo(AjaxBehaviorEvent e) {
+	public void DenunciaOuSigiloOuIdentificavel(AjaxBehaviorEvent e) {
 		
 		if(modoAnonimo) {
 			if(modoSigilo) {
 				setModoSigilo(false);
 			}
+			
+			if(modoIdentificavel) {
+				setModoIdentificavel(false);
+			}
 		}
 	}
 	
-	public void SigiloOuDenuncia(AjaxBehaviorEvent e) {
+	public void SigiloOuDenunciaOuIdentificavel(AjaxBehaviorEvent e) {
 		if(modoSigilo) {
 			if(modoAnonimo) {
 				setModoAnonimo(false);
+			}
+			if (modoIdentificavel) {
+				setModoIdentificavel(false);
+			}
+		}
+	}
+
+	public void IdentificavelOuSigiloOuDenuncia(AjaxBehaviorEvent e) {
+		if(modoIdentificavel) {
+			if(modoAnonimo) {
+				setModoAnonimo(false);
+			}
+			
+			if (modoSigilo) {
+				setModoSigilo(false);
 			}
 		}
 	}
@@ -1220,5 +1242,12 @@ public class SolicitacaoBean implements Serializable {
 		this.idCompetencias = idCompetencias;
 	}
 
+	public boolean isModoIdentificavel() {
+		return modoIdentificavel;
+	}
+
+	public void setModoIdentificavel(boolean modoIdentificavel) {
+		this.modoIdentificavel = modoIdentificavel;
+	}
 
 }

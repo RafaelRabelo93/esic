@@ -148,9 +148,9 @@
 							</p:column>
 
 							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}"
-								filterBy="#{slt.acoes.titulo}" filterMatchMode="contains"
+								filterBy="#{slt.competencias.acoes.titulo}" filterMatchMode="contains"
 								filterable="false">
-								<h:outputText value="#{slt.acoes.titulo}" />
+								<h:outputText value="#{slt.competencias.acoes.titulo}" />
 							</p:column>
 
 							<p:column headerText="Status" width="100" sortBy="#{slt.status}"
@@ -255,8 +255,11 @@
 							<h:outputText value="Título:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.titulo}" />
 							
+							<h:outputText value="Tema:" style="color:#1a568c; font-size:18px" />
+							<h:outputText value="#{solicitacao.solicitacao.competencias.acoes.titulo}" />
+
 							<h:outputText value="Assunto:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.acoes.titulo}" />
+							<h:outputText value="#{solicitacao.solicitacao.competencias.descricao}" />
 
 							<h:outputText value="Órgão / Entidade:"	style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />

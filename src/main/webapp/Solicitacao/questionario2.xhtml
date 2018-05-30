@@ -43,7 +43,7 @@
 							<p style="margin:0">Realize a busca do órgão a ser realizado a manifestação de acordo com o assunto e categoria desejados.</p>
 							<p:outputLabel value="Buscar Órgão/Entidade:" style="font-weight: bold" />
 						
-							<p:outputLabel value="Tema:" for="assunto" />
+							<p:outputLabel value="Tema:" for="tema" />
 	        				<p:selectOneMenu id="tema" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "assunto entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
@@ -51,7 +51,7 @@
 							</p:selectOneMenu> 
 							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
 
-							<p:outputLabel value="Assunto:" for="cat" />
+							<p:outputLabel value="Assunto:" for="assunto" />
 							<p:selectOneMenu id="assunto" value="#{competencias.idCompetencias}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />

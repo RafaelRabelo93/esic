@@ -37,7 +37,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	public static int idAcoes;
-	public int idCompetencias;
+	public static int idCompetencias;
 	public static int idEntidade;
 	private Entidades ent;
 	private String novaAcao;
@@ -48,7 +48,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		listCompetencias= new ArrayList<Competencias>();
+		listCompetencias= new ArrayList<Competencias>(CompetenciasDAO.list());
 		listCompetencias2= new ArrayList<Competencias>();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
@@ -340,12 +340,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		listEntidades = NovalistEntidades;
 	}
 
-	public  int getIdCompetencias() {
+	public int getIdCompetencias() {
 		return idCompetencias;
 	}
 
-	public  void setIdCompetencias(int idCompetencias) {
-		this.idCompetencias = idCompetencias;
+	public  void setIdCompetencias(int novoIdCompetencias) {
+		idCompetencias = novoIdCompetencias;
 	}
 	
 	
