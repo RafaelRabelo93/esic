@@ -333,8 +333,8 @@
 											style="margin-left:1vw; white-space: pre-wrap;" />
 											
 											<h:form>
-												<p:commandButton value="Anexo" ajax="false" rendered="#{anexo.verificaExistencia(msg)}" actionListener="#{anexo.downloadArquivo(msg)}">
-													<p:fileDownload value="#{anexo.fileDownload}" />
+												<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
+													<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
 												</p:commandButton>
 										</h:form>
 									</p:outputPanel>
@@ -556,10 +556,11 @@
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' }"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
+<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}" -->
 						</p:commandLink>
 						
 						<!-- Botão Reformula -->

@@ -138,7 +138,7 @@ public class SolicitacaoDAO {
 							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
-							query += ")";
+							query += ") AND slt.tipo != 'Denúncia')";
 						}
 					}
 					
@@ -173,7 +173,7 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorTipoStatus(String tipo, String status) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"' AND slt.tipo = "+tipo,em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"' AND slt.tipo = '"+tipo+"'",em)); 
 	}	
 	
 	@SuppressWarnings("unchecked")

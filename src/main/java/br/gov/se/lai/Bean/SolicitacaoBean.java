@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.fileupload.RequestContext;
+import org.dom4j.VisitorSupport;
 import org.omg.CORBA.Request;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
@@ -102,6 +103,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoPendente;
 	public static int solicitacaoNegada;
 	public static int solicitacaoRespondida;
+	public static int solicitacaoDenuncia;
 
 	@PostConstruct
 	public void init() {
@@ -442,6 +444,7 @@ public class SolicitacaoBean implements Serializable {
 	 * solicitações relacionadas ao cidadão.
 	 */
 	public String verificaCidadaoConsulta() {
+		finalizarSolicitacao();
 		if (userBean.getUsuario().getPerfil() == 3
 				|| userBean.getUsuario().getPerfil() == 4 && !userBean.isPerfilAlterarCidadaoResponsavel()) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -604,6 +607,22 @@ public class SolicitacaoBean implements Serializable {
 
 		aux = SolicitacaoDAO.listStatus("Negada");
 		solicitacaoNegada = aux != null ? aux.size() : 0;
+		
+		
+		if(visualizaDenunciaNaBoard()) {
+				aux = SolicitacaoDAO.listPorTipo("Denúncia");
+				solicitacaoTotal += aux != null ? aux.size() : 0;
+				solicitacaoDenuncia = aux != null ? aux.size() : 0;
+				
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
+				solicitacaoRespondida += aux != null ? aux.size() : 0;
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Respondida");
+				solicitacaoRespondida += aux != null ? aux.size() : 0;
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
+				solicitacaoPendente += aux != null ? aux.size() : 0;
+			
+		}
+		
 	}
 
 	public static void addQuantidadeSolicitacaoTotal() {
@@ -638,6 +657,27 @@ public class SolicitacaoBean implements Serializable {
 		solicitacaoRespondida--;
 	}
 
+	public static boolean visualizaDenunciaNaBoard() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		short perfil = u.getUsuario().getPerfil();
+		boolean perfilValido = perfil == (short)2 || perfil == (short) 4 ||perfil == (short)5 || perfil == (short)6 ? true : false;
+		
+		List<Responsavel> r = ResponsavelDAO.findResponsavelUsuarioAtivo(u.getUsuario().getIdUsuario());
+		boolean respValido = false;
+		String nomeDaEntidade = "Controladoria Geral do Estado";
+		String siglaEntidade =  "CGE";
+		if(!r.isEmpty()) {
+			for(Responsavel resp : r) {
+				if(resp.getNivel() == (short)3 &&
+				   resp.getEntidades().getIdEntidades() == (EntidadesDAO.FindSigla(siglaEntidade).get(0).getIdEntidades())) {
+					respValido = true;
+					break;
+				}
+			}
+		}
+		
+		return (perfilValido && respValido);
+	}
 	public void visualizouSolicitacao(AjaxBehaviorEvent e) {
 		if (((userBean.getUsuario().getPerfil() == (short) 2)
 				|| (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
@@ -1224,6 +1264,15 @@ public class SolicitacaoBean implements Serializable {
 	@SuppressWarnings("static-access")
 	public void setSolicitacaoRespondida(int solicitacaoRespondida) {
 		this.solicitacaoRespondida = solicitacaoRespondida;
+	}
+	
+	public int getSolicitacaoDenuncia() {
+		return solicitacaoDenuncia;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoDenuncia(int solicitacaoDenuncia) {
+		this.solicitacaoDenuncia = solicitacaoDenuncia;
 	}
 
 	public boolean isModoSigilo() {

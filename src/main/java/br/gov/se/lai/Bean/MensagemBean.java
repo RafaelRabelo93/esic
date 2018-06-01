@@ -72,7 +72,11 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 		if(verificaPermissao()) {
 			
-			mensagem.setUsuario(usuario);
+			if(usuario.getIdUsuario() != null) {
+				mensagem.setUsuario(usuario);
+			}else {
+				mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			}
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
 			mensagem.setTipo((short)2);

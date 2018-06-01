@@ -63,6 +63,10 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		if(verificaPermissao()) {
 			for (Competencias comp : listCompetencias2) {
 				CompetenciasDAO.saveOrUpdate(comp);
+				if(comp.getAcoes().getStatus().equalsIgnoreCase("Não-Vinculada")) {
+					comp.getAcoes().setStatus("Vinculada");
+					AcoesDAO.saveOrUpdate(comp.getAcoes());
+				}
 			}	
 		}
 		
