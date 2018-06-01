@@ -172,6 +172,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		entidades = new Entidades();
 		return  "/Cadastro/cad_entidades.xhtml?faces-redirect=true";
 	}
+	
+    public String redirecionarAvaliacao() {
+        return "/Consulta/consulta_avaliacao.xhtml";
+    }
+
 //GETTERS E SETTERS ==============================================	
 	
 	
