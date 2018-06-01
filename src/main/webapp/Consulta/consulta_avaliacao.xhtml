@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form style="padding: 1.5vw 15vw">
+				<h:panelGroup styleClass="inline">
+					<h:outputText value="Avaliação " style="color:#1a568c; font-size:25px; padding-bottom: 2vw; align-self: center; margin-right: .5em" />
+					<h:outputText value="#{entidades.entidades.nome}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; align-self: center" />
+				</h:panelGroup>
+				<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
+								
+				<p:dataList type="definition" value="" itemType="none" paginator="true" rows="20" style="width:100%">
+			        <f:facet name="description">
+			        	<h:panelGroup styleClass="inline">
+							<h:outputText value="Média: " style="font-size:25px; margin-right: .5em" />
+<!-- 			        		<p:rating readonly="true" value="" /> -->
+							<h:outputText value="4.5" style="font-size:25px;" />
+			        	</h:panelGroup>
+			        </f:facet>
+			        
+			        <h:panelGroup styleClass="column" style="padding: 20px">
+				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
+			        		<h:outputText value="Solicitação: (protocolo) Título" />
+			        		
+					        <h:panelGroup styleClass="inline">
+			        			<h:outputText value="Nota: (protocolo) Título" />
+			        			<p:rating readonly="true" value="" />
+			        		</h:panelGroup>
+			        	</h:panelGroup>
+			        	
+			        	<p>"</p>
+		        		<h:outputText value=" Comentário " />
+			        	<p>"</p>
+			        	
+			        </h:panelGroup>
+			    </p:dataList>
+					
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

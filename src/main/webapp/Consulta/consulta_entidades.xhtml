@@ -73,8 +73,7 @@
 									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">
 									<i class="fa fa-pencil-square-o" />
-									<f:setPropertyActionListener value="#{orgaos}"
-										target="#{entidades.entidades}" />
+									<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
 								</p:commandLink>
 							</p:column>
 	
@@ -93,6 +92,14 @@
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-bar-chart" />
 									<f:setPropertyActionListener value="#{orgaos}" target="#{relatorioDinamico.ent}" />
+								</p:commandLink>
+							</p:column>
+							
+							<p:column headerText="Avaliação" width="90" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" action="#{entidades.redirecionarAvaliacao()}" 
+										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}">
+									<i class="fa fa-star" />
+									<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>

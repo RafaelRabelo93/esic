@@ -1834,6 +1834,29 @@ td.Prorrogada > .statusBox  {
 	color: #3078cf; 
 }
 
+.rating-2x > .ui-rating-star a, .ui-rating-cancel a {
+	background: url("#{resource['img/rating.png']}") no-repeat 0 0 !important;
+	width: 50px !important;
+	height: 50px !important;
+}
+
+
+.rating-2x > .ui-rating-star a {
+	background-position: 0 -100px !important;
+}
+
+.rating-2x > .ui-rating-star-on a {
+	background-position: 0 -150px !important;
+}
+
+.rating-2x > .ui-rating-cancel a {
+	background-position: 0 0 !important;
+}
+
+.rating-2x > .ui-rating-cancel-hover a {
+	background-position: 0 -50px !important;
+}
+
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
 /* ========================== */
