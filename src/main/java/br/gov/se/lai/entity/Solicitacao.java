@@ -30,7 +30,7 @@ public class Solicitacao implements java.io.Serializable {
 	private short instancia;
 	private Cidadao cidadao;
 	private Entidades entidades;
-	private Acoes acoes;
+	private Competencias competencias;
 	private Date dataIni;
 	private String status;
 	private Date datafim;
@@ -43,7 +43,7 @@ public class Solicitacao implements java.io.Serializable {
 	private boolean visualizada;
 	private boolean sigilo;
 	private Integer formaRecebimento;
-	private float avaliacao;
+	private Integer avaliacao;
 
 	public Solicitacao() {
 	}
@@ -57,7 +57,7 @@ public class Solicitacao implements java.io.Serializable {
 			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento, boolean visualizada) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
-		this.acoes = acoes;
+		this.competencias = competencias;
 		this.dataIni = dataIni;
 		this.dataIni = dataLimite;
 		this.status = status;
@@ -179,13 +179,13 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idAcoes", nullable = false)
-	public Acoes getAcoes() {
-		return acoes;
+	@JoinColumn(name = "idCompetencias", nullable = false)
+	public Competencias getCompetencias() {
+		return competencias;
 	}
 
-	public void setAcoes(Acoes acoes) {
-		this.acoes = acoes;
+	public void setCompetencias(Competencias competencias) {
+		this.competencias = competencias;
 	}
 
 	@Column(name = "instancia", length = 1)
@@ -225,11 +225,11 @@ public class Solicitacao implements java.io.Serializable {
 		this.visualizada = visualizada;
 	}
 
-	public float getAvaliacao() {
+	public Integer getAvaliacao() {
 		return avaliacao;
 	}
 
-	public void setAvaliacao(float avaliacao) {
+	public void setAvaliacao(Integer avaliacao) {
 		this.avaliacao = avaliacao;
 	}
 

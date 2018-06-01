@@ -56,7 +56,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private final int constanteTempo = 10;
 	private Usuario usuario;
 	private UploadedFile file;
-	private float nota;
+	private int nota;
 
  
 	@PostConstruct
@@ -72,10 +72,15 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 		if(verificaPermissao()) {
 			
-			mensagem.setUsuario(usuario);
+			if(usuario.getIdUsuario() != null) {
+				mensagem.setUsuario(usuario);
+			}else {
+				mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			}
 			mensagem.setData(new Date(System.currentTimeMillis()));
 			mensagem.setSolicitacao(solicitacao);
 			mensagem.setTipo((short)2);
+			mensagem.setNota(0);
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
 				mensagensSolicitacao.add(mensagem);
 				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
@@ -203,6 +208,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setTexto("Nova solicitacao no sistema.");
 			break;
 		}
+		mensagem.setNota(0);
 		mensagem.setTipo((short)tipoAux);
 		try {
 			MensagemDAO.saveOrUpdate(mensagem);
@@ -243,11 +249,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	public void avaliarResposta(Mensagem mensagem) {
-		if(mensagem.getTipo().equals((short)2)) {
-			mensagem.setNota(nota);
-		}
-	}
+
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
@@ -338,12 +340,5 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		MensagemBean.mensagensTramites = mensagensTramites;
 	}
 
-	public float getNota() {
-		return nota;
-	}
-
-	public void setNota(float nota) {
-		this.nota = nota;
-	}	
 	
 }

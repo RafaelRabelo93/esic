@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{solicitacao.modoAnonimo}">
+<h:body >
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -52,7 +52,7 @@
 								<p:selectOneRadio id="modoAnonimo" value="#{solicitacao.modoAnonimo}"
 									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
 									<f:selectItem itemValue="true" />
-									<p:ajax update="sigilo" listener="#{solicitacao.DenunciaOuSigilo}" />
+									<p:ajax update="sigilo identificacao" listener="#{solicitacao.DenunciaOuSigiloOuIdentificavel}" />
 								</p:selectOneRadio>
 								<h:outputLabel value="Realizar denúncia anonimamente" style="margin:10px 0 0 0"/>
 							</h:panelGroup>
@@ -61,26 +61,31 @@
 								<p:selectOneRadio id="modoSigilo" value="#{solicitacao.modoSigilo}" 									
 									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
 									<f:selectItem itemValue="true" />
-									<p:ajax update="anonimo" listener="#{solicitacao.SigiloOuDenuncia}" />
+									<p:ajax update="anonimo identificacao" listener="#{solicitacao.SigiloOuDenunciaOuIdentificavel}" />
 								</p:selectOneRadio>
 								<h:outputLabel value="Realizar denúncia de forma sigilosa" style="margin:10px 0 0 0"/>
 							</h:panelGroup>
-							
-							<h:panelGroup styleClass="inline" >
-							
+
+							<h:panelGroup id="identificacao" styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
+								<p:selectOneRadio id="identificacaoMode" value="#{solicitacao.modoIdentificavel}" 									
+									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
+									<f:selectItem itemValue="true" />
+									<p:ajax update="anonimo sigilo" listener="#{solicitacao.IdentificavelOuSigiloOuDenuncia}" />
+								</p:selectOneRadio>
+								<h:outputLabel value="Realizar denúncia de forma identificavél" style="margin:10px 0 0 0"/>
 							</h:panelGroup>
 					        
 						</h:panelGroup>
 
-						<p:outputLabel value="Assunto:" />
-						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
-						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
+						<p:outputLabel value="Tema:" />
+						<h:outputText id="tema" value="#{solicitacao.solicitacao.competencias.acoes.titulo}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
+						<p:selectOneMenu id="assDen" value="#{solicitacao.idCompetencias}"
 							disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
 							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"  >
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-							<f:selectItems value="#{acoes.acoes}" var="acoesDen"
-								itemLabel="#{acoesDen.titulo}"
-								itemValue="#{acoesDen.idAcoes}" />
+							<f:selectItems value="#{competencias.listCompetencias}" var="compDen"
+								itemLabel="#{compDen.descricao}"
+								itemValue="#{compDen.idCompetencias}" />
 						</p:selectOneMenu>
 						
 						 <h:panelGroup styleClass="column"  rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
@@ -91,6 +96,10 @@
 								<f:selectItems value="#{entidades.todasEntidadesAtivas}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
 							</p:selectOneMenu>
 						</h:panelGroup>
+
+						<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	/>
+						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.competencias.descricao}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
+
 
 						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />

@@ -225,7 +225,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil()) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil() || usuarioBean.verificaAdmin()) {
 			return true;
 		}else {
 			return false;

@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.fileupload.RequestContext;
+import org.dom4j.VisitorSupport;
 import org.omg.CORBA.Request;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
@@ -37,6 +38,7 @@ import org.primefaces.model.UploadedFile;
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
+import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
@@ -63,6 +65,7 @@ public class SolicitacaoBean implements Serializable {
 
 	private List<Solicitacao> solicitacoes;
 	private int idAcao;
+	private int idCompetencias;
 	private List<Solicitacao> filteredSolicitacoes;
 	private List<Solicitacao> solicitacoesFiltradas;
 	private static List<Mensagem> mensagensSolicitacao;
@@ -87,6 +90,7 @@ public class SolicitacaoBean implements Serializable {
 	private Acoes acoesTemporaria;
 	private boolean modoAnonimo;
 	private boolean modoSigilo;
+	private boolean modoIdentificavel;
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
@@ -99,6 +103,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoPendente;
 	public static int solicitacaoNegada;
 	public static int solicitacaoRespondida;
+	public static int solicitacaoDenuncia;
 
 	@PostConstruct
 	public void init() {
@@ -126,19 +131,19 @@ public class SolicitacaoBean implements Serializable {
 		gerarDataFim(); // caso seja Elogio/Sugestão
 		if (solicitacao.getTipo().equals("Denúncia")) {
 			settarCidadaoDenuncia(); // Caso específico para Denuncia
+			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 		} else {
 			settarCidadao();
+			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 		}
 
 		// Salvar Solicitação
-		this.solicitacao.setAcoes(getAcoesTemporaria());
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 1);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
 
 		try {
-
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 
 			if (solicitacao.getTipo().equals("Solicitação")) {
@@ -195,6 +200,7 @@ public class SolicitacaoBean implements Serializable {
 		CompetenciasBean.listEntidades = null;
 		CompetenciasBean.idAcoes = 0;
 		CompetenciasBean.idEntidade = 0;
+		idCompetencias = 0;
 		acoesTemporaria = null;
 		idAcao = 0;
 		formaRecebimento = 0;
@@ -438,6 +444,7 @@ public class SolicitacaoBean implements Serializable {
 	 * solicitações relacionadas ao cidadão.
 	 */
 	public String verificaCidadaoConsulta() {
+		finalizarSolicitacao();
 		if (userBean.getUsuario().getPerfil() == 3
 				|| userBean.getUsuario().getPerfil() == 4 && !userBean.isPerfilAlterarCidadaoResponsavel()) {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -600,6 +607,22 @@ public class SolicitacaoBean implements Serializable {
 
 		aux = SolicitacaoDAO.listStatus("Negada");
 		solicitacaoNegada = aux != null ? aux.size() : 0;
+		
+		
+		if(visualizaDenunciaNaBoard()) {
+				aux = SolicitacaoDAO.listPorTipo("Denúncia");
+				solicitacaoTotal += aux != null ? aux.size() : 0;
+				solicitacaoDenuncia = aux != null ? aux.size() : 0;
+				
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
+				solicitacaoRespondida += aux != null ? aux.size() : 0;
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Respondida");
+				solicitacaoRespondida += aux != null ? aux.size() : 0;
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
+				solicitacaoPendente += aux != null ? aux.size() : 0;
+			
+		}
+		
 	}
 
 	public static void addQuantidadeSolicitacaoTotal() {
@@ -634,6 +657,27 @@ public class SolicitacaoBean implements Serializable {
 		solicitacaoRespondida--;
 	}
 
+	public static boolean visualizaDenunciaNaBoard() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		short perfil = u.getUsuario().getPerfil();
+		boolean perfilValido = perfil == (short)2 || perfil == (short) 4 ||perfil == (short)5 || perfil == (short)6 ? true : false;
+		
+		List<Responsavel> r = ResponsavelDAO.findResponsavelUsuarioAtivo(u.getUsuario().getIdUsuario());
+		boolean respValido = false;
+		String nomeDaEntidade = "Controladoria Geral do Estado";
+		String siglaEntidade =  "CGE";
+		if(!r.isEmpty()) {
+			for(Responsavel resp : r) {
+				if(resp.getNivel() == (short)3 &&
+				   resp.getEntidades().getIdEntidades() == (EntidadesDAO.FindSigla(siglaEntidade).get(0).getIdEntidades())) {
+					respValido = true;
+					break;
+				}
+			}
+		}
+		
+		return (perfilValido && respValido);
+	}
 	public void visualizouSolicitacao(AjaxBehaviorEvent e) {
 		if (((userBean.getUsuario().getPerfil() == (short) 2)
 				|| (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
@@ -658,25 +702,45 @@ public class SolicitacaoBean implements Serializable {
 		solicitacao.setTipo("Denúncia");
 		setModoAnonimo(false);
 		setModoSigilo(true);
+		setModoIdentificavel(false);
 
-		CompetenciasBean.idAcoes = 0;
+		CompetenciasBean.idCompetencias = 0;
 		AcoesBean.carregarLista();
 		return "/Solicitacao/solicitacao.xhtml?faces-redirect=true";
 	}
 	
-	public void DenunciaOuSigilo(AjaxBehaviorEvent e) {
+	public void DenunciaOuSigiloOuIdentificavel(AjaxBehaviorEvent e) {
 		
 		if(modoAnonimo) {
 			if(modoSigilo) {
 				setModoSigilo(false);
 			}
+			
+			if(modoIdentificavel) {
+				setModoIdentificavel(false);
+			}
 		}
 	}
 	
-	public void SigiloOuDenuncia(AjaxBehaviorEvent e) {
+	public void SigiloOuDenunciaOuIdentificavel(AjaxBehaviorEvent e) {
 		if(modoSigilo) {
 			if(modoAnonimo) {
 				setModoAnonimo(false);
+			}
+			if (modoIdentificavel) {
+				setModoIdentificavel(false);
+			}
+		}
+	}
+
+	public void IdentificavelOuSigiloOuDenuncia(AjaxBehaviorEvent e) {
+		if(modoIdentificavel) {
+			if(modoAnonimo) {
+				setModoAnonimo(false);
+			}
+			
+			if (modoSigilo) {
+				setModoSigilo(false);
 			}
 		}
 	}
@@ -693,13 +757,13 @@ public class SolicitacaoBean implements Serializable {
 	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
 	public String questionarioParaSolicitacao() {
-		if (idAcao == 0 || idEntidades == 0) {
+		if (idCompetencias == 0 || idEntidades == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não permite campos vazios.", "Preencha os campos."));
 			return null;
 		} else {
 			solicitacao.setEntidades(EntidadesDAO.find(idEntidades));
-			solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
+			solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 			return "/Solicitacao/solicitacao.xhtml";
 		}
 	}
@@ -932,6 +996,11 @@ public class SolicitacaoBean implements Serializable {
 		RelatorioDinamico rel = new RelatorioDinamico();
 		return "/Relatorios/relatorios-especificos.xhtml";
 	}
+	
+	
+
+	
+	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1196,6 +1265,15 @@ public class SolicitacaoBean implements Serializable {
 	public void setSolicitacaoRespondida(int solicitacaoRespondida) {
 		this.solicitacaoRespondida = solicitacaoRespondida;
 	}
+	
+	public int getSolicitacaoDenuncia() {
+		return solicitacaoDenuncia;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoDenuncia(int solicitacaoDenuncia) {
+		this.solicitacaoDenuncia = solicitacaoDenuncia;
+	}
 
 	public boolean isModoSigilo() {
 		return modoSigilo;
@@ -1203,6 +1281,22 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setModoSigilo(boolean modoSigilo) {
 		this.modoSigilo = modoSigilo;
+	}
+
+	public int getIdCompetencias() {
+		return idCompetencias;
+	}
+
+	public void setIdCompetencias(int idCompetencias) {
+		this.idCompetencias = idCompetencias;
+	}
+
+	public boolean isModoIdentificavel() {
+		return modoIdentificavel;
+	}
+
+	public void setModoIdentificavel(boolean modoIdentificavel) {
+		this.modoIdentificavel = modoIdentificavel;
 	}
 
 }

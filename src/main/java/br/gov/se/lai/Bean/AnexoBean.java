@@ -136,10 +136,11 @@ public class AnexoBean  implements Serializable {
 	/**
 	 * Função de download de arquivo.
 	 * @param msg
+	 * @return 
 	 */
 	
 	
-	public void downloadArquivo(Mensagem msg) {	
+	public StreamedContent downloadArquivo(Mensagem msg) {	
 		try {
 			File file = downloadAnexo(msg);
 			if (file != null) {
@@ -147,9 +148,13 @@ public class AnexoBean  implements Serializable {
 				String contentType = Files.probeContentType(file.toPath());
 				String[] extensao = contentType.split("/")[1].split("-");
 				fileDownload = new DefaultStreamedContent(in, contentType, "download." + extensao[extensao.length - 1]);
+				return fileDownload;
+			}else {
+				return null;
 			}
 		} catch (IOException e) {
 			System.out.println("Erro:"+ e.getMessage());
+			return null;
 		}
     }
 
