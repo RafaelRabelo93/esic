@@ -45,10 +45,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	private String estado;
 	private String cidade;
 	private String cep;
-	private String tel;
 	private UsuarioBean usuarioBean;
 	private int renda;
 	private String numero;
+	private String telefone;
+	private String celular;
 	private String mensagemErro;
 	private String mensagemErro2;
 
@@ -74,6 +75,24 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 			
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
+//			cidadao.setTelefone(telefone);
+//			cidadao.setCelular(celular);
+			
+			try {
+				if (!getTelefone().isEmpty()) {
+					cidadao.setTelefone(telefone);
+				}
+			} catch (NullPointerException e) {
+				cidadao.setTelefone(null);
+			}
+			
+			try {
+				if (!getCelular().isEmpty()) {
+					cidadao.setCelular(celular);
+				}
+			} catch (NullPointerException e) {
+				cidadao.setCelular(null);
+			}
 			
 			try {
 				if (!getNumero().isEmpty()) {
@@ -258,6 +277,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		setEndereco(null);
 		setEstado(null);
 		setNumero(null);
+		setTelefone(null);
+		setCelular(null);
 	}
 
 	// GETTERS E SETTERS
@@ -375,14 +396,6 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		this.cep = cep;
 	}
 
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public int getRenda() {
 		return renda;
 	}
@@ -429,6 +442,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 
 	void setMensagemErro2(String mensagemErro2) {
 		this.mensagemErro2 = mensagemErro2;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	

@@ -610,6 +610,16 @@
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
 								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
+						
+						<!-- Botão Avalia -->
+						<p:commandLink id="AvaliaAba"
+							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
+							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
+							disabled="#{solicitacao.solicitacao.status eq 'Aberta'}"
+							styleClass="blankSquareBtn">
+							<i class="fa fa-star-half-o fa-3x" />
+							<h:outputText value="Avaliar resposta" />
+						</p:commandLink>
 
 						<!-- Botão Recurso -->
 						<p:commandLink id="RecursoAba"
@@ -623,16 +633,6 @@
 								target="#{solicitacao.status}" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
 								target="#{solicitacao.solicitacao}" />
-						</p:commandLink>
-						
-						<!-- Botão Avalia -->
-						<p:commandLink id="AvaliaAba"
-							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
-							disabled="#{solicitacao.solicitacao.status eq 'Aberta'}"
-							styleClass="blankSquareBtn">
-							<i class="fa fa-star-half-o fa-3x" />
-							<h:outputText value="Avaliar resposta" />
 						</p:commandLink>
 
 					</h:panelGroup>

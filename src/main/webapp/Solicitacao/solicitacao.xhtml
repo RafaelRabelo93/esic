@@ -87,6 +87,15 @@
 								itemLabel="#{compDen.descricao}"
 								itemValue="#{compDen.idCompetencias}" />
 						</p:selectOneMenu>
+						
+						 <h:panelGroup styleClass="column"  rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
+							 <p:outputLabel value="Orgão/Entidade recebedor: " for="orgaoRec" /> 
+							 <p:selectOneMenu id="orgaoRec" value="#{solicitacao.solicitacao.entidades}" disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="width:300px" styleClass="field selectField" filter="true" filterMatchMode="contains">
+                                <p:ajax event="change" listener="#{competencias.filtrarCompetenciasEntidade}"/>
+								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
+								<f:selectItems value="#{entidades.todasEntidadesAtivas}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
+							</p:selectOneMenu>
+						</h:panelGroup>
 
 						<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	/>
 						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.competencias.descricao}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
@@ -94,9 +103,7 @@
 
 						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />
-							<p:selectOneMenu id="recResp" 
-								value="#{solicitacao.solicitacao.formaRecebimento}"
-								rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
+							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 								<f:selectItem itemLabel="Email" itemValue="2" />
