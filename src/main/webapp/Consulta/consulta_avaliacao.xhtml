@@ -23,28 +23,21 @@
 				</h:panelGroup>
 				<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
 								
-				<p:dataList type="definition" value="" itemType="none" paginator="true" rows="20" style="width:100%">
-			        <f:facet name="description">
-			        	<h:panelGroup styleClass="inline">
-							<h:outputText value="Média: " style="font-size:25px; margin-right: .5em" />
-<!-- 			        		<p:rating readonly="true" value="" /> -->
-							<h:outputText value="4.5" style="font-size:25px;" />
-			        	</h:panelGroup>
-			        </f:facet>
-			        
-			        <h:panelGroup styleClass="column" style="padding: 20px">
+	        	<h:panelGroup styleClass="inline">
+					<h:outputText value="Média: " style="font-size:25px; margin-right: .5em" />
+					<h:outputText value="4.5" style="font-size:25px;" />
+	        	</h:panelGroup>
+				<p:dataList type="definition" value="#{solicitacao.listSolicitacoesAvaliadas(entidades.entidades.idEntidades)}" var="sol" itemType="none" paginator="true" rows="20" style="width:100%">
+			        <h:panelGroup styleClass="column" style="padding: 20px;border-bottom:1px solid silver">
 				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
-			        		<h:outputText value="Solicitação: (protocolo) Título" />
-			        		
+			        		<h:outputText value="Solicitação: (#{sol.protocolo}) #{sol.titulo}" />
 					        <h:panelGroup styleClass="inline">
-			        			<h:outputText value="Nota: (protocolo) Título" />
-			        			<p:rating readonly="true" value="" />
+			        			<h:outputText value="Nota:" style="margin-right:.5em" />
+			        			<p:rating readonly="true" value="#{sol.avaliacao}" />
 			        		</h:panelGroup>
 			        	</h:panelGroup>
 			        	
-			        	<p>"</p>
-		        		<h:outputText value=" Comentário " />
-			        	<p>"</p>
+		        		<h:outputText value="&quot; #{mensagem.mensagemAvaliacao(sol.idSolicitacao)} &quot;" style="margin-top:1em"/>
 			        	
 			        </h:panelGroup>
 			    </p:dataList>

@@ -248,7 +248,17 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagensTramites.add(mensagem);
 	}
 	
-	
+	public static String mensagemAvaliacao (int idSolicitacao) {
+		String texto;
+		List<Mensagem> mensagem = MensagemDAO.listMensagensTipo(idSolicitacao, (short)6);
+		
+		if(mensagem.size() > 0) {
+			texto = mensagem.get(0).getTexto();
+			return texto;
+		}
+		else return texto = "Mensagem não encontrada";
+		
+	}
 
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
