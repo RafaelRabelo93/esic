@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_usuario" styleClass="cad_form">
+			<h:form id="cad_usuario" styleClass="cad_form" rendered="#{usuario.usuario.perfil ne '3' and usuario.usuario.perfil ne '4'}">
 
 				<div class="ficha">
 
@@ -27,13 +27,13 @@
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
 						<p:inputText rendered="#{usuario.usuario.perfil eq '0'}" id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.sugestaoNick(usuario.usuario.nome)}" update="nick" />
+							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>
 						<p:inputText rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
 										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" id="nomeNovo" required="true" value="#{usuario.usuarioNovo.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.sugestaoNick(usuario.usuarioNovo.nome)}" update="nick2" />
+							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuarioNovo.nome)}" update="nick2" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>

@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_acao" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
+			<h:form id="cad_acao" styleClass="cad_form" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel ne '4') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 				<div class="ficha">
 
@@ -41,10 +41,10 @@
 
 					</p:panelGrid>
 
-					<p:commandLink class="botaoLink" id="novaAcao" action="#{acoes.save}" update="@all"
+					<p:commandLink class="botaoLink"  id="novaAcao" action="#{acoes.save()}" update="@all"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}" >
 						<h:outputText value="Cadastrar" />
-						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						<i class="fa fa-check" style="color: white; padding-left: 3px"  />
 					</p:commandLink>
 
 				</div>

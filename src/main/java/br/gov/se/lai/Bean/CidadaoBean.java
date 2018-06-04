@@ -20,8 +20,8 @@ import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "cidadao")
 @SessionScoped
-public class CidadaoBean implements Serializable, PermissaoUsuario{
-	
+public class CidadaoBean implements Serializable, PermissaoUsuario {
+
 	/**
 	 * 
 	 */
@@ -32,6 +32,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private String cpf;
 	private String rg;
 	private String orgaoexp;
+	private String bairro;
+	private String complemento;
 	private Date datanasc;
 	private String sexo;
 	private int escolaridade;
@@ -45,82 +47,174 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 	private int renda;
 	private String numero;
 	private String mensagemErro;
-	
+	private String mensagemErro2;
+
 	@PostConstruct
 	public void init() {
-		cidadao = new Cidadao();	
+		cidadao = new Cidadao();
 	}
-	
+
+	/**
+	 * Função save Salva o perfil de cidadão.
+	 * 
+	 * @return
+	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao() && !cpfCadastrado(cpf) && !rgCadastrado(rg)) {
+		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
+			
 			this.usuario = usuarioBean.getUsuario();
+			
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
 			}
+			
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
+			
 			try {
-				if (getNumero().isEmpty()) { cidadao.setNumero(numero);}
-			}catch (NullPointerException e) { cidadao.setNumero(null);} 
+				if (!getNumero().isEmpty()) {
+					cidadao.setNumero(numero);
+				}
+			} catch (NullPointerException e) {
+				cidadao.setNumero(null);
+			}
+			
 			cidadao.setUsuario(this.usuario);
+			
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
 				usuarioBean.setEmail(cidadao.getEmail());
-				usuario.getCidadaos().add(cidadao);
-				this.usuario.setPerfil((short) 3);
+				// usuario.getCidadaos().add(cidadao);
+				if (ehRepresentanteCidadao(usuario)) {
+					this.usuario.setPerfil((short) 4);
+				} else {
+					this.usuario.setPerfil((short) 3);
+				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
+				return "/index";
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Ocorreu um erro ao realizar cadastro.", "Por favor tente, novamente."));
+				return null;
 			}
-			return "/index";
+			
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-					mensagemErro, null));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, mensagemErro, mensagemErro2));
 			return null;
 		}
 	}
+
+	/**
+	 * Função de cpfCadastrado Verifica se o cpf inserido pelo usuário já consta no
+	 * banco de dados.
+	 * 
+	 * @param cpf
+	 * @return
+	 */
 	
 	public boolean cpfCadastrado(String cpf) {
+		boolean retorno = false;
 		try {
-			if (!cpf.equals("") ) {
+			if (!cpf.equals("")) {
 				List<Cidadao> cpfLista = new ArrayList<Cidadao>(CidadaoDAO.findCPFs());
 				if (cpfLista.contains(cpf)) {
 					mensagemErro = "CPF já existente no sistema.";
-					return true;
-				} else {
-					return false;
+					mensagemErro2= "";
+					retorno =  true;
 				}
-			} else {
-				return false;
 			}
 		} catch (Exception e) {
-		} finally {
-			return false;
-		}
+		} 
+		return retorno;
 	}
-	
+
+	/**
+	 * Função rgCadastrado
+	 * 
+	 * Verifica se o rg digitado pelo usuário já consta no banco de dados.
+	 * 
+	 * @param rg
+	 * @return
+	 */
 	public boolean rgCadastrado(String rg) {
+		boolean retorno = false;
 		try {
 			if (!rg.equals("")) {
 				List<Cidadao> rgLista = new ArrayList<Cidadao>(CidadaoDAO.findRGs());
 				if (rgLista.contains(rg) && !rg.equals("")) {
 					mensagemErro = "RG já existente no sistema.";
-					return true;
-				} else {
-					return false;
+					mensagemErro2= "";
+					retorno = true;
 				}
-			} else {
-				return false;
 			}
 		} catch (Exception e) {
-		} finally {
+		} 
+		return retorno;
+	}
+
+	/**
+	 * Função email cadastrado
+	 * 
+	 * Verifica se aquele email já consta no armazenamento.
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public boolean emailCadastrado(String email) {
+		boolean retorno = false;
+		try {
+			if(!CidadaoDAO.findCidadaoEmail(email).equals(null) ) {
+				retorno = true;
+				mensagemErro= "Email já consta como cadastrado.";
+				mensagemErro2= "";
+			}
+		}catch (IndexOutOfBoundsException e) {
+		}
+		return retorno;
+	}
+	
+	/**
+	 * Função que verifica se o email que o cidadao está inserindo é email pessoal.
+	 * @param email
+	 * @return
+	 */
+	public boolean emailPessoal(String email) {
+		if (UsuarioBean.tratarEmail(email)) {
+			mensagemErro = "Email inválido";
+			mensagemErro2 = "Por favor insira um email pessoal.";
 			return false;
+		}else {
+			return true;
 		}
 	}
 	
-	public String delete() {
 
-		return "usuario";
+	/**
+	 * Função ehRepresentanteCidadao
+	 * 
+	 * Verifica se o perfil que solicita instancia de cidadão já se encontra
+	 * vinculada a um perfil responsável.
+	 * 
+	 * @param usuario
+	 * @return
+	 */
+	public boolean ehRepresentanteCidadao(Usuario usuario) {
+		if (usuario.getPerfil() == 2) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
+
+	/**
+	 * Função edit
+	 * 
+	 * Atualiza a instancia de cidadão ligada ao usuário logado.
+	 * 
+	 * @return - redireciona para a página principal.
+	 * 
+	 */
 	public String edit() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if (verificaPermissao()) {
@@ -132,17 +226,34 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 			return null;
 		}
 	}
-	
+
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.getUsuario().getPerfil() == 1) {
+		if (usuarioBean.getUsuario().getPerfil() == 1) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
 
-//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	/**
+	 * Função limparCidadaoBean
+	 * 
+	 * Limpa o objeto.
+	 */
+	public void limparCidadaoBean() {
+		setEmail(null);
+		setBairro(null);
+		setCep(null);
+		setComplemento(null);
+		setCidade(null);
+		setEndereco(null);
+		setEstado(null);
+		setNumero(null);
+	}
+
+	// GETTERS E SETTERS
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public Cidadao getCidadao() {
 		return cidadao;
@@ -280,4 +391,37 @@ public class CidadaoBean implements Serializable, PermissaoUsuario{
 		this.numero = numero;
 	}
 
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	String getMensagemErro() {
+		return mensagemErro;
+	}
+
+	void setMensagemErro(String mensagemErro) {
+		this.mensagemErro = mensagemErro;
+	}
+
+	String getMensagemErro2() {
+		return mensagemErro2;
+	}
+
+	void setMensagemErro2(String mensagemErro2) {
+		this.mensagemErro2 = mensagemErro2;
+	}
+
+	
 }

@@ -44,6 +44,7 @@ import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.Criptografia;
+import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.verificarStatusSolicitacao;
 
@@ -55,10 +56,14 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuario;
 	private Usuario usuarioNovo;
 	private String senha;
+	private String senhaAtual;
+	private String novaSenha;
 	private String nick;
 	private String nome;
 	private String nomeCompleto;
 	private String email;
+	private String emailCid;
+	private String sigla;
 	private String emailRedirect;
 	private String tipoString;
 	private int veioDeSolicitacao;
@@ -67,7 +72,10 @@ public class UsuarioBean implements Serializable {
 	public boolean alterarSenha = false;
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
-	private String sessionId;
+	private static String sessionId;
+	private boolean perfilAlterarCidadaoResponsavel;
+	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
+			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -77,6 +85,7 @@ public class UsuarioBean implements Serializable {
 	public void init() {
 		usuario = new Usuario();
 		usuarioNovo = new Usuario();
+		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
 			Scheduler scheduler = shedFact.getScheduler();
@@ -86,9 +95,6 @@ public class UsuarioBean implements Serializable {
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
 					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
 			scheduler.scheduleJob(job, trigger);
-			 JobDetail jobEmail = JobBuilder.newJob(NotificacaoEmail.class).withIdentity("enviarEmailAutomatico", "grupo02").build();
-			 Trigger triggerEmail = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER2", "grupo02").withSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ?")).build();
-			 scheduler.scheduleJob(jobEmail, triggerEmail);
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
 		}
@@ -106,13 +112,12 @@ public class UsuarioBean implements Serializable {
 		System.out.println(data);
 	}
 
-	/*
-	 * Operações:
-	 * 
-	 * save() - Salvar novo usuário edit() - edita valores do usuário delete() -
-	 * apagar usuario sugestaoNick() - Sugerir nick para o usuário na hora de
-	 * preencher o cadastro de usuário verificaExistenciaNick(String nick) -
-	 * Verifica se o nick digitado/sugerido já existe, retorno booleano.
+	/**
+	 *Função save 
+	 * Salvar novo usuário edit() - edita valores do usuário 
+	 * delete() - apagar usuario 
+	 * gerarNick() - Sugerir nick para o usuário na hora de preencher o cadastro de usuário 
+	 * verificaExistenciaNick(String nick) - Verifica se o nick digitado/sugerido já existe, retorno booleano.
 	 * verificaSeVazio(String campo) - retorna valor booleano se determinado campo
 	 * estiver vazio
 	 */
@@ -148,11 +153,51 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
+	
+	/**
+	 * Função nickUsuarioInvalido
+	 * 
+	 * Verifica se o nome digitado pelo usuário se enquadra 
+	 * em palavras reservadas do sistema.
+	 * 
+	 * @param nick
+	 * @return
+	 */
+	public boolean nickUsuarioInvalido(String nick) {
+		boolean retorno = false;
+		for (String string : palavrasReservadas) {
+			if(nick.contains(string)) {
+				retorno =  true;
+				break;
+			}
+		}
+		return retorno;
+	}
 
+	/**
+	 * Salvar cidadão
+	 */
 	public void cadastrarCidadao() {
 		save();
 	}
 	
+	public boolean usuarioLogado() {
+		return (usuario.getNome() != null);
+	}
+	
+	public String redirecionamentoNegado() {
+		if(usuarioLogado()) {
+			return null ;
+		}else {
+			return  "/Menu/acessoNegado.xhtml?faces-redirect=true" ;
+		}
+	}
+	
+	/**
+	 * Criar um novo usuário sem sobrepor o usuário logado.
+	 * Função específica para gestor e administrador do sistema.
+	 * @return
+	 */
 	public String criarNovoUsuarioPorGestor() { 
 		if (!verificaSeVazio(usuarioNovo.getNome()) == true && !verificaSeVazio(usuarioNovo.getSenha()) == true
 				&& !verificaSeVazio(usuarioNovo.getNick()) == true) {
@@ -160,8 +205,14 @@ public class UsuarioBean implements Serializable {
 			usuarioNovo.setSenha(Criptografia.Criptografar(senha));
 			usuarioNovo.setPerfil((short) 1);
 			if (!verificaExistenciaNick(usuarioNovo.getNick())) {
-				UsuarioDAO.saveOrUpdate(usuarioNovo);
-				return "/index.xhtml?faces-redirect=true";
+				if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+					return "/index.xhtml?faces-redirect=true";
+				}else {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Não é possível cadastrar usuário.", "Preencha os campos vazios."));
+					usuarioNovo = new Usuario();
+					return null;
+				}
 				
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -177,6 +228,11 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Gera o nome completo a partir da união do primeiro e ultimo nome 
+	 * do usuário.
+	 * @param nomeCompleto
+	 */
 	public void nomeCompleto(String nomeCompleto) {
 		if (nomeCompleto != null) {
 			String[] nomeSobrenome = nomeCompleto.split(" ");
@@ -187,6 +243,12 @@ public class UsuarioBean implements Serializable {
 			}
 		}
 	}
+	
+	/**
+	 * Verifica se o usuário deixou algum campo importante vazio.
+	 * @param campo
+	 * @return
+	 */
 	public boolean verificaSeVazio(String campo) {
 		String verificacao = campo.replaceAll(" ", "");
 		if (verificacao.equals("")) {
@@ -195,15 +257,23 @@ public class UsuarioBean implements Serializable {
 			return false;
 		}
 	}
+	
 
-	public String delete() {
-		UsuarioDAO.delete(usuario);
-		return "/index.xhtml";
-	}
+//	public String delete() {
+//		UsuarioDAO.delete(usuario);
+//		return "/index.xhtml";
+//	}
 
+	/**
+	 * Atualiza as informações do usuário
+	 * @return
+	 */
 	public String edit() {
-		if (Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
-			UsuarioDAO.saveOrUpdate(usuario);
+		this.usuario =  ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
+		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
+			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
+			UsuarioDAO.saveOrUpdate(this.usuario);
 
 			if (usuario.getPerfil() != 1) {
 
@@ -220,7 +290,6 @@ public class UsuarioBean implements Serializable {
 				if (usuario.getPerfil() == 3) {
 					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 					listCidadao.get(0).setEmail(email);
-					;
 				} else {
 					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
 					listResponsavel.get(0).setEmail(email);
@@ -238,6 +307,11 @@ public class UsuarioBean implements Serializable {
 
 	}
 
+	/**
+	 * Verifica se o nick já consta no sistema.
+	 * @param nick
+	 * @return
+	 */
 	private boolean verificaExistenciaNick(String nick) {
 		if (UsuarioDAO.buscarUsuario(nick) != null) {
 			return true;
@@ -246,7 +320,11 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
-	public void sugestaoNick(String nome) {
+	/**
+	 * Gerar o nick a partir do nome completo do usuário.
+	 * @param nome
+	 */
+	public void gerarNick(String nome) {
 		int cont = 1;
 		String nck = "";
 		try {
@@ -263,21 +341,27 @@ public class UsuarioBean implements Serializable {
 				this.nick = nck + cont;
 			}
 			
-			if(usuario.getPerfil() == 0) {
-				this.usuario.setNick(this.nick);
-			}else {
-				this.usuarioNovo.setNick(nick);
+			if (nickUsuarioInvalido(nck)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nome de usuário inválido.", "Digite um nome válido."));
+				this.usuario.setNick(null);
+			} else {
+				if (usuario.getPerfil() == 0) {
+					this.usuario.setNick(this.nick);
+				} else {
+					this.usuarioNovo.setNick(nick);
+				}
+				nomeCompleto(usuario.getNome());
 			}
 			
-			nomeCompleto(usuario.getNome());
 
 		}
 
 	}
 
-	/*
-	 * login() - Login do usuario no sistema. logout() - Logout do usuario no
-	 * sistema. loadEmail() - Buscar email daquele usuario, retorna string.
+	/**
+	 * Função login
+	 *  Login do usuario no sistema. 
 	 */
 
 	public String login() {
@@ -295,54 +379,144 @@ public class UsuarioBean implements Serializable {
 				logout();
 				return null;
 			} else {
+				if(!usuarioInativo()) {
+					FacesContext.getCurrentInstance().addMessage(null, 
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário inativo.", "Solicite ativação ao gestor da sua entidade."));
+					logout();
+					return null;
+					
+				}else {
+					loadEmail();
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+					acessoUsuario(this.usuario);
+					nomeCompleto(usuario.getNome());
+					return "/index?faces-redirect=true";
+				}
+			}
+		}
+	}
+	
+	public String loginSistema() {
+		String retorno = "";
+		this.usuario = UsuarioDAO.buscarUsuario(this.nick);
+		if (this.usuario == null) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+			logout();
+		} else {
+			if (!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+				logout();
+			} else {
+//				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
+//					loadEmail();
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+//					acessoUsuario(this.usuario);
+//					nomeCompleto(usuario.getNome());
+//					retorno = "/index.xhtml?faces-redirect=true";
+//				}else {
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
+//				}
+				
 				loadEmail();
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
 				nomeCompleto(usuario.getNome());
-				return "/index?faces-redirect=true";
-			}
+				retorno = "/index.xhtml?faces-redirect=true";
+
 		}
+		}
+		
+		return retorno;
+			
+	}
+	
+	public boolean verificaPermissaoPrivilegiada() {
+		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado") || this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
+	}
+	
+	/**
+	 * Usuário responsável que se encontra inativo e não tem 
+	 * mais permissão de acessar o sistema como responsável.
+	 * @return
+	 */
+	public boolean usuarioInativo() {
+		boolean retorno = false;
+		if(this.usuario.getPerfil() == (short)2 ) {
+			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
+				retorno = true;
+			}
+		}else if(this.usuario.getPerfil() == (short)1 || this.usuario.getPerfil() == (short)3 ||this.usuario.getPerfil() == (short)4 
+				|| this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
+//			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
+//				retorno = true;
+//			}
+			retorno = true;
+		}
+		
+		return retorno;
 	}
 
+	/**
+	 *Função loadEmail
+	 *
+	 *Busca o email daquele usuario, retorna string.
+	 */
 	public void loadEmail() {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			setEmail(listCidadao.get(0).getEmail());
-		} else {
-			if (usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty()) {
-				List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
-				setEmail(listResponsavel.get(0).getEmail());
-			} else {
-				setEmail("Não cadastrado");
-			}
+			setEmailCid(listCidadao.get(0).getEmail());
+		} else if (usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty()) {
+				setEmail(ResponsavelBean.retornaListaEmail(usuario));
+				setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+		}else if ( usuario.getPerfil() == 4) {
+			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+			setEmailCid(listCidadao.get(0).getEmail());
+			setEmail(ResponsavelBean.retornaListaEmail(usuario));
+			setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+		}else {
+			setEmail("Não cadastrado");
 		}
 	}
 
+	/**
+	 * Função logout
+	 * Logout do usuario no sistema. 
+	 * 	@return
+	 */
 	public String logout() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		session.invalidate();
 		this.usuario = null;
-		return "/index";
+		return "/loginAdmin";
 	}
 
-	public void generateSessionId() {
+	public static String generateSessionId() {
 		int len = 45;
 		String charsCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String Chars = "abcdefghijklmnopqrstuvwxyz";
 		String nums = "0123456789";
 		String passSymbols = charsCaps + Chars + nums;
 		Random rnd = new Random();
-		this.sessionId = "";
+		sessionId = "";
 
 		for (int i = 0; i < len; i++) {
-			this.sessionId += passSymbols.charAt(rnd.nextInt(passSymbols.length()));
+			sessionId += passSymbols.charAt(rnd.nextInt(passSymbols.length()));
 		}
+		return sessionId;
 
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * Gera uma nova sessionId quando o usuário efetua login.
+	 * @param usuario
+	 */
 	private void acessoUsuario(Usuario usuario) {
 		generateSessionId();
 		usuario.setLastLogged(new Date(System.currentTimeMillis()));
@@ -350,9 +524,8 @@ public class UsuarioBean implements Serializable {
 		UsuarioDAO.saveOrUpdate(usuario);
 	}
 
-	/*
-	 * emailRedefinirSenha() - Gera access_key e chama método para enviar email para
-	 * o usuario solicitado pegaParamURL() - Pega o access_key da URL que está
+	/**
+	 *  pegaParamURL() - Pega o access_key da URL que está
 	 * referenciando a um usuario tratarEmail() - Verifica se o email digitado
 	 * pertence a algum órgão do governo do estado de Sergipe
 	 */
@@ -364,12 +537,25 @@ public class UsuarioBean implements Serializable {
 			return "/Alterar/redefinir_senha.xhtml";
 		}
 	}
+	
+	/**
+	 * Função emailRedefinirSenha
+	 * Gera access_key e chama método para enviar email para
+	 * o usuario solicitado
+	 * @return
+	 */
 
-	public void redefinirSenha() {
+	public String redefinirSenha() {
+		String retorno = null;
 		if (!verificarParamURL()) {
 			try {
-				emailRedefinirSenha();
+				if(emailRedefinirSenha()) {
+					retorno = "/index.xhtml?faces-redirect=true";
+				}else {
+					retorno = "/Menu/erroEmail.xhtml?faces-redirect=true";
+				}
 			} catch (Exception e) {
+				retorno = "/Menu/erroEmail.xhtml";
 				e.printStackTrace();
 			}
 		} else {
@@ -391,16 +577,21 @@ public class UsuarioBean implements Serializable {
 					} else {
 						FacesContext.getCurrentInstance().addMessage(null,
 								new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Senha inválida"));
+						retorno = "/Menu/erroEmail.xhtml";
 
 					}
 				}
 			} catch (EmailException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				retorno = "/Menu/confirmaEmail.xhtml?faces-redirect=true";
 			}
 		}
+		return retorno;
 	}
-
+	
+	/**
+	 * Redireciona para página alterar dados caso seja necessário
+	 */
 	public String alterarDadosUsuario() {
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
 			return "Alterar/alterar_usuario";
@@ -411,7 +602,15 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
-	public boolean tratarEmail(String email) {
+	/**
+	 * Função tratarEmail
+	 * Verifica se o email é de um responsável ou de um cidadão. 
+	 * Email de responsável possuem extensões relacionadas ao governo do estado.
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public static boolean tratarEmail(String email) {
 		int retorno = 0;
 		String[] emailSplit = email.split("@");
 		String dominios = emailSplit[1].replace(".", "_");
@@ -421,16 +620,15 @@ public class UsuarioBean implements Serializable {
 				retorno += 1;
 			}
 		}
-
-		if (retorno >= 1) {
-			return true;
-		} else {
-			return false;
-		}
-
+		return (retorno >= 1);
 	}
 
-	public void emailRedefinirSenha() {
+	/**
+	 * Gera texto e define para qual email estão enviando o código de reacesso.
+	 * 
+	 */
+	public boolean emailRedefinirSenha() {
+		boolean valor = false;
 		if (!verificaSeVazio(emailRedirect)) {
 			if (tratarEmail(emailRedirect)) {
 				Responsavel resp = (Responsavel) ResponsavelDAO.findResponsavelEmail(emailRedirect);
@@ -439,6 +637,7 @@ public class UsuarioBean implements Serializable {
 					String accessKey = resp.getUsuario().getSessionId();
 					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
+					valor = true;
 				}
 
 			} else {
@@ -448,6 +647,7 @@ public class UsuarioBean implements Serializable {
 					String accessKey = cid.getUsuario().getSessionId();
 					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
 					usuario = new Usuario();
+					valor = true;
 				}
 
 			}
@@ -455,11 +655,18 @@ public class UsuarioBean implements Serializable {
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo vazio", null));
+			valor = false;
 
 		}
+		
+		return valor;
 
 	}
 
+	/**
+	 * Pegar parametro de acesso da url, links utilizados na redefinição de senha. 
+	 * @return
+	 */
 	public String pegarParamURL() {
 		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("access_key");
@@ -468,7 +675,12 @@ public class UsuarioBean implements Serializable {
 		// .get("access_expire_date");
 		return codigoRedefSenha;
 	}
-
+	
+	
+	/**
+	 * Ver se o link é de redefinição de senha ou login normal
+	 * @return
+	 */
 	public boolean verificarParamURL() {
 		if (codigoRedefSenha != null) {
 			return true;
@@ -477,6 +689,10 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Verifica se o parametro da url ainda está em tempo válido para utilização.
+	 * @return
+	 */
 	@SuppressWarnings("finally")
 	public boolean verificarValidadeURL() {
 		boolean retorno = false;
@@ -497,6 +713,12 @@ public class UsuarioBean implements Serializable {
 
 	}
 
+	/**
+	 * Identificar qual usuário está tentando recuperar a senha a partir do código da URL
+	 * 
+	 * @param codigoRedefSenha
+	 * @throws EmailException
+	 */
 	public void pegarUsuarioURL(String codigoRedefSenha) throws EmailException {
 		Usuario usuario = UsuarioDAO.buscarSessionIds(codigoRedefSenha);
 
@@ -522,11 +744,11 @@ public class UsuarioBean implements Serializable {
 
 	}
 
-	/*
-	 * getGeneroString() - Formatar saída de dados Gênero do banco de dados para
-	 * exibição no sistema getEscolaridade() - Formatar saída dos dados Escolaridade
-	 * do banco de dados para exibição no sistema getTipoString() - Formatar saída
-	 * de dados Tipo de Pessoa do banco de dados para exibição no sistema
+	/**
+	 * Função getGeneroString
+	 *  Formatar saída de dados Gênero do banco de dados para
+	 * exibição no sistema 
+	 *  
 	 */
 
 	public String getGeneroString() {
@@ -538,6 +760,12 @@ public class UsuarioBean implements Serializable {
 
 	}
 
+	/**
+	 * Função getEscolaridade
+	 * Formatar saída dos dados Escolaridade
+	 * do banco de dados para exibição no sistema
+	 * @return
+	 */
 	public String getEscolaridade() {
 		try {
 			switch (getCidadao().getEscolaridade()) {
@@ -562,6 +790,14 @@ public class UsuarioBean implements Serializable {
 			return "...";
 		}
 	}
+	
+	/**
+	 * Função getTipoString
+	 * 
+	 * Formatar saída
+	 * de dados Tipo de Pessoa do banco de dados para exibição no sistema
+	 * @return
+	 */
 
 	public String getTipoString() {
 		if (getCidadao().getTipo() == true) {
@@ -573,15 +809,44 @@ public class UsuarioBean implements Serializable {
 
 	}
 
+	/**
+	 * Função para retirar o acento dos nomes.
+	 * @param str
+	 * @return
+	 */
 	public static String deAccent(String str) {
 		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
 		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 	
+	/**
+	 * Função que completa a digitação dos nicks buscando os nicks existentes no banco de dados.
+	 * @param prefix
+	 * @return
+	 */
 	public static List<String> completeNick (String prefix) {
 		List<String> nicks = UsuarioDAO.completeNick(prefix);
 		return nicks;
+	}
+
+	public boolean verificaAdmin() {
+		return usuario.getPerfil()==(short)6;
+	}
+	public boolean verificaGestor() {
+		return usuario.getPerfil()==(short)5;
+	}
+	public boolean verificaResponsavelCidadaoPerfil() {
+		return usuario.getPerfil()==(short)4;
+	}
+	public boolean verificaResponsavel() {
+		return usuario.getPerfil()==(short)2;
+	}
+	
+	public String redirecionarIndex() {
+		SolicitacaoBean t = new SolicitacaoBean();
+		t.finalizarSolicitacao();
+		return "/index.xhtml?faces-redirect=true";                          
 	}
 
 	// GETTERS E SETTERS
@@ -712,7 +977,48 @@ public class UsuarioBean implements Serializable {
 	public void setUsuarioNovo(Usuario usuarioNovo) {
 		this.usuarioNovo = usuarioNovo;
 	}
-	
+
+	public boolean isPerfilAlterarCidadaoResponsavel() {
+		return perfilAlterarCidadaoResponsavel;
+	}
+
+	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavelNovo) {
+		perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavelNovo;
+	}
+
+	public String getSigla() {
+		return sigla;
+	}
 	
 
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+	public String getEmailCid() {
+		return emailCid;
+	}
+
+	public void setEmailCid(String emailCid) {
+		this.emailCid = emailCid;
+	}
+
+	public String getNovaSenha() {
+		return novaSenha;
+	}
+
+	public void setNovaSenha(String novaSenha) {
+		this.novaSenha = novaSenha;
+	}
+
+	public String getSenhaAtual() {
+		return senhaAtual;
+	}
+
+	public void setSenhaAtual(String senhaAtual) {
+		this.senhaAtual = senhaAtual;
+	}
+	
+	
+	
 }

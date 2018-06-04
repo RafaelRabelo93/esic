@@ -55,9 +55,15 @@ public class  ResponsavelDAO {
     }
 
     @SuppressWarnings("unchecked")
-	public static List<Responsavel> findResponsavelEntidade(int idEntidades, int nivel) {    	
+	public static List<Responsavel> findResponsavelEntidadeNivel(int idEntidades, int nivel) {    	
 		return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades
 																	+" AND resp.nivel = "+nivel+" AND resp.ativo = 1",em);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> findResponsavelEntidade(int idEntidades) {    	
+    	return (List<Responsavel>) Consultas.buscaPersonalizada("FROM Responsavel as resp WHERE resp.entidades.idEntidades = "+idEntidades
+    																+"AND resp.ativo = 1",em);
     }
     
     
@@ -78,19 +84,39 @@ public class  ResponsavelDAO {
     }
     
     @SuppressWarnings("unchecked")
-    public static List<Responsavel> findResponsavelUsuario(int idUsuario) {
+    public static List<Responsavel> findResponsavelUsuarioAtivo(int idUsuario) {
     	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam AND resp.ativo = 1");
     	query.setParameter("usuarioParam", idUsuario);  
     	
     	List<Responsavel> results = query.getResultList();
     	return results;
     }
-    
-    
 
     @SuppressWarnings("unchecked")
-	public static List<Responsavel> list() {		
-        return em.createNativeQuery("SELECT * FROM esic.responsavel", Responsavel.class).getResultList();
+    public static List<Responsavel> findResponsavelUsuario(int idUsuario) {
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.usuario.idUsuario = :usuarioParam");
+    	query.setParameter("usuarioParam", idUsuario);  
+    	
+    	List<Responsavel> results = query.getResultList();
+    	return results;
+    }
+
+    @SuppressWarnings("unchecked")
+	public static List<Responsavel> listEntidadePossuemGestores() {		
+        return em.createNativeQuery("SELECT idEntidades FROM Responsavel as resp  WHERE resp.nivel = 3", Responsavel.class).getResultList();
 	
     }    
+
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> list() {		
+    	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.ativo = 1 OR resp.ativo = 0");
+    	
+    	List<Responsavel> results = query.getResultList();
+    	return results;    	
+    }   
+    
+    @SuppressWarnings("unchecked")
+    public static List<Responsavel> listar(){
+    	return (List<Responsavel>) em.createNativeQuery("SELECT * FROM Responsavel", Responsavel.class).getResultList();
+    }
 }

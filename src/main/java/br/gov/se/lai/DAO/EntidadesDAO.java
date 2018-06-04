@@ -1,6 +1,8 @@
 package br.gov.se.lai.DAO;
 
 import java.util.List;
+import java.util.Set;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -96,8 +98,7 @@ public class  EntidadesDAO {
 	public static List<Entidades> listAtivas() {		
         return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1,em));
     }
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listPersonalizada(int idEntidades) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idEntidades = "+idEntidades,em)); 

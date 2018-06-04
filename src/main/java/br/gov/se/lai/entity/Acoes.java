@@ -23,15 +23,17 @@ public class Acoes implements java.io.Serializable {
 	private Integer idAcoes;
 	private String titulo;
 	private String descricao;
+	private String status;
 	private Set<Competencias> competenciases = new HashSet<Competencias>(0);
 
 	public Acoes() {
 	}
 
-	public Acoes(String titulo, String descricao, Set<Competencias> competenciases) {
+	public Acoes(String titulo, String descricao, Set<Competencias> competenciases, String status) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.competenciases = competenciases;
+		this.status = status;
 	}
 
 	@Id
@@ -72,5 +74,14 @@ public class Acoes implements java.io.Serializable {
 	public void setCompetenciases(Set<Competencias> competenciases) {
 		this.competenciases = competenciases;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 
 }

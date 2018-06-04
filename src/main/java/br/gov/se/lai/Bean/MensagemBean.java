@@ -32,6 +32,7 @@ import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
+import br.gov.se.lai.utils.PrazosSolicitacao;
 
 
 
@@ -61,6 +62,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		anexo = new Anexo();
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		AnexoBean.listarFiles();
+		carregaMensagens();
 	}
 
 	public String save() {
@@ -98,7 +100,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
-			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus())))));
+			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
 			}
@@ -127,12 +129,20 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
 			break;
 
+		case "Negada":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
+			break;
+
 		case "Finalizada":
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi"+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Encaminhada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
+			break;
+
+		case "Recebida":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+solicitacao.getEntidades().getNome()+".");
 			break;
 			
 		case "Status Denuncia 1":
@@ -160,9 +170,12 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		mensagem.setTipo((short)tipoAux);
 		MensagemDAO.saveOrUpdate(mensagem);
-		MensagemBean.attMensagemHistorico(mensagem);
 		NotificacaoEmail.enviarNotificacao(solicitacao,((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
-		mensagem = new Mensagem();
+		try {
+			MensagemBean.attMensagemHistorico(mensagem);
+		}catch (NullPointerException e) {
+			mensagem = new Mensagem();
+		}
 	}
 
 	

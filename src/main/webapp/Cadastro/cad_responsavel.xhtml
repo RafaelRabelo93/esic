@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{responsavel.perfilGestorGeral()}">
+<h:body onload="#{responsavel.pegarParamURL()}">
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_responsavel" styleClass="cad_form" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil gt '5'}">
+			<h:form id="cad_responsavel" styleClass="cad_form"  rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 				<div class="ficha">
 				
@@ -42,7 +42,7 @@
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
 						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-							 <f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
 
 						 <p:outputLabel value="Nível:" for="nivel" /> 

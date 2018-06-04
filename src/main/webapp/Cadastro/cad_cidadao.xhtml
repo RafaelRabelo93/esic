@@ -22,42 +22,58 @@
 
 				<div class="ficha">
 
+						<h:outputText value="Cadastro de Cidadão" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
+					
 					<h:panelGroup styleClass="box">
 
-						<h:outputText value="Cadastro de Cidadão" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
+						<p:outputLabel value="Tipo Pessoa: " for="tipo" style="color:#1a568c; font-size:25px; margin-top: 0"/>
+						<h:panelGroup styleClass="column" style="margin-top: 1em">
+							<p:selectOneRadio id="tipo" value="#{cidadao.cidadao.tipo}" layout="pageDirection">
+								<f:selectItem itemLabel="Física" itemValue="true" />
+								<f:selectItem itemLabel="Jurídica" itemValue="false" />
+								<p:ajax update="panel" event="change"/>
+							</p:selectOneRadio>
+						</h:panelGroup>
+						
+						<p:separator />
+						
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{cidadao.cidadao.tipo}"/>
+						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!cidadao.cidadao.tipo}"/>
 
-						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" />
-
+						
+						<h:panelGroup id="panel" styleClass="column">
+						
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Nome: " for="nome" />
-								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="40" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+								<p:outputLabel value="Nome completo: " for="nome" rendered="#{cidadao.cidadao.tipo}"/>
+								<p:outputLabel value="Razão Social: " for="nome" rendered="#{!cidadao.cidadao.tipo}"/>
+								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
-									<p:keyFilter regEx="/[a-z\-\']/i"/>
+									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+							<h:panelGroup styleClass="column" >
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{cidadao.cidadao.email}" size="25" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email"  value="#{cidadao.cidadao.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
 							</h:panelGroup>
-						</h:panelGroup>
-
-						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Tipo Pessoa: " for="tipo" />
-								<p:selectOneMenu id="tipo" value="#{cidadao.cidadao.tipo}">
-									<f:selectItem itemLabel="Física" itemValue="true" />
-									<f:selectItem itemLabel="Jurídica" itemValue="false" />
-								</p:selectOneMenu>
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!cidadao.cidadao.tipo}">
+								<p:outputLabel value="CNPJ:" for="cnpj"/>
+								<p:inputMask id="cnpj" value="#{cidadao.cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{cidadao.cidadao.tipo}">
+									<f:validator validatorId="StellaCNPJValidator" />
+								</p:inputMask>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
-								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c"
+								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c" disabled="#{!cidadao.cidadao.tipo}"
 									showOn="button" value="#{cidadao.cidadao.datanasc}"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" timeInput="false">
@@ -65,10 +81,9 @@
 								</p:calendar>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"
-									layout="pageDirection">
+								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"	layout="pageDirection" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
@@ -76,32 +91,30 @@
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="inline">
-							<h:panelGroup styleClass="column">
-								<p:outputLabel value="CPF/CNPJ: " for="cpf" />
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}"
-									mask="999.999.999-99" />
+							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
+								<p:outputLabel value="CPF:" for="cpf"/>
+								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}">
+									<f:validator validatorId="StellaCPFValidator" />
+								</p:inputMask>
 							</h:panelGroup>
-
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}"
-									mask="?9999999999999999" />
+								<p:inputMask id="rg" value="#{cidadao.rg}" mask="?9999999999999999" disabled="#{!cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}"
-									size="15">
+								<p:inputText id="orgao" value="#{cidadao.cidadao.orgaexp}" size="15" disabled="#{!cidadao.cidadao.tipo}">
 									<f:validateLength maximum="45" />
 								</p:inputText>
 							</h:panelGroup>
 						</h:panelGroup>
 
-						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;" rendered="#{cidadao.cidadao.tipo}">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Escolaridade: " for="escolaridade" />
-								<p:selectOneMenu id="escolaridade"
-									value="#{cidadao.cidadao.escolaridade}">
+								<p:selectOneMenu id="escolaridade" value="#{cidadao.cidadao.escolaridade}" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
@@ -115,9 +128,9 @@
 								</p:selectOneMenu>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Renda:" for="renda" />
-								<p:selectOneMenu id="renda" value="#{cidadao.cidadao.renda}">
+								<p:selectOneMenu id="renda" value="#{cidadao.cidadao.renda}" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Sem renda" itemValue="0" />
 									<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
@@ -126,13 +139,14 @@
 									<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
 									<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
 								</p:selectOneMenu>
-								<p:outputLabel value="* SM = Salário Mínimo"
-									style="color:gray; font-size:12px; margin: 0" />
+								<p:outputLabel value="* SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0" />
 							</h:panelGroup>
 						</h:panelGroup>
-
-						<h:outputText value="Endereço"
-							style="color:#1a568c; font-size:25px; margin-top: 1em;" />
+						</h:panelGroup>
+						
+						<p:separator />
+						
+						<h:outputText value="Endereço" style="color:#1a568c; font-size:25px;" />
 
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
@@ -149,7 +163,7 @@
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Estado: " for="uf" />
-								<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" widgetVar="estado" style="width:125px">
+								<p:selectOneMenu id="uf" value="#{cidadao.cidadao.estado}" widgetVar="estado">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
 									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -184,15 +198,14 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Logradouro:" />
-								<p:inputText id="rua" value="#{cidadao.cidadao.endereco}"
-									size="40" maxlength="100">
+								<p:inputText id="rua" value="#{cidadao.cidadao.endereco}" size="40" maxlength="100">
 									<f:validateLength maximum="100" />
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Bairro:" />
-								<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" maxlength="45">
+								<p:inputText id="bairro" value="#{cidadao.cidadao.bairro}" size="29" maxlength="45">
 									<f:validateLength maximum="45"/>
 								</p:inputText>
 							</h:panelGroup>
@@ -211,8 +224,7 @@
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Complemento: " for="complemento" />
 								<p:inputText id="complemento"
-									value="#{cidadao.cidadao.complemento}" maxlength="200"
-									size="40">
+									value="#{cidadao.cidadao.complemento}" maxlength="200" size="59">
 									<f:validateLength maximum="200" />
 								</p:inputText>
 							</h:panelGroup>
@@ -222,26 +234,23 @@
 					
 					<h:outputText value="Os campos acima marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
 
-					<p:commandLink class="botaoLink" action="#{cidadao.save}"
-						id="novoCidadao"
-						rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '0'}"
+					<p:commandLink class="botaoLink" action="#{cidadao.save}" id="novoCidadao"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoCidadao').click();}">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 
-						<f:setPropertyActionListener value="#{cidadao.cidadao}"
-							target="#{solicitacao.solicitacao.cidadao}" />
+						<f:setPropertyActionListener value="#{cidadao.cidadao}"	target="#{solicitacao.solicitacao.cidadao}" />
 					</p:commandLink>
 
 				</div>
 
 			</h:form>
 			
-		<!-- =========================== -->
-		<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
-		<!-- =========================== -->
-	
-		<script type="text/javascript">
+	<!-- =========================== -->
+	<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
+	<!-- =========================== -->
+
+	<script type="text/javascript">
 
         $(document).ready(function() {
 
@@ -304,7 +313,7 @@
             });
         });
 
-    </script>
+	</script>
 
 	<!-- =========================== -->
 	<!-- =========================== -->

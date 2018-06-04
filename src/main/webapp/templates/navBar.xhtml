@@ -19,13 +19,11 @@
 		<div id="navBar" class="divMenu">
 			
 		<!-- Solicitação Cidadão -->
-			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3'}">
-				<button class="dropbtn"> 
-					<h:commandLink action="#{solicitacao.verificaCidadaoConsulta}">
-						<i class="fa fa-stack-exchange"/>
-						<h:outputText value="Solicitações" style="margin-left: 7px"/>
-					</h:commandLink>
-				</button>
+			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '1' or usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+				<h:commandLink action="#{solicitacao.verificaCidadaoConsulta}" class="dropbtn">
+					<i class="fa fa-stack-exchange"/>
+					<h:outputText value="Solicitações" style="margin-left: 7px"/>
+				</h:commandLink>
 				<div class="dropdown-content">
 					<h:commandLink value="Nova Solicitação" action="#{solicitacao.verificaCidadaoSolicitacao}"/>
 					<h:commandLink value="Consultar Solicitações" action="#{solicitacao.verificaCidadaoConsulta}"/>
@@ -33,53 +31,78 @@
 			</h:panelGroup>
 			
 		<!-- Solicitação Responsavel -->
-			<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '6'}">
-				<button class="dropbtn"> 
-					<h:commandLink action="#{solicitacao.consultarSolicitacao}">
-						<i class="fa fa-stack-exchange" />
-						<h:outputText value="Solicitações" style="margin-left: 7px"/>
-					</h:commandLink>
-				</button>
+			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+				<h:commandLink action="#{solicitacao.consultarSolicitacao}" class="dropbtn">
+					<i class="fa fa-stack-exchange" />
+					<h:outputText value="Solicitações" style="margin-left: 7px"/>
+				</h:commandLink>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '6'}" />
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}"/> -->
 			
-		<!-- Responsavel -->
-			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '6'}">
-				<button class="dropbtn"> 
-					<h:commandLink action="Consulta/consulta_responsavel">
-						<i class="fa fa-users" />
-						<h:outputText value="Responsável" style="margin:0 7px"/>
-						<i class="fa fa-caret-down"/>
-					</h:commandLink>
-				</button>
+		<!-- Responsavel Responsável-->
+			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}">
+				<h:commandLink action="/Consulta/consulta_responsavel" class="dropbtn">
+					<i class="fa fa-users" />
+					<h:outputText value="Responsável" style="margin:0 7px"/>
+				</h:commandLink>
+			</h:panelGroup>
+			
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" /> -->
+		
+		<!-- Responsavel Gestor/Admin -->
+			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				<h:commandLink action="/Consulta/consulta_responsavel" class="dropbtn">
+					<i class="fa fa-users" />
+					<h:outputText value="Responsável" style="margin:0 7px"/>
+					<i class="fa fa-caret-down" />
+				</h:commandLink>
 				<div class="dropdown-content">
-					<h:commandLink value="Gerir Responsável" action="/Consulta/consulta_responsavel"/>
+					<h:commandLink value="Consultar Responsáveis" action="/Consulta/consulta_responsavel"/>
 					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
 				</div>
 			</h:panelGroup>
 			
-			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '6'}" />
+<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}"/> -->
 			
 		<!-- Entidade -->
-		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '6'}">
-			<button class="dropbtn"> 
-				<h:commandLink action="#{entidades.consultarEntidades}">
-						<i class="fa fa-building" />
-						<h:outputText value="Entidade" style="margin:0 7px"/>
-						<i class="fa fa-caret-down"/>
-				</h:commandLink>
-			</button>
+		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}">
+			<h:commandLink action="#{entidades.consultarEntidades}" class="dropbtn">
+				<i class="fa fa-building" />
+				<h:outputText value="Entidade" style="margin:0 7px"/>
+			</h:commandLink>
+		</h:panelGroup>
+		
+<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
+			
+		<!-- Entidade Admin -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+			<h:commandLink action="#{entidades.consultarEntidades}" class="dropbtn">
+				<i class="fa fa-building" />
+				<h:outputText value="Entidade" style="margin:0 7px"/>
+				<i class="fa fa-caret-down"/>
+			</h:commandLink>
 			<div class="dropdown-content">
 				<h:commandLink value="Gerir Entidades" action="#{entidades.consultarEntidades}"/>
-				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}"/>
+				<h:commandLink value="Cadastrar Entidades" action="#{entidades.redirecionarCadastroEntidade()}" />
+			</div>
+		</h:panelGroup>
+		
+<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
+		
+		<!-- Ações -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6'}">
+			<h:commandLink action="#{acoes.redirecionarConsultaAcoes()}" class="dropbtn">
+				<i class="fa fa-refresh" />
+				<h:outputText value="Ações" style="margin:0 7px"/>
+				<i class="fa fa-caret-down"/>
+			</h:commandLink>
+			<div class="dropdown-content">
 				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
 				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
 			</div>
 		</h:panelGroup>
 		
-		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" />
-			
 		</div>
 			
 	</h:form>

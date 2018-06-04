@@ -20,7 +20,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-//		System.out.println("Entrou em verificacoes");
+		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listarGeral()) {
 			try {
 				updatePrazoTipo(solicitacao);
@@ -33,6 +33,7 @@ public class verificarStatusSolicitacao implements Job {
 
 	}
 	
+	//Para o servidor-homologação
 	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
 		
@@ -40,13 +41,13 @@ public class verificarStatusSolicitacao implements Job {
 
 			LocalDate now = LocalDate.now();
 
-			int prazo =SolicitacaoBean.prazoResposta(solicitacao.getStatus());
+			int prazo =PrazosSolicitacao.prazoResposta(solicitacao.getStatus());
 			//Datas dos prazos para comparações
 			//LocalDate lcSolicitacaoInicio = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate inicioPrazo = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(5);
+			LocalDate inicioPrazo = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
 			LocalDate metadePrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays((prazo)/2);
 			LocalDate vesperaPrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(1);
-			LocalDate vesperaPrazoGestor = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(5);
+			LocalDate vesperaPrazoGestor = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(2);
 			
 			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
 			
@@ -56,17 +57,51 @@ public class verificarStatusSolicitacao implements Job {
 				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
 			}else if (now.isEqual(metadePrazo)) {
 				String corpoMensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
 			}else if(now.isEqual(vesperaPrazoGestor)) {
 				String corpoMensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
 			}else if(now.isEqual(vesperaPrazo)) {
 				String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+				NotificacaoEmail.enviarEmailAutoridades(solicitacao.getEntidades().getIdEntidades(), tituloMensagem, corpoMensagem);
 			}
 		}		
 	} 
 	
+//	@SuppressWarnings({ "unused", "unlikely-arg-type" })
+//	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
+//		
+//		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Respondida"))) {
+//			
+//			LocalDate now = LocalDate.now();
+//			
+//			int prazo =SolicitacaoBean.prazoResposta(solicitacao.getStatus());
+//			//Datas dos prazos para comparações
+//			//LocalDate lcSolicitacaoInicio = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//			LocalDate inicioPrazo = solicitacao.getDataIni().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(5);
+//			LocalDate metadePrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays((prazo)/2);
+//			LocalDate vesperaPrazo = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(1);
+//			LocalDate vesperaPrazoGestor = solicitacao.getDataLimite().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(5);
+//			
+//			String tituloMensagem = "Notificação de prazo da solicitacao "+ solicitacao.getIdSolicitacao();
+//			
+//			
+//			if(now.isEqual(inicioPrazo)) {
+//				String corpoMensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
+//				NotificacaoEmail.enviarEmailAutomatico(solicitacao, tituloMensagem, corpoMensagem);
+//			}else if (now.isEqual(metadePrazo)) {
+//				String corpoMensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+//				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+//			}else if(now.isEqual(vesperaPrazoGestor)) {
+//				String corpoMensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+//				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+//			}else if(now.isEqual(vesperaPrazo)) {
+//				String corpoMensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+//				NotificacaoEmail.enviarEmailAutoridades(solicitacao, tituloMensagem, corpoMensagem);
+//			}
+//		}		
+//	} 
+//	
 	public void updateStatusSolicitacao(Solicitacao solicitacao) {
 
 		if (!solicitacao.getStatus().equals("Finalizada")) {
@@ -75,8 +110,7 @@ public class verificarStatusSolicitacao implements Job {
 			if (now.after(solicitacao.getDataLimite())) {
 				// System.out.println("Finalizou");
 				if ((solicitacao.getStatus().equals("Respondida")
-						|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short) 2)))
-						&& now.after(solicitacao.getDataLimite())) {
+						|| ((solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia().equals((short) 3))))) {
 	
 						System.out.println("Finalizou");
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
@@ -86,14 +120,11 @@ public class verificarStatusSolicitacao implements Job {
 
 					} else {
 						if ((solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Prorrogada")
-								|| (solicitacao.getStatus().equals("Recurso")
-										&& solicitacao.getInstancia() < (short) 2))
-								&& now.after(solicitacao.getDataLimite())) {
+								|| (solicitacao.getStatus().equals("Recurso") && solicitacao.getInstancia() < (short) 3))) {
 							solicitacao.setStatus("Respondida");
-							solicitacao.setDataLimite(java.sql.Date.valueOf(LocalDate.now().plusDays(SolicitacaoBean.prazoResposta(solicitacao.getStatus()))));
-							if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-								MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
-							}
+							solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus()));
+							SolicitacaoDAO.saveOrUpdate(solicitacao);
+							MensagemBean.salvarStatus(solicitacao, "Negada", null, null);
 
 						}
 					}

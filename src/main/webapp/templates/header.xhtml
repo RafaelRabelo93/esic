@@ -34,59 +34,110 @@
 							<h:graphicImage value="#{resource['img/logoGovSerg.png']}" style="padding: 0.5vw" width="140" height="50" />
 						</h:outputLink>
 	
-						<h:outputLink value="../../esic/index.xhtml" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
+						<h:outputLink value="#{usuario.redirecionarIndex()}" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
 <!-- 							<h:outputText value="e-SIC" /> -->
 							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
 						</h:outputLink>
+						
+						<h:outputText value="Versão Teste" style="color: white; margin-left: 10px" />
 					</h:panelGroup>
 					
 					<ul id="menuSM">
-						<li><h:outputLink value="../../esic/index.xhtml">Início</h:outputLink></li>
+						<li><h:outputLink value="#{usuario.redirecionarIndex()}">Início</h:outputLink></li>
 						
-						<li><h:outputLink value="">Sobre</h:outputLink></li>
+						<li><h:outputLink value="../../esic/Menu/sobre.xhtml">Sobre</h:outputLink></li>
+						
+						<li><h:outputLink value="../../esic/Menu/contato.xhtml">Fale Conosco</h:outputLink></li>
 
-						<li><p:commandButton id="Login" value="Login" 
-								style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;"
-								 rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
+						<li><p:commandButton id="Login" value="Login" icon="fa fa-sign-in" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid columns="1" cellpadding="5">
 								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
 								<p:password placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
-						<p:commandButton id="login" value="Login" type="submit" action="#{usuario.login}" update="@all growl "/>
+								<p:commandButton id="login" value="Login" type="submit" action="#{usuario.loginSistema()}" update="@all growl "/>
 							</h:panelGrid>
 						</p:overlayPanel>
 
-						<li><p:commandButton id="userInfo" value="#{usuario.nomeCompleto}" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" /></li>			
-	
+						<li>
+							<p:commandLink id="userInfo" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none; padding-bottom: 0; align-items: center; flex-flow: column;">
+								<h:outputText value="#{usuario.nomeCompleto}" />
+								<br/>
+								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Responsável" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Gestor" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+							</p:commandLink>
+						</li>
+						
+						<li>
+							<p:commandLink styleClass="botaoLink hide-mobile" style="background: none" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+								<h:outputText value="Sair" />
+								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
+							</p:commandLink>		
+						</li>
 					</ul>
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
-						<h:panelGrid columns="1" cellpadding="5">
-							<h:outputText value="Nick:" style="color:#1a568c;" />
-							<h:outputText value="#{usuario.usuario.nick}" />
-							<h:outputText value="E-mail:" style="color:#1a568c;" />
-							<h:outputText value="#{usuario.email}" />
-							<h:outputText value="Órgão/Entidade:" style="color:#1a568c;"  rendered="#{usuario.usuario.perfil eq '2'}"/>
-							<h:outputText value="#{usuario.responsavel.entidades.sigla}" />
-						</h:panelGrid>
+						<h:panelGroup styleClass="column">
+							<h:outputLabel value="Nick:" style="margin-top: 1em" />
+							<h:outputText value="#{usuario.usuario.nick}" style="margin-left: 1em" />
+							
+							<h:outputLabel value="E-mail:" style="color:#1a568c; margin-top: 1em" rendered="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' )}"/>
+							<h:outputText value="#{usuario.emailCid}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel}"/>
+							<h:outputText value="#{usuario.email}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel}" />
+							
+							<h:outputText value="Órgãos:" style="color:#1a568c; margin-top: 1em"  rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}"/>
+							<h:outputText value="#{usuario.sigla}" style="white-space: pre-wrap; margin-left: 1em" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" />
+						</h:panelGroup>
 
-					<h:panelGrid columns="3" cellpadding="5" style="margin-top:1vh">
-							<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq 3}">
-								<h:outputText value="Visualizar Perfil" />
-								<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
-							</p:commandLink>
+						<h:panelGroup styleClass="column" style="margin-top: 1em">
+							<h:panelGroup rendered="#{usuario.usuario.perfil eq '4' and responsavel.temPerfilAtivo()}" styleClass="inline" style="justify-content: space-between; width: 100%;">
+								<h:panelGroup>
+									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button">
+										<h:outputText value="Perfil" />
+										<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+										<h:outputText value="Cidadão" />
+										<f:setPropertyActionListener value="false" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup>
+									<h:commandLink styleClass="botaoLink perfilBtn" action="/index" update="@all" type="button" style="margin-left: .5em">
+										<h:outputText value="Perfil" />
+										<p:graphicImage value="#{resource['img/icon/boss.png']}" height="45px" width="45px"/>
+										<h:outputText value="Responsável" />
+										<f:setPropertyActionListener value="true" target="#{usuario.perfilAlterarCidadaoResponsavel}" />
+									</h:commandLink>
+								</h:panelGroup>
+							</h:panelGroup>
 							
-							<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button">
-								<h:outputText value="Alterar Senha" />
-								<i class="fa fa-unlock-alt" style="color: white; padding-left: 5px" />
-							</p:commandLink>
+							<h:commandLink styleClass="botaoLink perfilBtn" action="Cadastro/cad_cidadao" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
+								<h:outputText value="Criar Perfil" />
+								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
+								<h:outputText value="Cidadão" />
+							</h:commandLink>
 							
-							<p:commandLink styleClass="botaoLink" ajax="true" action="#{usuario.logout}" update="@all" type="button">
-								<h:outputText value="Sair" />
-								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
-							</p:commandLink>						
-						</h:panelGrid>
+							<h:panelGroup styleClass="inline" style="margin-top: .5em; justify-content: space-between; width: 100%;">
+								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
+									<h:outputText value="Visualizar Perfil" />
+									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
+								</p:commandLink>
+								
+								<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button" style="margin-right: .5em">
+									<h:outputText value="Alterar Senha"/>
+									<i class="fa fa-key" style="color: white; padding-left: 5px" />
+								</p:commandLink>
+								
+								<p:commandLink styleClass="botaoLink show-mobile" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+									<h:outputText value="Sair" />
+									<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
+								</p:commandLink>
+							
+							</h:panelGroup>
+							
+						</h:panelGroup>
+						
 					</p:overlayPanel>
 					
 				</div>
@@ -94,6 +145,7 @@
 			</div>
 			
 	</h:form>
+	
 	
 	<script language="javascript">  
 	    var tam=1;

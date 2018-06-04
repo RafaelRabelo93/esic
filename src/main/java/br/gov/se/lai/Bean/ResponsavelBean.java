@@ -2,7 +2,9 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.apache.commons.mail.EmailException;
+
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
@@ -18,6 +22,7 @@ import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 
 
 @ManagedBean(name = "responsavel")
@@ -40,36 +45,56 @@ public class ResponsavelBean implements Serializable{
 	private boolean ativo;
 	private boolean permissao;
 	private List<Responsavel> todosResponsaveis;
+	private static List<Responsavel> listRespDaEntidade ;
+	private List<Responsavel> responsaveisFiltrados;
 
 	
 	@PostConstruct
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
-		perfilGestorGeral();
 		this.responsavel = new Responsavel();
-		todosResponsaveis = ResponsavelDAO.list();
+		perfilGestorGeral();
+		pegarParamURL();
+		todosResponsaveis = new ArrayList<>(ResponsavelDAO.list());
+		listRespDaEntidade = new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()));
 	}
 	
 	public String save() {
 		try {
-			
-			this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
-			this.responsavel.setAtivo(true);
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
-			if(ehGestorSistema()) {
-				this.usuario.setPerfil((short)5);
-				this.responsavel.setNivel((short)3);
-			}else {
-				this.usuario.setPerfil((short)2);
+
+			if(!verificaExistenciaResponsavelNaEntidade(usuario, this.idEntidade)) {
+				try {
+				
+					this.responsavel.setEntidades(EntidadesDAO.find(this.idEntidade));
+					this.responsavel.setAtivo(true);
+					if(ehGestorSistema()) {
+						this.usuario.setPerfil((short)5);
+						this.responsavel.setNivel((short)3);
+					}else if(ehCidadaoRepresentante(usuario)) {
+						this.usuario.setPerfil((short)4);
+					}else if(ehRepresentante(usuario)){
+						this.usuario.setPerfil((short)4);
+					}else {
+						this.usuario.setPerfil((short)2);
+					}
+					this.responsavel.setUsuario(this.usuario);
+					ResponsavelDAO.saveOrUpdate(responsavel);
+					UsuarioDAO.saveOrUpdate(usuario);	
+//					todosResponsaveis.add(responsavel);
+					responsavel = new Responsavel();
+					idEntidade = 0;
+					nick = null;
+					return "/Consulta/consulta_responsavel.xhtml?faces-redirect=true";
+				}catch (Exception e) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Entidade não encontrado!", null));
+					return null;
+				}
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Responsável já alocado para essa entidade!", null));
+				return null;
+				
 			}
-			this.responsavel.setUsuario(this.usuario);
-			ResponsavelDAO.saveOrUpdate(responsavel);
-			UsuarioDAO.saveOrUpdate(usuario);	
-			todosResponsaveis.add(responsavel);
-			responsavel = new Responsavel();
-			idEntidade = 0;
-			nick = null;
-			return "/Consulta/consulta_responsavel.xhtml?faces-redirect=true";
 		}catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuario não encontrado!", null));
 			return null;
@@ -93,6 +118,22 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	public boolean ehCidadaoRepresentante(Usuario usuario) { 
+		if(usuario.getPerfil() == 3) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean ehRepresentante(Usuario usuario) { 
+		if(usuario.getPerfil() == 4) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	public String edit() {
 		if(verificaAcesso() ) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
@@ -101,6 +142,27 @@ public class ResponsavelBean implements Serializable{
 		}	
 		
 		return "/index";
+	}
+	
+	public boolean verificaExistenciaResponsavelNaEntidade(Usuario usuario, int idEntidadeEntrada) {
+		boolean retorno = false;
+		if(verificaExistenciaResponsavel(usuario)) {
+			try{
+				List<Responsavel> respVinculadosAoNovoUsuario = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario());
+				if(!respVinculadosAoNovoUsuario.isEmpty()){
+					for (Responsavel resp : respVinculadosAoNovoUsuario) {
+						if(resp.getEntidades().getIdEntidades().equals(idEntidadeEntrada)) {
+							retorno = true;
+							break;
+						}
+					}
+				}
+			}catch (IndexOutOfBoundsException e) {
+			}
+			return retorno;
+		}else {
+			return retorno;
+		}
 	}
 	
 	public String alterarVinculo() {
@@ -120,7 +182,7 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public String alterarDadosUsuario() {
-		if(verificaAcesso() || verificaExistenciaGestorSistema(usuarioBean.getUsuario())) {
+		if(verificaExistenciaGestorSistema(usuarioBean.getUsuario()) || verificaAcesso()) {
 			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
 			ResponsavelDAO.saveOrUpdate(responsavel);
 			responsavel = new Responsavel();
@@ -176,7 +238,7 @@ public class ResponsavelBean implements Serializable{
 		Responsavel respBusca =  new Responsavel();
 		while(instancia <= 3) {			
 			try{
-				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidade(entidadeId, instancia);
+				List<Responsavel> resp = ResponsavelDAO.findResponsavelEntidadeNivel(entidadeId, instancia);
 				for (Responsavel r : resp) {
 					if(r.isAtivo()) {
 						busca = true;
@@ -193,6 +255,7 @@ public class ResponsavelBean implements Serializable{
 					responsavelDisponivel(instancia+1, entidadeId);
 				}
 		}
+		
 		
 		if(busca == false) {
 			return -1;
@@ -238,13 +301,12 @@ public class ResponsavelBean implements Serializable{
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
 			try {
+				if(usuarioBean.getUsuario().getPerfil() == 5) {
+					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+					permissao = true;
+				}else {
 				List<Responsavel> respList= ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario());
 				for (Responsavel responsavel : respList) {
-					if (responsavel.getUsuario().getPerfil() == 5) {
-						this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
-						permissao = true;
-						break;
-					} else {
 						try {
 							this.entidades.addAll(EntidadesDAO.listPersonalizada(responsavel.getEntidades().getIdEntidades()));
 						}catch (NullPointerException e) {
@@ -253,18 +315,141 @@ public class ResponsavelBean implements Serializable{
 							permissao = false;
 						}
 					}
-					responsavel = new Responsavel();
 				}
+					responsavel = new Responsavel();
 			} catch (IndexOutOfBoundsException e) {
 			}
 		}
 	}
+	
 	
 	public String redirectCadastroUsuario() {
 		responsavel = new Responsavel();
 		return "/Cadastro/cad_responsavel.xhtml?faces-redirect=true";
 	}
 	
+	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
+		boolean retorno = false;
+		for (Responsavel respo : listRespDaEntidade) {
+			if(respo.getEntidades().getIdOrgaos() == idOrgao) {
+				if(respo.getEntidades().getIdEntidades().equals(idEntidade)) {
+					retorno =  true;
+				}else if(responsavelDisponivel(1, idEntidade) == -1 ){
+					retorno =  true;
+				}
+//				break;
+			}
+		}
+		return retorno;
+	}
+	
+	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
+		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6) {
+			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>(EntidadesDAO.listAtivas());
+			return entidadesPossiveisDeCadastro;
+		}else {
+			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>();
+			for (Responsavel resp : listRespDaEntidade) {
+				if (resp.getNivel().equals((short) 3)) {
+					entidadesPossiveisDeCadastro.add(resp.getEntidades());
+				}
+			}
+			return entidadesPossiveisDeCadastro;
+		}
+	}
+	
+
+	public boolean possivelEditarResponsavelDasEntidades(int idOrgao){
+		boolean retorno = false;
+		for (Responsavel resp : listRespDaEntidade) {
+			if(resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) {
+				retorno =  true;
+				break;
+			}
+		}
+		return retorno;
+	}
+	
+	public boolean bloquearEdicaoPessoalPermissoes(int idUsuarioResponsavelAvaliado) {
+		if(idUsuarioResponsavelAvaliado == usuarioBean.getUsuario().getIdUsuario()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public Entidades pegarEntidade() {
+		Entidades entidade = EntidadesDAO.find(idEntidade);
+		return entidade;
+	}
+	
+	public String requisitarCadastroResponsavel() {
+		Entidades ent = pegarEntidade();
+		String hashcode=UsuarioBean.generateSessionId();
+		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
+						  + "\n\n >> Dados do usuário:"
+						  + "\n\n Usuario: "+usuario.getNome()
+						  + "\n\n Nick: "+getNick()
+						  +"\n Email: "+getEmail()
+						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
+						  + "\n\n Clique aqui: ";
+		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
+		if(idDestinatario != -1) {
+			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario, mensagem);
+			return "/index.xhtml?faces-redirect=true";
+		}else {
+			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+			if(idDestinatario != -1) {
+				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario, mensagem);
+				return "/index.xhtml?faces-redirect=true";
+			}else {
+				//Busca
+				return "/index.xhtml?faces-redirect=true";
+			}
+		}
+	}
+	
+	public void pegarParamURL() {
+		if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("access-key") != null ) {
+			
+		this.responsavel = new Responsavel();
+		 this.responsavel.setEmail( FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("mail"));
+		 idEntidade = (Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("identidade")));
+		 nick = (UsuarioDAO.findUsuario(Integer.parseInt((FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				 .get("user"))))).getNick();
+		}
+	}
+	
+	public List<Entidades> entidadesSolicitacaoResponsavel(){
+		Set ids = new HashSet<>(ResponsavelDAO.listEntidadePossuemGestores());
+		return EntidadesDAO.listAtivas();
+	}
+	
+	
+	public boolean temPerfilAtivo() {
+		return (ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()).size() > 0) ;
+	}
+	
+	public static String retornaListaEmail(Usuario usuario) {
+		String emailRetorno = "";
+		for (Responsavel resp : ResponsavelDAO.findResponsavelUsuarioAtivo(usuario.getIdUsuario())) {
+			emailRetorno += resp.getEmail()+"\n";
+		}
+		return emailRetorno;
+	}
+
+	public static String retornaListaEntidadeSiglas(Usuario usuario) {
+		String siglaRetorno = "";
+		for (Responsavel resp : ResponsavelDAO.findResponsavelUsuarioAtivo(usuario.getIdUsuario())) {
+			siglaRetorno += resp.getEntidades().getSigla()+"\n";
+		}
+		return siglaRetorno;
+	}
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {
@@ -346,6 +531,26 @@ public class ResponsavelBean implements Serializable{
 	public void setPermissao(boolean permissao) {
 		this.permissao = permissao;
 	}
+
+	public List<Responsavel> getListRespDaEntidade() {
+		return listRespDaEntidade;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setListRespDaEntidade(List<Responsavel> listRespDaEntidade) {
+		this.listRespDaEntidade = listRespDaEntidade;
+	}
+
+	public List<Responsavel> getResponsaveisFiltrados() {
+		return responsaveisFiltrados;
+	}
+
+	public void setResponsaveisFiltrados(List<Responsavel> responsaveisFiltrados) {
+		this.responsaveisFiltrados = responsaveisFiltrados;
+	}
+	
+	
+	
 	
 	
 }

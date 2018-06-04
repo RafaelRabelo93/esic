@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_entidades" styleClass="cad_form"  rendered="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' or usuario.usuario.perfil eq '6'}">
+			<h:form id="cad_entidades" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
 				<div class="ficha">
 			
@@ -32,25 +32,29 @@
 						<p:outputLabel value="Nome: " for="nome" />
 						<p:inputText id="nome" required="true" value="#{entidades.entidades.nome}" size="60" maxlength="200" >
 							<f:validateLength maximum="200"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText> 
 						
 						<p:outputLabel value="Sigla: " for="sigla" />
 						<p:inputText id="sigla" required="true" size="10" value="#{entidades.entidades.sigla}" maxlength="10" >
 							<f:validateLength maximum="10"/>
+							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>
 					
 						<p:outputLabel value="Tipo: " for="orgao" />
-						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}">
-							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="idOrgao"/>
-							<f:selectItem itemLabel="Órgão" itemValue="true" />
-							<f:selectItem itemLabel="Entidade" itemValue="false" />
+						<p:selectOneRadio id="orgao" value="#{entidades.forOrgao}"  required="true">
+							<p:ajax event="change" listener="#{entidades.listarOrgaos}" update="selectOrgao"/>
+							<f:selectItem itemLabel="Órgão" itemValue="#{true}"  />
+							<f:selectItem itemLabel="Entidade" itemValue="#{false}" />
 						</p:selectOneRadio>
-					
-						<p:outputLabel value="Orgão relacionado: " for="idOrgao"/>
-						<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}" filter="true" filterMatchMode="contains">
-							<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
-							<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
-						</p:selectOneMenu>
+						
+						<h:panelGroup id="selectOrgao" styleClass="column">
+							<p:outputLabel id="idOrgaoLabel" value="Órgão relacionado:" for="idOrgao" rendered="#{!(entidades.forOrgao)}"/>
+							<p:selectOneMenu id="idOrgao" value="#{entidades.entidades.idOrgaos}" rendered="#{!(entidades.forOrgao)}" filter="true" filterMatchMode="contains" required="true">
+								<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+								<f:selectItems value="#{entidades.listOrgao}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}"/>
+							</p:selectOneMenu>
+						</h:panelGroup>
 							
 					</h:panelGroup>
 
@@ -64,7 +68,7 @@
 				</div>
 
 			</h:form>
-
+			
 		</ui:define>
 
 	</ui:composition>

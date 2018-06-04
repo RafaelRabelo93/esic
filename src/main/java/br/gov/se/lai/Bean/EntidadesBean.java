@@ -36,17 +36,19 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private int idEntidades;
 	private String nome;
 	private boolean ativa;
-	private boolean forOrgao;
+	private boolean forOrgao = true;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
 	private List<Entidades> todasEntidades;
-	
+	private List<Entidades> todasEntidadesAtivas;
+	private List<Entidades> entidadesFiltradas;
 	
 	
 	@PostConstruct
 	public void init() {
 		entidades = new Entidades();
 		todasEntidades = EntidadesDAO.list();
+		todasEntidadesAtivas = EntidadesDAO.listAtivas();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
 	
@@ -88,9 +90,9 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		}	
 	}
 	
-	public String edit() {
+	public String edit(Entidades entidade) {
 		if(verificaPermissao()) {
-			EntidadesDAO.saveOrUpdate(entidades);
+			EntidadesDAO.saveOrUpdate(entidade);
 			this.entidades = new Entidades();
 		}
 		return "/Consulta/consulta_entidades";
@@ -116,7 +118,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 4 || user.getPerfil() == 5) {
+		if(user.getPerfil() == 5 || user.getPerfil() == 6) {
 			return true;
 		}else {
 			return false;
@@ -254,6 +256,22 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setSolicitacao(Solicitacao solicitacao) {
 		this.solicitacao = solicitacao;
+	}
+
+	public List<Entidades> getTodasEntidadesAtivas() {
+		return todasEntidadesAtivas;
+	}
+
+	public void setTodasEntidadesAtivas(List<Entidades> todasEntidadesAtivas) {
+		this.todasEntidadesAtivas = todasEntidadesAtivas;
+	}
+
+	public List<Entidades> getEntidadesFiltradas() {
+		return entidadesFiltradas;
+	}
+
+	public void setEntidadesFiltradas(List<Entidades> entidadesFiltradas) {
+		this.entidadesFiltradas = entidadesFiltradas;
 	}
 	
 	

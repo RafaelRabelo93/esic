@@ -15,47 +15,41 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '4'}">
+			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
-				<div class="ficha" style="width:50%">
-
-					<!--		Mensagens de Erro		-->
-					<p:messages id="messages" showDetail="true" autoUpdate="true"
-						closable="true" />
+				<div class="ficha">
 
 					<p:steps activeIndex="1" styleClass="custom dois" readonly="true">
 						<p:menuitem value="Entidade" url="#" />
 						<p:menuitem value="Competências" url="#" />
 					</p:steps>
 
-					<h:outputText
-						value="Os campos abaixo marcados com * são de preenchimento obrigatório."
-						style="color:gray; align-self: flex-start;" />
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="color:gray; align-self: flex-start;" />
 
 					<h:panelGroup styleClass="box">
 						<h:outputText value="Cadastro de Competências" styleClass="tituloBox"/>
 
 						<h:outputLabel value="Órgão/Entidade:" /> 
-						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}"/>
 						
-							<h:outputLabel value="Ações: " for="acoes" />
+						<h:outputLabel value="Ações: " for="acoes" />
 						<h:panelGroup styleClass="inline">
-							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 0;" >
+							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" style="min-width: 200px; max-width: 200px"  >
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
-								<f:selectItems value="#{competencias.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
+								<f:selectItems value="#{acoes.acoes}" var="acs" itemLabel="#{acs.titulo}" itemValue="#{acs.idAcoes}" />
 							</p:selectOneMenu>
 	
-							<h:outputLabel value="Ou" style="margin: -20px 2vw 0 4vw" />
+							<h:outputLabel value="Ou" style="margin: 0 5em" />
 							
 							<p:commandLink class="botaoLink" update="cad_competencias2"	onclick="PF('dlg2').show();">
-								<i class="fa fa-plus" />
+								<i class="fa fa-plus-square" style="margin-right: 5px" />
 								<h:outputLabel value=" Nova ação" />
 							</p:commandLink>
 						</h:panelGroup>
 						
 						<h:outputLabel value="Descrição: " for="descricao" />
-						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" maxlength="200"
-							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%" >
+						<p:inputTextarea id="descricao" counter="display" value="#{competencias.competencias.descricao}" rows="6" maxlength="200"
+							autoResize="false" counterTemplate="{0} caracteres restantes." style="width: 98%; resize: none;" >
 							<f:validateLength maximum="200"/>
 						</p:inputTextarea>
 						<h:outputText id="display" />
@@ -64,8 +58,8 @@
 					
 						<p:commandLink styleClass="botaoLink" id="selecAcao" action="#{competencias.addLista}" update="cad_competencias2" 
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('selecAcao').click();}" style="margin: 0;">
-							<h:outputLabel value="Adicionar" />
-							<i class="fa fa-plus" />
+							<h:outputLabel value="Adicionar"/>
+							<i class="fa fa-plus" style="margin-left: 5px"/>
 						</p:commandLink>
 					
 
@@ -100,9 +94,9 @@
 							</p:dataTable>
 						</h:panelGroup>
 
-					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%">
+					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%; margin-bottom: 2em">
 						<h:outputText value="Salvar" />
-						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						<i class="fa fa-check" style="color: white; margin-left: 3px" />
 					</p:commandLink>
 					
 			</h:form>
