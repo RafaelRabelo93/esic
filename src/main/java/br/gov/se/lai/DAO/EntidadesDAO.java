@@ -100,7 +100,7 @@ public class  EntidadesDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listAtivas() {		
-        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1,em));
+        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1+" ORDER BY ent.sigla ASC",em));
     }
 	
 	@SuppressWarnings("unchecked")
