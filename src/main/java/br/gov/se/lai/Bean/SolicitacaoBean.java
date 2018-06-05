@@ -54,6 +54,7 @@ import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.relatorios.RelatorioDinamico;
+import br.gov.se.lai.utils.Avaliacao;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PrazosSolicitacao;
@@ -534,17 +535,7 @@ public class SolicitacaoBean implements Serializable {
 		return "/Consulta/consulta";
 	}
 	
-	/**
-	 * Retorna lista de solicitações avaliadas de determinada entidade
-	 * 
-	 * @param idEntidade
-	 * @return
-	 */
-	public List<Solicitacao> listSolicitacoesAvaliadas(int idEntidade) {
-		List<Solicitacao> solicitacoesAvaliadas = SolicitacaoDAO.listarAvaliadas(idEntidade);
-
-		return solicitacoesAvaliadas;
-	}
+	
 
 	/**
 	 * listPersonalizada

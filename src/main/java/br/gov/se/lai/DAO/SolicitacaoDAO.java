@@ -257,7 +257,7 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarAvaliadas(int idEntidade) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND slt.avaliacao IS NOT NULL",em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND ( slt.avaliacao IS NOT NULL and slt.avaliacao != 0)",em)); 
 	}	
 
 }

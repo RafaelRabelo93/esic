@@ -96,10 +96,11 @@
 							</p:column>
 							
 							<p:column headerText="Avaliação" width="90" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" action="#{entidades.redirecionarAvaliacao()}" 
+								<p:commandLink class="botaoLinkIcon" action="#{avaliacao.redirecionarAvaliacao()}" 
 										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}">
 									<i class="fa fa-star" />
 									<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
+									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{avaliacao.idEntidade}" />
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>

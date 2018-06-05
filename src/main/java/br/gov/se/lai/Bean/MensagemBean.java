@@ -31,6 +31,7 @@ import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
+import br.gov.se.lai.utils.Avaliacao;
 import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
@@ -107,6 +108,22 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuário sem permissão..",null));
 
 			return null;
+		}
+	}
+	
+	public void salvarMensagemAvaliacao() {
+		if(usuario.getIdUsuario() != null) {
+			mensagem.setUsuario(usuario);
+		}else {
+			mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+		}
+		mensagem.setData(new Date(System.currentTimeMillis()));
+		mensagem.setSolicitacao(solicitacao);
+		mensagem.setTipo((short)6);
+		mensagem.setNota(nota);
+		if(MensagemDAO.saveOrUpdate(mensagem)) {
+			MensagemBean.salvarStatus(solicitacao, "Avaliada", null, null, nota);
+			Avaliacao.avaliarSolicitacao(solicitacao);
 		}
 	}
 	
@@ -206,7 +223,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			
 		case "Avaliada":
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o) "+ usuario.getNomeCompleto());
-			tipoAux = 6;
+			tipoAux = 2;
 
 			break;
 			
@@ -354,6 +371,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setMensagensTramites(List<Mensagem> mensagensTramites) {
 		MensagemBean.mensagensTramites = mensagensTramites;
+	}
+
+	public int getNota() {
+		return nota;
+	}
+
+	public void setNota(int nota) {
+		this.nota = nota;
 	}
 
 	
