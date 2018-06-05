@@ -254,6 +254,10 @@ public class SolicitacaoDAO {
 		List<Solicitacao> results = query.getResultList();
 		return results;    	
 	} 
-		
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarAvaliadas(int idEntidade) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND slt.avaliacao IS NOT NULL",em)); 
+	}	
 
 }

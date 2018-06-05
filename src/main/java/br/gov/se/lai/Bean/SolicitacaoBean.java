@@ -533,6 +533,18 @@ public class SolicitacaoBean implements Serializable {
 
 		return "/Consulta/consulta";
 	}
+	
+	/**
+	 * Retorna lista de solicitações avaliadas de determinada entidade
+	 * 
+	 * @param idEntidade
+	 * @return
+	 */
+	public List<Solicitacao> listSolicitacoesAvaliadas(int idEntidade) {
+		List<Solicitacao> solicitacoesAvaliadas = SolicitacaoDAO.listarAvaliadas(idEntidade);
+
+		return solicitacoesAvaliadas;
+	}
 
 	/**
 	 * listPersonalizada

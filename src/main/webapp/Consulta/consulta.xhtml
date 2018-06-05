@@ -22,7 +22,7 @@
 
 					<h:panelGroup styleClass="inline" style="-webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
 					
-					<h:outputText value="Solicitações"
+					<h:outputText value="Manifestações"
 						style="color:#1a568c; font-size:25px; padding-bottom: 3vh; align-self: center"
 						rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' }" />
 			
@@ -535,8 +535,13 @@
 								
 								<div id="Avalia" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Avaliar resposta da manifestação:" for="avalia" style="margin-bottom: 5px" />
-									<p:rating id="avalia" cancel="false" value="#{avaliacao.nota}" styleClass="abaField encaminharField"/>
-									<p:rating id="avaliac" cancel="false" value="#{solicitacao.solicitacao.avaliacao}" styleClass="abaField encaminharField"/>
+									<p:rating id="avalia" cancel="false" value="#{avaliacao.nota}" styleClass="abaField avaliaField"/>
+									<p:rating id="avaliac" cancel="false" value="#{solicitacao.solicitacao.avaliacao}" styleClass="abaField avaliaField"/>
+									
+									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="false"	style="width:100%" required="true" 
+									counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"	styleClass="abaField avaliaField">
+										<f:validateLength maximum="1000" />
+									</p:inputTextarea>
 									
 									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{avaliacao.avaliarUltimaMensagem()}"	update="form:solicitacao_panel ">
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{avaliacao.solicitacao}" />

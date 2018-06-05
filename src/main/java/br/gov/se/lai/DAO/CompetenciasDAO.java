@@ -75,7 +75,7 @@ public class  CompetenciasDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> filtrarCompetencias(int idAcao) {
-		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.acoes.idAcoes = "+idAcao,em);
+		return (List<Competencias>) (Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.acoes.idAcoes = "+idAcao+" ORDER BY acoes.titulo ASC",em));
     }
 
 	
