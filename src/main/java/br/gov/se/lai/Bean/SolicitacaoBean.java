@@ -156,7 +156,7 @@ public class SolicitacaoBean implements Serializable {
 			this.mensagem.setTipo((short) 1);
 			MensagemDAO.saveOrUpdate(mensagem);
 
-			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null);
+			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
 
 			if (!(file.getContents().length == 0)) {
 				AnexoBean anx = new AnexoBean();
@@ -682,14 +682,14 @@ public class SolicitacaoBean implements Serializable {
 		if (((userBean.getUsuario().getPerfil() == (short) 2)
 				|| (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
 			if (!solicitacao.isVisualizada()) {
-				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null);
+				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null,0);
 				solicitacao.setVisualizada(true);
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
 			} else if (solicitacao.getStatus().equals("Reencaminhada")) {
 				solicitacao.setStatus("Aberta");
 				solicitacao.setVisualizada(true);
 				SolicitacaoDAO.saveOrUpdate(solicitacao);
-				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null);
+				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null, 0);
 			}
 		}
 	}
@@ -775,7 +775,7 @@ public class SolicitacaoBean implements Serializable {
 			solicitacao.setStatus(status);
 			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status, solicitacao.getDataLimite()));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
-			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
 
 	}
@@ -965,7 +965,7 @@ public class SolicitacaoBean implements Serializable {
 					if (MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
 						MensagemBean.attMensagemTramites(mensagemEncaminhar);
 						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),
-								antigaEnt.getNome());
+								antigaEnt.getNome(), 0);
 						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,	respDestinatario);
 					}
 				}

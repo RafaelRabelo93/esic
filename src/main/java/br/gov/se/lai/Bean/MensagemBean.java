@@ -115,7 +115,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			solicitacao.setStatus("Respondida");
 			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-				salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 			}
 			SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
 			SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
@@ -139,7 +139,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 		solicitacao.setStatus("Negada");
 		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-			salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+			salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
 		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
 		SolicitacaoBean.addQuantidadeSolicitacaoNegada();
@@ -148,12 +148,13 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		return "/Consulta/consulta?faces-redirect=true";
 	}
 
-	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha) {
+	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha, int nota) {
 		int tipoAux = 4;
 		mensagem = new Mensagem();
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		UsuarioBean usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario"));
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
@@ -200,8 +201,13 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			break;
 			
 		case "Visualizada":
-			UsuarioBean usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario"));
 			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi visualizada por "+ usuario.getNomeCompleto());
+			break;
+			
+		case "Avaliada":
+			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o) "+ usuario.getNomeCompleto());
+			tipoAux = 6;
+
 			break;
 			
 		default:

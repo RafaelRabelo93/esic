@@ -116,7 +116,7 @@ public class verificarStatusSolicitacao implements Job {
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 						solicitacao.setStatus("Finalizada");
 						SolicitacaoDAO.saveOrUpdate(solicitacao);
-						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+						MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 
 					} else {
 						if ((solicitacao.getStatus().equals("Aberta") ||  solicitacao.getStatus().equals("Prorrogada")
@@ -125,7 +125,7 @@ public class verificarStatusSolicitacao implements Job {
 							solicitacao.setStatus("Negada");
 							solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus(), solicitacao.getDataLimite()));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
-							MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null);
+							MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 
 						}
 					}
