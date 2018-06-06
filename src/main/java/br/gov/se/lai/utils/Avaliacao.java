@@ -26,6 +26,8 @@ public class Avaliacao {
 	private Solicitacao solicitacao;
 	public int idEntidade;
 	public List<Solicitacao> solicitacoesAvaliadas;
+	public final int size = 173;
+	public String sizeFinal;
 	
 	public static void avaliarSolicitacao(Solicitacao solicitacao) {
 		ArrayList<Mensagem> listMensagensAvaliadas = (ArrayList<Mensagem>) MensagemDAO.listMensagensTipo(solicitacao.getIdSolicitacao(), (short)6);
@@ -70,10 +72,24 @@ public class Avaliacao {
 	
     public String redirecionarAvaliacao() {
     	calcularAvaliacao(listSolicitacoesAvaliadas(idEntidade));
+    	calcSize();
         return "/Consulta/consulta_avaliacao.xhtml";
     }
 
-
+    /**
+	 * Gera a representação gráfica da média
+	 * 
+	 * @param idEntidade
+     * @return 
+	 * @return
+	 */
+    public String calcSize() {
+    	float calc = (float) ((media * 100)/5);
+    	int size2 = (int) (size * (calc/100));
+    	sizeFinal = size2 + "px";
+    	return sizeFinal;
+    }
+    
 
 	public int getNota() {
 		return this.nota ;
@@ -119,7 +135,16 @@ public class Avaliacao {
 		this.solicitacoesAvaliadas = solicitacoesAvaliadas;
 	}
 	
+	public int getSize() {
+		return size;
+	}
 	
+	public String getSizeFinal() {
+		return sizeFinal;
+	}
 	
+	public void setSizeFinal(String sizeFinal) {
+		this.sizeFinal = sizeFinal;
+	}
 	
 }

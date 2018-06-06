@@ -11,10 +11,13 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-
+			
+			<style type="text/css">
+		       
+		    </style>
+			
 			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true"
-				redisplay="false" life="5000" severity="info,warn,error" />
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error" />
 
 			<h:form style="padding: 1.5vw 15vw">
 				<h:panelGroup styleClass="inline">
@@ -25,6 +28,12 @@
 								
 	        	<h:panelGroup styleClass="inline">
 					<h:outputText value="Média: " style="font-size:25px; margin-right: .5em" />
+					<h:panelGroup styleClass="inline">
+						<div class="crop" style="clip: rect(0px,#{avaliacao.sizeFinal},32px,0px);position:absolute">
+							<h:graphicImage value="#{resource['img/rating_star_1.png']}" styleClass="over" />
+						</div>
+							<h:graphicImage value="#{resource['img/rating_star_2.png']}" styleClass="under" style="margin-bottom: 6px;" />
+					</h:panelGroup>
 					<h:outputText value="#{avaliacao.media}" style="font-size:25px;" />
 	        	</h:panelGroup>
 				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol" emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
