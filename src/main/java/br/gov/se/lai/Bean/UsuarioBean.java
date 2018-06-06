@@ -155,6 +155,25 @@ public class UsuarioBean implements Serializable {
 
 	}
 	
+	public String saveGestorSistema() {
+		if(verificaAdmin()) {
+			usuarioNovo = UsuarioDAO.buscarUsuario(usuarioNovo.getNick());
+			usuarioNovo.setPerfil((short)5);
+			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Cadastro realizado com sucesso.", " "));
+			}else{;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Não é possível cadastrar usuário.", "Um erro inesperado ocorreu, tente novamente mais tarde."));
+			}
+			return "/Consulta/consulta_responsavel.xhtml";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Não é possível cadastrar gestor.", "O usuário não possui permissão."));
+			return null;
+		}
+	}
+	
 	/**
 	 * Função nickUsuarioInvalido
 	 * 
@@ -312,11 +331,27 @@ public class UsuarioBean implements Serializable {
 
 	}
 	
-	public void editarGestor() {
-	
-		if(usuario.getPerfil() == (short)6) {
-			UsuarioDAO.saveOrUpdate(usuario);
+	public void editarGestor() {	
+		if(usuario.getPerfil() == (short)6  ) {
+			if(!verificaSeVazio(senha)) {
+			usuarioNovo.setSenha(Criptografia.Criptografar(senha));
+			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização concluída.", "Sucesso."));
+			}else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na atualização.", "Tente novamente mais tarde."));
+			}
+			
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro na atualização.", "Campo senha não pode ser vazio."));
+			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro na atualização.", "Usuário sem permissão."));
 		}
+		
+		senha = "";
 	}
 
 	/**

@@ -180,7 +180,6 @@
 							<p:outputLabel value="Nome completo: " for="nome" />
 								<p:inputText id="nome" value="#{usuario.usuarioNovo.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
-								<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuarioNovo.nome)}" update="nick" />
 									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
 

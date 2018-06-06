@@ -49,7 +49,7 @@
 							</p:column>
 							
 							<p:column headerText="Aceitar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
-								<p:commandLink class="botaoLinkIcon" update="dialog:info form" onclick="#{acoes.autenticaAcao(ac)}" >
+								<p:commandLink class="botaoLinkIcon" update="dialog:info form" action="#{acoes.autenticaAcao(ac)}" >
 									<i class="fa fa-check" />
 								</p:commandLink>
 							</p:column>
@@ -57,8 +57,9 @@
 							<p:column headerText="Recusar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 								<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}" update="form:tab:novasAcoes">
 									<i class="fa fa-times" style="color: white; padding: 0 2px 0 2px" />
-									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
 									<p:confirm/>
+									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+									
 								</p:commandLink>
 							</p:column>
 						

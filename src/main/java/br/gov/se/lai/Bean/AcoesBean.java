@@ -242,7 +242,11 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	
+	public void refreshAcoes() {
+		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
+		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
+		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+	}
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	

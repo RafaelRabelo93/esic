@@ -32,7 +32,7 @@
 						
 						<h:panelGroup styleClass="column">
 							<p:outputLabel value="Usuário: " for="nick" /> 
-							<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}"
+							<p:autoComplete id="nick" value="#{usuario.usuarioNovo.nick}" completeMethod="#{usuario.completeNick}"
 								itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
 						</h:panelGroup>
 					 	
@@ -47,7 +47,7 @@
 					</h:panelGroup>
 					
 					 
-					<p:commandLink class="botaoLink" action="#{responsavel.save}" id="novoResponsavel" update="cad_responsavel dataPanel nick" 
+					<p:commandLink class="botaoLink" action="#{usuario.saveGestorSistema()}" id="novoResponsavel" update="cad_responsavel dataPanel nick" 
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoResponsavel').click();}">
 						<h:outputText value="Cadastrar" />
 						<f:setPropertyActionListener value="5" target="#{responsavel.responsavel.nivel}" />
