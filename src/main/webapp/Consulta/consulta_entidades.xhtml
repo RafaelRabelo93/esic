@@ -19,7 +19,10 @@
 
 				<div class="ficha">
 	
-					<h:outputText value="Órgãos / Entidades" styleClass="tituloBox" />
+					<h:panelGroup styleClass="column" style="width:100%">
+							<h:outputText value="Órgãos / Entidades" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
+							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
+						</h:panelGroup>
 						
 						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade" styleClass="botaoLink"
 							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" style="margin-bottom: 10px"
