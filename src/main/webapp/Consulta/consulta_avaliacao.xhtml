@@ -11,10 +11,13 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-
+			
+			<style type="text/css">
+		       
+		    </style>
+			
 			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true"
-				redisplay="false" life="5000" severity="info,warn,error" />
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error" />
 
 			<h:form style="padding: 1.5vw 15vw">
 				<h:panelGroup styleClass="inline">
@@ -24,20 +27,30 @@
 				<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
 								
 	        	<h:panelGroup styleClass="inline">
-					<h:outputText value="Média: " style="font-size:25px; margin-right: .5em" />
-					<h:outputText value="#{avaliacao.media}" style="font-size:25px;" />
+					<h:outputText value="Média: " styleClass="titulo" style="margin-right:.5em;color: #1a568c; font-size:1.em" />
+					<h:panelGroup styleClass="inline">
+						<div class="crop" style="clip: rect(0px,#{avaliacao.sizeFinal},32px,0px);position:absolute">
+							<h:graphicImage value="#{resource['img/rating_star_1.png']}" styleClass="over" />
+						</div>
+							<h:graphicImage value="#{resource['img/rating_star_2.png']}" styleClass="under" style="margin-bottom: 6px;" />
+					</h:panelGroup>
+					<h:outputText value="#{avaliacao.media}" style="font-size:20px;margin-left: .2em;" />
 	        	</h:panelGroup>
 				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol" emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
 			        <h:panelGroup styleClass="column" style="padding: 20px;border-bottom:1px solid silver">
 				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
-			        		<h:outputText value="Solicitação: (#{sol.protocolo}) #{sol.titulo}" />
+			        		<h:panelGroup styleClass="inline">
+				        		<h:outputText value="Solicitação:" styleClass="titulo" style="margin-right:.5em;color: #1a568c;" />
+				        		<h:outputText value="(#{sol.protocolo}) #{sol.titulo}" />
+			        		</h:panelGroup>
 					        <h:panelGroup styleClass="inline">
-			        			<h:outputText value="Nota:" style="margin-right:.5em" />
+			        			<h:outputText value="Nota:" styleClass="titulo" style="margin-right:.5em;color: #1a568c;" />
 			        			<p:rating readonly="true" value="#{sol.avaliacao}" />
 			        		</h:panelGroup>
 			        	</h:panelGroup>
 			        	
-		        		<h:outputText value="Opinião do cidadão: &quot; #{mensagem.mensagemAvaliacao(sol.idSolicitacao)} &quot;" style="margin-top:1em"/>
+		        		<h:outputText value="Opinião do cidadão:" styleClass="titulo" style="margin-top:1em;color: #1a568c;"/>
+		        		<h:outputText value="&quot; #{mensagem.mensagemAvaliacao(sol.idSolicitacao)} &quot;" style="margin-top:1em"/>
 			        	
 			        </h:panelGroup>
 			    </p:dataList>
