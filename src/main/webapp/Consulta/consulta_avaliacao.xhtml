@@ -21,8 +21,8 @@
 
 			<h:form style="padding: 1.5vw 15vw">
 				<h:panelGroup styleClass="inline">
-					<h:outputText value="Avaliação " style="color:#1a568c; font-size:25px; padding-bottom: 2vw; align-self: center; margin-right: .5em" />
-					<h:outputText value="#{entidades.entidades.nome}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; align-self: center" />
+					<h:outputText value="Avaliação " style="color:#1a568c; font-size:25px; align-self: center; margin-right: .5em" />
+					<h:outputText value="#{entidades.entidades.nome}" style="color:#1a568c; font-size:25px; align-self: center" />
 				</h:panelGroup>
 				<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
 								
@@ -36,7 +36,7 @@
 					</h:panelGroup>
 					<h:outputText value="#{avaliacao.media}" style="font-size:20px;margin-left: .2em;" />
 	        	</h:panelGroup>
-				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol" emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
+				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol"  emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
 			        <h:panelGroup styleClass="column" style="padding: 20px;border-bottom:1px solid silver">
 				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
 			        		<h:panelGroup styleClass="inline">
