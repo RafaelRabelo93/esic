@@ -98,6 +98,8 @@
 									<!-- 						//	<f:selectItem itemLabel="Data" itemValue="1" /> -->
 									<f:selectItem itemLabel="Meses" itemValue="2" />
 									<f:selectItem itemLabel="Anos" itemValue="3" />
+									<f:selectItem itemLabel="Óegãos" itemValue="4" />
+									<f:selectItem itemLabel="Entidades" itemValue="5" />
 									<f:selectItem itemLabel="Estados" itemValue="6" />
 									<f:selectItem itemLabel="Assunto" itemValue="7" />
 									<f:selectItem itemLabel="Tipo de Pessoa" itemValue="8" />
@@ -208,6 +210,30 @@
 										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
 										<f:selectItems value="#{acoes.acoesVinculadas}" var="ac"
 											itemLabel="#{ac.titulo}" itemValue="#{ac.idAcoes}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Órgão -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.orgaoBool}">
+									<p:outputLabel value="Orgaos" />
+									<p:selectCheckboxMenu id="org"
+										value="#{relatorioDinamico.orgaos}" label="Órgãos">
+										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.listOrgaosAtivos}" var="orgao"
+											itemLabel="#{orgao.sigla} - #{orgao.nome}" itemValue="#{orgao.idEntidades}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Entidade -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.entidadeBool}">
+									<p:outputLabel value="Entidades" />
+									<p:selectCheckboxMenu id="ents"
+										value="#{relatorioDinamico.entidades}" label="Entidades">
+										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.todasEntidades}" var="ent"
+											itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}" />
 									</p:selectCheckboxMenu>
 								</h:panelGroup>
 

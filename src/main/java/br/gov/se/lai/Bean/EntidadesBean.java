@@ -40,6 +40,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	private boolean forOrgao = true;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
+	private List<Entidades> listOrgaoRelatorios;
 	private List<Entidades> listOrgaosAtivos;
 	private List<Entidades> todasEntidades;
 	private List<Entidades> todasEntidadesAtivas;

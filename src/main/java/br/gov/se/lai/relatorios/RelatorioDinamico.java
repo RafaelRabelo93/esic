@@ -343,7 +343,7 @@ public class RelatorioDinamico {
 				}
 			}
 		
-		if(!dados.isEmpty() && !query.contains("WHERE")) {
+		if((!dados.isEmpty() && !dados.containsKey("mes") && !dados.containsKey("ano")) && !query.contains("WHERE")) {
 			query = query.concat(" WHERE ");
 		}
 		
@@ -351,8 +351,8 @@ public class RelatorioDinamico {
 			switch (key) {
 			case "orgao":
 				for (int i = 0; i < dados.get(key).size(); i++) {
-					if (i != 0) {
-						query = query.concat(" OR slt.entidades.idEntidades = '" + dados.get(key).get(i) + "'");
+					if (i == 0) {
+						query = query.concat("( slt.entidades.idEntidades = '" + dados.get(key).get(i) + "'");
 					} else {
 						if (escritaDeUmOrgaoOuEntidade) {
 							query = query.concat(" OR");
@@ -375,8 +375,8 @@ public class RelatorioDinamico {
 				break;
 			case "entidade":
 				for (int i = 0; i < dados.get(key).size(); i++) {
-					if (i != 0) {
-						query = query.concat(" OR slt.entidades.idEntidades = '" + dados.get(key).get(i) + "'");
+					if (i == 0) {
+						query = query.concat(" ( slt.entidades.idEntidades = '" + dados.get(key).get(i) + "'");
 					} else {
 						if (escritaDeUmOrgaoOuEntidade) {
 							query = query.concat(" OR");

@@ -40,7 +40,7 @@ public class Avaliacao {
 			}
 		}
 		
-		solicitacao.setAvaliacao((int) (nota/(qntdAvaliacoes == 0 ? 1 : qntdAvaliacoes)));
+		solicitacao.setAvaliacao((nota/(qntdAvaliacoes == 0 ? 1 : qntdAvaliacoes)));
 		SolicitacaoDAO.saveOrUpdate(solicitacao);
 	}
 	

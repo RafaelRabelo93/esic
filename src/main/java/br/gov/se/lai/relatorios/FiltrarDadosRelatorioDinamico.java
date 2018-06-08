@@ -98,7 +98,12 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				aux.add(auxQuery!= null ? auxQuery.size() : 0);
 			}
 		}else {
-			queryTempo = queryTempo.concat(" dataIni LIKE '" + Arrays.asList(meses).indexOf(t)+1 + "%'");
+			if(query.contains("WHERE")) {
+				queryTempo = query.concat(" AND ");
+			}else {
+				queryTempo = query.concat(" WHERE ");
+			}
+			queryTempo = queryTempo.concat(" dataIni LIKE '" +t + "-%'");
 			List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
 			aux.add(auxQuery!= null ? auxQuery.size() : 0);
 		}
@@ -121,7 +126,7 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 				}
 				queryTempo = queryTempo.concat("dataIni LIKE '"+ano+"-0" + (int)(Arrays.asList(meses).indexOf(t)+1) + "-%'");
 				List<Solicitacao> auxQuery = SolicitacaoDAO.queryDinamica(queryTempo);
-				aux.add(auxQuery!= null ? auxQuery.size() : 0);
+				aux.add(auxQuery!= null ? ( aux!= null ? aux.get(aux.size()-1) + auxQuery.size() : 0) : 0);
 			}
 		}else {
 			if(query.contains("WHERE")) {
