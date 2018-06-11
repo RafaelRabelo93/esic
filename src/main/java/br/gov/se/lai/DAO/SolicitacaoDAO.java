@@ -228,9 +228,9 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<String> listarAssuntos(String tipo, String periodo) {
-		String HQL= "SELECT solicitacao.acoes.titulo FROM  Solicitacao as solicitacao "+
-				"JOIN  solicitacao.acoes as acoes "+
-				"ON solicitacao.acoes.idAcoes = acoes.idAcoes "+
+		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM  Solicitacao as solicitacao "+
+				"JOIN  Acoes as acoes "+
+				"ON solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
 				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 

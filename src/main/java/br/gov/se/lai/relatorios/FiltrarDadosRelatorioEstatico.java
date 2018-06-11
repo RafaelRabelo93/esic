@@ -277,6 +277,8 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaFeminino)));
 		base.add("Pessoa Física Masculino");
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaMasculino)));
+		base.add("Pessoa Não Identificada");
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(pessoas.size()-(numeroFisicaFeminino+numeroFisicaMasculino+numeroJuridica))));
 
 		for (int i = 0; i < base.size(); i++) {
 			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));

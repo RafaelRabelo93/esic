@@ -55,9 +55,9 @@ public class DrawBarChart {
 			case 2:
 				variaveis = graficoMensalComSeries(variaveis, dadosChart);	
 				break;
-			case 3:
-				variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
-				break;
+//			case 3:
+//				variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
+//				break;
 
 			default:
 				variaveis = graficoComSeries(variaveis, dadosChart);
@@ -93,9 +93,9 @@ public class DrawBarChart {
 	    	case 2:
 	    		variaveis = graficoMensalComSeries(variaveis, dadosChart);	
 	    		break;
-	    	case 3:
-	    		variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
-	    		break;
+//	    	case 3:
+//	    		variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
+//	    		break;
 	    		
 	    	default:
 	    		variaveis = graficoComSeries(variaveis, dadosChart);
