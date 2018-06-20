@@ -53,7 +53,7 @@ public class ResponsavelBean implements Serializable{
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 		this.responsavel = new Responsavel();
-		perfilGestorGeral();
+		popularListaCorrepondenteAPerfil();
 		pegarParamURL();
 		todosResponsaveis = new ArrayList<>(ResponsavelDAO.list());
 		listRespDaEntidade = new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()));
@@ -147,6 +147,12 @@ public class ResponsavelBean implements Serializable{
 		return "/index";
 	}
 	
+	/**
+	 * Retorna o valor booleano referente ao status de ligação entre o usuario e a Entidade passadas como parâmentro
+	 * @param usuario
+	 * @param idEntidadeEntrada
+	 * @return
+	 */
 	public boolean verificaExistenciaResponsavelNaEntidade(Usuario usuario, int idEntidadeEntrada) {
 		boolean retorno = false;
 		if(verificaExistenciaResponsavel(usuario)) {
@@ -168,6 +174,10 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	/**
+	 * Altera o usuário vinculado ao responsável
+	 * @return
+	 */
 	public String alterarVinculo() {
 		if(verificaAcesso()) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
@@ -184,6 +194,10 @@ public class ResponsavelBean implements Serializable{
 		this.responsavel =  resp.get(0);		
 	}
 	
+	/**
+	 * Altera entidade do responsável para entidade pré-selecionada na sessão
+	 * @return
+	 */
 	public String alterarDadosUsuario() {
 		if(verificaExistenciaGestorSistema(usuarioBean.getUsuario()) || verificaAcesso()) {
 			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
@@ -236,6 +250,12 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	/**
+	 * Verifica qual o proximo usuário na linha de permissões existe para a aquela sessão
+	 * @param instancia
+	 * @param entidadeId
+	 * @return
+	 */
 	public static int responsavelDisponivel(int instancia, int entidadeId) {
 		boolean busca = false;
 		Responsavel respBusca =  new Responsavel();
@@ -267,6 +287,7 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+
 	public String cadResponsavel() {
 		List<Responsavel> resp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
 		String retorno = "";
@@ -299,7 +320,11 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 
-	public void perfilGestorGeral() {
+	/**
+	 * Popula lista segundo o tipo de perfil de acesso do usuário. 
+	 * Perfil de administrador e de gestor do sistema tem acesso de todas as entidades ativas, e perfis de responsável tem acesso a(s) sua(s) entidade(s) correspondente(s). 
+	 */
+	public void popularListaCorrepondenteAPerfil() {
 		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
@@ -351,6 +376,12 @@ public class ResponsavelBean implements Serializable{
 		return retorno;
 	}
 	
+	/**
+	 * Retorna a lista de Entidades a quais o responsável que realizará cadastro tem acesso.
+	 * O administrador e gestor do sistema tem acesso a todas as entidades ativas.
+	 * Os gestores do órgão/entidade tem acesso somente aos seus órgãos/entidades.
+	 * @return
+	 */
 	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
 		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6) {
 			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>(EntidadesDAO.listAtivas());
@@ -391,6 +422,12 @@ public class ResponsavelBean implements Serializable{
 		return entidade;
 	}
 	
+	/**
+	 * Método para requisitar cadastro de responsável. 
+	 * Este método procura qual o responsável mais apto a receber o pedido de cadastro de responsável, 
+	 * isto é, procura o gestor do órgão/entidade e então chama uma função que envia o email para o gestor 
+	 * @return
+	 */
 	public String requisitarCadastroResponsavel() {
 		if(UsuarioBean.tratarEmail(email)) {
 			Entidades ent = pegarEntidade();
@@ -418,6 +455,9 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void pegarParamURL() {
 		if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("access-key") != null ) {

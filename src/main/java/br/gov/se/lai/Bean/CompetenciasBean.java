@@ -166,7 +166,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	
+	/**
+	 * Itera a lista de competências e adiciona a ação ligada a compentencia selecionada na lista de ações e remove esta competência do campo de escolha.
+	 */
 	public void listaCompetenciasUpdate(){
 		Iterator<Competencias> c = listCompetencias.iterator();
 		while(c.hasNext()) {
@@ -180,6 +182,10 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		competencias = new Competencias();
 	}
 	
+	/**
+	 * Remove ações que já estão ligadas a entidade selecionada da lista de ações apresentada 
+	 * @return String que representa a view de redirecionamento
+	 */
 	public String filtrarAcoesEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
 		Iterator<Acoes> a = AcoesBean.acoes.iterator();
@@ -196,7 +202,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	
+	/**
+	 * Deleta competências inseridos na lista de exclusão
+	 */
 	public void delete() {
 		if(verificaPermissao()) {
 			for (Competencias comp : listCompetenciasExcluir) {
@@ -215,6 +223,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}	
 	}
 
+	/**
+	 * Limpa objeto competência da sessão
+	 */
 	public void limparCompetencia() {
 		competencias = new Competencias();
 	}

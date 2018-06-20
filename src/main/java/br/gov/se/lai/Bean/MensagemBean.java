@@ -111,6 +111,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 * Salvar mensagem específica de avaliação
+	 */
 	public void salvarMensagemAvaliacao() {
 		if(usuario.getIdUsuario() != null) {
 			mensagem.setUsuario(usuario);
@@ -127,6 +130,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
+	/**
+	 * Verificar se a mensagem já foi respondida, para então alterar o status e o prazo de resposta
+	 */
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
@@ -144,6 +150,10 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		return 1;
 	}
 
+	/**
+	 * Salva mensagem específica de negativa de solicitação
+	 * @return
+	 */
 	public String negar() {
 		mensagem.setUsuario(usuario);
 		mensagem.setData(new Date(System.currentTimeMillis()));
@@ -165,6 +175,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		return "/Consulta/consulta?faces-redirect=true";
 	}
 
+	/**
+	 * Cria uma nova mensagem aviso de sistema referente a status da ultima movimentação da solicitação
+	 * @param solicitacao
+	 * @param status
+	 * @param entidadeNova
+	 * @param entidadeVelha
+	 * @param nota
+	 */
 	public static void salvarStatus(Solicitacao solicitacao, String status, String entidadeNova, String entidadeVelha, int nota) {
 		int tipoAux = 4;
 		mensagem = new Mensagem();
@@ -245,7 +263,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 
-	
+	/**
+	 * Carrega as mensagens vinculadas a solicitação
+	 */
 	public void carregaMensagens() {
 		if (solicitacao != null) {
 			int idSolicitacao = solicitacao.getIdSolicitacao();
@@ -271,6 +291,11 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagensTramites.add(mensagem);
 	}
 	
+	/**
+	 * Retorna todas as mensagens de cunho avaliativo ligados a Entidade passada como parâmetro
+	 * @param idSolicitacao
+	 * @return
+	 */
 	public static String mensagemAvaliacao (int idSolicitacao) {
 		String texto;
 		List<Mensagem> mensagem = MensagemDAO.listMensagensTipo(idSolicitacao, (short)6);

@@ -149,7 +149,7 @@ public class Relatorios {
 			ArrayList<Integer> list = dadosChart.get(key);
 			valorMaior = Collections.max(list,null) > valorMaior ? Collections.max(list,null) : valorMaior;
 		}
-		return (valorMaior+10);
+		return (valorMaior+5);
 	}
 	
 	public ArrayList<Integer> retornarListaAnosAteHoje() {

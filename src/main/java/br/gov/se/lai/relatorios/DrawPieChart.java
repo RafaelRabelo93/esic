@@ -40,7 +40,7 @@ public class DrawPieChart implements Serializable{
 	    	
 	        for(String key : dadosChart.keySet()) {
 		    	pieModel1.set(key, dadosChart.get(key).get(0));
-		    }
+	        }
 	        
 	         
 	        pieModel1.setTitle(title);

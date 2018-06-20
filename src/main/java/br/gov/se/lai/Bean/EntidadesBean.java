@@ -56,6 +56,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
 	
+	/**
+	 * Salva instância de Entidade criada configurando como default que a entidade está ativa 
+	 * @return
+	 */
 	public String save() {
 		if(verificaPermissao()) {
 			if(verificaUnicidadeNome()) {
@@ -86,14 +90,22 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		
 	}
 	
+	/**
+	 * Exclui permanentemente o objeto Entidade do banco de dados 
+	 */
 	public void delete() {
 		if(verificaPermissao() ) {
 			entidades = EntidadesDAO.find(idEntidades);
-			//EntidadesDAO.delete(entidades);
+			EntidadesDAO.delete(entidades);
 			entidades.setAtiva(false);
 		}	
 	}
 	
+	/**
+	 * Edita o objeto Entidade 
+	 * @param entidade
+	 * @return
+	 */
 	public String edit(Entidades entidade) {
 		if(verificaPermissao()) {
 			EntidadesDAO.saveOrUpdate(entidade);
@@ -104,8 +116,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	
 
 
-
-	public void listarOrgaos(AjaxBehaviorEvent e) {
+	/**
+	 * Lista todos os órgãos ativos
+	 * @param ajaxBehaviorEvent
+	 */
+	public void listarOrgaos(AjaxBehaviorEvent ajaxBehaviorEvent) {
 		if(forOrgao) {
 			this.listOrgao = null;
 		}else {
@@ -114,6 +129,9 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	
 	}
 	
+	/**
+	 * Chama o método filtrarAcoes da classe Acoes para disponibilizar ações que não estão vincualadas a entidade
+	 */
 	public void verificaCompetenciasEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.entidades.getCompetenciases());
 		AcoesBean acaobean = new AcoesBean();
@@ -129,6 +147,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		}
 	}
 	
+	/**
+	 * Lista entidades passíveis de receber uma solicitação no modo encaminhamento, remove da lista entidade do responsável vinculado a sessão.
+	 * @return
+	 */
 	public List<Entidades> exibirEntidadesEncaminhamento(){
 		List<Entidades> listaAuxiliar = todasEntidades;
 		List<Responsavel> resps = new ArrayList<>(user.getResponsavels());
@@ -139,6 +161,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		return listaAuxiliar;
 	}
 	
+	/**
+	 * Verifica se existe alguma Entidade cadastrada com nome inserida
+	 * @return
+	 */
 	public boolean verificaUnicidadeNome() {
 		if(!EntidadesDAO.existeNome(entidades.getNome())) {
 			return true;
@@ -146,7 +172,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Verifica se há alguma Entidade cadastrada com a sigla inserida
+	 */
 	public boolean verificaUnicidadeSigla() {
 		if(!EntidadesDAO.existeSigla(entidades.getSigla())) {
 			return true;
@@ -156,6 +185,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	}
 	
 	
+	/**
+	 * Sinaliza a Entidade como um Órgão apontando o campo idOrgao para si mesma.
+	 * @param entidade
+	 */
 	public void serEntidadeOrgao(Entidades entidade) {
 		if(entidade.isOrgao()) {
 			entidade.setIdOrgaos(entidade.getIdEntidades());

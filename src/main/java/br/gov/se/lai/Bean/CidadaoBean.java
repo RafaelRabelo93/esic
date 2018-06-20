@@ -266,7 +266,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	/**
 	 * Função limparCidadaoBean
 	 * 
-	 * Limpa o objeto.
+	 * Limpa o objeto preenchendo todos os seus campos com null.
 	 */
 	public void limparCidadaoBean() {
 		setEmail(null);
