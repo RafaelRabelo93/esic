@@ -24,13 +24,51 @@ import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Solicitacao;
 
 public class FiltrarDadosRelatorioDinamico implements Serializable {
+	
+	/**
+	 * Essa classe se refere a organização do que é preciso para realizar a query no banco de dados
+	 * e então tratar o retorno da query para em uma estrutura para que possa ser plotada nos gráficos 
+	 * dos gráficos mensais, que são gráficos sobre o pedido de informação realizado no mês e ano atual.
+	 * 
+	 * Esta classe trata unicamente dos pedidos de informação do ano e mês selecionado. Caso queira visualizar 
+	 * os relatórios estático vá para a classe FiltrarDadosRelatorioDinamico e RelatorioDinamico.
+	 * 
+	 * Nessa classe já está prevista a contagem do ano inicial como 2012, pois foi em 2012 que o sistema
+	 * esic foi colocado para serviço, então é importante não esquecer que existe um histórico.
+	 * 
+	 * As funções previstas nessa classe retornam dicionários onde a chave se refere ao eixo x do gráfico 
+	 * que será plotado e o valor se refere a um arraylist que armazenará os valores das colunas. O valor é 
+	 * um array pois em certos gráfico é necessário plotar valores por status da solicitação (total de pedidos, 
+	 * respondidos, aberto..) referentes a um período de tempo.
+	 */
 
 	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-	protected final static int anoInicial = 2012;
+	//protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
+	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
+	
 
 
-
+	/**
+	 * Este método visa buscar as informações conforme selecionados pelo usuário. Existe nessa estrutura uma 
+	 * questão importante para definição dos valores da base, pois o gráfico funciona numa relação de Tipo de 
+	 * solicitação X tempo, e esse tempo pode ser mês ou ano. Além disso, o usuário pode especificar qual o 
+	 * mês ou ano específico que ele quer realizar a busca o que restringe o formato da busca e estrutura do
+	 * arraylist de valores.
+	 * 
+	 * Outro caso que esse método prevêr é o de o usuário pedir um gráfico em função de um tempo e especificar
+	 * o outro. Ex. O gráfico ser em função do mês, porém o usuário quer ver esse mês nos anos de 2012, 2016 e 2018.
+	 * 
+	 * Para isso é passado como parametro a string param, que se refere a em função de quê que o gráfico será
+	 * gerado. Tendo o valor do param verificamos se foi feita um pedido de especificação por parte do usuário
+	 * e assim gerar os valores mais adequadamente. 
+	 * 
+	 * @param query
+	 * @param baseRecebida
+	 * @param param
+	 * @param dados
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoDinamico(String query, ArrayList<String> baseRecebida, String param, Map<String, ArrayList<String>> dados) {
 
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
@@ -146,7 +184,9 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 	
 	
 	
-	public static Map<String, ArrayList<Integer>> nome() {
+	// Essa é a forma do método que gera o dicionário na estrutura que a classe do gráfico precisa 
+	//para criar o objeto gráfico.
+/*	public static Map<String, ArrayList<Integer>> metodoExemplo() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH);
@@ -164,6 +204,6 @@ public class FiltrarDadosRelatorioDinamico implements Serializable {
 		
 		return dadosChart;
 	}
-
+*/
 	
 }

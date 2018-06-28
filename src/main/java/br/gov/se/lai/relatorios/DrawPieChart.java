@@ -10,7 +10,15 @@ import org.primefaces.model.chart.PieChartModel;
 @ManagedBean
 public class DrawPieChart implements Serializable{
 
-	 
+		/**
+		 * Classe detinada ao desenho dos gráficos pizzas do relatório.
+		 * 
+		 * Os métodos para criação do objeto PieChart recebem um dicionário
+		 * no formato <String referente a chave, arraylist referente aos valores>.
+		 * 
+		 * É válido lembrar que o PieChart só apresenta um tipo de valor relacionada
+		 * a chave, e por isso o arraylist de valores sempre terá comprimento 1.
+		 */
 
 	 
 	    private PieChartModel pieModel1;
@@ -29,11 +37,7 @@ public class DrawPieChart implements Serializable{
 	        return pieModel2;
 	    }
 	     
-//	    private void createPieModels() {
-//	        createPieModel1();
-//	        createPieModel2();
-//	    }
-//	 
+
 	    @SuppressWarnings("unused")
 		private PieChartModel createPieModel1(Map<String, ArrayList<Integer>> dadosChart, String title) {
 	    	pieModel1 = new PieChartModel();	  

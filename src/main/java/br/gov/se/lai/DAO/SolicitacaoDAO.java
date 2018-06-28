@@ -203,7 +203,7 @@ public class SolicitacaoDAO {
 	@SuppressWarnings("unchecked")
 	public static List<String> listarPorFederacao(String tipo, String periodo) {
 		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
-					"JOIN  solicitacao.cidadao as cidadao "+
+					"JOIN  Cidadao as cidadao "+
 					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
 					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 					"AND solicitacao.tipo = 'Informação'";
@@ -218,7 +218,7 @@ public class SolicitacaoDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Cidadao> listarCidadao(String tipo, String periodo) {
 		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
-				"INNER JOIN Cidadao as cidadao "+
+				"JOIN Cidadao as cidadao "+
 				"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
 				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
@@ -228,9 +228,11 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<String> listarAssuntos(String tipo, String periodo) {
-		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM  Solicitacao as solicitacao "+
-				"JOIN  Acoes as acoes "+
-				"ON solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
+		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
+				"JOIN  Competencias as competencias "+
+				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
+				"JOIN  Acoes as acoes  "+
+				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
 				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 

@@ -27,7 +27,7 @@
 <!-- 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p> -->
 					    
 					 <h:panelGroup styleClass="inline">
-					    <h:commandLink onclick="exportAllCharts()" actionListener="#{chartExport.gerarRelatorio()}" styleClass="botaoLink" style="margin-bottom: 3em">
+					    <h:commandLink onclick="exportAllCharts()" rendered="false" actionListener="#{chartExport.gerarRelatorio()}" styleClass="botaoLink" style="margin-bottom: 3em">
 					    	<h:inputHidden id="ch1" value="#{chartExport.chartGeral}" />
 					    	<h:inputHidden id="ch2" value="#{chartExport.chartMensal}" />
 					    	<h:inputHidden id="ch3" value="#{chartExport.chartAnual}" />
@@ -53,7 +53,7 @@
 					    	<h:inputHidden id="ch80" value="#{chartExport.chartPessoa}" />
 					    	<h:inputHidden id="ch90" value="#{chartExport.chartEstado}" />
 					    	<p:fileDownload value="#{chartExport.file}" />
-					    	<h:outputText value="Gerar Relatório Estatístico Sem Bug" />
+					    	<h:outputText value="Gerar Relatório Estatístico" />
 					        <i class="fa fa-file-pdf-o" style="margin-left: .5em"/>
 					    </h:commandLink>
 				    </h:panelGroup>
@@ -113,7 +113,31 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:500px"/>
+						<p:separator styleClass="separator2"/>
+						
+						<p:outputLabel value="Relatório de Assunto"/>
+						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="height:300px"/>
+						<p:separator styleClass="separator2"/>
+						
+						<p:outputLabel value="Relatório de Tipo de Pessoa"/>
+						<h:commandLink onclick="exportChartBean('chartTipoPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  style="height:300px"/>
+						<p:separator styleClass="separator2"/>
+						
+						<p:outputLabel value="Relatório de Estados"/>
+						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
 

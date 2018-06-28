@@ -65,6 +65,8 @@ public class Relatorios {
 	}
 	
 	/**
+	 * Significado dos inteiros que direcionam qual tipo de filtragem irá ser realizada.
+	 * 
 	 * 1 - pedidos totais do esic
 	 * 2- pedidos mensais
 	 * 3- pedidos anuais
@@ -121,13 +123,23 @@ public class Relatorios {
 		}
 	}
 	
+	/**
+	 * Gera o dicionário com os valores que preencheram o gráfico para então criar o objeto PieChart.
+	 * @param tipoDados
+	 * @return
+	 */
 	public PieChartModel desenharPieChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		DrawPieChart modelPie = new DrawPieChart();
 		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1]);
 	}
 	
-	
+	/**
+	 * Gera o dicionário com os valores que preencheram o gráfico para então criar o objeto BarChart,
+	 * além de verificar qual o valor mais alto para estabelecer qual a altura máxima do gráfico.
+	 * @param tipoDados
+	 * @return
+	 */
 	public BarChartModel desenharBarChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		int valorMaior = identificarValorMaximoGrafico(dadosChart);

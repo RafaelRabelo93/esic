@@ -20,15 +20,37 @@ import br.com.caelum.stella.inwords.Messages;
 import br.gov.se.lai.DAO.EntidadesDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Cidadao;
+import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
 import br.gov.se.lai.entity.Solicitacao;
 
 public class FiltrarDadosRelatorioEstatico implements Serializable {
+	
+	/**
+	 * Essa classe se refere a organização do que é preciso para realizar a query no banco de dados
+	 * e então tratar o retorno da query para em uma estrutura para que possa ser plotada nos gráficos 
+	 * dos gráficos mensais, que são gráficos sobre o pedido de informação realizado no mês e ano atual.
+	 * 
+	 * Esta classe trata unicamente dos pedidos de informação do ano e mês atual. Caso queira filtrar relatórios
+	 * de forma dinâmica vá para a classe FiltrarDadosRelatorioDinamico e RelatorioDinamico.
+	 * 
+	 * Nessa classe já está prevista a contagem do ano inicial como 2012, pois foi em 2012 que o sistema
+	 * esic foi colocado para serviço, então é importante não esquecer que existe um histórico.
+	 * 
+	 * As funções previstas nessa classe retornam dicionários onde a chave se refere ao eixo x do gráfico 
+	 * que será plotado e o valor se refere a um arraylist que armazenará os valores das colunas. O valor é 
+	 * um array pois em certos gráfico é necessário plotar valores por status da solicitação (total de pedidos, 
+	 * respondidos, aberto..) referentes a um período de tempo.
+	 */
 
+	
 	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-	protected final static int anoInicial = 2012;
-
+	//protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
+	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
+	
+	
+	
 	/**
 	 * Gerar Relatório Final
 	 * 
@@ -113,6 +135,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
+	
+	/**
+	 * Esta função busca os valores dos pedidos de informação dos anos anteriores até o ano atual de forma que seja acumulada.
+	 * Ou seja, o ano seguinte corresponderá ao valor da quantidade de pedidos de informações do ano em questão, somados aos valores
+	 * dos anos anteriores. 
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualAcumuladoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
@@ -145,7 +174,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 
 		return dadosChart;
 	}
-
+	
+	/**
+	 * Esta função faz uma contagem dos valores encontrados referentes aos órgãos ativos armazenados no banco.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoOrgaoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
@@ -177,6 +210,12 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
+	
+	/**
+	 * Esta função retorna os valores dos pedidos de informação feitos direcionados a cada entidade ativa.
+	 * Os valores se referem a pedido de informação total, pedido de informação abertos e pedido de informação finalizado.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEntidadePedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
@@ -208,6 +247,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
+	/**
+	 * Esta função retorna um dicionário informando quantos pedidos de informações foram recebidos pelo ponto de vista
+	 * de estados, que estão vinculados aos cidadãos solicitantes.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
@@ -237,6 +281,12 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
+	
+	/**
+	 * Esta função verifica qual o tipo de pessoa (física ou jurídica) e qual o gênero (feminino ou masculino) dos cidadãos
+	 * ligados aos pedidos de informação.
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTipoPessoaGeneroPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
@@ -287,12 +337,17 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 
+	
+	/**
+	 * Esta função faz uma busca nos assuntos dos pedidos de informação recebidos. 
+	 * @return
+	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAssuntoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-0" + mesAtual + "%";
+		String periodo = anoAtual + "-05" + mesAtual + "%";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -303,6 +358,10 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		if (assuntos != null) {
 			assunto = assuntos.stream().collect(Collectors.toSet());
 			assunto.remove("");
+		}
+		
+		if (assuntos.size() == 0 ) {
+			assunto.add("Nenhum");
 		}
 
 		for (String ass : assunto) {
@@ -317,7 +376,9 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 	
-	public static Map<String, ArrayList<Integer>> nome() {
+/*	//Forma de função para montar estrutura para ser lida na classe Relatorios
+ * // e que acaba sendo fonte de informação para plotar no gráfico.
+ * public static Map<String, ArrayList<Integer>> nome() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
@@ -334,7 +395,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		}
 		
 		return dadosChart;
-	}
+	}*/
 
 	
 }

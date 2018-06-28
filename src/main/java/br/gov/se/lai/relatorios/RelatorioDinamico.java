@@ -28,6 +28,11 @@ import br.gov.se.lai.utils.HibernateUtil;
 @ManagedBean(name = "relatorioDinamico")
 @SessionScoped
 public class RelatorioDinamico {
+	
+	/**
+	 * Essa classe é a classe responsável pela formação da query de pesquisa conforme 
+	 * as escolhas do usuário.
+	 */
 
 	public int tipoRelatorio;
 	public int tipoGrafico;

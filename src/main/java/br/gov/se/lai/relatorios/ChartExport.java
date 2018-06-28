@@ -157,12 +157,17 @@ public class ChartExport {
 	}
 	
 	public BufferedImage criarImagem(String imagem) throws IOException {
-		String encoded = imagem.split(",")[1];
-		byte[] decoded = org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
-		ByteArrayInputStream bais = new ByteArrayInputStream(decoded);
-		BufferedImage bim = ImageIO.read(bais);
+		if (imagem != null) {
+			String encoded = imagem.split(",")[1];
+			byte[] decoded = org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
+			ByteArrayInputStream bais = new ByteArrayInputStream(decoded);
+			BufferedImage bim = ImageIO.read(bais);
+			return bim;
+		}else {
+			return null;
+		}
 		
-		return bim;
+		
 	}
 	
 	

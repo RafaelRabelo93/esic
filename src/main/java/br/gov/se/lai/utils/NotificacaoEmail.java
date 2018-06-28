@@ -41,26 +41,26 @@ public class NotificacaoEmail implements Job{
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 	}
 	
-//	public static void enviarEmailAutomatico(Solicitacao solicitacao, String titulo, String mensagem) {
-////		String destinatario = ((UsuarioBean) usuario.getCidadaos()).getEmail();
+	public static void enviarEmailAutomatico(Solicitacao solicitacao, String titulo, String mensagem) {
+		String destinatario = ( solicitacao.getCidadao()).getEmail();
 //		String destinatario = "michael.mendonca@cge.se.gov.br";
-//				
-//		String msg = "<h4>Notificação do prazo de solicitação</h4>" + 
-//				"<table>" + 
-//				"	<tr>" + 
-//				"<h5 style=\"margin-bottom: 0\"> teste </h5>" + 
-//				"	</tr>" + 
-//				"</table>" + 
-//				"<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-//				"<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
-//		
-//		try {
-//			enviarEmailHTML(destinatario, titulo, msg);
-//		} catch (EmailException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+				
+		String msg = "<h4>Notificação do prazo de solicitação</h4>" + 
+				"<table>" + 
+				"	<tr>" + 
+				"<h5 style=\"margin-bottom: 0\"> teste </h5>" + 
+				"	</tr>" + 
+				"</table>" + 
+				"<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
+				"<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+		
+		try {
+			enviarEmailHTML(destinatario, titulo, msg);
+		} catch (EmailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public static void enviarEmailTramites(Solicitacao solicitacao, String texto, Responsavel respRemetente, Responsavel respDestinatario) {

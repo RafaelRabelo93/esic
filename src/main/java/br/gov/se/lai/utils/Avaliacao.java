@@ -29,6 +29,10 @@ public class Avaliacao {
 	public final int size = 173;
 	public String sizeFinal;
 	
+	/**
+	 * Faz a média das mensagens vinculadas a uma solicitação e atualiza a avaliação da solicitação em questão. 
+	 * @param solicitacao
+	 */
 	public static void avaliarSolicitacao(Solicitacao solicitacao) {
 		ArrayList<Mensagem> listMensagensAvaliadas = (ArrayList<Mensagem>) MensagemDAO.listMensagensTipo(solicitacao.getIdSolicitacao(), (short)6);
 		int nota = 0;

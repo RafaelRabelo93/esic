@@ -88,17 +88,17 @@ public class UsuarioBean implements Serializable {
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
-//		try {
-//			Scheduler scheduler = shedFact.getScheduler();
-//			scheduler.start();
-//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-//					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
-//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-//					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-//			scheduler.scheduleJob(job, trigger);
-//		} catch (SchedulerException e) {
-//			System.out.println(e.getMessage());
-//		}
+		try {
+			Scheduler scheduler = shedFact.getScheduler();
+			scheduler.start();
+			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
+					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
+			scheduler.scheduleJob(job, trigger);
+		} catch (SchedulerException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void redirectPages(String pageUrl) throws IOException {
@@ -445,6 +445,13 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	/*
+	 * Esta função foi criada unicamente com o intuito de permitir apenas usuarios com permissão privilegiada pudessem logar.
+	 * Essa situação foi colocada apenas como um paliativo para a versão em produção, pois a versão que está em produção ainda
+	 * não está aberta para o público logo só quem tem permissão pode entrar. Quando for lançada a versão definitiva do Esic 
+	 * esta função deve ser excluída e os logins devem ser direcionados para a função login() vista acima. 
+	 * @return
+	 */
 	public String loginSistema() {
 		String retorno = "";
 		this.usuario = UsuarioDAO.buscarUsuario(this.nick);
@@ -486,7 +493,8 @@ public class UsuarioBean implements Serializable {
 	}
 	
 	public boolean verificaPermissaoPrivilegiada() {
-		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado") || this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
+		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado")
+				|| this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
 	}
 	
 	/**

@@ -18,6 +18,21 @@ import org.primefaces.model.chart.HorizontalBarChartModel;
 @ManagedBean(name = "barChartClass")
 @SessionScoped
 public class DrawBarChart {
+		
+		/** Classe para desenhar o gráfico em barras utilizado nos relatórios.
+		 * 
+		 * 	Os gráfico são montados a partir do recebimento de valores que são 
+		 * passados aos método em forma de dicionário no formato <Nome da base,
+		 * lista que representa os valores das colunas>
+		 * 
+		 * 	Podemos ter dois tipos de gráficos em barra. O primeiro tipo são 
+		 * aqueles que possuem as três colunas relacionadas a base, sendo elas:
+		 * situação total, situação em aberto, situação atentidada. O segundo 
+		 * tipo são aquelas situações onde temos apenas uma coluna que se refere 
+		 * a um valor total, ou seja, o valor do dicionário é passado como um 
+		 * arraylist de tamanho igual a 1.
+		 * 
+		 */
 
 	    private BarChartModel barModel;
 	    private HorizontalBarChartModel horizontalBarModel;
@@ -129,10 +144,7 @@ public class DrawBarChart {
 	        return horizontalBarModel;
 	    }
 	     
-//	    private void createBarModels() {
-//	        createBarModel();
-//	    }
-	     
+
 	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
 	   
 	    	barModel = initBarModel( dadosChart, tipoDados );
