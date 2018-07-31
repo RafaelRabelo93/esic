@@ -20,11 +20,11 @@ public class EmailBean {
 	private static String email;
 	private static String assunto;
 	private static String mensagem;
-	private final static String destinatario = "desenvolvimento.cge@cge.se.gov.br";
+	private final static String destinatario = "atendimento.laip@cge.se.gov.br";
 	
 	public static void enviarEmail() {
 		String mensagemFinal = "Remetente: " +nome+ "\nE-mail: " +email+ "\n\n" +mensagem;
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso. ","Seu e-mail foi encaminhado a Controladoria-Geral do Estado, em breve entraremos em contato."));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso.","Seu e-mail foi encaminhado a Controladoria-Geral do Estado, em breve entraremos em contato."));
 		
 		try {
 			NotificacaoEmail.enviarEmail(email, destinatario, assunto, mensagemFinal);

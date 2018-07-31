@@ -253,7 +253,7 @@
 
 					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();">
+					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{usuario.edit}">
 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>

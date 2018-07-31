@@ -279,8 +279,7 @@
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 
-							<h:outputText value="Instancia:"
-								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" />
 
 							<h:outputText value="Data de Solicitacao:"
@@ -298,6 +297,9 @@
 							<h:outputText value="#{solicitacao.solicitacao.datafim}" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status eq 'Finalizada'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
+							
+							<h:outputText value="Nota:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.avaliacao ne '0'}"/>
+							<h:outputText value="#{solicitacao.solicitacao.avaliacao}" rendered="#{solicitacao.solicitacao.avaliacao ne '0'}"/>
 
 						</p:panelGrid>
 						</h:panelGroup>
@@ -312,12 +314,12 @@
 
 									<f:facet name="loader">
 										<p:commandLink id="outrasMsgs">
-											<h:outputText value="Outras Mensagens" />
+											<h:outputText value="Mais Mensagens" />
 											<br />
 											<i class="fa fa-caret-down" />
 										</p:commandLink>
 										<p:tooltip id="toolTipOutrasMsgs"
-											value="Visualizar mensagens anteriores" for="outrasMsgs"
+											value="Visualizar mensagens seguintes" for="outrasMsgs"
 											position="top" style="box-shadow:none" />
 									</f:facet>
 
@@ -497,10 +499,7 @@
 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}" />
 										<f:selectItem itemLabel="Selecione Orgão Relacionado"
 											noSelectionOption="true" />
-										<f:selectItems
-											value="#{entidades.exibirEntidadesEncaminhamento()}"
-											var="orgao" itemLabel="#{orgao.nome}"
-											itemValue="#{orgao.idEntidades}" />
+										<f:selectItems value="#{entidades.exibirEntidadesEncaminhamento()}"	var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}" />
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
@@ -561,8 +560,8 @@
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' }"
+							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) )}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -621,7 +620,7 @@
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
 							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
-							disabled="#{solicitacao.solicitacao.status eq 'Aberta'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Aberta' or solicitacao.solicitacao.avaliacao ne '0'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />
 							<h:outputText value="Avaliar resposta" />

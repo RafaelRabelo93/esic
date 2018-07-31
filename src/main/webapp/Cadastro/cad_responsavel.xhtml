@@ -29,7 +29,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Usuário: " for="nick" /> 
-								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}"
+								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}" required="true"
 									itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
 							</h:panelGroup>
 							
@@ -41,8 +41,8 @@
 							</h:panelGroup>
 						</h:panelGroup>
 					 	
-						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
-						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
+						 <p:outputLabel value="Órgão / Entidade: " for="orgao" rendered="true"  /> 
+						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains" style="width: -webkit-fill-available;width: -moz-available;width: fill-available;">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
@@ -57,12 +57,11 @@
 					</h:panelGroup>
 					
 					 
-					<p:commandLink class="botaoLink" action="#{responsavel.save}" id="novoResponsavel" update="cad_responsavel dataPanel nick orgao" 
-									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoResponsavel').click();}">
+					<p:commandLink  id="novoResponsavel" class="botaoLink" action="#{responsavel.save}" update="cad_responsavel dataPanel nick orgao">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>
-
+					
 				</div>
 
 			</h:form>

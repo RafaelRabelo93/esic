@@ -21,9 +21,9 @@
 
 				<div class="ficha">
 					<p:steps activeIndex="2" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de solicitação" url="/index.xhtml"/> 
+						<p:menuitem value="Tipo de manifestação" url="/index.xhtml"/> 
 						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
-						<p:menuitem value="Realizar Solicitação" url="#" />
+						<p:menuitem value="Realizar Manifestação" url="#" />
 					</p:steps>
 
 					<h:panelGroup styleClass="box" style="margin-top: 1em">
@@ -31,8 +31,8 @@
 						<h:outputText value="Realizar #{solicitacao.solicitacao.tipo}" rendered="#{solicitacao.solicitacao.tipo ne 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						<h:outputText value="Realizar Pedido de Informação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						
-						<p:outputLabel value="Orgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
-						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />
+						<p:outputLabel value="Órgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
+						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />
 						
 						<h:panelGroup styleClass="column" style="max-width:780px;" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
 						

@@ -551,7 +551,7 @@ public class UsuarioBean implements Serializable {
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		session.invalidate();
 		this.usuario = null;
-		return "/loginAdmin";
+		return "/index.xhtml?faces-redirect=true";
 	}
 
 	public static String generateSessionId() {

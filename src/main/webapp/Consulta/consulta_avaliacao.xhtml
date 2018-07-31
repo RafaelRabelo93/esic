@@ -36,6 +36,7 @@
 					</h:panelGroup>
 					<h:outputText value="#{avaliacao.media}" style="font-size:20px;margin-left: .2em;" />
 	        	</h:panelGroup>
+
 				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol"  emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
 			        <h:panelGroup styleClass="column" style="padding: 20px;border-bottom:1px solid silver">
 				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
@@ -45,7 +46,8 @@
 			        		</h:panelGroup>
 					        <h:panelGroup styleClass="inline">
 			        			<h:outputText value="Nota:" styleClass="titulo" style="margin-right:.5em;color: #1a568c;" />
-			        			<p:rating readonly="true" value="#{sol.avaliacao}" />
+								<h:outputText value="#{sol.avaliacao}" style="weight:bold;size:1.5em"/>
+<!-- 			        			<p:rating readonly="true" value="#{sol.avaliacao}" /> -->
 			        		</h:panelGroup>
 			        	</h:panelGroup>
 			        	

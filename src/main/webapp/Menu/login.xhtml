@@ -23,7 +23,7 @@
 						<p style="font-size:.9em; color:gray; margin-bottom:2em">Caso ainda não tenha cadastro, realize seu registro para acessar o sistema.</p>
 						
 						<p:outputLabel value="Nome completo: " for="nome" />
-						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" size="30"> 
+						<p:inputText id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="50" style="width:98%"> 
 							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 							<f:validateLength maximum="65"/>
@@ -35,7 +35,7 @@
 						<p:message for="nick" display="text"/>
 						
 						<p:outputLabel value="Senha:" for="senha1" />
-						<p:password id="senha1" match="senha2"
+						<p:password id="senha1" match="senha2" style="width:98%"
 							placeholder="Digite sua senha" required="true" value="#{usuario.usuario.senha}" maxlength="20"
 							promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
 								<f:validateLength minimum="6" ></f:validateLength>
@@ -43,7 +43,7 @@
 						<p:message for="senha1" display="text"/>
 		
 						<p:outputLabel value="Confirme sua senha:" for="senha2" />
-						<p:password id="senha2" placeholder="Repita sua senha" required="true" />
+						<p:password id="senha2" placeholder="Repita sua senha" required="true" style="width:98%"/>
 	
 						<p:commandLink action="#{usuario.save}" class="botaoLink" update="formHeader cadForm growl">
 							<h:outputText value="Cadastrar" />
@@ -59,10 +59,10 @@
 						<p style="font-size:.9em; color:gray; margin-bottom:2em">Acesse o sistema com seus dados cadastrados</p>
 						
 						<p:outputLabel value="Usuário:" for="user" required="true"/>
-						<p:inputText id="user" value="#{usuario.nick}" size="30" />
+						<p:inputText id="user" value="#{usuario.nick}" style="width:98%" />
 						
 						<p:outputLabel value="Senha:" for="senha" />
-						<p:password id="senha" value="#{usuario.senha}" size="30"/>
+						<p:password id="senha" value="#{usuario.senha}" style="width:98%"/>
 						
 						<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:.9em; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('redefinirSenha').click();}"/>
 						<p:commandLink styleClass="botaoLink" action="#{usuario.login}" update="@all growl">
