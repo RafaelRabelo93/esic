@@ -77,6 +77,7 @@ public class UsuarioBean implements Serializable {
 	public static boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
+	private boolean acessoMigrado;
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -446,6 +447,11 @@ public class UsuarioBean implements Serializable {
 					loadEmail(this.usuario);
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+					if((usuario.getLastLogged() == null || Criptografia.Comparar("8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92", usuario.getSenha())) && usuario.isMigrado()) {
+						acessoMigrado = true;
+//						FacesContext.getCurrentInstance().addMessage(null,
+//								new FacesMessage(FacesMessage.SEVERITY_INFO, "Primeiro login", "Esse é seu primeiro login!"));
+					} else acessoMigrado = false;
 					acessoUsuario(this.usuario);
 					SolicitacaoBean.calcularQuantitativoSolicitacao();
 					nomeCompleto(usuario.getNome());
@@ -1102,6 +1108,22 @@ public class UsuarioBean implements Serializable {
 
 	public void setFilteredGestores(List<Usuario> filteredGestore) {
 		this.filteredGestores = filteredGestore;
+	}
+
+	public boolean isAcessoMigrado() {
+		return acessoMigrado;
+	}
+
+	public void setAcessoMigrado(boolean acessoMigrado) {
+		this.acessoMigrado = acessoMigrado;
+	}
+
+	public void setTipoString(String tipoString) {
+		this.tipoString = tipoString;
+	}
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 	
 	
