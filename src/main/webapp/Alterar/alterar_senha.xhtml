@@ -39,12 +39,11 @@
 					
 					</p:panelGrid>
 					
-					<p:commandLink action="#{usuario.edit}" id="altSenha"
+					<p:commandLink action="#{usuario.editarSenha()}" id="altSenha"
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altSenha').click();}" class="botaoLink">
 	
 						<h:outputText value="Salvar senha" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
-	
 	
 						<f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
 						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 

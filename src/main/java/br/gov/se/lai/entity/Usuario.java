@@ -34,6 +34,7 @@ public class Usuario implements java.io.Serializable {
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private Set<Cidadao> cidadaos = new HashSet<Cidadao>(0);
 	private Set<Responsavel> responsavels = new HashSet<Responsavel>(0);
+	private boolean migrado;
 
 	public Usuario() {
 	}
@@ -72,7 +73,7 @@ public class Usuario implements java.io.Serializable {
 		this.idUsuario = idUsuario;
 	}
 
-	@Column(name = "nome", nullable = false, length = 65)
+	@Column(name = "nome", nullable = false, length = 100)
 	public String getNome() {
 		return this.nome;
 	}
@@ -81,7 +82,7 @@ public class Usuario implements java.io.Serializable {
 		this.nome = nome;
 	}
 
-	@Column(name = "nick", nullable = false, length = 45)
+	@Column(name = "nick", nullable = false, length = 100)
 	public String getNick() {
 		return this.nick;
 	}
@@ -152,6 +153,15 @@ public class Usuario implements java.io.Serializable {
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	@Column(name = "migrado", nullable = false)
+	public boolean isMigrado() {
+		return migrado;
+	}
+
+	public void setMigrado(boolean migrado) {
+		this.migrado = migrado;
 	}
 	
 	

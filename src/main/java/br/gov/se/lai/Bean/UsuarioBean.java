@@ -114,8 +114,8 @@ public class UsuarioBean implements Serializable {
 	}
 
 	/**
-	 *Função save 
-	 * Salvar novo usuário edit() - edita valores do usuário 
+	 * save() - Salvar novo usuário 
+	 * edit() - edita valores do usuário 
 	 * delete() - apagar usuario 
 	 * gerarNick() - Sugerir nick para o usuário na hora de preencher o cadastro de usuário 
 	 * verificaExistenciaNick(String nick) - Verifica se o nick digitado/sugerido já existe, retorno booleano.
@@ -293,12 +293,10 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String edit() {
-		this.usuario =  ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		this.usuario = ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		
-		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
-			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
-			UsuarioDAO.saveOrUpdate(this.usuario);
-
+		if (Criptografia.Comparar(Criptografia.Criptografar(senha), this.usuario.getSenha())) {
+			
 			if (usuario.getPerfil() != 1) {
 
 				if (usuario.getPerfil() == 3) {
@@ -329,6 +327,18 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public String editarSenha() {
+		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
+			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
+			UsuarioDAO.saveOrUpdate(this.usuario);
+			return "/index.xhtml?faces-redirect=true";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+			new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senha incorreta.", "Tente novamente."));
+			return null;
+		}
 	}
 	
 	public void editarGestor() {	
