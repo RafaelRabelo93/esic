@@ -35,11 +35,11 @@ import br.gov.se.lai.entity.Responsavel;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
 
-public class NotificacaoEmail implements Job{
+public abstract class NotificacaoEmail implements Job{
 
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-	}
+//	@Override
+//	public void execute(JobExecutionContext context) throws JobExecutionException {
+//	}
 	
 	public static void enviarEmailAutomatico(Solicitacao solicitacao, String titulo, String mensagem) {
 		String destinatario = ( solicitacao.getCidadao()).getEmail();

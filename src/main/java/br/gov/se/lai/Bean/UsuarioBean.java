@@ -26,6 +26,7 @@ import javax.swing.text.DateFormatter;
 import org.apache.commons.mail.EmailException;
 import org.hibernate.id.UUIDGenerationStrategy;
 import org.quartz.CronScheduleBuilder;
+import org.quartz.DateBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -88,17 +89,34 @@ public class UsuarioBean implements Serializable {
 		usuario = new Usuario();
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
-		SchedulerFactory shedFact = new StdSchedulerFactory();
+		SchedulerFactory sf = new StdSchedulerFactory();
 		try {
-			Scheduler scheduler = shedFact.getScheduler();
-			scheduler.start();
+			Scheduler sched = sf.getScheduler();
 			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-			scheduler.scheduleJob(job, trigger);
+					.withIdentity("job1", "group1")
+					.build();
+			
+			Date runTime = DateBuilder.evenMinuteDate(new Date());
+			
+			Trigger trigger = TriggerBuilder.newTrigger()
+					.withIdentity("trigger1", "group1")
+					.startAt(runTime)
+					.build();
+			
+			sched.scheduleJob(job, trigger);
+			sched.start();
+			Thread.sleep(90L * 1000L);
+			sched.shutdown(true);
+			
+//			sched.start();
+//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
+//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
+//			sched.scheduleJob(job, trigger);
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

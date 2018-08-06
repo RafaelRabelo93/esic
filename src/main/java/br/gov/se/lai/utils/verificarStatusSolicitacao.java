@@ -19,7 +19,7 @@ import br.gov.se.lai.entity.Solicitacao;
 public class verificarStatusSolicitacao implements Job {
 
 	@Override
-	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listPorNaoFinalizada()) {
 			try {
