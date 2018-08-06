@@ -95,7 +95,7 @@
 
 					</p:dataTable>
 						
-						<h:panelGroup styleClass="column" style="margin-top:2em;width:100%">
+						<h:panelGroup styleClass="column" style="margin-top:2em;width:100%" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 							<h:outputText value="Gestores do Sistema" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
 							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 						</h:panelGroup>
@@ -109,7 +109,7 @@
 						currentPageReportTemplate="(Página {currentPage} de {totalPages})"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rows="50" rowsPerPageTemplate="10,50,100" rowKey="#{resp.idResponsavel}"
-						style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '6'}">
+						style="margin-bottom:1vw" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						
 						<f:facet name="header">
 				            <p:outputPanel styleClass="searchPanel">
