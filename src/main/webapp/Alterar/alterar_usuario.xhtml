@@ -82,7 +82,7 @@
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
+								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
@@ -92,14 +92,14 @@
 						<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
 							<h:panelGroup styleClass="column" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}" size="11">
+								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}" size="11">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{cidadao.rg}" mask="?9999999999999999" disabled="#{!usuario.cidadao.tipo}" size="15"/>
+								<p:inputMask id="rg" value="#{usuario.cidadao.rg}" mask="?9999999999999999" disabled="#{!usuario.cidadao.tipo}" size="15"/>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
@@ -143,7 +143,7 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Telefone:" for="tel"/>
-								<p:inputMask id="tel" value="#{usuario.cidadao.telefone}" mask="(99) 9 9999-9999" size="12" disabled="#{!usuario.cidadao.tipo}"/>
+								<p:inputMask id="tel" value="#{usuario.cidadao.telefone}" mask="(99) 9999-9999" size="12" disabled="#{!usuario.cidadao.tipo}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
@@ -253,9 +253,15 @@
 
 					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();">
-						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
+					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{usuario.edit}">
+						<h:outputText value="Salvar alterações"  />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+						
+						<f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
+								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
+								 
+								 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
+								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
 					</p:commandLink>
 
 				</div>
@@ -279,7 +285,7 @@
 								 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
 								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
 								 
-								 <f:setPropertyActionListener value="#{usuario.cidadao}" target="#{cidadao.cidadao}" />
+<!-- 								 <f:setPropertyActionListener value="#{usuario.cidadao}" target="#{cidadao.cidadao}" /> -->
 
 							</p:commandLink>
 

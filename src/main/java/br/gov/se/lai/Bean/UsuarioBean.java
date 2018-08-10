@@ -312,10 +312,10 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String edit() {
-		this.usuario = ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+//		if (Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
 		
-		if (Criptografia.Comparar(Criptografia.Criptografar(senha), this.usuario.getSenha())) {
-			
+			UsuarioDAO.saveOrUpdate(usuario);
+
 			if (usuario.getPerfil() != 1) {
 
 				if (usuario.getPerfil() == 3) {
@@ -340,11 +340,11 @@ public class UsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização concluída.", "Sucesso."));
 			return "/index.xhtml?faces-redirect=true";
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
-			return null;
-		}
+//		} else {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
+//			return null;
+//		}
 
 	}
 	

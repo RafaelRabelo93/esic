@@ -65,7 +65,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
+		
+		if ( !cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(email)) {
 			
 			this.usuario = usuarioBean.getUsuario();
 			
@@ -75,59 +76,33 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 			
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
-//			cidadao.setTelefone(telefone);
-//			cidadao.setCelular(celular);
 			
 			try {
-				if (!getTelefone().isEmpty()) {
-					cidadao.setTelefone(telefone);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setTelefone(null);
-			}
+				if (!getEmail().isEmpty()) { cidadao.setEmail(email);}
+			}catch (NullPointerException e) { cidadao.setEmail(null);}
 			
 			try {
-				if (!getCelular().isEmpty()) {
-					cidadao.setCelular(celular);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setCelular(null);
-			}
-			
-			try {
-				if (!getNumero().isEmpty()) {
-					cidadao.setNumero(numero);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setNumero(null);
-			}
+				if (!getNumero().isEmpty()) { cidadao.setNumero(numero);}
+			}catch (NullPointerException e) { cidadao.setNumero(null);} 
 			
 			cidadao.setUsuario(this.usuario);
 			
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
-				Set<Cidadao> cidadaos = new HashSet<Cidadao>();
-				cidadaos.add(cidadao);
-				usuario.setCidadaos(cidadaos);
 				usuarioBean.setEmail(cidadao.getEmail());
-				// usuario.getCidadaos().add(cidadao);
-				if (ehRepresentanteCidadao(usuario)) {
+				//usuario.getCidadaos().add(cidadao);
+				if(ehRepresentanteCidadao(usuario)) {
 					this.usuario.setPerfil((short) 4);
-				} else {
+				}else {
 					this.usuario.setPerfil((short) 3);
 				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
-				usuarioBean.loadEmail(this.usuario);
-				NotificacaoEmail.enviarEmailCadastroCid(cidadao);
-				return "/index";
-			} else {
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN, "Ocorreu um erro ao realizar cadastro.", "Por favor tente, novamente."));
-				return null;
 			}
 			
+			return "/index";
+			
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, mensagemErro, mensagemErro2));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					mensagemErro, null));
 			return null;
 		}
 	}
