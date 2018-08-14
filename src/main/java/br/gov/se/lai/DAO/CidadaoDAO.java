@@ -4,7 +4,6 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import br.gov.se.lai.entity.Cidadao;
@@ -27,12 +26,11 @@ public class CidadaoDAO {
             em.getTransaction().commit();  
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadao "+ cidadao.getUsuario().getNome()+" salvo(a) com sucesso!"));
             return true;
-        } catch (Exception e) {
-//        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar cidadao. " + e));
+        } catch (Exception e) {   
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar cidadao "));
         	System.out.println(e);
             em.getTransaction().rollback();
-        	throw e;
-        	
+            return false;
         }
     }
     public static void delete(Cidadao cidadao) {        
