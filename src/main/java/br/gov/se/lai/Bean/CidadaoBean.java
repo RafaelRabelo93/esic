@@ -65,9 +65,16 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		
+		System.out.println("Dados salvos");
+		System.out.println("E-mail cid: " + usuarioBean.getEmailCid());
+		System.out.println("Dados cadastrados");
+		System.out.println("CPF: " + cpf + " RG: " + rg + " E-mail: " + email);
+		
 		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
 			
 			this.usuario = usuarioBean.getUsuario();
+			
 			
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
@@ -242,16 +249,16 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * @return - redireciona para a página principal.
 	 * 
 	 */
-	public String edit() {
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao()) {
+	public String edit(Cidadao cidadao) {
+//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+//		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			cidadao.setUsuario(this.usuario);
 			CidadaoDAO.saveOrUpdate(cidadao);
 			return "/index";
-		} else {
-			return null;
-		}
+//		} else {
+//			return null;
+//		}
 	}
 
 	@Override

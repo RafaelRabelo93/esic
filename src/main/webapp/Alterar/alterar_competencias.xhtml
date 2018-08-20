@@ -39,12 +39,12 @@
 							  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 							</f:facet>
 							
-							<p:column headerText="Ações">
+							<p:column headerText="Funções">
 							    <h:panelGroup styleClass="column box" style="align-items: flex-start; border: none; margin: 0; padding: 0">
 								    <h:outputText value="#{comp.acoes.titulo}" style="font-weight: bold" />
 						            
-						            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" />
-						            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" />
+<!-- 						            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" /> -->
+<!-- 						            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" /> -->
 						            
 						            <h:outputLabel value="Descrição da competência:" for="compDesc" />
 					                <h:outputText id="compDesc" value="#{comp.descricao}" />
@@ -54,7 +54,7 @@
 	                        <p:column headerText="Editar" width="50" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" update="editDialog:info" onclick="PF('editDialog').show();" >
 									<i class="fa fa-pencil-square-o"/>
-									<f:setPropertyActionListener value="#{comp}" target="#{competencias.competencia}"/>
+									<f:setPropertyActionListener value="#{comp}" target="#{competencias.competencias}"/>
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>
@@ -69,7 +69,7 @@
 						<h:panelGroup id="info" styleClass="box" style="border: none; padding: 0;">
 							<h:outputText value="Editar Competência" styleClass="tituloBox" style="margin-bottom: 0"/>
 	
-							<p:outputLabel value="Ação:" for="acao" />
+							<p:outputLabel value="Função:" for="acao" />
 							<h:outputText id="acao" value="#{competencias.competencias.acoes.titulo}" />
 	
 							<p:outputLabel value="Descrição:" for="descricao" />
@@ -99,7 +99,7 @@
 						<h:outputLabel value="Órgão/Entidade:" /> 
 						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 						
-						<h:outputLabel value="Ações: " for="acoes" />
+						<h:outputLabel value="Funções: " for="acoes" />
 						<h:panelGroup styleClass="inline" style="width: 100%; justify-content: space-between;">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" filter="true" filterMatchMode="contains" styleClass="field selectField" style="min-width: 200px !important;">
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -110,12 +110,12 @@
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg3').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova Ação" />
+								<h:outputText value=" Nova Função" />
 							</p:commandLink>
 							
 							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova Ação" />
+								<h:outputText value=" Nova Função" />
 							</p:commandLink>
 						</h:panelGroup>
 						
@@ -136,7 +136,7 @@
 				</p:dialog>
 				
 			<!-- Sub Dialog Nova Ação -->
-				<p:dialog header="Cadastrar Nova Ação" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<p:dialog header="Cadastrar Nova Função" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog2">
 
 						<p:outputPanel id="dlg2" style="max-width: 700px">
@@ -144,11 +144,11 @@
 								<p:outputLabel value="Título:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
-								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;"
-									counterTemplate="{0} caracteres restantes."
-									value="#{acoes.acao.descricao}"  />
-								<h:outputText id="display" />
+<!-- 								<p:outputLabel value="Descrição:" for="descr" /> -->
+<!-- 								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;" -->
+<!-- 									counterTemplate="{0} caracteres restantes." -->
+<!-- 									value="#{acoes.acao.descricao}"  /> -->
+<!-- 								<h:outputText id="display" /> -->
 	
 							</p:panelGrid>
 	
@@ -164,7 +164,7 @@
 				</p:dialog>
 				
 			<!-- Sub Dialog Solicitar Nova Ação -->
-				<p:dialog header="Solicitar Nova Ação" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<p:dialog header="Solicitar Nova Função" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog3">
 
 						<p:outputPanel id="dlg3" style="max-width: 700px">
@@ -172,11 +172,11 @@
 								<p:outputLabel value="Título:" for="titulo" />
 								<p:inputText id="titulo" value="#{acoes.acao.titulo}" size="75" />
 	
-								<p:outputLabel value="Descrição:" for="descr" />
-								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;"
-									counterTemplate="{0} caracteres restantes."
-									value="#{acoes.acao.descricao}"  />
-								<h:outputText id="display" />
+<!-- 								<p:outputLabel value="Descrição:" for="descr" /> -->
+<!-- 								<p:inputTextarea id="descr" cols="60" rows="4" counter="display" maxlength="200" style="width:100%; resize: vertical;" -->
+<!-- 									counterTemplate="{0} caracteres restantes." -->
+<!-- 									value="#{acoes.acao.descricao}"  /> -->
+<!-- 								<h:outputText id="display" /> -->
 							</p:panelGrid>
 	
 							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:dlg2">

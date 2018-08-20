@@ -36,6 +36,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private List<Acoes>  acoesPendentesFilter;
 	private List<Acoes>  acoesNaoVinculadasFilter;
 	private List<Acoes>  acoesVinculadasFilter;
+	private List<Acoes> acoesCadastradas;
 	
 	
 	@PostConstruct
@@ -45,6 +46,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
 		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
 		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+		acoesCadastradas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada", "Não-Vinculada"));
 		acoes = new ArrayList<Acoes>(acoesVinculadas);
 		acoes.addAll(acoesNaoVinculadas);		
 	}
@@ -333,6 +335,14 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 		public void setAcoesVinculadasFilter(List<Acoes> acoesVinculadasFilter) {
 			this.acoesVinculadasFilter = acoesVinculadasFilter;
+		}
+
+		public List<Acoes> getAcoesCadastradas() {
+			return acoesCadastradas;
+		}
+
+		public void setAcoesCadastradas(List<Acoes> acoesCadastradas) {
+			this.acoesCadastradas = acoesCadastradas;
 		}
 
 		

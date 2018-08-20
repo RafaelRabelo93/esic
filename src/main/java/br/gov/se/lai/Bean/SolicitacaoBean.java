@@ -105,6 +105,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoNegada;
 	public static int solicitacaoRespondida;
 	public static int solicitacaoDenuncia;
+	public static int solicitacaoFinalizadas;
 
 	@PostConstruct
 	public void init() {
@@ -596,8 +597,6 @@ public class SolicitacaoBean implements Serializable {
 
 		aux = SolicitacaoDAO.listStatus("Respondida");
 		solicitacaoRespondida = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Finalizada");
-		solicitacaoRespondida += aux != null ? aux.size() : 0;
 
 		aux = SolicitacaoDAO.listStatus("Aberta");
 		solicitacaoPendente = aux != null ? aux.size() : 0;
@@ -607,18 +606,21 @@ public class SolicitacaoBean implements Serializable {
 		solicitacaoPendente += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Prorrogada");
 		solicitacaoPendente += aux != null ? aux.size() : 0;
-
+		
+		aux = SolicitacaoDAO.listStatus("Finalizada");
+		solicitacaoFinalizadas = aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Sem-Resposta");
+		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Negada");
-		solicitacaoNegada = aux != null ? aux.size() : 0;
-		
-		
+		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
+
 		if(visualizaDenunciaNaBoard()) {
 				aux = SolicitacaoDAO.listPorTipo("Denúncia");
 				solicitacaoTotal += aux != null ? aux.size() : 0;
 				solicitacaoDenuncia = aux != null ? aux.size() : 0;
 				
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
-				solicitacaoRespondida += aux != null ? aux.size() : 0;
+				solicitacaoFinalizadas += aux != null ? aux.size() : 0;
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Respondida");
 				solicitacaoRespondida += aux != null ? aux.size() : 0;
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
@@ -822,7 +824,7 @@ public class SolicitacaoBean implements Serializable {
 	public boolean recursoLiberado() {
 		try {
 			if (!verificaSeLimiteRecurso(solicitacao)
-					&& (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada"))) {
+					&& (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada") || solicitacao.getStatus().equals("Sem-Resposta"))) {
 				return true;
 			} else {
 				return false;
@@ -1276,6 +1278,15 @@ public class SolicitacaoBean implements Serializable {
 	@SuppressWarnings("static-access")
 	public void setSolicitacaoDenuncia(int solicitacaoDenuncia) {
 		this.solicitacaoDenuncia = solicitacaoDenuncia;
+	}
+	
+	public int getSolicitacaoFinalizadas() {
+		return solicitacaoFinalizadas;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setSolicitacaoFinalizadas(int solicitacaoFinalizadas) {
+		this.solicitacaoFinalizadas = solicitacaoFinalizadas;
 	}
 
 	public boolean isModoSigilo() {

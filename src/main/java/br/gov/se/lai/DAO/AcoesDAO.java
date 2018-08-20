@@ -65,9 +65,15 @@ public class AcoesDAO {
     	Query query = em.createQuery("FROM Acoes as acoes WHERE acoes.status = '"+status+"'");
     	List<Acoes> results = query.getResultList();
    		
-    	return results;
-    	
-    	
+    	return results;  	
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static List<Acoes> listPorStatus(String status, String status2){
+    	Query query = em.createQuery("FROM Acoes as acoes WHERE acoes.status = '"+status+"' OR acoes.status = '"+status2+"'");
+    	List<Acoes> results = query.getResultList();
+   		
+    	return results;  	
     }
 
 	

@@ -45,14 +45,14 @@
 							<h:outputText value="Pendentes" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoNegada}" />
-							<p:separator />
-							<h:outputText value="Negadas" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
 							<p:separator />
 							<h:outputText value="Respondidas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoFinalizadas}" />
+							<p:separator />
+							<h:outputText value="Finalizadas" />
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -270,14 +270,14 @@
 							<h:outputText value="Pendentes" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoNegada}" />
-							<p:separator />
-							<h:outputText value="Negadas" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
 							<p:separator />
 							<h:outputText value="Respondidas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoFinalizadas}" />
+							<p:separator />
+							<h:outputText value="Finalizadas" />
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -334,11 +334,11 @@
 					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/exchange.png']}" width="150px" />
+								value="#{resource['img/icon/house.png']}" width="150px" />
 
-							<h:outputText styleClass="tituloMenu" value="Ações" />
+							<h:outputText styleClass="tituloMenu" value="Funções do Estado" />
 
-							<p>Gerir ações</p>
+							<p>Gerir lista de funções desempenhadas pelo estado</p>
 						</h:commandLink>
 					</h:panelGroup>
 					

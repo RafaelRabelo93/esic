@@ -7,24 +7,24 @@ import java.util.Date;
 import br.gov.se.lai.entity.Solicitacao;
 
 public class PrazosSolicitacao {
+	
+	private static int prazoResposta = 5; // Produção: 20
+	private static int prazoProrrogada = 2; // Produção: 10
+	private static int prazoRecurso = 2; // Produção: 10
+	
 
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
-			return 4;
-//			return constanteAdicionalTempo;
+			return prazoResposta;
 		case "Prorrogada":
-			return 2;
-//			return constanteAdicionalTempo;
+			return prazoProrrogada;
 		case "Respondida":
-			return 2;
-//			return constanteAdicionalTempo;
+			return prazoRecurso;
 		case "Recurso":
-			return 2;
-//			return 5;
+			return prazoRecurso;
 		default:
-			return 4;
-//			return constanteTempo;
+			return prazoResposta;
 		}
 	}
 	

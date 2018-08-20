@@ -1737,6 +1737,10 @@ td.Prorrogada > .statusBox  {
 	background: #824fbf;
 }
 
+td.Sem-Resposta > .statusBox {
+	background: #e77b40;
+}
+
 .statusBox {
 	color: white;
 	padding:0 3px;
@@ -2070,4 +2074,9 @@ body {
 }
 
 .under {
+}
+
+.ui-autocomplete-panel .ui-autocomplete-list {
+	overflow-y: scroll;
+	max-height: 300px;
 }

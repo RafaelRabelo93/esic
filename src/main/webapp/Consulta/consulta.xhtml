@@ -54,6 +54,9 @@
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Prorrogada</span> Solicitação com prazo prorrogado pelo órgão competente.</p>
 							</h:panelGroup>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em">Sem-Resposta</span> Solicitação sem resposta recebida pelo órgão competente até o prazo estipulado.</p>
+							</h:panelGroup>
 					    </p:tooltip>
 				    
 				    </h:panelGroup>
@@ -288,13 +291,13 @@
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 
-							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada'}" />
-							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada'}">
+							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 							
-							<h:outputText value="Data Fim:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status eq 'Finalizada'}" />
-							<h:outputText value="#{solicitacao.solicitacao.datafim}" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status eq 'Finalizada'}">
+							<h:outputText value="Data Fim:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.datafim ne null}" />
+							<h:outputText value="#{solicitacao.solicitacao.datafim}" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.datafim ne null}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 							
@@ -561,7 +564,7 @@
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) )}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
@@ -572,7 +575,7 @@
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
 							  <i class="fa fa-comment fa-stack-2x" />
@@ -585,7 +588,7 @@
 						<p:commandLink id="NegarAba"
 							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-ban fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Negar" />
@@ -608,7 +611,7 @@
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}">
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
@@ -619,7 +622,7 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
+							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Sem-Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
 							disabled="#{solicitacao.solicitacao.status eq 'Aberta' or solicitacao.solicitacao.avaliacao ne '0'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />
@@ -630,7 +633,7 @@
 						<p:commandLink id="RecursoAba"
 							onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')"
 							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}"
-							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada'}"
+							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.datafim ne null}"
 							update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Realizar Recurso" />

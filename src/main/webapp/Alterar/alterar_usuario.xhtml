@@ -82,7 +82,7 @@
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
+								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 								</p:selectOneRadio>
@@ -92,7 +92,7 @@
 						<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
 							<h:panelGroup styleClass="column" rendered="#{usuario.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}" size="11">
+								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}" size="11">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
@@ -253,9 +253,21 @@
 
 					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();">
+<!-- 					<p:commandLink class="botaoLink" id="altUsuario" onclick="PF('dlg2').show();"> -->
+<!-- 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" /> -->
+<!-- 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" /> -->
+<!-- 					</p:commandLink> -->
+
+					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{usuario.edit}">
 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
+						
+<!-- 						<f:setPropertyActionListener value="#{usuario.cidadao.email}" target="#{cidadao.email}" />  -->
+<!-- 						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" />  -->
+						
+<!-- 						<f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" />  -->
+<!-- 						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> -->
+						
 					</p:commandLink>
 
 				</div>

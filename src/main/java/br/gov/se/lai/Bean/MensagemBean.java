@@ -136,7 +136,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
-			solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
+			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus(), solicitacao.getDataLimite()));
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 			}
@@ -159,7 +159,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTipo((short)2);
-		solicitacao.setDataLimite((java.sql.Date.valueOf(LocalDate.now().plusDays(PrazosSolicitacao.prazoResposta(solicitacao.getStatus())))));
+		solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite("Recurso", solicitacao.getDataLimite()));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
 			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
@@ -193,56 +193,62 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º"+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Prorrogada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 
 		case "Negada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
 			break;
 
 		case "Finalizada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Encaminhada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
 			break;
 
 		case "Recebida":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+solicitacao.getEntidades().getNome()+".");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+solicitacao.getEntidades().getNome()+".");
 			break;
 			
 		case "Status Denuncia 1":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 2":
 			tipoAux = 0;
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Status Denuncia 3":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
 			tipoAux = 0;
 			break;
 
 		case "Respondida":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			break;
 			
 		case "Visualizada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi visualizada por "+ usuario.getNomeCompleto());
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi visualizada por "+ usuario.getNomeCompleto());
 			break;
 			
 		case "Avaliada":
-			mensagem.setTexto("Solicitação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o) "+ usuario.getNomeCompleto());
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o) "+ usuario.getNomeCompleto());
 			tipoAux = 2;
-
+			
+		case "Sem-Resposta":
+			mensagem.setTexto("Manifestação " + solicitacao.getProtocolo() + " não recebeu resposta no sistema.");
+		
+		case "limite Sem-Resposta":
+			mensagem.setTexto("Prazo para realizar recurso na manifestação " + solicitacao.getProtocolo() + " encerrado.");
+			
 			break;
 			
 		default:

@@ -19,7 +19,7 @@
 				<h:form id="form" styleClass="ficha" style="padding-top: 0;" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
 
 					<h:panelGroup styleClass="column" style="margin-top:1em;width:100%">
-						<h:outputText value="Ações" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
+						<h:outputText value="Funções do Estado" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
 						<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 					</h:panelGroup>
 
@@ -27,50 +27,13 @@
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}"
 						rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-						<h:outputText value="Nova Ação" />
+						<h:outputText value="Nova Função" />
 					</p:commandLink>
 					
-				<p:accordionPanel id="tab" activeIndex="1">
+				<p:accordionPanel id="tab" activeIndex="0">
 					
-					<p:tab title="Ações Solicitadas" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'   and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
-						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de ações." var="ac" widgetVar="novasAcoes" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
-						 currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
-							
-							<f:facet name="header">
-					            <p:outputPanel styleClass="searchPanel">
-									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
-					                <p:inputText id="globalFilter" onkeyup="PF('novasAcoes').filter()" style="width:50%" placeholder="Insira pesquisa"/>
-					            </p:outputPanel>
-					        </f:facet>
-							
-							<p:column headerText="Título" sortBy="#{ac.titulo}" filterBy="#{ac.titulo}" filterMatchMode="contains" filterable="false" width="300">
-								<h:outputText value="#{ac.titulo}" />
-							</p:column>
-		
-							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
-								<h:outputText value="#{ac.descricao}" />
-							</p:column>
-							
-							<p:column headerText="Aceitar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
-								<p:commandLink class="botaoLinkIcon" update="dialog:info form" action="#{acoes.autenticaAcao(ac)}" >
-									<i class="fa fa-check" />
-								</p:commandLink>
-							</p:column>
-							
-							<p:column headerText="Recusar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-								<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}" update="form:tab:novasAcoes">
-									<i class="fa fa-times" style="color: white; padding: 0 2px 0 2px" />
-									<p:confirm/>
-									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
-									
-								</p:commandLink>
-							</p:column>
-						
-						</p:dataTable>
-					</p:tab>
-	
-					<p:tab title="Ações Ativas" >
-						<p:dataTable id="acoes" emptyMessage="Ações não encontradas." var="ac" widgetVar="acoes" filteredValue="#{acoes.acoesVinculadasFilter}" value="#{acoes.acoesVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
+					<p:tab title="Funções Cadastradas" >
+						<p:dataTable id="acoes" emptyMessage="Funções não encontradas." var="ac" widgetVar="acoes" filteredValue="#{acoes.acoesVinculadasFilter}" value="#{acoes.acoesCadastradas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
 						currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 							
 							<f:facet name="header">
@@ -84,8 +47,12 @@
 								<h:outputText value="#{ac.titulo}" />
 							</p:column>
 		
-							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
-								<h:outputText value="#{ac.descricao}" />
+<!-- 							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false"> -->
+<!-- 								<h:outputText value="#{ac.descricao}" /> -->
+<!-- 							</p:column> -->
+
+							<p:column headerText="Status" sortBy="#{ac.status}" filterBy="#{ac.status}" filterMatchMode="contains" filterable="false" width="100">
+								<h:outputText value="#{ac.status}" />
 							</p:column>
 							
 							<p:column headerText="Editar" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
@@ -98,14 +65,14 @@
 						</p:dataTable>
 					</p:tab>
 					
-					<p:tab title="Ações Inativas">
-						<p:dataTable id="acoesInativas" emptyMessage="Não há ações sem ligação." var="ac" widgetVar="acoesInativas" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesNaoVinculadas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" rows="10" rowsPerPageTemplate="10,15,30,50"
-						paginator="true" currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:tab title="Funções Solicitadas" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'   and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
+						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de funções." var="ac" widgetVar="novasAcoes" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
+						 currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
 							
 							<f:facet name="header">
 					            <p:outputPanel styleClass="searchPanel">
 									<i class="fa fa-search" style="color: white; margin-right: .5em"/>
-					                <p:inputText id="globalFilter" onkeyup="PF('acoesInativas').filter()" style="width:50%" placeholder="Insira pesquisa"/>
+					                <p:inputText id="globalFilter" onkeyup="PF('novasAcoes').filter()" style="width:50%" placeholder="Insira pesquisa"/>
 					            </p:outputPanel>
 					        </f:facet>
 							
@@ -113,14 +80,22 @@
 								<h:outputText value="#{ac.titulo}" />
 							</p:column>
 		
-							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false">
-								<h:outputText value="#{ac.descricao}" />
+<!-- 							<p:column headerText="Descrição" filterBy="#{ac.descricao}" filterMatchMode="contains" filterable="false"> -->
+<!-- 								<h:outputText value="#{ac.descricao}" /> -->
+<!-- 							</p:column> -->
+							
+							<p:column headerText="Aceitar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" >
+								<p:commandLink class="botaoLinkIcon" update="dialog:info form" action="#{acoes.autenticaAcao(ac)}" >
+									<i class="fa fa-check" />
+								</p:commandLink>
 							</p:column>
 							
-							<p:column headerText="Editar" width="50" style="text-align: center" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-								<p:commandLink class="botaoLinkIcon" update="dialog:info" onclick="PF('editDialog').show();" >
-									<i class="fa fa-pencil-square-o" />
+							<p:column headerText="Recusar" width="60" style="text-align: center" rendered="#{ usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+								<p:commandLink class="botaoLinkIcon" action="#{acoes.remove(ac)}" update="form:tab:novasAcoes">
+									<i class="fa fa-times" style="color: white; padding: 0 2px 0 2px" />
+									<p:confirm/>
 									<f:setPropertyActionListener value="#{ac}" target="#{acoes.acao}" />
+									
 								</p:commandLink>
 							</p:column>
 						
@@ -142,18 +117,12 @@
 							<p:panelGrid id="info" columns="1"
 								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Editar Ação" styleClass="tituloBox"
+									<h:outputText value="Editar Função" styleClass="tituloBox"
 										style="padding-bottom: 2vw;" />
 								</f:facet>
 
 								<p:outputLabel value="Título: " for="titulo" />
-								<p:inputText id="titulo" required="true" size="60"
-									value="#{acoes.acao.titulo}" />
-
-								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"
-									autoResize="true" required="true"
-									value="#{acoes.acao.descricao}" />
+								<p:inputText id="titulo" required="true" size="60" value="#{acoes.acao.titulo}" />
 
 								<h:outputText
 									value="Os campos marcados com * são de preenchimento obrigatório."
@@ -181,7 +150,7 @@
 							<p:panelGrid id="info2" columns="1"
 								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Cadastro de Ação" styleClass="tituloBox"
+									<h:outputText value="Cadastro de Função" styleClass="tituloBox"
 										style="padding-bottom: 2vw;" />
 								</f:facet>
 
@@ -189,17 +158,12 @@
 								<p:inputText id="titulo" required="true" size="60"
 									value="#{acoes.acao.titulo}" />
 
-								<p:outputLabel value="Descrição:" for="descricao" />
-								<p:inputTextarea id="descricao" rows="10" cols="62"
-									autoResize="true" required="true"
-									value="#{acoes.acao.descricao}" />
-
 								<h:outputText
 									value="Os campos marcados com * são de preenchimento obrigatório."
 									style="font-size:14px; color:gray" />
 
 							</p:panelGrid>
-							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:tab:acoes form:tab:acoesInativas form:tab:novasAcoes" oncomplete="PF('newDialog').hide();" 
+							<p:commandLink class="botaoLink" action="#{acoes.save}" id="salvarAcao" update="form:tab:acoes" oncomplete="PF('newDialog').hide();" 
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('salvarAcao').click();}">
 								<h:outputText value="Cadastrar" />
 								<i class="fa fa-check" style="color: white; padding-left: 3px" />
@@ -211,7 +175,7 @@
 					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
                          <h:panelGroup styleClass="column" style="align-items: center;; padding: 1em;">
                             <i class="fa fa-exclamation-triangle fa-3x" style="margin-bottom: 5px; color: crimson"/>
-                            <p style="margin: 0">Tem certeza que deseja deletar esta Ação?</p>
+                            <p style="margin: 0">Tem certeza que deseja deletar esta Função?</p>
                             <p style="margin: 0; font-weight:bold">Esse processo é irreversível.</p>
                         </h:panelGroup>
                         <h:panelGroup styleClass="inline" style="justify-content: center; border-top: 1px solid gray">

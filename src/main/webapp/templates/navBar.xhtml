@@ -38,8 +38,6 @@
 				</h:commandLink>
 			</h:panelGroup>
 			
-<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}"/> -->
-			
 		<!-- Responsavel Responsável-->
 			<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.nivel ne '3'}">
 				<h:commandLink action="/Consulta/consulta_responsavel" class="dropbtn">
@@ -48,8 +46,6 @@
 				</h:commandLink>
 			</h:panelGroup>
 			
-<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" /> -->
-		
 		<!-- Responsavel Gestor/Admin -->
 			<h:panelGroup styleClass="dropdown" rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 				<h:commandLink  class="dropbtn" action="/Consulta/consulta_responsavel">
@@ -64,8 +60,6 @@
 				</div>
 			</h:panelGroup>
 			
-<!-- 			<h:outputText value="|" style="color:#3c6da8;" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}"/> -->
-			
 		<!-- Entidade -->
 		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}">
 			<h:commandLink action="#{entidades.consultarEntidades}" class="dropbtn">
@@ -74,8 +68,6 @@
 			</h:commandLink>
 		</h:panelGroup>
 		
-<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
-			
 		<!-- Entidade Admin -->
 		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 			<h:commandLink class="dropbtn">
@@ -89,10 +81,23 @@
 			</div>
 		</h:panelGroup>
 		
+		<!-- Ações -->
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5'}">
+			<h:commandLink class="dropbtn">
+				<i class="fa fa-refresh" />
+				<h:outputText value="Funções" style="margin:0 7px"/>
+				<i class="fa fa-caret-down"/>
+			</h:commandLink>
+			<div class="dropdown-content">
+				<h:commandLink value="Gerir Funções" action="#{acoes.redirecionarConsultaAcoes()}"/>
+<!-- 				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/> -->
+			</div>
+		</h:panelGroup>
+		
 		<!-- Estatistica -->
 		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 			<h:commandLink class="dropbtn" action="/Relatorios/relatorios">
-				<i class="fa fa-building" />
+				<i class="fa fa-bar-chart" />
 				<h:outputText value="Gráficos" style="margin:0 7px"/>
 				<i class="fa fa-caret-down"/>
 			</h:commandLink>
@@ -101,22 +106,6 @@
 				<h:commandLink value="Relatórios Específicos" action="#{relatorioDinamico.redirecionarRelatorio()}" />
 			</div>
 		</h:panelGroup>
-		
-<!-- 		<h:outputText value="|" style="color:#3c6da8;" rendered="#{usuario.usuario.perfil eq '6'}" /> -->
-		
-		<!-- Ações -->
-		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5'}">
-			<h:commandLink class="dropbtn">
-				<i class="fa fa-refresh" />
-				<h:outputText value="Ações" style="margin:0 7px"/>
-				<i class="fa fa-caret-down"/>
-			</h:commandLink>
-			<div class="dropdown-content">
-				<h:commandLink value="Gerir Ações" action="#{acoes.redirecionarConsultaAcoes()}"/>
-				<h:commandLink value="Cadastrar Ações" action="#{acoes.redirecionarCadastroAcoes()}"/>
-			</div>
-		</h:panelGroup>
-		
 		
 		</div>
 			

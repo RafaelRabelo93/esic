@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -312,15 +313,20 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String edit() {
-		this.usuario = ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+//		this.usuario = ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		
-		if (Criptografia.Comparar(Criptografia.Criptografar(senha), this.usuario.getSenha())) {
+//		if (Criptografia.Comparar(Criptografia.Criptografar(senha), this.usuario.getSenha())) {
 			
+//		System.out.println(usuario.getPerfil());
+		
 			if (usuario.getPerfil() != 1) {
 
 				if (usuario.getPerfil() == 3) {
 					CidadaoBean cidadao = new CidadaoBean();
-					cidadao.save();
+					Set<Cidadao> cidadao2 = this.usuario.getCidadaos();
+					Cidadao cidadao3 = cidadao2.iterator().next();
+//					cidadao.save();
+					cidadao.edit(cidadao3);
 				} else {
 					ResponsavelBean responsavel = new ResponsavelBean();
 					responsavel.save();
@@ -340,11 +346,11 @@ public class UsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização concluída.", "Sucesso."));
 			return "/index.xhtml?faces-redirect=true";
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
-			return null;
-		}
+//		} else {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
+//			return null;
+//		}
 
 	}
 	
