@@ -159,7 +159,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTipo((short)2);
-		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta("Recurso")));
+		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
 			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
@@ -193,7 +193,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+solicitacao.getInstancia() +"º "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ (solicitacao.getInstancia() - 1) +"º "+status.toLowerCase()+" no sistema.");
 			break;
 			
 		case "Prorrogada":

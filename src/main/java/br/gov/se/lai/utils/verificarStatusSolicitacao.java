@@ -52,13 +52,13 @@ public class verificarStatusSolicitacao implements Job {
 			
 			
 			if(now.isEqual(inicioPrazo)) {
-				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 5 dias.";
+				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 1 dias.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if (now.isEqual(metadePrazo)) {
 				String mensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if(now.isEqual(vesperaPrazoGestor)) {
-				String mensagem = "Solicitação ainda não respondida.\nFaltam 5 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				String mensagem = "Solicitação ainda não respondida.\nFaltam 2 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 3);
 			}else if(now.isEqual(vesperaPrazo)) {
 				String mensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
@@ -111,11 +111,13 @@ public class verificarStatusSolicitacao implements Job {
 				if (solicitacao.getStatus().equals("Respondida")) {
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 						solicitacao.setStatus("Finalizada");
-						if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-							MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
-							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizada");
-						}
+//						if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+//							MensagemBean.salvarStatus(solicitacao, "Finalizada", null, null, 0);
+//							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizada");
+//						}
 						SolicitacaoDAO.saveOrUpdate(solicitacao);
+						MensagemBean.salvarStatus(solicitacao, "Finalizada", null, null, 0);
+						System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizada");
 
 					} else {
 						if (solicitacao.getStatus().equals("Aberta")
@@ -123,20 +125,24 @@ public class verificarStatusSolicitacao implements Job {
 								|| solicitacao.getStatus().equals("Recurso")
 								|| solicitacao.getStatus().equals("Reencaminhada")) {
 							solicitacao.setStatus("Sem-Resposta");
-							solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta("Recurso")));
-							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-								MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
-								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
-							}
+							solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
+//							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+//								MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
+//								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
+//							}
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
+							MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
+							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
 
 						} else if (solicitacao.getStatus().equals("Sem-Resposta") || solicitacao.getStatus().equals("Negada")) {
 							solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-								MensagemBean.salvarStatus(solicitacao, "Limite Recurso", null, null, 0);
-								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' perdeu o prazo de recurso");
-							}
+//							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+//								MensagemBean.salvarStatus(solicitacao, "Limite Recurso", null, null, 0);
+//								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' perdeu o prazo de recurso");
+//							}
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
+							MensagemBean.salvarStatus(solicitacao, "Limite Recurso", null, null, 0);
+							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' perdeu o prazo de recurso");
 						}
 					} 
 				}

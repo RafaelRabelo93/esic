@@ -83,6 +83,7 @@ public class ResponsavelBean implements Serializable{
 					UsuarioDAO.saveOrUpdate(usuario);	
 //					todosResponsaveis.add(responsavel);
 					NotificacaoEmail.enviarEmailCadastroResp(responsavel);
+					todosResponsaveis.add(responsavel);
 					responsavel = new Responsavel();
 					idEntidade = 0;
 					nick = null;

@@ -80,21 +80,24 @@ public class PrazosSolicitacao {
 	 */
 	
 	public static Date gerarPrazoDiasUteis(Date data, int prazo) {
-//		int cont = 0;
 		
 		Calendar dataInicial = Calendar.getInstance();
 		dataInicial.setTime(data);
+		
 		while(prazo > 0){
+			
 			dataInicial.add(Calendar.DAY_OF_MONTH, 1);
 			int diaDaSemana = dataInicial.get(Calendar.DAY_OF_WEEK);
+			
 			if (diaDaSemana != Calendar.SATURDAY && diaDaSemana != Calendar.SUNDAY) {
 				--prazo;
-//				cont++;
 			}
+			
 		}
-//		System.out.println("Novo prazo:" + dataInicial.getTime() + " | Dias úteis acrescidos: " + cont);
+		
 		return dataInicial.getTime();
 	}
+	
 //	public static Date diaUtilDataLimite(String status, Date dataLimite) {
 //		
 //		Calendar limite = Calendar.getInstance();

@@ -170,9 +170,12 @@ public class SolicitacaoBean implements Serializable {
 				}
 			}
 
-			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo")) {
+			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
+			} else if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Reclamação")) {
+				addQuantidadeSolicitacaoTotal();
+				addQuantidadeSolicitacaoFinalizada();
 			}
 			NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);

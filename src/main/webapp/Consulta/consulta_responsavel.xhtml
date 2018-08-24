@@ -26,7 +26,7 @@
 					
 						<h:panelGroup styleClass="inline" style="-ms-flex-item-align: end;align-self: flex-end">
 							<h:commandLink action="/Cadastro/cad_responsavel" styleClass="botaoLink" style="margin-bottom: 10px"
-							rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
+							rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3' ) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
 								<i class="fa fa-plus" style="color: white; padding-right: 7px" />
 								<h:outputText value="Novo Responsável" />
 							</h:commandLink>
@@ -167,7 +167,7 @@
 									<f:selectItem itemLabel="Inativo" itemValue="false" itemDisabled="#{responsavel.responsavel.ativo ne false and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
 								</p:selectOneRadio>
 								
-								<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" oncomplete="PF('editDialog').hide();" update="form:responsaveis">
+								<p:commandLink class="botaoLink" action="#{responsavel.alterarDadosUsuario}" oncomplete="PF('editDialog').hide();" update="form form:responsaveis">
 									<h:outputText value="Salvar" />
 									<i class="fa fa-check" style="color: white; padding-left: 3px" />
 								</p:commandLink>

@@ -89,7 +89,7 @@
 						</p:selectOneMenu>
 						
 						 <h:panelGroup styleClass="column"  rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-							 <p:outputLabel value="Orgão/Entidade recebedor: " for="orgaoRec" /> 
+							 <p:outputLabel value="Órgão / Entidade recebedor: " for="orgaoRec" /> 
 							 <p:selectOneMenu id="orgaoRec" value="#{solicitacao.solicitacao.entidades}" disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="width:300px" styleClass="field selectField" filter="true" filterMatchMode="contains">
                                 <p:ajax event="change" listener="#{competencias.filtrarCompetenciasEntidade}"/>
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
