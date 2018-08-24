@@ -789,7 +789,11 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
+			if (solicitacao.getStatus().equals("Prorrogar")) {
+				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
+			} else {
+				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta(status)));
+			}
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
