@@ -1,6 +1,5 @@
 package br.gov.se.lai.utils;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,9 +7,9 @@ import br.gov.se.lai.entity.Solicitacao;
 
 public class PrazosSolicitacao {
 	
-	private static int prazoResposta = 5; // Produção: 20
-	private static int prazoProrrogada = 2; // Produção: 10
-	private static int prazoRecurso = 2; // Produção: 10
+	private static int prazoResposta = 3; // Produção: 20
+	private static int prazoProrrogada = 1; // Produção: 10
+	private static int prazoRecurso = 1; // Produção: 10
 	
 
 	public static int prazoResposta(String status) {
@@ -70,44 +69,64 @@ public class PrazosSolicitacao {
 	}
 	
 	/**
-	 * Função diaUtilDataLimite
+	 * Função gerarPrazoDiasUteis
 	 * 
 	 * Essa função verifica se a data limite cai em um final de semana. Caso verdade, é acrescido 
 	 * 1 ou 2 dias ao prazo final. 
 	 * 
-	 * @param status - para recuperar quantidade de dias de prazo variante do tipo de solicitação.
-	 * @param dataLimite 
-	 * @return
+	 * @param data - Data inicial que será acrescida a quantida de dias úteis.
+	 * @param prazo - Número que representa a quantidade de dias úteis que devem ser acrescidos.
+	 * @return Data final após contagem de dias úteis.
 	 */
 	
-	public static Date diaUtilDataLimite(String status, Date dataLimite) {
+	public static Date gerarPrazoDiasUteis(Date data, int prazo) {
+//		int cont = 0;
 		
-		Calendar limite = Calendar.getInstance();
-		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
-		limite.setTime(dataLimite);
-		limite.add(Calendar.DATE,limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status));
-		
-		
-		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
-			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
+		Calendar dataInicial = Calendar.getInstance();
+		dataInicial.setTime(data);
+		while(prazo > 0){
+			dataInicial.add(Calendar.DAY_OF_MONTH, 1);
+			int diaDaSemana = dataInicial.get(Calendar.DAY_OF_WEEK);
+			if (diaDaSemana != Calendar.SATURDAY && diaDaSemana != Calendar.SUNDAY) {
+				--prazo;
+//				cont++;
+			}
 		}
-		
-		return limite.getTime();
+//		System.out.println("Novo prazo:" + dataInicial.getTime() + " | Dias úteis acrescidos: " + cont);
+		return dataInicial.getTime();
 	}
-	public static Date gerarDiaUtilDataLimite(String status) {
-		
-		Calendar limite = Calendar.getInstance();
-		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
-		limite.setTime(java.sql.Date.valueOf(LocalDate.now().plusDays(
-				limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status)
-				)));
-		
-		
-		
-		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
-			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
-		}
-		
-		return limite.getTime();
-	}
+//	public static Date diaUtilDataLimite(String status, Date dataLimite) {
+//		
+//		Calendar limite = Calendar.getInstance();
+//		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+//		limite.setTime(dataLimite);
+//		limite.add(Calendar.DATE,limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status));
+//		
+//		limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+//		
+//		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
+//			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
+//		}
+//		
+//		return limite.getTime();
+//	}
+	
+//	public static Date gerarPrazoUtilDataLimite(String status) {
+//		
+//		Calendar limite = Calendar.getInstance();
+//		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+//		limite.setTime(java.sql.Date.valueOf(LocalDate.now().plusDays(prazoResposta(status))));
+//		
+//		limiteDia = limite.get(Calendar.DAY_OF_WEEK);
+//		
+//		if(limiteDia == Calendar.SUNDAY) {
+//			limite.add(Calendar.DATE, +1);
+//		} else if (limiteDia == Calendar.SATURDAY) {
+//			limite.add(Calendar.DATE, +2);
+//		}
+//		
+//		return limite.getTime();
+//	}
+	
+	
 }

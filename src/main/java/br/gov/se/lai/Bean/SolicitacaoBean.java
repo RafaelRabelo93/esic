@@ -95,7 +95,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
-	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada" };
+	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem-Resposta" };
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -225,7 +225,7 @@ public class SolicitacaoBean implements Serializable {
 			this.solicitacao.setStatus("Finalizada");
 
 		} else {
-			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarDiaUtilDataLimite(solicitacao.getTipo()));
+			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
 			this.solicitacao.setStatus("Aberta");
 		}
 	}
@@ -661,6 +661,14 @@ public class SolicitacaoBean implements Serializable {
 	public static void rmvQuantidadeSolicitacaoRespondida() {
 		solicitacaoRespondida--;
 	}
+	
+	public static void addQuantidadeSolicitacaoFinalizada() {
+		solicitacaoFinalizadas++;
+	}
+	
+	public static void rmvQuantidadeSolicitacaoFinalizada() {
+		solicitacaoFinalizadas--;
+	}
 
 	public static boolean visualizaDenunciaNaBoard() {
 		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
@@ -778,7 +786,7 @@ public class SolicitacaoBean implements Serializable {
 	private void alterarPrazo(Solicitacao solicitacao) {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
-			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(status, solicitacao.getDataLimite()));
+			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
@@ -835,7 +843,7 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public void prorrogar() {
-		alterarPrazo(solicitacao);
+//		alterarPrazo(solicitacao);
 		this.mensagem.setSolicitacao(solicitacao);
 		this.mensagem.setTipo((short) 2);
 		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
@@ -1003,7 +1011,9 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	
-
+//	public void testeData() {
+//		PrazosSolicitacao.gerarPrazoDiasUteis(Calendar.getInstance().getTime(), PrazosSolicitacao.prazoResposta("Aberta"));
+//	}
 	
 	
 	// GETTERS E SETTERS

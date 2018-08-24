@@ -27,7 +27,7 @@
 							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 						</h:panelGroup>
 			
-						<h:commandLink id="showBtn" class="legendaButton" disabled="true" style="position: absolute; right: 10px;">
+						<h:commandLink id="showBtn" class="legendaButton" disabled="true" style="position: absolute; right: 10px;" rendered="false">
 					    	<i class="fa fa-question fa-2x" />
 					    </h:commandLink>
 					    
@@ -157,10 +157,35 @@
 								<h:outputText value="#{slt.competencias.acoes.titulo}" />
 							</p:column>
 
-							<p:column headerText="Status" width="100" sortBy="#{slt.status}"
-								filterBy="#{slt.status}" filterMatchMode="exact"
-								filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
-									<h:outputText value="#{slt.status}" styleClass="statusBox" />
+							<p:column headerText="Status" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
+								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox"/>
+								
+								<!-- TOOL-TIPS -->
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
+									<p>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Respondida'}">
+									<p>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
+									<p>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Reencaminhada'}">
+									<p>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Negada'}">
+									<p>Manifestação com justificativa legal para não atendimento</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Prorrogada'}">
+									<p>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Recurso'}">
+									<p>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem-Resposta'}">
+									<p>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+								</p:tooltip>
+								
 							</p:column>
 
 							<p:column headerText="Cidadão" width="150" visible="false"
@@ -231,7 +256,7 @@
 
 
 			<!-- Dialog Detalhe Solicitação -->
-			<p:dialog widgetVar="detalheDialog" modal="true" showHeader="true"
+			<p:dialog widgetVar="detalheDialog" id="detalheDialog" modal="true" showHeader="true"
 				header="#{solicitacao.solicitacao.titulo}" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
@@ -454,7 +479,7 @@
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>
 									
-									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
@@ -470,7 +495,7 @@
 									</p:inputTextarea>
 									<h:outputText id="display" />
 
-									<p:commandLink class="botaoLink" style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel" action="#{solicitacao.prorrogar}">
+									<p:commandLink class="botaoLink" style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel detalheDialog" action="#{solicitacao.prorrogar}" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
 										<f:setPropertyActionListener value="Prorrogada"	target="#{solicitacao.status}" />
 										<i class="fa fa-check" style="padding-left: 3px" />
@@ -486,7 +511,7 @@
 									</p:inputTextarea>
 									<h:outputText id="display2" />
 
-									<p:commandLink class="botaoLink" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('dlg2').hide();">
+									<p:commandLink class="botaoLink" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
 										<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
 										<i class="fa fa-check" style="padding-left: 3px" />
@@ -530,22 +555,25 @@
 									<p:commandLink class="botaoLink"
 										style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"
 										action="#{solicitacao.encaminhar()}" update="@all"
-										oncomplete="PF('dlg2').hide();">
+										oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
 										<i class="fa fa-check" style="padding-left: 3px" />
 									</p:commandLink>
 								</div>
 								
 								<div id="Avalia" class="box aba" style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Avaliar resposta da manifestação:" for="avalia" style="margin-bottom: 5px" />
-									<p:rating id="avalia" cancel="false" value="#{mensagem.nota}" styleClass="abaField avaliaField"/>
+									<h:panelGroup styleClass="inline">
+										<p:outputLabel value="Avaliar resposta da manifestação:" for="avalia" style="margin-bottom: 20px; margin-right: .5em" />
+										<p:rating id="avalia" cancel="false" value="#{mensagem.nota}" required="true" styleClass="abaField avaliaField"/>
+									</h:panelGroup>
 									
-									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="false"	style="width:100%" required="true" 
+									<p:outputLabel value="Mensagem:" for="avaliaTexto" style="margin-top: 0"/>
+									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="false" style="width:100%" required="false" 
 									counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"	styleClass="abaField avaliaField">
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>
 									
-									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{mensagem.salvarMensagemAvaliacao()}"	update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{mensagem.salvarMensagemAvaliacao()}" update="form:solicitacao_panel ">
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{avaliacao.solicitacao}" />
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
 										<h:outputText value="Enviar" />
@@ -598,7 +626,7 @@
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' }"
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
@@ -611,7 +639,7 @@
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}">
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
@@ -646,6 +674,7 @@
 					</h:panelGroup>
 				</p:outputPanel>
 			</p:dialog>
+			
 			<!-- JAVASCRIPT -->
 			<script>
 				function abrirAba(aba) {
@@ -680,6 +709,10 @@
 						y[i].disabled = false;
 					}
 				}
+
+				function scrollDown() {
+					document.getElementById("solicitacaoDetalhe").style.bottom = "0";
+					}
 			</script>
 
 

@@ -136,7 +136,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Respondida") {
 			solicitacao.setStatus("Respondida");
-			solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite(solicitacao.getStatus(), solicitacao.getDataLimite()));
+			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 			}
@@ -159,7 +159,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTipo((short)2);
-		solicitacao.setDataLimite(PrazosSolicitacao.diaUtilDataLimite("Recurso", solicitacao.getDataLimite()));
+		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta("Recurso")));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
 			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
@@ -169,7 +169,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
 		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
-		SolicitacaoBean.addQuantidadeSolicitacaoNegada();
+		SolicitacaoBean.addQuantidadeSolicitacaoFinalizada();
 		
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";
@@ -246,7 +246,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		case "Sem-Resposta":
 			mensagem.setTexto("Manifestação " + solicitacao.getProtocolo() + " não recebeu resposta no sistema.");
 		
-		case "limite Sem-Resposta":
+		case "Limite Recurso":
 			mensagem.setTexto("Prazo para realizar recurso na manifestação " + solicitacao.getProtocolo() + " encerrado.");
 			
 			break;
