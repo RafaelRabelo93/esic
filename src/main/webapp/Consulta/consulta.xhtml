@@ -193,7 +193,7 @@
 								rendered="#{usuario.usuario.perfil ne '3' }"
 								filterBy="#{slt.cidadao.usuario.nome}"
 								filterMatchMode="contains" filterable="false">
-								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" />
+<!-- 								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" /> -->
 							</p:column>
 
 							<p:column headerText="Data inicial" sortBy="#{slt.dataIni}"
@@ -212,11 +212,11 @@
 								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
 								filterable="false">
 								<h:outputText value="#{slt.dataLimite}"
-									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação' or slt.tipo eq 'Denúncia'}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 								<h:outputText value=" ----------- " style="color: #c0c0c0;"
-									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
+									rendered="#{slt.tipo eq 'Sugestão' or slt.tipo eq 'Elogio' or slt.tipo eq 'Reclamação'}" />
 							</p:column>
 <!-- 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}" -->
 
@@ -256,17 +256,12 @@
 
 
 			<!-- Dialog Detalhe Solicitação -->
-			<p:dialog widgetVar="detalheDialog" id="detalheDialog" modal="true" showHeader="true"
-				header="#{solicitacao.solicitacao.titulo}" fitViewport="true"
+			<p:dialog widgetVar="detalheDialog" id="detalheDialog" modal="true" 
+				header="#{solicitacao.solicitacao.protocolo} - #{solicitacao.solicitacao.titulo}" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
 				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
 				styleClass="solicitacaoDialog" >
-				
-				<f:facet name="header">
-									<p:ajax listener="#{solicitacao.visualizouSolicitacao}"/>
-<!-- 			        <h:outputText value="#{solicitacao.solicitacao.titulo}" /> -->
-			    </f:facet>
 				
 				<p:outputPanel id="solicitacaoDetalhe"
 					style="display:flex; flex-flow: row; overflow-x: hidden;">
@@ -278,7 +273,10 @@
 							<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
 							
 							<h:outputText value="Solicitante:"	style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.sigilo eq false ? solicitacao.solicitacao.cidadao.usuario.nome  : 'Sigilo'}"/>
+							<h:panelGroup styleClass="inline">
+								<h:outputText value="#{solicitacao.solicitacao.cidadao.usuario.nome}"/>
+								<h:outputText value="(Sigilo)" rendered="#{solicitacao.solicitacao.sigilo eq true}" style="margin-left:.5em; font-weight:bold; color:#c02222"/>
+							</h:panelGroup>
 							
 							
 							<h:outputText value="Título:" style="color:#1a568c; font-size:18px" />
@@ -302,27 +300,28 @@
 
 							<h:outputText value="Tipo de solicitacao:"
 								style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.tipo}" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}" rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq true)}"/>
+							<h:outputText value="Denúncia Sigilosa" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq true}" />
+							
 
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 
-							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" />
+							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
 
-							<h:outputText value="Data de Solicitacao:"
-								style="color:#1a568c; font-size:18px" />
+							<h:outputText value="Data Inicial:"	style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 
-							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}" />
-							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}">
+							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 							
-							<h:outputText value="Data Fim:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.datafim ne null}" />
-							<h:outputText value="#{solicitacao.solicitacao.datafim}" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação') and solicitacao.solicitacao.datafim ne null}">
+							<h:outputText value="Data Fim:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.datafim ne null}" />
+							<h:outputText value="#{solicitacao.solicitacao.datafim}" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.datafim ne null}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 							

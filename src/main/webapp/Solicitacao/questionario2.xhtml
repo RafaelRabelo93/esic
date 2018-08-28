@@ -15,7 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
  
-			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4'}" onmouseover="#{acoes.carregarLista()}">
+			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' or solicitacao.solicitacao.tipo eq 'Denúncia'}" onmouseover="#{acoes.carregarLista()}">
 
 				<div class="ficha">
 
@@ -45,14 +45,15 @@
 						
 							<p:outputLabel value="Tema:" for="tema" />
 	        				<p:selectOneMenu id="tema" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update = "assunto entidades_panel" />
+								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update="assunto entidades_panel" />
+								 <p:ajax update="assunto" resetValues="true"/>
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
 								 <f:selectItems value="#{acoes.acaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu> 
 							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
 
 							<p:outputLabel value="Assunto:" for="assunto" />
-							<p:selectOneMenu id="assunto" value="#{competencias.idCompetencias}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
+							<p:selectOneMenu id="assunto" widgetVar="assunto" value="#{competencias.idCompetencias}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
 								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />
 								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.idCompetencias}"/>

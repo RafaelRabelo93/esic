@@ -259,14 +259,14 @@ public class SolicitacaoBean implements Serializable {
 	public void settarCidadaoDenuncia() {
 		try {
 			if (modoAnonimo) {
-				Usuario usuarioAnonimo = new Usuario();
-				usuarioAnonimo.setNome("Anônimo");
-				usuarioAnonimo.setNick("anonimo");
-				usuarioAnonimo.setPerfil((short)3);
-				Cidadao cidadaoAnonimo = new Cidadao();
-				cidadaoAnonimo.setUsuario(usuarioAnonimo);;
-				solicitacao.setCidadao(cidadaoAnonimo);
-//				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(7));
+//				Usuario usuarioAnonimo = new Usuario();
+//				usuarioAnonimo.setNome("Anônimo");
+//				usuarioAnonimo.setNick("anonimo");
+//				usuarioAnonimo.setPerfil((short)3);
+//				Cidadao cidadaoAnonimo = new Cidadao();
+//				cidadaoAnonimo.setUsuario(usuarioAnonimo);;
+//				solicitacao.setCidadao(cidadaoAnonimo);
+				solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
 			} else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
@@ -362,8 +362,8 @@ public class SolicitacaoBean implements Serializable {
 
 		if (userBean.getUsuario().getPerfil() == 0) {
 
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usário inválido.", "Realize cadastro."));
 			userBean.setVeioDeSolicitacao(1);
 			return "/Menu/login";
 		} else {
@@ -392,7 +392,15 @@ public class SolicitacaoBean implements Serializable {
 	public String iniciarSolicitacao() {
 		finalizarSolicitacao();
 		solicitacao.setTipo(this.tipo);
-		return "Solicitacao/questionario2.xhtml";
+		if (estaUsuarioLogado()) {
+//			System.out.println("Modo anônimo ativado");
+			setModoAnonimo(true);
+			setModoSigilo(false);
+			setModoIdentificavel(false);
+		}
+		CompetenciasBean competencias = new CompetenciasBean();
+		competencias.listCompetencias = new ArrayList<Competencias>();
+		return "Solicitacao/questionario2";
 	}
 
 //	/**
