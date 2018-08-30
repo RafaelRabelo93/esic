@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -177,7 +178,10 @@ public class SolicitacaoBean implements Serializable {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoFinalizada();
 			}
-			NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			
+			if(!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo")) {
+				NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
+			}
 			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);
 
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
@@ -228,7 +232,7 @@ public class SolicitacaoBean implements Serializable {
 			this.solicitacao.setStatus("Finalizada");
 
 		} else {
-			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
+			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
 			this.solicitacao.setStatus("Aberta");
 		}
 	}
@@ -400,7 +404,7 @@ public class SolicitacaoBean implements Serializable {
 		}
 		CompetenciasBean competencias = new CompetenciasBean();
 		competencias.listCompetencias = new ArrayList<Competencias>();
-		return "Solicitacao/questionario2";
+		return "Solicitacao/questionario2.xhtml?faces-redirect=true";
 	}
 
 //	/**
@@ -798,9 +802,9 @@ public class SolicitacaoBean implements Serializable {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
 			if (solicitacao.getStatus().equals("Prorrogar")) {
-				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
+				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
 			} else {
-				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiasUteis(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta(status)));
+				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta(status)));
 			}
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
@@ -1026,9 +1030,11 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	
-//	public void testeData() {
-//		PrazosSolicitacao.gerarPrazoDiasUteis(Calendar.getInstance().getTime(), PrazosSolicitacao.prazoResposta("Aberta"));
-//	}
+	public void testeData() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+		Date date = sdf.parse("01/09/2018");
+		System.out.println( PrazosSolicitacao.gerarPrazoDiaUtilLimite(date, PrazosSolicitacao.prazoResposta("Aberta")) );
+	}
 	
 	
 	// GETTERS E SETTERS

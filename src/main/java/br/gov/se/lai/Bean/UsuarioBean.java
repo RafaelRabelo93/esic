@@ -176,7 +176,7 @@ public class UsuarioBean implements Serializable {
 	}
 	
 	public String saveGestorSistema() {
-		if(verificaAdmin()) {
+		if(verificaAdmin() || verificaGestor()) {
 			usuarioNovo = UsuarioDAO.buscarUsuario(usuarioNovo.getNick());
 			usuarioNovo.setPerfil((short)5);
 			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {

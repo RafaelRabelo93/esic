@@ -51,9 +51,9 @@
 
 						<li><p:commandButton id="Login" value="Entrar" icon="fa fa-sign-in" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none;" rendered="#{usuario.usuario.perfil eq '0'}" type="button"/></li>
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
-							<h:panelGrid columns="1" cellpadding="5">
-								<p:inputText placeholder="usuário" value="#{usuario.nick}" />
-								<p:password placeholder="senha" value="#{usuario.senha}" />
+							<h:panelGrid id="loginPanel" columns="1" cellpadding="5">
+								<p:inputText id="usuarioInput" placeholder="usuário" value="#{usuario.nick}" />
+								<p:password id="senhaInput" placeholder="senha" value="#{usuario.senha}" />
 								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" />
 								<p:commandLink id="login" value="Entrar" type="submit" action="#{usuario.login()}" update="@all growl" styleClass="botaoLink">
 									<h:outputText value="Entrar" />
@@ -61,7 +61,9 @@
 								</p:commandLink>
 								<p:defaultCommand target="login"/>
 							</h:panelGrid>
+							
 						</p:overlayPanel>
+						
 
 						<li>
 							<p:commandLink id="userInfo" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none; padding-bottom: 0; align-items: center; flex-flow: column;">
@@ -75,10 +77,12 @@
 						</li>
 						
 						<li>
-							<p:commandLink styleClass="botaoLink hide-mobile" style="background: none" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+							<p:commandLink id="sairBtn" styleClass="botaoLink hide-mobile" style="background: none" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
 								<h:outputText value="Sair" />
 								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
-							</p:commandLink>		
+							</p:commandLink>	
+							
+							<p:blockUI block="formHeader" trigger="sairBtn"/>
 						</li>
 					</ul>
 					

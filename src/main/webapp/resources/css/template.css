@@ -1546,6 +1546,11 @@ i.fa.fa-home {
     border-radius: 5px;
 }
 
+.ui-columntoggler {
+	min-width: 150px !important;
+	min-height: 300px !important;
+}
+
 .ui-commandlink.ui-widget.togglerBtn.ui-state-focus {
     background: -webkit-gradient(linear, left top, right bottom, from(#276eb3), to(#135186));
     background: -webkit-linear-gradient(top left, #276eb3, #135186);
@@ -1711,38 +1716,47 @@ h1, h2, h3 {
 
 td.Aberta > .statusBox {
 	background: #2196f3;
+	color: white;
 }
 
 td.Respondida > .statusBox  {
 	background: #5cb85c;
+	color: white;
 }
 
 td.Negada > .statusBox  {
 	background: #d9534f;
+	color: white;
 }
 
 td.Reencaminhada > .statusBox  {
 	background: #5bc0de;
+	color: white;
 }
 
 td.Finalizada > .statusBox  {
 	background: #858f9c;
+	color: white;
 }
 
 td.Recurso > .statusBox  {
 	background: #eab90f;
+	color: white;
 }
 
 td.Prorrogada > .statusBox  {
 	background: #824fbf;
+	color: white;
 }
 
 td.Sem-Resposta > .statusBox {
 	background: #e77b40;
+	color: white;
 }
 
 .statusBox {
-	color: white;
+/* 	color: white; */
+	color: #c0c0c0;
 	padding:0 3px;
 	border-radius: 3px;
 }

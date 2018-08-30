@@ -30,7 +30,7 @@
 			
 
 			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
-				
+			
 				<!-- ====== MENU CIDADÃO ====== -->
 					<!-- Consulta (Cidadão) -->
 				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
@@ -182,7 +182,7 @@
 
 
 				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+				<h:panelGroup  class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 
 					<!-- LAI -->
 <!-- 					<h:panelGroup class="botao"> -->
@@ -194,55 +194,67 @@
 <!-- 					</h:panelGroup> -->
 
 					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
-						<h:commandLink action="/Cadastro/cad_usuario">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro" />
-
-							<p>Registrar usuário para realizar manifestações.</p>
-						</h:commandLink>
+							<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
+								<h:commandLink action="/Cadastro/cad_usuario">
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/clipboard.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Cadastro" />
+		
+									<p>Registrar usuário para realizar manifestações.</p>
+								</h:commandLink>
+							</h:panelGroup>
+		
+							<!-- Continuar Cadastro Cidadão -->
+							<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
+								<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/contract.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Primeiro Acesso" />
+		
+									<p>Continuar cadastro como cidadão para realizar manifestações.</p>
+								</h:commandLink>
+							</h:panelGroup>
+		
+							<!-- Continuar Cadastro Responsável -->
+							<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
+							<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
+							<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="150px" /> -->
+		
+							<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
+		
+							<!-- 						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p> -->
+							<!-- 					</h:commandLink> -->
+							<!-- 				</h:panelGroup> -->
+		
+							<!-- Manifestação -->
+							<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+								<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
+		
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/hand.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Manifestação" />
+		
+									<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
+		
+								</h:commandLink>
+							</h:panelGroup>
+							
+	
 					</h:panelGroup>
-
-					<!-- Continuar Cadastro Cidadão -->
-					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/contract.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Primeiro Acesso" />
-
-							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<!-- Continuar Cadastro Responsável -->
-					<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
-					<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
-					<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="150px" /> -->
-
-					<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
-
-					<!-- 						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p> -->
-					<!-- 					</h:commandLink> -->
-					<!-- 				</h:panelGroup> -->
-
-					<!-- Manifestação -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-						<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
-
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/hand.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Manifestação" />
-
-							<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
-
-						</h:commandLink>
-					</h:panelGroup>
-
-				</h:panelGroup>
+					
+					<!-- Denúncia Anônima -->
+					<h:commandLink styleClass="btnDenuncia inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
+						<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone2.png']}" width="100px"/>
+						
+						<h:panelGroup styleClass="column">
+							<h:outputText styleClass="tituloDenuncia" value="Denúncia" style="color: darkred;font-size:35px; padding: 2% 0; color:"/>
+							<h:outputText styleClass="subTitulo" value="Realizar denúncia anônima" />
+						</h:panelGroup>
+					</h:commandLink>
 				
 <!-- 				====== MENU LOGOFF ====== -->
 <!-- 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}"> -->
