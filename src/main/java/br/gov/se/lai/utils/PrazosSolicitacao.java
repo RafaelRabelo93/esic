@@ -113,32 +113,27 @@ public class PrazosSolicitacao {
 		Calendar dataInicial = Calendar.getInstance();
 		dataInicial.setTime(data);
 		
-		dataInicial.add(Calendar.DAY_OF_MONTH, prazo+1);
+		dataInicial.add(Calendar.DAY_OF_MONTH, +1);
 		
-		if (dataInicial.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			dataInicial.add(Calendar.DAY_OF_MONTH, 2);
-		} else if (dataInicial.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			dataInicial.add(Calendar.DAY_OF_MONTH, 1);
-		}
+		pularFimDeSemana(dataInicial);
+		
+		dataInicial.add(Calendar.DAY_OF_MONTH, prazo);
+		
+		pularFimDeSemana(dataInicial);
 		
 		return dataInicial.getTime();
 	}
 	
-//	public static Date diaUtilDataLimite(String status, Date dataLimite) {
-//		
-//		Calendar limite = Calendar.getInstance();
-//		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
-//		limite.setTime(dataLimite);
-//		limite.add(Calendar.DATE,limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status));
-//		
-//		limiteDia = limite.get(Calendar.DAY_OF_WEEK);
-//		
-//		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
-//			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
-//		}
-//		
-//		return limite.getTime();
-//	}
+	public static Calendar pularFimDeSemana(Calendar data) {
+		
+		if (data.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			data.add(Calendar.DAY_OF_MONTH, +2);
+		} else if (data.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			data.add(Calendar.DAY_OF_MONTH, +1);
+		}
+		
+		return data;
+	}
 	
 	
 	

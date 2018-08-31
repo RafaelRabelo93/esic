@@ -35,6 +35,7 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
@@ -90,34 +91,26 @@ public class UsuarioBean implements Serializable {
 		usuario = new Usuario();
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
-		SchedulerFactory sf = new StdSchedulerFactory();
+		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
-			Scheduler sched = sf.getScheduler();
-			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-					.withIdentity("job1", "group1")
-					.build();
 			
-			Date runTime = DateBuilder.evenMinuteDate(new Date());
-			
-			Trigger trigger = TriggerBuilder.newTrigger()
-					.withIdentity("trigger1", "group1")
-					.startAt(runTime)
-					.build();
-			
-			sched.scheduleJob(job, trigger);
+			Scheduler sched = shedFact.getScheduler();
 			sched.start();
-			Thread.sleep(90L * 1000L);
-			sched.shutdown(true);
 			
-//			sched.start();
-//			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class).withIdentity("verificarStatusSolicitacao", "grupo01").build();
-//			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01").withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-//			sched.scheduleJob(job, trigger);
+			  JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+			      .withIdentity("myJob", "group1") // name "myJob", group "group1"
+			      .build();
+
+			  Trigger trigger = TriggerBuilder.newTrigger()
+			      .withIdentity("myTrigger", "group1")
+			      .startNow()
+			      .withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *"))           
+			      .build();
+			  
+			  sched.scheduleJob(job, trigger);
+			
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
