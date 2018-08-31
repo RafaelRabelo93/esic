@@ -41,7 +41,7 @@
 							</h:panelGroup>
 						</h:commandLink>
 						
-						<h:commandLink action="#{solicitacao.verificaCidadaoConsulta}" styleClass="column link box" style="text-decoration: none; margin-left: 5px">
+						<h:commandLink action="#{solicitacao.verificaCidadaoConsulta}" styleClass="column link box" style="text-decoration: none; margin-left: 5px" rendered="#{usuario.usuario.perfil ne 0}">
 							<f:actionListener binding="#{solicitacao.finalizarSolicitacao()}"/>
 							<p:graphicImage styleClass="inline" value="#{resource['img/icon/list2.png']}" width="100px" style="align-self: center; margin-bottom: 5px"/>
 							<h:panelGroup styleClass="inline" style="margin-top: 20px">

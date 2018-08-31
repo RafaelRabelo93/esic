@@ -256,8 +256,7 @@
 
 
 			<!-- Dialog Detalhe Solicitação -->
-			<p:dialog widgetVar="detalheDialog" id="detalheDialog" modal="true" 
-				header="#{solicitacao.solicitacao.protocolo} - #{solicitacao.solicitacao.titulo}" fitViewport="true"
+			<p:dialog widgetVar="detalheDialog" id="detalheDialog" modal="true" fitViewport="true"
 				showEffect="fade" hideEffect="fade" resizable="false"
 				maximizable="false" draggable="false" closeOnEscape="true"
 				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
@@ -440,8 +439,8 @@
 							<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 								<div id="Resposta" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%"	styleClass="abaField respostaField">
-										<f:validateLength maximum="1000" />
+									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%"	styleClass="abaField respostaField">
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
 									<p:fileUpload value="#{mensagem.file}" label="Enviar Anexo"
@@ -461,8 +460,8 @@
 								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%" styleClass="abaField reformulaField">
-										<f:validateLength maximum="1000" />
+									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%" styleClass="abaField reformulaField">
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
@@ -474,8 +473,8 @@
 								
 								<div id="Negar" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="justNega" style="margin-bottom: 5px" />
-									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="200" required="true" style="width:99%"	styleClass="abaField negarField">
-										<f:validateLength maximum="1000" />
+									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%"	styleClass="abaField negarField">
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel">
@@ -488,9 +487,9 @@
 								<div id="Prorrogar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Descrição:" for="descr" />
-									<p:inputTextarea id="descr" cols="100" rows="8"	counter="display" maxlength="200" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
+									<p:inputTextarea id="descr" cols="100" rows="8"	counter="display" maxlength="3000" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
 										value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
-										<f:validateLength maximum="1000" />
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									<h:outputText id="display" />
 
@@ -504,9 +503,9 @@
 								<div id="Recurso" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Descrição:" for="descr2" />
-									<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="200" autoResize="false" style="width:100%" required="true"
+									<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="3000" autoResize="false" style="width:100%" required="true"
 										counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField">
-										<f:validateLength maximum="1000" />
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									<h:outputText id="display2" />
 
@@ -531,23 +530,23 @@
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
 									<p:inputTextarea id="justCid" cols="100" rows="8"
-										counter="display3" maxlength="200" autoResize="false"
+										counter="display3" maxlength="3000" autoResize="false"
 										style="width:100%" required="true"
 										counterTemplate="{0} caracteres restantes."
 										value="#{solicitacao.mensagem.texto}"
 										styleClass="abaField encaminharField">
-										<f:validateLength maximum="1000" />
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									<h:outputText id="display3" />
 
 									<p:outputLabel value="Justificativa Interna:" for="justInt" />
 									<p:inputTextarea id="justInt" cols="100" rows="8"
-										counter="display4" maxlength="200" autoResize="false"
+										counter="display4" maxlength="3000" autoResize="false"
 										style="width:100%" required="true"
 										counterTemplate="{0} caracteres restantes."
 										value="#{solicitacao.mensagemEncaminhar.texto}"
 										styleClass="abaField encaminharField">
-										<f:validateLength maximum="1000" />
+										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									<h:outputText id="display4" />
 

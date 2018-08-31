@@ -152,12 +152,14 @@ public class SolicitacaoBean implements Serializable {
 			if (solicitacao.getTipo().equals("Solicitação")) {
 				dadosRecebimentoSolicitacao(solicitacao);
 			}
-
-			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
-			this.mensagem.setData(new Date(System.currentTimeMillis()));
-			this.mensagem.setSolicitacao(solicitacao);
-			this.mensagem.setTipo((short) 1);
-			MensagemDAO.saveOrUpdate(mensagem);
+			
+		if (solicitacao.getTipo().equals("Denúncia"))	this.mensagem.setUsuario(UsuarioDAO.findUsuario(0));
+		else	this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+		
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 1);
+		MensagemDAO.saveOrUpdate(mensagem);
 
 			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
 
@@ -270,7 +272,7 @@ public class SolicitacaoBean implements Serializable {
 //				Cidadao cidadaoAnonimo = new Cidadao();
 //				cidadaoAnonimo.setUsuario(usuarioAnonimo);;
 //				solicitacao.setCidadao(cidadaoAnonimo);
-				solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
+				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
 			} else {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
@@ -279,7 +281,7 @@ public class SolicitacaoBean implements Serializable {
 				solicitacao.setSigilo(true);
 			}
 		} catch (NullPointerException e) {
-			solicitacao.setCidadao(CidadaoDAO.findCidadao(0));
+			solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
 		}
 	}
 
