@@ -56,7 +56,7 @@
 				<div class="dropdown-content">
 					<h:commandLink value="Consultar Responsáveis" action="/Consulta/consulta_responsavel"/>
 					<h:commandLink value="Cadastrar Responsável" action="#{responsavel.redirectCadastroUsuario()}"/>
-					<h:commandLink value="Cadastrar Gestor do Sistema" action="#{responsavel.redirectCadastroGestor()}" rendered="#{usuario.usuario.perfil eq '5'}"/>
+					<h:commandLink value="Cadastrar Gestor do Sistema" action="#{responsavel.redirectCadastroGestor()}" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
 				</div>
 			</h:panelGroup>
 			

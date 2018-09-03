@@ -27,35 +27,35 @@
 							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 						</h:panelGroup>
 			
-						<h:commandLink id="showBtn" class="legendaButton" disabled="true" style="position: absolute; right: 10px;" rendered="false">
+						<h:commandLink id="showBtn" class="legendaButton" disabled="true" style="position: absolute; right: 10px;">
 					    	<i class="fa fa-question fa-2x" />
 					    </h:commandLink>
 					    
 					    <p:tooltip id="toolTipContent" for="showBtn" position="bottom" styleClass="legendaTooltip" style="width: 600px">
 					    	<p style="font-weight: bold; text-align: center">Status da solicitação</p>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #2196f3; margin-right: .5em">Aberta</span> Solicitação realizada ainda sem resposta do órgão competente;</p>
+								<p> <span class="statusBox" style="background: #2196f3; margin-right: .5em">Aberta</span>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #489106; margin-right: .5em">Respondida</span> Solicitação respondida pelo órgão competente, ainda sujeita a realização de recurso pelo cidadão;</p>
+								<p> <span class="statusBox" style="background: #489106; margin-right: .5em">Respondida</span>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em">Negada</span> Solicitação imprópria ou sem resposta disponível negada pelo órgão.</p>
+								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em">Finalizada</span>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #5bc0de; margin-right: .5em">Reencaminhada</span> Solicitação reecaminhada para órgão competente.</p>
+								<p> <span class="statusBox" style="background: #5bc0de; margin-right: .5em">Reencaminhada</span>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em">Recurso</span> Solicitação em recurso solicitado pelo cidadão.</p>
+								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em">Negada</span>Manifestação com justificativa legal para não atendimento</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em">Finalizada</span> Solicitação finalizada pelo sistema.</p>
+								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Prorrogada</span>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Prorrogada</span> Solicitação com prazo prorrogado pelo órgão competente.</p>
+								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em">Recurso</span>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em">Sem-Resposta</span> Solicitação sem resposta recebida pelo órgão competente até o prazo estipulado.</p>
+								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
 							</h:panelGroup>
 					    </p:tooltip>
 				    
@@ -78,7 +78,9 @@
 									<i class="fa fa-columns" />
 									<h:outputText value="Colunas" />
 								</p:commandLink>
-								<p:columnToggler datasource="solicitacoes" trigger="toggler" />
+								<p:columnToggler datasource="solicitacoes" trigger="toggler" >
+									<p:ajax event="toggle" listener="#{solicitacao.onToggle}" />
+								</p:columnToggler>
 
 								<p:outputPanel styleClass="searchPanel">
 									<i class="fa fa-search"
@@ -94,7 +96,7 @@
 								</p:calendar>
 							</f:facet>
 
-							<p:column ariaHeaderText="Icones" width="20" toggleable="false"	style="text-align:center;">
+							<p:column ariaHeaderText="Icones" width="20" toggleable="false"	style="text-align:center;" visible="#{solicitacao.list[0]}">
 								<h:panelGroup id="iconDenuncia"
 									rendered="#{slt.tipo eq 'Denúncia'}">
 									<i class="fa fa-exclamation-circle" />
@@ -127,37 +129,79 @@
 								<p:tooltip for="iconReclama" value="Reclamação" position="right" />
 							</p:column>
 
-							<p:column headerText="Protocolo" width="150"
+							<p:column headerText="Protocolo" width="150" visible="#{solicitacao.list[1]}"
 								filterBy="#{slt.protocolo}" filterable="false">
 								<h:outputText value="#{slt.protocolo}" />
 							</p:column>
 
+							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" visible="#{solicitacao.list[2]}"
+								filterBy="#{slt.tipo}" filterMatchMode="contains"
+								filterable="false">
+								<h:outputText value="#{slt.tipo}" />
+							</p:column>
+							
 							<p:column headerText="Órgão" width="80"
-								sortBy="#{slt.entidades.sigla}"
+								sortBy="#{slt.entidades.sigla}" visible="#{solicitacao.list[3]}"
 								filterBy="#{slt.entidades.sigla}" filterMatchMode="contains"
 								filterable="false">
 								<h:outputText value="#{slt.entidades.sigla}" />
 							</p:column>
 
-							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150"
+							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}" visible="#{solicitacao.list[4]}"
+								filterBy="#{slt.competencias.acoes.titulo}" filterMatchMode="contains"
+								filterable="false">
+								<h:outputText value="#{slt.competencias.acoes.titulo}" />
+							</p:column>
+							
+							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" visible="#{solicitacao.list[5]}"
 								filterBy="#{slt.titulo}" filterMatchMode="contains"
 								filterable="false">
 								<h:outputText value="#{slt.titulo}" />
 							</p:column>
 
-							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}"
-								filterBy="#{slt.tipo}" filterMatchMode="contains"
+							<p:column headerText="Data inicial" sortBy="#{slt.dataIni}"
+								width="100" style="text-align:center" visible="#{solicitacao.list[6]}"
+								filterBy="#{slt.dataIni}" filterMatchMode="exact"
 								filterable="false">
-								<h:outputText value="#{slt.tipo}" />
+								<h:outputText value="#{slt.dataIni}"	rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+								<h:outputText value=" ----------- " style="color: #c0c0c0;"
+									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
+							</p:column>
+							
+							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
+								width="100" style="text-align:center" visible="#{solicitacao.list[7]}"
+								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
+								filterable="false">
+								<h:outputText value="#{slt.dataLimite}"
+									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação' or slt.tipo eq 'Denúncia'}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
+								<h:outputText value=" ----------- " style="color: #c0c0c0;"
+									rendered="#{slt.tipo eq 'Sugestão' or slt.tipo eq 'Elogio' or slt.tipo eq 'Reclamação'}" />
+							</p:column>
+<!-- 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}" -->
+
+							<p:column headerText="Data final" sortBy="#{slt.datafim}" visible="#{solicitacao.list[8]}"
+								width="100" style="text-align:center" filterBy="#{slt.datafim}"
+								filterMatchMode="exact" filterable="false">
+								<h:outputText value=" ----------- "
+									rendered="#{slt.datafim eq null}" style="color: #c0c0c0;" />
+								<h:outputText value="#{slt.datafim}"
+									rendered="#{slt.datafim ne null}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								</h:outputText>
 							</p:column>
 
-							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}"
-								filterBy="#{slt.competencias.acoes.titulo}" filterMatchMode="contains"
-								filterable="false">
-								<h:outputText value="#{slt.competencias.acoes.titulo}" />
+							<p:column headerText="Cidadão" width="150" visible="#{solicitacao.list[9]}"
+								sortBy="#{slt.cidadao.usuario.nome}" filterBy="#{slt.cidadao.usuario.nome}"
+								filterMatchMode="contains" filterable="false" rendered="#{usuario.usuario.perfil ne '3' }">
+<!-- 								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" /> -->
+								<h:outputText value="#{slt.cidadao.usuario.nome}"/>
 							</p:column>
-
-							<p:column headerText="Status" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
+							
+							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
 								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox"/>
 								
 								<!-- TOOL-TIPS -->
@@ -188,51 +232,7 @@
 								
 							</p:column>
 
-							<p:column headerText="Cidadão" width="150" visible="false"
-								sortBy="#{slt.cidadao.usuario.nome}"
-								rendered="#{usuario.usuario.perfil ne '3' }"
-								filterBy="#{slt.cidadao.usuario.nome}"
-								filterMatchMode="contains" filterable="false">
-<!-- 								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" /> -->
-							</p:column>
-
-							<p:column headerText="Data inicial" sortBy="#{slt.dataIni}"
-								width="100" style="text-align:center"
-								filterBy="#{slt.dataIni}" filterMatchMode="exact"
-								filterable="false" visible="false">
-								<h:outputText value="#{slt.dataIni}"	rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-								</h:outputText>
-								<h:outputText value=" ----------- " style="color: #c0c0c0;"
-									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
-							</p:column>
-							
-							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
-								width="100" style="text-align:center"
-								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
-								filterable="false">
-								<h:outputText value="#{slt.dataLimite}"
-									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação' or slt.tipo eq 'Denúncia'}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-								</h:outputText>
-								<h:outputText value=" ----------- " style="color: #c0c0c0;"
-									rendered="#{slt.tipo eq 'Sugestão' or slt.tipo eq 'Elogio' or slt.tipo eq 'Reclamação'}" />
-							</p:column>
-<!-- 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}" -->
-
-							<p:column headerText="Data final" sortBy="#{slt.datafim}"
-								width="100" style="text-align:center" filterBy="#{slt.datafim}"
-								filterMatchMode="exact" filterable="false">
-								<h:outputText value=" ----------- "
-									rendered="#{slt.datafim eq null}" style="color: #c0c0c0;" />
-								<h:outputText value="#{slt.datafim}"
-									rendered="#{slt.datafim ne null}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
-								</h:outputText>
-							</p:column>
-
-							<p:column style="width:32px; text-align: center"
-								toggleable="false">
+							<p:column visible="#{solicitacao.list[11]}" style="width:32px; text-align: center" toggleable="false">
 								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
 									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 									<p:ajax listener="#{solicitacao.popularMensagens}" />
@@ -439,7 +439,7 @@
 							<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 								<div id="Resposta" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%"	styleClass="abaField respostaField">
+									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" rows="10" maxlength="3000" autoResize="true" required="true" style="width:99%" styleClass="abaField respostaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
@@ -460,7 +460,7 @@
 								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%" styleClass="abaField reformulaField">
+									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField reformulaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
@@ -473,7 +473,7 @@
 								
 								<div id="Negar" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="justNega" style="margin-bottom: 5px" />
-									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="3000" required="true" style="width:99%"	styleClass="abaField negarField">
+									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField negarField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									
@@ -486,8 +486,8 @@
 
 								<div id="Prorrogar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Descrição:" for="descr" />
-									<p:inputTextarea id="descr" cols="100" rows="8"	counter="display" maxlength="3000" required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
+									<p:outputLabel value="Justificativa:" for="descr" />
+									<p:inputTextarea id="descr" cols="100" rows="10" counter="display" maxlength="3000"  required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
 										value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
@@ -529,7 +529,7 @@
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
-									<p:inputTextarea id="justCid" cols="100" rows="8"
+									<p:inputTextarea id="justCid" cols="100" rows="10"
 										counter="display3" maxlength="3000" autoResize="false"
 										style="width:100%" required="true"
 										counterTemplate="{0} caracteres restantes."
@@ -540,7 +540,7 @@
 									<h:outputText id="display3" />
 
 									<p:outputLabel value="Justificativa Interna:" for="justInt" />
-									<p:inputTextarea id="justInt" cols="100" rows="8"
+									<p:inputTextarea id="justInt" cols="100" rows="10"
 										counter="display4" maxlength="3000" autoResize="false"
 										style="width:100%" required="true"
 										counterTemplate="{0} caracteres restantes."
@@ -566,7 +566,7 @@
 									</h:panelGroup>
 									
 									<p:outputLabel value="Mensagem:" for="avaliaTexto" style="margin-top: 0"/>
-									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="false" style="width:100%" required="false" 
+									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="true" style="width:100%" required="false" 
 									counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"	styleClass="abaField avaliaField">
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>

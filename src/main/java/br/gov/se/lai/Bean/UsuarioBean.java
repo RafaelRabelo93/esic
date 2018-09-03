@@ -103,11 +103,21 @@ public class UsuarioBean implements Serializable {
 
 			  Trigger trigger = TriggerBuilder.newTrigger()
 			      .withIdentity("myTrigger", "group1")
-			      .startNow()
 			      .withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *"))           
 			      .build();
 			  
 			  sched.scheduleJob(job, trigger);
+			  
+				JobDetail job2 = JobBuilder.newJob(verificarStatusSolicitacao.class)
+					.withIdentity("myJob2", "group1") // name "myJob", group "group1"
+					.build();
+			  
+				Trigger trigger2 = TriggerBuilder.newTrigger()
+						.withIdentity("runtimeTrigger", "group1")
+						.startNow()
+						.build();
+				
+			  sched.scheduleJob(job2, trigger2);
 			
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
@@ -172,6 +182,7 @@ public class UsuarioBean implements Serializable {
 		if(verificaAdmin() || verificaGestor()) {
 			usuarioNovo = UsuarioDAO.buscarUsuario(usuarioNovo.getNick());
 			usuarioNovo.setPerfil((short)5);
+			
 			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Cadastro realizado com sucesso.", " "));
@@ -921,6 +932,16 @@ public class UsuarioBean implements Serializable {
 		return nicks;
 	}
 
+	public static List<String> completeNickSemGestor (String prefix) {
+		List<String> nicks = UsuarioDAO.completeNickNoGestor(prefix);
+		return nicks;
+	}
+	
+	public static List<String> completeNickUsuario (String prefix) {
+		List<String> nicks = UsuarioDAO.completeNickUser(prefix);
+		return nicks;
+	}
+	
 	public boolean verificaAdmin() {
 		return usuario.getPerfil()==(short)6;
 	}

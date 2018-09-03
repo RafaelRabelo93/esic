@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +35,9 @@ import org.dom4j.VisitorSupport;
 import org.omg.CORBA.Request;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
+import org.primefaces.model.Visibility;
 
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.AnexoDAO;
@@ -107,7 +110,8 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoRespondida;
 	public static int solicitacaoDenuncia;
 	public static int solicitacaoFinalizadas;
-
+	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, false, true, false, true, true);
+	
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -433,28 +437,30 @@ public class SolicitacaoBean implements Serializable {
 		for (int i = 0; i<(5-loop); i++ ) {
 			protocolo = "0"+protocolo;
 		}
+		
+		protocolo += "/"+ft.format(now);
+		
 		switch (this.solicitacao.getTipo()) {
 		case "Reclamação":
-			protocolo += ".1";
+			protocolo += "-1";
 			break;
 		case "Denúncia":
-			protocolo += ".2";
+			protocolo += "-2";
 			break;
 		case "Informação":
-			protocolo += ".3";
+			protocolo += "-3";
 			break;
 		case "Solicitação":
-			protocolo += ".4";
+			protocolo += "-4";
 			break;
 		case "Sugestão":
-			protocolo += ".5";
+			protocolo += "-5";
 			break;
 		case "Elogio":
-			protocolo += ".6";
+			protocolo += "-6";
 			break;
 		}
 		
-		protocolo += "/"+ft.format(now);
 		return protocolo;
 	}
 
@@ -1038,6 +1044,9 @@ public class SolicitacaoBean implements Serializable {
 		System.out.println( PrazosSolicitacao.gerarPrazoDiaUtilLimite(date, PrazosSolicitacao.prazoResposta("Aberta")) );
 	}
 	
+	public void onToggle(ToggleEvent e) {
+		list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
+	}
 	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1344,6 +1353,14 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setModoIdentificavel(boolean modoIdentificavel) {
 		this.modoIdentificavel = modoIdentificavel;
+	}
+	
+	public List<Boolean> getList() {
+		return list;
+	}
+
+	public void setList(List<Boolean> list) {
+		this.list = list;
 	}
 
 }

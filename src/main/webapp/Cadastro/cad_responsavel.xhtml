@@ -29,7 +29,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Usuário: " for="nick" /> 
-								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}" required="true"
+								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNickSemGestor}" required="true"
 									itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
 							</h:panelGroup>
 							

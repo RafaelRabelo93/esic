@@ -27,12 +27,17 @@
 						<h:outputText value="Cadastro de Gestor do Sistema" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
 						<h:outputText value="Atenção !" style="font-weight:bold;color:red;" />
-						<p style="margin-bottom:0;text-align: left;">Cadastrar um perfil de cidadão ou responsável já existente como Gestor do Sistema irá impossibilitar o acesso desses usuários às funções de seus perfis originais.</p>
-						<p style="text-align: left;">Considere o cadastro de novos usuários para a função de Gestor do Sistema, se necessário.</p>
+<!-- 						<p style="margin-bottom:0;text-align: left;">Cadastrar um perfil de cidadão ou responsável já existente como Gestor do Sistema irá impossibilitar o acesso desses usuários às funções de seus perfis originais.</p> -->
+<!-- 						<p style="text-align: left;">Considere o cadastro de novos usuários para a função de Gestor do Sistema, se necessário.</p> -->
+						<p style="margin-bottom:0;text-align: left;">Não é possível cadastrar um perfil de cidadão ou responsável já existente como Gestor do Sistema.</p>
+						<h:panelGroup styleClass="inline">
+						<p style="text-align: left;margin-bottom:0">Se necessário, realize o cadastro de novos usuários para esta função clicando</p>
+						<h:commandLink action="/Cadastro/cad_usuario" value="aqui" style="margin-left:.2em; font-weight:bold; color: #1a6eb4;" />
+						</h:panelGroup>
 						
 						<h:panelGroup styleClass="column">
 							<p:outputLabel value="Usuário: " for="nick" /> 
-							<p:autoComplete id="nick" value="#{usuario.usuarioNovo.nick}" completeMethod="#{usuario.completeNick}"
+							<p:autoComplete id="nick" value="#{usuario.usuarioNovo.nick}" completeMethod="#{usuario.completeNickUsuario}"
 								itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
 						</h:panelGroup>
 					 	
