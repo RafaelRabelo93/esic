@@ -279,6 +279,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		}
 
 		return dadosChart;
+	
 	}
 
 	
@@ -347,7 +348,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-05" + mesAtual + "%";
+		String periodo = anoAtual + "-0" + mesAtual + "%";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
