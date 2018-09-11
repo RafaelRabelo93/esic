@@ -37,7 +37,7 @@
 					<h:outputText value="#{avaliacao.media}" style="font-size:20px;margin-left: .2em;" />
 	        	</h:panelGroup>
 
-				<p:dataList type="definition" value="#{avaliacao.solicitacoesAvaliadas}" var="sol"  emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
+				<p:dataList type="definition" styleClass="notaDatalist" value="#{avaliacao.solicitacoesAvaliadas}" var="sol"  emptyMessage="Nenhuma avaliação encontrada." itemType="none" paginator="true" rows="20" style="width:100%">
 			        <h:panelGroup styleClass="column" style="padding: 20px;border-bottom:1px solid silver">
 				        <h:panelGroup styleClass="inline" style="-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
 			        		<h:panelGroup styleClass="inline">

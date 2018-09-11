@@ -107,14 +107,9 @@ public class verificarStatusSolicitacao implements Job {
 		
 			Date now = new Date();
 			if (now.after(solicitacao.getDataLimite())) {
-//				System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizou");
 				if (solicitacao.getStatus().equals("Respondida")) {
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 						solicitacao.setStatus("Finalizada");
-//						if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-//							MensagemBean.salvarStatus(solicitacao, "Finalizada", null, null, 0);
-//							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizada");
-//						}
 						SolicitacaoDAO.saveOrUpdate(solicitacao);
 						MensagemBean.salvarStatus(solicitacao, "Finalizada", null, null, 0);
 						System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Finalizada");
@@ -124,25 +119,18 @@ public class verificarStatusSolicitacao implements Job {
 								|| solicitacao.getStatus().equals("Prorrogada")
 								|| solicitacao.getStatus().equals("Recurso")
 								|| solicitacao.getStatus().equals("Reencaminhada")) {
+							MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
 							solicitacao.setStatus("Sem-Resposta");
 							solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
-//							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-//								MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
-//								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
-//							}
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
-							MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
 							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
 
-						} else if (solicitacao.getStatus().equals("Sem-Resposta") || solicitacao.getStatus().equals("Negada")) {
+						} else if ((solicitacao.getStatus().equals("Sem-Resposta") || solicitacao.getStatus().equals("Negada"))
+								&& solicitacao.getDatafim() == null) {
 							solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-//							if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-//								MensagemBean.salvarStatus(solicitacao, "Limite Recurso", null, null, 0);
-//								System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' perdeu o prazo de recurso");
-//							}
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
 							MensagemBean.salvarStatus(solicitacao, "Limite Recurso", null, null, 0);
-							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' perdeu o prazo de recurso");
+							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' encerrou o prazo de recurso");
 						}
 					} 
 				}

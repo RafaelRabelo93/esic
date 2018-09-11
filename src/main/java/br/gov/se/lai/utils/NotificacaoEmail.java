@@ -535,7 +535,7 @@ public abstract class NotificacaoEmail implements Job{
 		msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
 		msg.append("<head>");
 		msg.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-		msg.append("<title>Redefinição de senha e-SIC</title>");
+		msg.append("<title>" + titulo + "</title>");
 		msg.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
 		msg.append("<style>");
 		msg.append("html, body {height:100%}");
@@ -583,8 +583,13 @@ public abstract class NotificacaoEmail implements Job{
 		// set the alternative message
 		emailHtml.setTextMsg("Seu provedor de email não suporta este tipo de mensagens.");
 		
+		emailHtml.setDebug(false);
+		
 		// send the email
 		emailHtml.send();
+		
+		System.out.println("Email enviado para: " + destinatario + "	Em: " + emailHtml.getSentDate());
+		System.out.println("Título: " + titulo);
 	}
 	
 	//+++++++++++++++++++ Email simples

@@ -785,7 +785,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
     width: auto !important;
 }
 
-.ui-datalist .ui-datalist-header, .ui-datalist .ui-datalist-footer {
+.notaDataList .ui-datalist .ui-datalist-header, .notaDataList .ui-datalist .ui-datalist-footer {
     text-align: center;
     padding: 4px 10px;
     border: 1px solid #c0c0c0;
@@ -796,9 +796,17 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
     font-variant-caps: all-petite-caps;
 }
 
-.ui-datalist.ui-widget {
-/*     width: 25vw; */
-	width: 50%;
+.consultaDatalist .ui-datalist {
+	max-height:	200px !important;
+	overflow-y: auto;
+}
+
+.consultaDatalist .ui-datalist-content {
+	border: none;
+}
+
+.consultaDatalist .ui-datalist-data {
+/* 	background: red !important; */
 }
 
 .ui-selectonemenu-label.ui-inputfield.ui-corner-all {
@@ -1124,10 +1132,11 @@ td.prazo.branco {
 }
 
 .ui-tabs .ui-tabs-panel {
-	padding: .5em 0.5em 0 .5em !important;
-	border: 1px solid silver !important;
+	padding: 0 .7em !important;
+	border: 1px solid silver;
 	border-top: none !important;
 	border-radius: 0;
+	padding: 0 0 0 .7em;
 }
 
 .ui-tabs .ui-tabs-nav li {
@@ -1717,42 +1726,52 @@ h1, h2, h3 {
 
 td.Aberta > .statusBox {
 	background: #2196f3;
-	color: white;
+	color: white !important;
 }
 
 td.Respondida > .statusBox  {
 	background: #5cb85c;
-	color: white;
+	color: white !important;
 }
 
 td.Negada > .statusBox  {
 	background: #d9534f;
-	color: white;
+	color: white !important;
 }
 
 td.Reencaminhada > .statusBox  {
 	background: #5bc0de;
-	color: white;
+	color: white !important;
 }
 
 td.Finalizada > .statusBox  {
 	background: #858f9c;
-	color: white;
+	color: white !important;
 }
 
 td.Recurso > .statusBox  {
 	background: #eab90f;
-	color: white;
+	color: white !important;
 }
 
 td.Prorrogada > .statusBox  {
 	background: #824fbf;
-	color: white;
+	color: white !important;
+}
+
+td.Transição > .statusBox {
+	background: #3c40f0;
+	color: white !important;
 }
 
 td.Sem-Resposta > .statusBox {
 	background: #e77b40;
-	color: white;
+	color: white !important;
+}
+
+td.Sem-RespostaT > .statusBox {
+	background: #e77b40;
+	color: white !important;
 }
 
 .statusBox {
@@ -2095,4 +2114,10 @@ body {
 .ui-autocomplete-panel .ui-autocomplete-list {
 	overflow-y: scroll;
 	max-height: 300px;
+}
+
+.ui-blockui-content {
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
 }
