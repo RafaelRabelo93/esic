@@ -189,66 +189,91 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
-		UsuarioBean usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario"));
+//		UsuarioBean usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario"));
+		
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ (solicitacao.getInstancia() - 1) +"º "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Prorrogada":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 
 		case "Negada":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema. Entre com recurso para que sua solicitação seja reavaliada.");
+			System.out.println(mensagem.getTexto());
 			break;
 
 		case "Finalizada":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Encaminhada":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+entidadeVelha+" para "+entidadeNova+".");
+			System.out.println(mensagem.getTexto());
 			break;
 
 		case "Recebida":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi "+status.toLowerCase()+" no sistema da entidade "+solicitacao.getEntidades().getNome()+".");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Status Denuncia 1":
 			tipoAux = 0;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Status Denuncia 2":
 			tipoAux = 0;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Status Denuncia 3":
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" alterou o status para "+status.toLowerCase()+" no sistema.");
+			System.out.println(mensagem.getTexto());
 			tipoAux = 0;
 			break;
 
 		case "Respondida":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Visualizada":
-			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi visualizada por "+ usuario.getNomeCompleto());
+			tipoAux = 4;
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi visualizada por "+ ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getNomeCompleto());
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		case "Avaliada":
-			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o) "+ usuario.getNomeCompleto());
 			tipoAux = 2;
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" foi avaliada pelo cidadã(o).");
+			System.out.println(mensagem.getTexto());
+			break;
 			
 		case "Sem-Resposta":
+			tipoAux = 4;
 			mensagem.setTexto("Manifestação " + solicitacao.getProtocolo() + " não recebeu resposta no sistema.");
+			System.out.println(mensagem.getTexto());
+			break;
 		
 		case "Limite Recurso":
+			tipoAux = 4;
 			mensagem.setTexto("Prazo para realizar recurso na manifestação " + solicitacao.getProtocolo() + " encerrado.");
-			
+			System.out.println(mensagem.getTexto());
 			break;
 			
 		default:

@@ -11,6 +11,7 @@ public class PrazosSolicitacao {
 	private static int prazoResposta = 5; // Produção: 20
 	private static int prazoProrrogada = 2; // Produção: 10
 	private static int prazoRecurso = 2; // Produção: 10
+	private static int prazoEncaminhamento = 1; // Produção: 5
 	
 
 	public static int prazoResposta(String status) {
@@ -31,13 +32,13 @@ public class PrazosSolicitacao {
 	
 	
 	@SuppressWarnings({ "finally", "unused" })
-	public static boolean verificaSe24Horas(Solicitacao solicitacao) {
+	public static boolean verificaSeEncaminhavel(Solicitacao solicitacao) {
 		boolean retorno = false;
 		try {
 			Calendar hoje = Calendar.getInstance();
 			Calendar limite = Calendar.getInstance();
 			limite.setTime(solicitacao.getDataIni());
-			limite.add(Calendar.DATE, +1);
+			limite.add(Calendar.DATE, +prazoEncaminhamento);
 			if (hoje.before(limite)) {
 				retorno = true;
 			}
@@ -46,12 +47,14 @@ public class PrazosSolicitacao {
 			return retorno;
 		}
 	}
-
+	
 	/**
 	 * Função contarDiasUteis
 	 * 
 	 * Essa função retorna o número que deve ser acrescido na data limite da solicitação 
 	 * para que sejam considerados apenas os dias uteis.
+	 * 
+	 * @deprecated
 	 * 
 	 * @return
 	 */
@@ -73,6 +76,8 @@ public class PrazosSolicitacao {
 	 * Função gerarPrazoDiasUteis
 	 * 
 	 * Esta função gera uma data limite a partir de um prazo considerando apenas dias úteis a partir da data estabelecida.
+	 * 
+	 * @deprecated
 	 * 
 	 * @param data - Data inicial que será acrescida a quantida de dias úteis.
 	 * @param prazo - Número que representa a quantidade de dias úteis que devem ser acrescidos.
@@ -100,7 +105,7 @@ public class PrazosSolicitacao {
 	/**
 	 * Função gerarPrazoDiaUtilLimite
 	 * 
-	 * Essa função verifica se a data limite cai em um final de semana. Caso verdade, é acrescido 
+	 * Essa função verifica se a data inicial ou limite cai em um final de semana. Caso verdade, é acrescido 
 	 * 1 ou 2 dias ao prazo final. 
 	 * 
 	 * @param data - Data inicial que será acrescida a quantida de dias úteis.

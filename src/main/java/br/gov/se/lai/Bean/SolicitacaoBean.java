@@ -110,7 +110,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoRespondida;
 	public static int solicitacaoDenuncia;
 	public static int solicitacaoFinalizadas;
-	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, false, true, false, true, true);
+	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, true, false, false, true, true);
 	
 	@PostConstruct
 	public void init() {
@@ -714,9 +714,8 @@ public class SolicitacaoBean implements Serializable {
 		
 		return (perfilValido && respValido);
 	}
-	public void visualizouSolicitacao(AjaxBehaviorEvent e) {
-		if (((userBean.getUsuario().getPerfil() == (short) 2)
-				|| (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
+	public void visualizouSolicitacao(Solicitacao solicitacao) {
+		if (((userBean.getUsuario().getPerfil() == (short) 2) || (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
 			if (!solicitacao.isVisualizada()) {
 				MensagemBean.salvarStatus(solicitacao, "Visualizada", null, null,0);
 				solicitacao.setVisualizada(true);
@@ -944,7 +943,7 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public boolean ehEncaminhavel() {
-		if (!verificaSeEncaminhada(solicitacao) && PrazosSolicitacao.verificaSe24Horas(solicitacao)) {
+		if (!verificaSeEncaminhada(solicitacao) && PrazosSolicitacao.verificaSeEncaminhavel(solicitacao)) {
 			return true;
 		} else {
 			return false;
@@ -1004,8 +1003,7 @@ public class SolicitacaoBean implements Serializable {
 					this.mensagemEncaminhar.setData(new Date(System.currentTimeMillis()));
 					if (MensagemDAO.saveOrUpdate(mensagemEncaminhar)) {
 						MensagemBean.attMensagemTramites(mensagemEncaminhar);
-						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),
-								antigaEnt.getNome(), 0);
+						MensagemBean.salvarStatus(solicitacao, "Encaminhada", solicitacao.getEntidades().getNome(),	antigaEnt.getNome(), 0);
 						NotificacaoEmail.enviarEmailTramites(solicitacao, mensagemEncaminhar.getTexto(), respRemetente,	respDestinatario);
 					}
 				}

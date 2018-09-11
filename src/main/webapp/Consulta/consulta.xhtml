@@ -27,35 +27,35 @@
 							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 						</h:panelGroup>
 			
-						<h:commandLink id="showBtn" class="legendaButton" disabled="true" style="position: absolute; right: 10px;">
+						<h:commandLink id="showBtn" styleClass="legendaButton" disabled="true" style="position: absolute; right: 10px;">
 					    	<i class="fa fa-question fa-2x" />
 					    </h:commandLink>
 					    
-					    <p:tooltip id="toolTipContent" for="showBtn" position="bottom" styleClass="legendaTooltip" style="width: 600px">
+					    <p:tooltip id="toolTipContent" for="showBtn" position="left" styleClass="legendaTooltip" style="width: 600px; margin-right: 50px">
 					    	<p style="font-weight: bold; text-align: center">Status da solicitação</p>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #2196f3; margin-right: .5em">Aberta</span>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #2196f3; margin-right: .5em; color:white !important">Aberta</span>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #489106; margin-right: .5em">Respondida</span>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #489106; margin-right: .5em; color:white !important">Atendida</span>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em">Finalizada</span>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #858f9c; margin-right: .5em; color:white !important">Finalizada</span>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #5bc0de; margin-right: .5em">Reencaminhada</span>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #5bc0de; margin-right: .5em; color:white !important">Reencaminhada</span>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em">Negada</span>Manifestação com justificativa legal para não atendimento</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #d30e03; margin-right: .5em; color:white !important">Negada</span>Manifestação com justificativa legal para não atendimento</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em">Prorrogada</span>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #824fbf; margin-right: .5em; color:white !important">Prorrogada</span>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em">Recurso</span>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em; color:white !important">Recurso</span>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 							</h:panelGroup>
-							<h:panelGroup styleClass="inline" style="align-items: flex-start;">
-								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
 							</h:panelGroup>
 					    </p:tooltip>
 				    
@@ -129,7 +129,7 @@
 								<p:tooltip for="iconReclama" value="Reclamação" position="right" />
 							</p:column>
 
-							<p:column headerText="Protocolo" width="150" visible="#{solicitacao.list[1]}"
+							<p:column headerText="Protocolo" width="150" sortBy="#{slt.protocolo}" visible="#{solicitacao.list[1]}"
 								filterBy="#{slt.protocolo}" filterable="false">
 								<h:outputText value="#{slt.protocolo}" />
 							</p:column>
@@ -154,8 +154,7 @@
 							</p:column>
 							
 							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" visible="#{solicitacao.list[5]}"
-								filterBy="#{slt.titulo}" filterMatchMode="contains"
-								filterable="false">
+								filterBy="#{slt.titulo}" filterMatchMode="contains"	filterable="false">
 								<h:outputText value="#{slt.titulo}" />
 							</p:column>
 
@@ -163,11 +162,9 @@
 								width="100" style="text-align:center" visible="#{solicitacao.list[6]}"
 								filterBy="#{slt.dataIni}" filterMatchMode="exact"
 								filterable="false">
-								<h:outputText value="#{slt.dataIni}"	rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação'}">
+								<h:outputText value="#{slt.dataIni}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
-								<h:outputText value=" ----------- " style="color: #c0c0c0;"
-									rendered="#{slt.tipo ne 'Informação' and slt.tipo ne 'Solicitação'}" />
 							</p:column>
 							
 							<p:column headerText="Data limite" sortBy="#{slt.dataLimite}"
@@ -201,14 +198,15 @@
 								<h:outputText value="#{slt.cidadao.usuario.nome}"/>
 							</p:column>
 							
-							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="100" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
-								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox"/>
+							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="120" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
+								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Respondida'}"/>
+								<h:outputText id="statusLabel2" value="Atendida" styleClass="statusBox" rendered="#{slt.status eq 'Respondida'}"/>
 								
 								<!-- TOOL-TIPS -->
 								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
 									<p>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Respondida'}">
+								<p:tooltip for="statusLabel2" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Respondida'}">
 									<p>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
 								</p:tooltip>
 								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
@@ -233,16 +231,12 @@
 							</p:column>
 
 							<p:column visible="#{solicitacao.list[11]}" style="width:32px; text-align: center" toggleable="false">
-								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
+								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" actionListener="#{solicitacao.visualizouSolicitacao(slt)}"
 									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 									<p:ajax listener="#{solicitacao.popularMensagens}" />
 									<i class="fa fa-search" />
-									<f:setPropertyActionListener value="#{slt}"
-										target="#{solicitacao.solicitacao}" />
-									<f:setPropertyActionListener value="#{slt}"
-										target="#{mensagem.solicitacao}" />
-									<f:setPropertyActionListener value="#{slt}"
-										target="#{solicitacao.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}"	target="#{solicitacao.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}"	target="#{mensagem.solicitacao}" />
 								</p:commandLink>
 							</p:column>
 
@@ -314,8 +308,8 @@
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 
-							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}" />
-							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada' and solicitacao.solicitacao.status ne 'Sem-Resposta'}">
+							<h:outputText value="Data Limite:" style="color:#1a568c; font-size:18px" rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada'}" />
+							<h:outputText value="#{solicitacao.solicitacao.dataLimite}"	rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada'}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 							
@@ -334,8 +328,30 @@
 
 						<p:tabView dynamic="true" cache="true">
 							<p:tab title="Mensagens">
+							
+								<p:dataList value="#{mensagem.mensagensSolicitacao}" var="msg" type="definition" styleClass="consultaDatalist" rendered="false">
+									<p:outputPanel style="margin-top: 1vw;">
+										<div class="mensagem">
+											<h:outputText value="#{msg.usuario.nome}"
+												style="color:#1a568c" />
+											<h:outputText value="#{msg.data}" style="color:#1a568c">
+												<f:convertDateTime pattern="d/M/yy - hh:mm"
+													timeZone="GMT-03:00" />
+											</h:outputText>
+										</div>
+										
+										<h:outputText value="#{msg.texto}"
+											style="margin-left:1vw; white-space: pre-wrap;" />
+											
+										<h:form>
+											<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
+												<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
+											</p:commandButton>
+										</h:form>
+									</p:outputPanel>
+								</p:dataList>
 
-								<p:dataScroller value="#{mensagem.mensagensSolicitacao}"
+								<p:dataScroller value="#{mensagem.mensagensSolicitacao}" rendered="true"
 									var="msg" chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
 									<f:facet name="loader">
@@ -358,13 +374,14 @@
 													timeZone="GMT-03:00" />
 											</h:outputText>
 										</div>
+										
 										<h:outputText value="#{msg.texto}"
 											style="margin-left:1vw; white-space: pre-wrap;" />
 											
-											<h:form>
-												<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
-													<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
-												</p:commandButton>
+										<h:form>
+											<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
+												<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
+											</p:commandButton>
 										</h:form>
 									</p:outputPanel>
 
@@ -519,13 +536,11 @@
 								<div id="Encaminhar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Órgão/Entidade de destino" for="destino" />
-									<p:selectOneMenu id="destino"
-										value="#{solicitacao.idEntidades}"
-										styleClass="abaField encaminharField">
-										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}" />
+									<p:selectOneMenu id="destino" value="#{solicitacao.idEntidades}" styleClass="abaField encaminharField">
+<!-- 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"  disabled="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/> -->
 										<f:selectItem itemLabel="Selecione Orgão Relacionado"
 											noSelectionOption="true" />
-										<f:selectItems value="#{entidades.exibirEntidadesEncaminhamento()}"	var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}" />
+										<f:selectItems value="#{entidades.todasEntidadesAtivas}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}" />
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
