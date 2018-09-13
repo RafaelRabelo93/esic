@@ -435,14 +435,14 @@ public class ResponsavelBean implements Serializable{
 			String hashcode=UsuarioBean.generateSessionId();
 			int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 			if(idDestinatario != -1) {
-				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario);
+//				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
 				idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
 				if(idDestinatario != -1) {
-					String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-					NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario);
+//					String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+					NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode);
 					return "/index.xhtml?faces-redirect=true";
 				}else {
 					//Busca

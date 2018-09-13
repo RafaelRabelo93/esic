@@ -344,7 +344,9 @@ public abstract class NotificacaoEmail implements Job{
 				}
 	}
 
-	public static void enviarEmailRequisicaoResponsavel(Usuario usuario, Entidades entidade, int idUser, int idEntidade, String emailUser, String hashcode, String destinatario) {
+	public static void enviarEmailRequisicaoResponsavel(Usuario usuario, Entidades entidade, int idUser, int idEntidade, String emailUser, String hashcode) {
+		ArrayList<String> destinatarios = destinatarioResp(entidade, (short) 3);
+		
 		String link = DadosAutenticacao.getEnderecohomologacao()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
 																+"&user="+idUser
 																+"&identidade="+idEntidade
@@ -388,7 +390,9 @@ public abstract class NotificacaoEmail implements Job{
 						"<h5 style=\"margin-top: 50px\">Caso não deseje cadastrá-lo, ignore esta mensagem.</h5>";
 		
 		try {
-			enviarEmailHTML(destinatario, titulo, msg);
+			for (int i = 0; i < destinatarios.size(); i++) {
+				enviarEmailHTML(destinatarios.get(i), titulo, msg);
+			}
 		} catch (EmailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -663,13 +667,11 @@ public abstract class NotificacaoEmail implements Job{
 		
 	//+++++++++++++++++++ Destinatário todos responsáveis por nível (1 = Representante; 2 = Autoridade; 3 = Gestor)
 		public static ArrayList<String> destinatarioResp(Entidades entidade, Short nivel) {
-			List<Responsavel> listResp = ResponsavelDAO.findResponsavelEntidade(entidade.getIdEntidades());
+			List<Responsavel> listResp = ResponsavelDAO.findResponsavelEntidadeNivel(entidade.getIdEntidades(), nivel);
 			ArrayList<String> destinatarios = new ArrayList<String>();
 			
 			for (int i = 0; i < listResp.size(); i++) {
-				if (listResp.get(i).getNivel().shortValue() == nivel) {
-					destinatarios.add(listResp.get(i).getEmail());
-				}
+				destinatarios.add(listResp.get(i).getEmail());
 			}
 			
 			return destinatarios;

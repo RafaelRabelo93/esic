@@ -771,8 +771,7 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String pegarParamURL() {
-		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("access_key");
+		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("access_key");
 		// codigoURLTemporaria =
 		// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 		// .get("access_expire_date");

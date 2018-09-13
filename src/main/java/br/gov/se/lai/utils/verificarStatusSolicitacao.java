@@ -52,17 +52,20 @@ public class verificarStatusSolicitacao implements Job {
 			
 			
 			if(now.isEqual(inicioPrazo)) {
-				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 1 dias.";
+				String mensagem = "Solicitacao "+ solicitacao.getProtocolo()+" completou 1 dia.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if (now.isEqual(metadePrazo)) {
-				String mensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
+				String mensagem = "Faltam "+(prazo/2)+" dias para a solicitacao "+ solicitacao.getProtocolo() +" expirar.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
 			}else if(now.isEqual(vesperaPrazoGestor)) {
-				String mensagem = "Solicitação ainda não respondida.\nFaltam 2 dias para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
-				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 3);
+				String mensagem = "Solicitação ainda não respondida.\nFaltam 2 dias para a solicitacao "+ solicitacao.getProtocolo() +" expirar.";
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 2);
 			}else if(now.isEqual(vesperaPrazo)) {
 				String mensagem = "Falta 1 dia para a solicitacao "+ solicitacao.getProtocolo()+" expirar.";
 				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 1);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 2);
+				NotificacaoEmail.enviarEmailPrazo(solicitacao, mensagem, (short) 3);
 			}
 		}		
 	} 

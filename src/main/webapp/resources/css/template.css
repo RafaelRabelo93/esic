@@ -663,7 +663,7 @@
 	padding: 5px;
 	color: #555;
 	background-image: none;
-	overflow-y: auto;
+/* 	overflow-y: auto; */
 }
 
 .ui-widget-header .ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus{
@@ -1760,7 +1760,7 @@ td.Prorrogada > .statusBox  {
 }
 
 td.Transição > .statusBox {
-	background: #3c40f0;
+	background: #0039ff;
 	color: white !important;
 }
 

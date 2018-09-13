@@ -57,6 +57,9 @@
 							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
 								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
 							</h:panelGroup>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #0039ff; margin-right: .5em; color:white !important">Transição</span>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
+							</h:panelGroup>
 					    </p:tooltip>
 				    
 				    </h:panelGroup>
@@ -226,6 +229,9 @@
 								</p:tooltip>
 								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem-Resposta'}">
 									<p>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+								</p:tooltip>
+								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Transição'}">
+									<p>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
 								</p:tooltip>
 								
 							</p:column>
@@ -421,8 +427,7 @@
 							</p:tab>
 							<p:tab title="Trâmite Interno"
 								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)  and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
-								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"
-									chunkSize="2" rows="2" style="margin-bottom:1vw;">
+								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"	chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
 									<f:facet name="loader">
 										<p:commandLink id="outrasMsgs">
@@ -456,9 +461,13 @@
 							<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 								<div id="Resposta" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" rows="10" maxlength="3000" autoResize="true" required="true" style="width:99%" styleClass="abaField respostaField">
+									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" rows="10" autoResize="true" required="true"
+										counter="respCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField respostaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="respCount" />
+									
 									
 									<p:fileUpload value="#{mensagem.file}" label="Enviar Anexo"
 										mode="simple" skinSimple="true"
@@ -477,9 +486,12 @@
 								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField reformulaField">
+									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" rows="10" required="true" 
+										counter="reforCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField reformulaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="reforCount" />
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
@@ -490,9 +502,12 @@
 								
 								<div id="Negar" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="justNega" style="margin-bottom: 5px" />
-									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField negarField">
+									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" rows="10" required="true" 
+										counter="negaCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField negarField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="negaCount" />
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel">
 										<h:outputText value="Enviar" />
@@ -504,11 +519,11 @@
 								<div id="Prorrogar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="descr" />
-									<p:inputTextarea id="descr" cols="100" rows="10" counter="display" maxlength="3000"  required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
+									<p:inputTextarea id="descr" value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField" cols="100" rows="10" required="true" 
+										counter="proCount" maxlength="3000" counterTemplate="{0} caracteres restantes." style="width: 98%" >
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display" />
+									<h:outputText id="proCount" />
 
 									<p:commandLink class="botaoLink" style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel detalheDialog" action="#{solicitacao.prorrogar}" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
@@ -520,11 +535,12 @@
 								<div id="Recurso" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Descrição:" for="descr2" />
-									<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="3000" autoResize="false" style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField">
+									<p:inputTextarea id="descr2" value="#{solicitacao.mensagem.texto}" cols="100" rows="10" autoResize="false" 
+										counter="recCount" maxlength="3000" counterTemplate="{0} caracteres restantes." 
+										styleClass="abaField recursoField" style="width:100%" required="true" >
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display2" />
+									<h:outputText id="recCount" />
 
 									<p:commandLink class="botaoLink" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
@@ -544,26 +560,20 @@
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
-									<p:inputTextarea id="justCid" cols="100" rows="10"
-										counter="display3" maxlength="3000" autoResize="false"
-										style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagem.texto}"
-										styleClass="abaField encaminharField">
+									<p:inputTextarea id="justCid" value="#{solicitacao.mensagem.texto}" cols="100" rows="10" autoResize="false" required="true"
+										counter="justCount1" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										styleClass="abaField encaminharField" style="width:100%">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display3" />
+									<h:outputText id="justCount1" />
 
 									<p:outputLabel value="Justificativa Interna:" for="justInt" />
-									<p:inputTextarea id="justInt" cols="100" rows="10"
-										counter="display4" maxlength="3000" autoResize="false"
-										style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagemEncaminhar.texto}"
-										styleClass="abaField encaminharField">
+									<p:inputTextarea id="justInt" value="#{solicitacao.mensagemEncaminhar.texto}" cols="100" rows="10" autoResize="false" required="true"
+										counter="justCount2" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										styleClass="abaField encaminharField" style="width:100%">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display4" />
+									<h:outputText id="justCount2" />
 
 									<p:commandLink class="botaoLink"
 										style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"
@@ -581,10 +591,12 @@
 									</h:panelGroup>
 									
 									<p:outputLabel value="Mensagem:" for="avaliaTexto" style="margin-top: 0"/>
-									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="true" style="width:100%" required="false" 
-									counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"	styleClass="abaField avaliaField">
+									<p:inputTextarea id="avaliaTexto" value="#{mensagem.mensagem.texto}" cols="100" rows="8" autoResize="true" required="false" 
+										counter="avaCount" maxlength="1000" counterTemplate="{0} caracteres restantes." 
+										styleClass="abaField avaliaField" style="width:100%">
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>
+									<h:outputText id="avaCount"/>
 									
 									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{mensagem.salvarMensagemAvaliacao()}" update="form:solicitacao_panel ">
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{avaliacao.solicitacao}" />
