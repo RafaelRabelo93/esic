@@ -134,8 +134,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	 * Verificar se a mensagem já foi respondida, para então alterar o status e o prazo de resposta
 	 */
 	public void verificaMensagem() {
-		if(solicitacao.getStatus() != "Respondida") {
-			solicitacao.setStatus("Respondida");
+		if(solicitacao.getStatus() != "Atendida") {
+			solicitacao.setStatus("Atendida");
 			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
@@ -194,7 +194,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ (solicitacao.getInstancia() - 1) +"º "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ solicitacao.getInstancia() +"º "+status.toLowerCase()+" no sistema.");
 			System.out.println(mensagem.getTexto());
 			break;
 			
@@ -246,7 +246,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			tipoAux = 0;
 			break;
 
-		case "Respondida":
+		case "Atendida":
 			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			System.out.println(mensagem.getTexto());
@@ -264,7 +264,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			System.out.println(mensagem.getTexto());
 			break;
 			
-		case "Sem-Resposta":
+		case "Sem Resposta":
 			tipoAux = 4;
 			mensagem.setTexto("Manifestação " + solicitacao.getProtocolo() + " não recebeu resposta no sistema.");
 			System.out.println(mensagem.getTexto());

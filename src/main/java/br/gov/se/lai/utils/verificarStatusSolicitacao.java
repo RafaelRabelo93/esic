@@ -36,7 +36,7 @@ public class verificarStatusSolicitacao implements Job {
 	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
 		
-		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Respondida"))) {
+		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Atendida"))) {
 
 			LocalDate now = LocalDate.now();
 
@@ -73,7 +73,7 @@ public class verificarStatusSolicitacao implements Job {
 //	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 //	private void verificaTempoSolicitacao(Solicitacao solicitacao) {
 //		
-//		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Respondida"))) {
+//		if (!(solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Atendida"))) {
 //			
 //			LocalDate now = LocalDate.now();
 //			
@@ -110,7 +110,7 @@ public class verificarStatusSolicitacao implements Job {
 		
 			Date now = new Date();
 			if (now.after(solicitacao.getDataLimite())) {
-				if (solicitacao.getStatus().equals("Respondida")) {
+				if (solicitacao.getStatus().equals("Atendida")) {
 						solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 						solicitacao.setStatus("Finalizada");
 						SolicitacaoDAO.saveOrUpdate(solicitacao);
@@ -122,13 +122,13 @@ public class verificarStatusSolicitacao implements Job {
 								|| solicitacao.getStatus().equals("Prorrogada")
 								|| solicitacao.getStatus().equals("Recurso")
 								|| solicitacao.getStatus().equals("Reencaminhada")) {
-							MensagemBean.salvarStatus(solicitacao, "Sem-Resposta", null, null, 0);
-							solicitacao.setStatus("Sem-Resposta");
+							MensagemBean.salvarStatus(solicitacao, "Sem Resposta", null, null, 0);
+							solicitacao.setStatus("Sem Resposta");
 							solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
-							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem-Resposta");
+							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem Resposta");
 
-						} else if ((solicitacao.getStatus().equals("Sem-Resposta") || solicitacao.getStatus().equals("Negada"))
+						} else if ((solicitacao.getStatus().equals("Sem Resposta") || solicitacao.getStatus().equals("Negada"))
 								&& solicitacao.getDatafim() == null) {
 							solicitacao.setDatafim(new Date(System.currentTimeMillis()));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);

@@ -55,7 +55,7 @@
 								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em; color:white !important">Recurso</span>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
-								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
 								<p> <span class="statusBox" style="background: #0039ff; margin-right: .5em; color:white !important">Transição</span>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
@@ -201,36 +201,44 @@
 								<h:outputText value="#{slt.cidadao.usuario.nome}"/>
 							</p:column>
 							
-							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="120" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
-								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Respondida'}"/>
-								<h:outputText id="statusLabel2" value="Atendida" styleClass="statusBox" rendered="#{slt.status eq 'Respondida'}"/>
+							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="120" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center">
+<!-- 								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Atendida' and slt.status ne 'Transição'}"/> -->
+								<h:outputText id="statusAberta" value="Aberta" styleClass="statusBox aberta" rendered="#{slt.status eq 'Aberta'}"/>
+								<h:outputText id="statusAtendida" value="Atendida" styleClass="statusBox atendida" rendered="#{slt.status eq 'Atendida'}"/>
+								<h:outputText id="statusFinal" value="Finalizada" styleClass="statusBox finalizada" rendered="#{slt.status eq 'Finalizada'}"/>
+								<h:outputText id="statusReenc" value="Reencaminhada" styleClass="statusBox reencaminhada" rendered="#{slt.status eq 'Reencaminhada'}"/>
+								<h:outputText id="statusNegada" value="Negada" styleClass="statusBox negada" rendered="#{slt.status eq 'Negada'}"/>
+								<h:outputText id="statusProrro" value="Prorrogada" styleClass="statusBox prorrogada" rendered="#{slt.status eq 'Prorrogada'}"/>
+								<h:outputText id="statusRecurso" value="Recurso" styleClass="statusBox recurso" rendered="#{slt.status eq 'Recurso'}"/>
+								<h:outputText id="statusSemResp" value="Sem Resposta" styleClass="statusBox semResposta" rendered="#{slt.status eq 'Sem Resposta'}"/>
+								<h:outputText id="statusTransicao" value="Trancisão" styleClass="statusBox transicao" rendered="#{slt.status eq 'Transição'}"/>
 								
 								<!-- TOOL-TIPS -->
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
+								<p:tooltip for="statusAberta" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
 									<p>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel2" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Respondida'}">
+								<p:tooltip for="statusAtendida" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Atendida'}">
 									<p>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
+								<p:tooltip for="statusFinal" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
 									<p>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Reencaminhada'}">
+								<p:tooltip for="statusReenc" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Reencaminhada'}">
 									<p>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Negada'}">
+								<p:tooltip for="statusNegada" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Negada'}">
 									<p>Manifestação com justificativa legal para não atendimento</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Prorrogada'}">
+								<p:tooltip for="statusProrro" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Prorrogada'}">
 									<p>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Recurso'}">
+								<p:tooltip for="statusRecurso" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Recurso'}">
 									<p>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem-Resposta'}">
+								<p:tooltip for="statusSemResp" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem Resposta'}">
 									<p>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Transição'}">
+								<p:tooltip for="statusTransicao" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Transição'}">
 									<p>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
 								</p:tooltip>
 								
@@ -306,8 +314,8 @@
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 
-							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
-							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
+							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
 
 							<h:outputText value="Data Inicial:"	style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}">
@@ -617,18 +625,18 @@
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) )}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
-<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}" -->
+<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}" -->
 						</p:commandLink>
 						
 						<!-- Botão Reformula -->
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
 							  <i class="fa fa-comment fa-stack-2x" />
@@ -641,7 +649,7 @@
 						<p:commandLink id="NegarAba"
 							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-ban fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Negar" />
@@ -651,7 +659,7 @@
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
@@ -664,7 +672,7 @@
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
@@ -675,7 +683,7 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Sem-Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
+							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Sem Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
 							disabled="#{solicitacao.solicitacao.status eq 'Aberta' or solicitacao.solicitacao.avaliacao ne '0'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />

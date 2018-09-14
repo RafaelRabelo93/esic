@@ -20,7 +20,7 @@ public class PrazosSolicitacao {
 			return prazoResposta;
 		case "Prorrogada":
 			return prazoProrrogada;
-		case "Respondida":
+		case "Atendida":
 			return prazoRecurso;
 		case "Recurso":
 			return prazoRecurso;

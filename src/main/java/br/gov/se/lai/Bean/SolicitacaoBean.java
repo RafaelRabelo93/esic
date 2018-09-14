@@ -99,7 +99,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
-	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem-Resposta" };
+	private final static String[] tipos = { "Aberta", "Atendida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem Resposta", "Transição" };
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -146,7 +146,7 @@ public class SolicitacaoBean implements Serializable {
 
 		// Salvar Solicitação
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
-		this.solicitacao.setInstancia((short) 1);
+		this.solicitacao.setInstancia((short) 0);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
 
@@ -618,7 +618,7 @@ public class SolicitacaoBean implements Serializable {
 		aux = SolicitacaoDAO.list();
 		solicitacaoTotal = aux != null ? aux.size() : 0;
 
-		aux = SolicitacaoDAO.listStatus("Respondida");
+		aux = SolicitacaoDAO.listStatus("Atendida");
 		solicitacaoRespondida = aux != null ? aux.size() : 0;
 
 		aux = SolicitacaoDAO.listStatus("Aberta");
@@ -629,10 +629,12 @@ public class SolicitacaoBean implements Serializable {
 		solicitacaoPendente += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Prorrogada");
 		solicitacaoPendente += aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Transição");
+		solicitacaoPendente += aux != null ? aux.size() : 0;
 		
 		aux = SolicitacaoDAO.listStatus("Finalizada");
 		solicitacaoFinalizadas = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Sem-Resposta");
+		aux = SolicitacaoDAO.listStatus("Sem Resposta");
 		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Negada");
 		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
@@ -644,7 +646,7 @@ public class SolicitacaoBean implements Serializable {
 				
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
 				solicitacaoFinalizadas += aux != null ? aux.size() : 0;
-				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Respondida");
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Atendida");
 				solicitacaoRespondida += aux != null ? aux.size() : 0;
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
 				solicitacaoPendente += aux != null ? aux.size() : 0;
@@ -858,7 +860,7 @@ public class SolicitacaoBean implements Serializable {
 	public boolean recursoLiberado() {
 		try {
 			if (!verificaSeLimiteRecurso(solicitacao)
-					&& (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada") || solicitacao.getStatus().equals("Sem-Resposta"))) {
+					&& (solicitacao.getStatus().equals("Atendida") || solicitacao.getStatus().equals("Negada") || solicitacao.getStatus().equals("Sem Resposta"))) {
 				return true;
 			} else {
 				return false;
