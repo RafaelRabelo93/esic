@@ -46,8 +46,8 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	
 	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-	//protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
-	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
+	protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
+//	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
 	
 	
 	

@@ -896,6 +896,8 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		NotificacaoEmail.enviarEmailNotificacaoRecurso(solicitacao);
+		addQuantidadeSolicitacaoPendente();
+		rmvQuantidadeSolicitacaoRespondida();
 		mensagem = new Mensagem();
 	}
 
