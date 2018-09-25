@@ -40,7 +40,6 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
 import br.gov.se.lai.DAO.AcoesDAO;
-import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
@@ -48,8 +47,8 @@ import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
+import br.gov.se.lai.anexos.UploadFile;
 import br.gov.se.lai.entity.Acoes;
-import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
@@ -78,7 +77,7 @@ public class SolicitacaoBean implements Serializable {
 	private Solicitacao solicitacao;
 	private Entidades entReencaminhar;
 	private UsuarioBean userBean;
-	private Anexo anexo;
+//	private Anexo anexo;
 	private Cidadao cidadao;
 	private List<Entidades> entidades;
 	private Calendar datainic;
@@ -119,7 +118,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem = new Mensagem();
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
-		this.anexo = new Anexo();
+//		this.anexo = new Anexo();
 		this.cidadaoBean = new CidadaoBean();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
@@ -167,15 +166,18 @@ public class SolicitacaoBean implements Serializable {
 
 			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
 
-			if (!(file.getContents().length == 0)) {
-				AnexoBean anx = new AnexoBean();
-				try {
-					anx.save(anexo, mensagem, file);
-				} catch (Exception e) {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-				}
-			}
+		UploadFile upload = new UploadFile();
+		upload.upload(file, mensagem.getIdMensagem());
+			
+//			if (!(file.getContents().length == 0)) {
+//				AnexoBean anx = new AnexoBean();
+//				try {
+//					anx.save(anexo, mensagem, file);
+//				} catch (Exception e) {
+//					FacesContext.getCurrentInstance().addMessage(null,
+//							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
+//				}
+//			}
 
 			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
 				addQuantidadeSolicitacaoTotal();
@@ -1109,13 +1111,13 @@ public class SolicitacaoBean implements Serializable {
 		this.cidadao = cidadao;
 	}
 
-	public Anexo getAnexo() {
-		return anexo;
-	}
-
-	public void setAnexo(Anexo anexo) {
-		this.anexo = anexo;
-	}
+//	public Anexo getAnexo() {
+//		return anexo;
+//	}
+//
+//	public void setAnexo(Anexo anexo) {
+//		this.anexo = anexo;
+//	}
 
 	public Mensagem getMensagem() {
 		return mensagem;

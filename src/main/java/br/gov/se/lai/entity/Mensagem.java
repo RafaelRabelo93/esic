@@ -33,7 +33,7 @@ public class Mensagem implements java.io.Serializable {
 	private Date data;
 	private short tipo;
 	private Integer nota;
-	private Set<Anexo> anexos = new HashSet<Anexo>(0);
+//	private Set<Anexo> anexos = new HashSet<Anexo>(0);
 
 	public Mensagem() {
 	}
@@ -43,13 +43,13 @@ public class Mensagem implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, Date data, short tipo, Set<Anexo> anexos) {
+	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, Date data, short tipo) {
 		this.solicitacao = solicitacao;
 		this.usuario = usuario;
 		this.texto = texto;
 		this.data = data;
 		this.tipo = tipo;
-		this.anexos = anexos;
+//		this.anexos = anexos;
 	}
 
 	@Id
@@ -122,13 +122,13 @@ public class Mensagem implements java.io.Serializable {
 		this.nota = nota;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
-	public Set<Anexo> getAnexos() {
-		return this.anexos;
-	}
-
-	public void setAnexos(Set<Anexo> anexos) {
-		this.anexos = anexos;
-	}
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
+//	public Set<Anexo> getAnexos() {
+//		return this.anexos;
+//	}
+//
+//	public void setAnexos(Set<Anexo> anexos) {
+//		this.anexos = anexos;
+//	}
 
 }
