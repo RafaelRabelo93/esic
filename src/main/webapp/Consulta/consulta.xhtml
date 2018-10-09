@@ -470,7 +470,11 @@
 									<h:outputText id="respCount" />
 									
 									
-									<p:fileUpload value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" auto="true" skinSimple="true" style="margin-top: 1em"/>
+									<p:fileUpload value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" skinSimple="true" style="margin-top: 1em"/>
+<!-- 									<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="15000000" skinSimple="true" -->
+<!-- 										allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
+<!-- 										fileLimit="1" style="margin-top: 1em"  -->
+<!-- 										invalidSizeMessage="Arquivo muito grande." invalidFileMessage="Formato não suportado."/> -->
 										
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />

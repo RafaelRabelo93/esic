@@ -250,7 +250,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * 
 	 */
 	public String edit(Cidadao cidadao) {
-//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 //		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			cidadao.setUsuario(this.usuario);

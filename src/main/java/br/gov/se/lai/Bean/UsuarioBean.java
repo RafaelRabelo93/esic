@@ -325,7 +325,7 @@ public class UsuarioBean implements Serializable {
 		
 			if (usuario.getPerfil() != 1) {
 
-				if (usuario.getPerfil() == 3) {
+				if (usuario.getPerfil() == 3 || (usuario.getPerfil() == 4 && !UsuarioBean.perfilAlterarCidadaoResponsavel)) {
 					CidadaoBean cidadao = new CidadaoBean();
 					Set<Cidadao> cidadao2 = this.usuario.getCidadaos();
 					Cidadao cidadao3 = cidadao2.iterator().next();

@@ -2,11 +2,17 @@ package br.gov.se.lai.Bean;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+
 import java.io.Serializable;
 
 import br.gov.se.lai.anexos.DownloadFile;
+
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "attachment")
 @SessionScoped
@@ -29,8 +35,7 @@ public class AttachmentBean implements Serializable {
 //		nome = new String();		
 //		conteudo = new BlobType();
 	}
-	
-	
+		
 	public StreamedContent download (Integer idMensagem) {
 		try {
 			file = download.download(idMensagem);
@@ -40,6 +45,11 @@ public class AttachmentBean implements Serializable {
 			e.printStackTrace();
 		}
 		return file;
+	}
+	
+	public void validaFile(FileUploadEvent event) {
+		UploadedFile importFile = event.getFile();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Anexo " + importFile.getFileName() +  " enviado com sucesso",""));
 	}
 	
 	public StreamedContent getFile() {

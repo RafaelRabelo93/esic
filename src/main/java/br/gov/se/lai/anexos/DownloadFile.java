@@ -16,6 +16,8 @@ import com.sun.faces.application.resource.Resource;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 
+import javax.activation.MimetypesFileTypeMap;
+
 public class DownloadFile {
 	
 	private Connection myConn = null;

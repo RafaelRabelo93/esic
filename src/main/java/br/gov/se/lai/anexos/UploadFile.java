@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.UploadedFile;
 
@@ -46,6 +48,11 @@ public class UploadFile {
 			myStmt.setLong(5, file.getSize());
 			
 			System.out.println("\nSalvando arquivo \"" + file.getFileName() + "\" no banco... ");
+			
+			if (file.getContentType().equals("image/png")) {
+				System.out.println(file.getContentType());
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Anexo enviado com sucesso",""));
+			}
 			
 			myStmt.executeUpdate();
 			

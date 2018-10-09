@@ -164,21 +164,18 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setTipo((short) 1);
 		MensagemDAO.saveOrUpdate(mensagem);
 
-			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
-
-		UploadFile upload = new UploadFile();
-		upload.upload(file, mensagem.getIdMensagem());
+		MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
+		
+		if (!(file.getContents().length == 0)) {
+			try {
+				UploadFile upload = new UploadFile();
+				upload.upload(file, mensagem.getIdMensagem());
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
+			}
+		}
 			
-//			if (!(file.getContents().length == 0)) {
-//				AnexoBean anx = new AnexoBean();
-//				try {
-//					anx.save(anexo, mensagem, file);
-//				} catch (Exception e) {
-//					FacesContext.getCurrentInstance().addMessage(null,
-//							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-//				}
-//			}
-
 			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
@@ -615,14 +612,13 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public static void calcularQuantitativoSolicitacao() {
-		List aux = new ArrayList<>();
+		List<Solicitacao> aux = new ArrayList<>();
 
 		aux = SolicitacaoDAO.list();
 		solicitacaoTotal = aux != null ? aux.size() : 0;
 
 		aux = SolicitacaoDAO.listStatus("Atendida");
 		solicitacaoRespondida = aux != null ? aux.size() : 0;
-
 		aux = SolicitacaoDAO.listStatus("Aberta");
 		solicitacaoPendente = aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Recurso");
