@@ -92,6 +92,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		for (int i = 1; i <= mesAtual; i++) {
 			base.add(meses[i - 1]);
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			
+			if (i>=10) {
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual + "-" + i + "%").size());
+				dadosEspecificos.add(
+						SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-" + i + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO
+						.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual + "-" + i + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} 
 			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual + "-0" + i + "%").size());
 			dadosEspecificos.add(
 					SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-0" + i + "%").size());
@@ -193,14 +202,28 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		for (Entidades entidades : orgaos) {
 			base.add(entidades.getSigla());
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO
-					.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
-					.size());
-			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-					anoAtual + "-0" + mesAtual + "%").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-					"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
-			dadosRelacionadorBase.add(dadosEspecificos);
+			
+			if (mesAtual<=9) {
+				dadosEspecificos.add(SolicitacaoDAO
+						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
+						.size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
+						anoAtual + "-0" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
+						"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				dadosEspecificos.add(SolicitacaoDAO
+						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-" + mesAtual + "%")
+						.size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
+						anoAtual + "-" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
+						"Finalizada", anoAtual + "-" + mesAtual + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} 
+			
+					
 		}
 
 		for (int i = 0; i < base.size(); i++) {
@@ -230,14 +253,28 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		for (Entidades entidades : orgaos) {
 			base.add(entidades.getSigla());
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO
-					.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
-					.size());
-			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-					anoAtual + "-0" + mesAtual + "%").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-					"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
-			dadosRelacionadorBase.add(dadosEspecificos);
+			 
+			if (mesAtual<=9) {
+				dadosEspecificos.add(SolicitacaoDAO
+						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
+						.size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
+						anoAtual + "-0" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
+						"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				dadosEspecificos.add(SolicitacaoDAO
+						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-" + mesAtual + "%")
+						.size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
+						anoAtual + "-" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
+						"Finalizada", anoAtual + "-" + mesAtual + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} 
+			 
+			
 		}
 
 		for (int i = 0; i < base.size(); i++) {
@@ -257,7 +294,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-0" + mesAtual + "%";
+		String auxp; 
+		if (mesAtual<=9) {
+			auxp = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			auxp = anoAtual + "-" + mesAtual + "%";
+		} 
+		String periodo = auxp;
 
 		Set<String> uf = new HashSet<>();
 		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
@@ -293,7 +336,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-0" + mesAtual + "%";
+		String auxp; 
+		if (mesAtual<=9) {
+			auxp = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			auxp = anoAtual + "-" + mesAtual + "%";
+		} 
+		String periodo = auxp;
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -348,7 +397,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String periodo = anoAtual + "-0" + mesAtual + "%";
+		String auxp; 
+		if (mesAtual<=9) {
+			auxp = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			auxp = anoAtual + "-" + mesAtual + "%";
+		} 
+		String periodo = auxp;
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
