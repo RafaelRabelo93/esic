@@ -17,7 +17,7 @@
 				
 			<h:form id="solicitacao" styleClass="cad_form" prependId="false"
 				rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
-				enctype="multipart/form-data" >
+				enctype="multipart/form-data" onsubmit="return Validate(this);" >
 
 
 				<div class="ficha">
@@ -267,7 +267,7 @@
 						<p:outputLabel value="Mensagem:" for="mensagem" />
 						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
 						
-                        <p:fileUpload value="#{solicitacao.file}" styleClass="imagesOnlyMax10MB" mode="advanced" skinSimple="true" label="Adicionar Anexo" style="margin-top: 1em" />
+                        <p:fileUpload id="fileUpload" value="#{solicitacao.file}" mode="simple" skinSimple="true" label="Adicionar Anexo" style="margin-top: 1em" />
 
 <!-- 						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="15000000" skinSimple="true" -->
 <!-- 							allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
@@ -354,89 +354,44 @@
             });
         });
 
-        function validation(thisform)
-        {
-           with(thisform)
-           {
-              if(validateFileExtension(file, "valid_msg", "pdf/office/image files are only allowed!",
-              new Array("jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","txt")) == false)
-              {
-                 return false;
-              }
-              if(validateFileSize(file,1048576, "valid_msg", "Document size should be less than 1MB !")==false)
-              {
-                 return false;
-              }
-           }
-        }
 
-        function validateFileExtension(component,msg_id,msg,extns)
-        {
-           var flag=0;
-           with(component)
-           {
-              var ext=value.substring(value.lastIndexOf('.')+1);
-              for(i=0; extns.length > i ; i++)
-              {
-                 if(ext==extns[i])
-                 {
-                    flag=0;
-                    break;
-                 }
-                 else
-                 {
-                    flag=1;
-                 }
-              }
-              if(flag!=0)
-              {
-                 document.getElementById(msg_id).innerHTML=msg;
-                 component.value="";
-                 component.style.backgroundColor="#eab1b1";
-                 component.style.border="thin solid #000000";
-                 component.focus();
-                 return false;
-              }
-              else
-              {
-                 return true;
-              }
-           }
-        }
+		function Validate(oForm) {
+			var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png", ".docx", ".pdf", ".xlsx", ".ods", ".mp3", ".wav", ".AAC", ".FLAC", ".ALAC", ".ALE", ".FLV", ".mp4", ".avi", ".WMV", ".MOV"];    
+			var arrInputs = oForm.getElementsByTagName("input");
+			var oFile = document.getElementById("fileUpload_input").files[0];
 
-        function validateFileSize(component,maxSize,msg_id,msg)
-        {
-           if(navigator.appName=="Microsoft Internet Explorer")
-           {
-              if(component.value)
-              {
-                 var oas=new ActiveXObject("Scripting.FileSystemObject");
-                 var e=oas.getFile(component.value);
-                 var size=e.size;
-              }
-           }
-           else
-           {
-              if(component.files[0]!=undefined)
-              {
-                 size = component.files[0].size;
-              }
-           }
-           if(size != undefined &amp;&amp; size > maxSize)
-           {
-              document.getElementById(msg_id).innerHTML=msg;
-              component.value="";
-              component.style.backgroundColor="#eab1b1";
-              component.style.border="thin solid #000000";
-              component.focus();
-              return false;
-           }
-           else
-           {
-              return true;
-           }
-        }
-		
+		    for (var i = 0; i &lt; arrInputs.length; i++) {
+		        var oInput = arrInputs[i];
+		        if (oInput.type == "file") {
+		            var sFileName = oInput.value;
+		            if (sFileName.length > 0) {
+		                var blnValid = false;
+						if (oFile.size &lt; 16 * (1024 * 1024)) {
+
+			                for (var j = 0; j &lt; _validFileExtensions.length; j++) {
+			                    var sCurExtension = _validFileExtensions[j];
+			                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+			                        blnValid = true;
+			                        break;
+			                    }
+			                }
+							
+			                if (!blnValid) {
+			                    alert("Formato inválido. São aceitos apenas: " + _validFileExtensions.join(", "));
+			                    return false;
+			                }
+			                
+						} 
+						else {
+							alert("Tamanho do arquivo excedeu o limite de 16 MB aceitos");
+		                    return false;
+						}
+		                
+		            }
+		        }
+		    }
+		}
+
 	</script>
 
 	<!-- =========================== -->

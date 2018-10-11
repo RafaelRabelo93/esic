@@ -458,7 +458,7 @@
 							</p:tab>
 						</p:tabView>
 
-						<h:form enctype="multipart/form-data">
+						<h:form id="uploadForm" enctype="multipart/form-data" onsubmit="return Validate(this);">
 							<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 								<div id="Resposta" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"	style="margin-bottom: 5px" />
@@ -469,12 +469,7 @@
 									</p:inputTextarea>
 									<h:outputText id="respCount" />
 									
-									
-									<p:fileUpload value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" skinSimple="true" style="margin-top: 1em"/>
-<!-- 									<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="15000000" skinSimple="true" -->
-<!-- 										allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
-<!-- 										fileLimit="1" style="margin-top: 1em"  -->
-<!-- 										invalidSizeMessage="Arquivo muito grande." invalidFileMessage="Formato não suportado."/> -->
+									<p:fileUpload id="fileUpload" value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" skinSimple="true" style="margin-top: 1em"/>
 										
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
@@ -737,6 +732,43 @@
 				function scrollDown() {
 					document.getElementById("solicitacaoDetalhe").style.bottom = "0";
 					}
+
+				function Validate(oForm) {
+					var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png", ".docx", ".pdf", ".xlsx", ".ods", ".mp3", ".wav", ".AAC", ".FLAC", ".ALAC", ".ALE", ".FLV", ".mp4", ".avi", ".WMV", ".MOV"];    
+					var arrInputs = oForm.getElementsByTagName("input");
+					var oFile = document.getElementById("uploadForm:fileUpload_input").files[0];
+
+				    for (var i = 0; i &lt; arrInputs.length; i++) {
+				        var oInput = arrInputs[i];
+				        if (oInput.type == "file") {
+				            var sFileName = oInput.value;
+				            if (sFileName.length > 0) {
+				                var blnValid = false;
+								if (oFile.size &lt; 16 * (1024 * 1024)) {
+
+					                for (var j = 0; j &lt; _validFileExtensions.length; j++) {
+					                    var sCurExtension = _validFileExtensions[j];
+					                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+					                        blnValid = true;
+					                        break;
+					                    }
+					                }
+									
+					                if (!blnValid) {
+					                    alert("Formato inválido. São aceitos apenas: " + _validFileExtensions.join(", "));
+					                    return false;
+					                }
+					                
+								} 
+								else {
+									alert("Tamanho do arquivo excedeu o limite de 16 MB aceitos");
+				                    return false;
+								}
+				                
+				            }
+				        }
+				    }
+				}
 			</script>
 
 
