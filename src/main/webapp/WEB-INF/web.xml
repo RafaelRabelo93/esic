@@ -26,10 +26,10 @@
 			<param-name>thresholdSize</param-name>
 			<param-value>10240</param-value>
 		</init-param>
-		<init-param>
-			<param-name>uploadDirectory</param-name>
-			<param-value>/resource/arquivos</param-value>
-		</init-param>
+<!-- 		<init-param> -->
+<!-- 			<param-name>uploadDirectory</param-name> -->
+<!-- 			<param-value>/resource/arquivos</param-value> -->
+<!-- 		</init-param> -->
 	</filter>
 
 	<filter-mapping>

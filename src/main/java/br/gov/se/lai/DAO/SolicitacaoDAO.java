@@ -82,8 +82,8 @@ public class SolicitacaoDAO {
 								query += " OR ";
 							}
 							query += " slt.entidades.idEntidades = ";
-							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
-							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
+							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 0";
+							for (int j = 1 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
 							query += ") AND slt.tipo != 'Denúncia')";
@@ -122,7 +122,7 @@ public class SolicitacaoDAO {
 						+ "' AND slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
 			}else 
 			{
-				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
+				if(usuarioBean.getUsuario().getPerfil() == 2 || (usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel())) 
 				{
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
 					
@@ -130,17 +130,23 @@ public class SolicitacaoDAO {
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
+							
 							if(query.contains("slt.entidades.idEntidades")) {
 								query += " OR ";
 							}
-							query += " slt.entidades.idEntidades = ";
-							query = query +ListResp.get(i).getEntidades().getIdEntidades()+" AND (slt.instancia = 1";
-							for (int j = 2 ;  j <= ListResp.get(i).getNivel(); j++) {
-								query = query+" OR slt.instancia = "+ j;
-							}
-							query += ") AND slt.tipo != 'Denúncia')";
+							
+							query += "( slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades() ;
+							
+							if (ListResp.get(i).getNivel() == 1)
+								query += " AND slt.instancia = 0 )" ;
+							if (ListResp.get(i).getNivel() == 2)
+								query += " AND slt.instancia <= 1 )" ;
+							if (ListResp.get(i).getNivel() == 3)
+								query += " AND slt.instancia <= 3 )" ;
+						
 						}
 					}
+					query += " AND slt.tipo != 'Denúncia')";
 					
 					return (List<Solicitacao>)  Consultas.buscaPersonalizada(query+")",em);
 				}else if(usuarioBean.getUsuario().getPerfil() != 1)

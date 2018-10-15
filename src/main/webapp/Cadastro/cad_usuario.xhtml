@@ -27,7 +27,7 @@
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
 						<p:inputText rendered="#{usuario.usuario.perfil eq '0'}" id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
+							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick nickPlcHld" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>
@@ -40,7 +40,8 @@
 						<p:message for="nome" display="text"/>
 						
 						<p:outputLabel value="Nome de usuário: " for="nick" />
-						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" rendered="#{usuario.usuario.perfil eq '0'}" />
+<!-- 						<h:outputText id="nickPlcHld" value="Preencha seu nome completo para seu Nome de Usuário ser gerado..."  rendered="#{usuario.usuario.nick eq null}" style="color:gray"/> -->
+						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" rendered="#{usuario.usuario.perfil eq '0'}" style="font-weight:bold"/>
 						<h:outputText id="nick2" required="true" readonly="true" value="#{usuario.usuarioNovo.nick}" maxlength="50" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
 										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" />
 						<p:message for="nick" display="text"/>

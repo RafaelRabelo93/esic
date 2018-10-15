@@ -25,7 +25,7 @@ public class AcoesDAO {
     			em.merge(acoes);
     		}
             em.getTransaction().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Acoes salvo(a) com sucesso!"));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Acoes salvo(a) com sucesso!"));
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar acoes "));
         	System.out.println(e);
@@ -56,7 +56,7 @@ public class AcoesDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<Acoes> list() {
-		return em.createNativeQuery("SELECT * FROM esic.acoes", Acoes.class).getResultList();
+		return em.createNativeQuery("SELECT * FROM esic.acoes ORDER BY acoes.titulo ASC", Acoes.class).getResultList();
     }  
 
 
@@ -70,7 +70,7 @@ public class AcoesDAO {
     
     @SuppressWarnings("unchecked")
     public static List<Acoes> listPorStatus(String status, String status2){
-    	Query query = em.createQuery("FROM Acoes as acoes WHERE acoes.status = '"+status+"' OR acoes.status = '"+status2+"'");
+    	Query query = em.createQuery("FROM Acoes as acoes WHERE acoes.status = '"+status+"' OR acoes.status = '"+status2+"' ORDER BY acoes.titulo ASC");
     	List<Acoes> results = query.getResultList();
    		
     	return results;  	

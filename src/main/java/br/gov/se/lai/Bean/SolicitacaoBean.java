@@ -40,7 +40,6 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
 import br.gov.se.lai.DAO.AcoesDAO;
-import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
@@ -48,8 +47,8 @@ import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
+import br.gov.se.lai.anexos.UploadFile;
 import br.gov.se.lai.entity.Acoes;
-import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
@@ -78,7 +77,7 @@ public class SolicitacaoBean implements Serializable {
 	private Solicitacao solicitacao;
 	private Entidades entReencaminhar;
 	private UsuarioBean userBean;
-	private Anexo anexo;
+//	private Anexo anexo;
 	private Cidadao cidadao;
 	private List<Entidades> entidades;
 	private Calendar datainic;
@@ -99,7 +98,7 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
-	private final static String[] tipos = { "Aberta", "Respondida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem-Resposta" };
+	private final static String[] tipos = { "Aberta", "Atendida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem Resposta", "Transição" };
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -119,7 +118,7 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem = new Mensagem();
 		this.mensagemEncaminhar = new Mensagem();
 		this.cidadao = new Cidadao();
-		this.anexo = new Anexo();
+//		this.anexo = new Anexo();
 		this.cidadaoBean = new CidadaoBean();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
@@ -146,7 +145,7 @@ public class SolicitacaoBean implements Serializable {
 
 		// Salvar Solicitação
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
-		this.solicitacao.setInstancia((short) 1);
+		this.solicitacao.setInstancia((short) 0);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
 
@@ -165,18 +164,18 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setTipo((short) 1);
 		MensagemDAO.saveOrUpdate(mensagem);
 
-			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
-
-			if (!(file.getContents().length == 0)) {
-				AnexoBean anx = new AnexoBean();
-				try {
-					anx.save(anexo, mensagem, file);
-				} catch (Exception e) {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pode ser salvo.", e.getMessage()));
-				}
+		MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
+		
+		if (!(file.getContents().length == 0)) {
+			try {
+				UploadFile upload = new UploadFile();
+				upload.upload(file, mensagem.getIdMensagem());
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
 			}
-
+		}
+			
 			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
 				addQuantidadeSolicitacaoTotal();
 				addQuantidadeSolicitacaoPendente();
@@ -613,14 +612,13 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public static void calcularQuantitativoSolicitacao() {
-		List aux = new ArrayList<>();
+		List<Solicitacao> aux = new ArrayList<>();
 
 		aux = SolicitacaoDAO.list();
 		solicitacaoTotal = aux != null ? aux.size() : 0;
 
-		aux = SolicitacaoDAO.listStatus("Respondida");
+		aux = SolicitacaoDAO.listStatus("Atendida");
 		solicitacaoRespondida = aux != null ? aux.size() : 0;
-
 		aux = SolicitacaoDAO.listStatus("Aberta");
 		solicitacaoPendente = aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Recurso");
@@ -629,10 +627,12 @@ public class SolicitacaoBean implements Serializable {
 		solicitacaoPendente += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Prorrogada");
 		solicitacaoPendente += aux != null ? aux.size() : 0;
+		aux = SolicitacaoDAO.listStatus("Transição");
+		solicitacaoPendente += aux != null ? aux.size() : 0;
 		
 		aux = SolicitacaoDAO.listStatus("Finalizada");
 		solicitacaoFinalizadas = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Sem-Resposta");
+		aux = SolicitacaoDAO.listStatus("Sem Resposta");
 		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
 		aux = SolicitacaoDAO.listStatus("Negada");
 		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
@@ -644,7 +644,7 @@ public class SolicitacaoBean implements Serializable {
 				
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
 				solicitacaoFinalizadas += aux != null ? aux.size() : 0;
-				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Respondida");
+				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Atendida");
 				solicitacaoRespondida += aux != null ? aux.size() : 0;
 				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
 				solicitacaoPendente += aux != null ? aux.size() : 0;
@@ -858,7 +858,7 @@ public class SolicitacaoBean implements Serializable {
 	public boolean recursoLiberado() {
 		try {
 			if (!verificaSeLimiteRecurso(solicitacao)
-					&& (solicitacao.getStatus().equals("Respondida") || solicitacao.getStatus().equals("Negada") || solicitacao.getStatus().equals("Sem-Resposta"))) {
+					&& (solicitacao.getStatus().equals("Atendida") || solicitacao.getStatus().equals("Negada") || solicitacao.getStatus().equals("Sem Resposta"))) {
 				return true;
 			} else {
 				return false;
@@ -894,6 +894,8 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		NotificacaoEmail.enviarEmailNotificacaoRecurso(solicitacao);
+		addQuantidadeSolicitacaoPendente();
+		rmvQuantidadeSolicitacaoRespondida();
 		mensagem = new Mensagem();
 	}
 
@@ -1105,13 +1107,13 @@ public class SolicitacaoBean implements Serializable {
 		this.cidadao = cidadao;
 	}
 
-	public Anexo getAnexo() {
-		return anexo;
-	}
-
-	public void setAnexo(Anexo anexo) {
-		this.anexo = anexo;
-	}
+//	public Anexo getAnexo() {
+//		return anexo;
+//	}
+//
+//	public void setAnexo(Anexo anexo) {
+//		this.anexo = anexo;
+//	}
 
 	public Mensagem getMensagem() {
 		return mensagem;

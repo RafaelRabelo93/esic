@@ -55,7 +55,10 @@
 								<p> <span class="statusBox" style="background: #eab90f; margin-right: .5em; color:white !important">Recurso</span>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 							</h:panelGroup>
 							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
-								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem-Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+								<p> <span class="statusBox" style="background: #e77b40; margin-right: .5em; color:white !important">Sem Resposta</span>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+							</h:panelGroup>
+							<h:panelGroup styleClass="inline" style="align-items: flex-start; text-align: justify">
+								<p> <span class="statusBox" style="background: #0039ff; margin-right: .5em; color:white !important">Transição</span>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
 							</h:panelGroup>
 					    </p:tooltip>
 				    
@@ -198,34 +201,45 @@
 								<h:outputText value="#{slt.cidadao.usuario.nome}"/>
 							</p:column>
 							
-							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="120" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center" styleClass="#{slt.status}">
-								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Respondida'}"/>
-								<h:outputText id="statusLabel2" value="Atendida" styleClass="statusBox" rendered="#{slt.status eq 'Respondida'}"/>
+							<p:column headerText="Status" visible="#{solicitacao.list[10]}" width="120" sortBy="#{slt.status}" filterBy="#{slt.status}" filterMatchMode="exact" filterable="false" groupRow="false" style="text-align: center">
+<!-- 								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Atendida' and slt.status ne 'Transição'}"/> -->
+								<h:outputText id="statusAberta" value="Aberta" styleClass="statusBox aberta" rendered="#{slt.status eq 'Aberta'}"/>
+								<h:outputText id="statusAtendida" value="Atendida" styleClass="statusBox atendida" rendered="#{slt.status eq 'Atendida'}"/>
+								<h:outputText id="statusFinal" value="Finalizada" styleClass="statusBox finalizada" rendered="#{slt.status eq 'Finalizada'}"/>
+								<h:outputText id="statusReenc" value="Reencaminhada" styleClass="statusBox reencaminhada" rendered="#{slt.status eq 'Reencaminhada'}"/>
+								<h:outputText id="statusNegada" value="Negada" styleClass="statusBox negada" rendered="#{slt.status eq 'Negada'}"/>
+								<h:outputText id="statusProrro" value="Prorrogada" styleClass="statusBox prorrogada" rendered="#{slt.status eq 'Prorrogada'}"/>
+								<h:outputText id="statusRecurso" value="Recurso" styleClass="statusBox recurso" rendered="#{slt.status eq 'Recurso'}"/>
+								<h:outputText id="statusSemResp" value="Sem Resposta" styleClass="statusBox semResposta" rendered="#{slt.status eq 'Sem Resposta'}"/>
+								<h:outputText id="statusTransicao" value="Transição" styleClass="statusBox transicao" rendered="#{slt.status eq 'Transição'}"/>
 								
 								<!-- TOOL-TIPS -->
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
+								<p:tooltip for="statusAberta" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
 									<p>Manifestação protocolada ainda pendente de leitura pelo órgão/entidade demandado</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel2" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Respondida'}">
+								<p:tooltip for="statusAtendida" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Atendida'}">
 									<p>Manifestação atendida pelo órgão/entidade demandado aguardando manifestação do requerente no prazo de 10 dias</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
+								<p:tooltip for="statusFinal" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Finalizada'}">
 									<p>Manifestação atendida pelo órgão/entidade demandado, cujo prazo para recurso foi expirado sem manifestação do requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Reencaminhada'}">
+								<p:tooltip for="statusReenc" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Reencaminhada'}">
 									<p>Manifestação redirecionada a outro órgão/entidade por ausência de competência do demandado</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Negada'}">
+								<p:tooltip for="statusNegada" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Negada'}">
 									<p>Manifestação com justificativa legal para não atendimento</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Prorrogada'}">
+								<p:tooltip for="statusProrro" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Prorrogada'}">
 									<p>Manifestação houve pedido de prorrogação do prazo de 10 dias encaminhado ao requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Recurso'}">
+								<p:tooltip for="statusRecurso" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Recurso'}">
 									<p>Manifestação aguardando atendimento de recurso apresentado pelo requerente</p>
 								</p:tooltip>
-								<p:tooltip for="statusLabel" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem-Resposta'}">
+								<p:tooltip for="statusSemResp" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Sem Resposta'}">
 									<p>Manifestação finalizada automaticamente pelo sistema quando houver ausência de resposta ou prorrogação no prazo legal</p>
+								</p:tooltip>
+								<p:tooltip for="statusTransicao" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Transição'}">
+									<p>Pedido de informação migrado do sistema antigo ainda aberto para atendimento.</p>
 								</p:tooltip>
 								
 							</p:column>
@@ -300,8 +314,8 @@
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 							<h:outputText value="#{solicitacao.solicitacao.status}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
 
-							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
-							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" />
+							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
+							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
 
 							<h:outputText value="Data Inicial:"	style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.dataIni}">
@@ -340,14 +354,9 @@
 											</h:outputText>
 										</div>
 										
-										<h:outputText value="#{msg.texto}"
-											style="margin-left:1vw; white-space: pre-wrap;" />
+										<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
+										
 											
-										<h:form>
-											<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
-												<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
-											</p:commandButton>
-										</h:form>
 									</p:outputPanel>
 								</p:dataList>
 
@@ -367,22 +376,20 @@
 
 									<p:outputPanel style="margin-top: 1vw;">
 										<div class="mensagem">
-											<h:outputText value="#{msg.usuario.nome}"
-												style="color:#1a568c" />
+											<h:outputText value="#{msg.usuario.nome}" style="color:#1a568c" />
 											<h:outputText value="#{msg.data}" style="color:#1a568c">
-												<f:convertDateTime pattern="d/M/yy - hh:mm"
-													timeZone="GMT-03:00" />
+												<f:convertDateTime pattern="d/M/yy - hh:mm"	timeZone="GMT-03:00" />
 											</h:outputText>
 										</div>
 										
-										<h:outputText value="#{msg.texto}"
-											style="margin-left:1vw; white-space: pre-wrap;" />
-											
+										<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
+										
 										<h:form>
-											<p:commandButton value="Anexo" ajax="false" icon="ui-icon-document" rendered="#{anexo.verificaExistencia(msg)}" >
-												<p:fileDownload value="#{anexo.downloadArquivo(msg)}" />
-											</p:commandButton>
-										</h:form>
+											<p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" rendered="#{attachment.temAnexo(msg.idMensagem)}">
+										        <p:fileDownload value="#{attachment.download(msg.idMensagem)}" />
+										    </p:commandButton>
+									    </h:form>
+											
 									</p:outputPanel>
 
 								</p:dataScroller>
@@ -421,8 +428,7 @@
 							</p:tab>
 							<p:tab title="Trâmite Interno"
 								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)  and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
-								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"
-									chunkSize="2" rows="2" style="margin-bottom:1vw;">
+								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"	chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
 									<f:facet name="loader">
 										<p:commandLink id="outrasMsgs">
@@ -452,21 +458,18 @@
 							</p:tab>
 						</p:tabView>
 
-						<h:form enctype="multipart/form-data">
+						<h:form id="uploadForm" enctype="multipart/form-data" onsubmit="return Validate(this);">
 							<p:outputPanel id="responderSolicitacao" rendered="#{usuario.usuario.perfil gt '1'}">
 								<div id="Resposta" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Mensagem de Resposta:" for="mensagem"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" rows="10" maxlength="3000" autoResize="true" required="true" style="width:99%" styleClass="abaField respostaField">
+									<p:inputTextarea id="mensagem" value="#{mensagem.mensagem.texto}" rows="10" autoResize="true" required="true"
+										counter="respCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField respostaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="respCount" />
 									
-									<p:fileUpload value="#{mensagem.file}" label="Enviar Anexo"
-										mode="simple" skinSimple="true"
-										style="display: flex;  align-items: center; margin-top: 15px"
-										allowTypes="/(\.|\/)(jpe?g|png|pdf|zip|rar|docx|doc|xls|xlsx|tar)$/"
-										invalidFileMessage="São permitidas somente imagens (pdf, zip, rar, docx, xls, tar, xlsx, jpeg, jpg e png)"
-										sizeLimit="512"
-										invalidSizeMessage="O tamanho máximo permitido de 1MB." />
+									<p:fileUpload id="fileUpload" value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" skinSimple="true" style="margin-top: 1em"/>
 										
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
@@ -477,9 +480,12 @@
 								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField reformulaField">
+									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" rows="10" required="true" 
+										counter="reforCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField reformulaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="reforCount" />
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
@@ -490,9 +496,12 @@
 								
 								<div id="Negar" class="box aba" style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="justNega" style="margin-bottom: 5px" />
-									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" maxlength="3000" rows="10" required="true" style="width:99%" styleClass="abaField negarField">
+									<p:inputTextarea id="justNega" value="#{mensagem.mensagem.texto}" rows="10" required="true" 
+										counter="negaCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField negarField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
+									<h:outputText id="negaCount" />
 									
 									<p:commandLink class="botaoLink" action="#{mensagem.negar}" ajax="false" style="margin-top: 5px" update="form:solicitacao_panel">
 										<h:outputText value="Enviar" />
@@ -504,11 +513,11 @@
 								<div id="Prorrogar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Justificativa:" for="descr" />
-									<p:inputTextarea id="descr" cols="100" rows="10" counter="display" maxlength="3000"  required="true" style="width: 98%" counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField">
+									<p:inputTextarea id="descr" value="#{solicitacao.mensagem.texto}" styleClass="abaField prorrogarField" cols="100" rows="10" required="true" 
+										counter="proCount" maxlength="3000" counterTemplate="{0} caracteres restantes." style="width: 98%" >
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display" />
+									<h:outputText id="proCount" />
 
 									<p:commandLink class="botaoLink" style="margin-top:1vh; justify-self: flex-end;" update="form:solicitacao_panel detalheDialog" action="#{solicitacao.prorrogar}" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
@@ -520,11 +529,12 @@
 								<div id="Recurso" class="box aba"
 									style="display: none; padding: 1vh 1vw">
 									<p:outputLabel value="Descrição:" for="descr2" />
-									<p:inputTextarea id="descr2" cols="100" rows="8" counter="display2" maxlength="3000" autoResize="false" style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes." value="#{solicitacao.mensagem.texto}" styleClass="abaField recursoField">
+									<p:inputTextarea id="descr2" value="#{solicitacao.mensagem.texto}" cols="100" rows="10" autoResize="false" 
+										counter="recCount" maxlength="3000" counterTemplate="{0} caracteres restantes." 
+										styleClass="abaField recursoField" style="width:100%" required="true" >
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display2" />
+									<h:outputText id="recCount" />
 
 									<p:commandLink class="botaoLink" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" action="#{solicitacao.recurso}" update="@all" oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
@@ -544,26 +554,20 @@
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
-									<p:inputTextarea id="justCid" cols="100" rows="10"
-										counter="display3" maxlength="3000" autoResize="false"
-										style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagem.texto}"
-										styleClass="abaField encaminharField">
+									<p:inputTextarea id="justCid" value="#{solicitacao.mensagem.texto}" cols="100" rows="10" autoResize="false" required="true"
+										counter="justCount1" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										styleClass="abaField encaminharField" style="width:100%">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display3" />
+									<h:outputText id="justCount1" />
 
 									<p:outputLabel value="Justificativa Interna:" for="justInt" />
-									<p:inputTextarea id="justInt" cols="100" rows="10"
-										counter="display4" maxlength="3000" autoResize="false"
-										style="width:100%" required="true"
-										counterTemplate="{0} caracteres restantes."
-										value="#{solicitacao.mensagemEncaminhar.texto}"
-										styleClass="abaField encaminharField">
+									<p:inputTextarea id="justInt" value="#{solicitacao.mensagemEncaminhar.texto}" cols="100" rows="10" autoResize="false" required="true"
+										counter="justCount2" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										styleClass="abaField encaminharField" style="width:100%">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
-									<h:outputText id="display4" />
+									<h:outputText id="justCount2" />
 
 									<p:commandLink class="botaoLink"
 										style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"
@@ -581,10 +585,12 @@
 									</h:panelGroup>
 									
 									<p:outputLabel value="Mensagem:" for="avaliaTexto" style="margin-top: 0"/>
-									<p:inputTextarea id="avaliaTexto" cols="100" rows="8" counter="display4" maxlength="1000" autoResize="true" style="width:100%" required="false" 
-									counterTemplate="{0} caracteres restantes." value="#{mensagem.mensagem.texto}"	styleClass="abaField avaliaField">
+									<p:inputTextarea id="avaliaTexto" value="#{mensagem.mensagem.texto}" cols="100" rows="8" autoResize="true" required="false" 
+										counter="avaCount" maxlength="1000" counterTemplate="{0} caracteres restantes." 
+										styleClass="abaField avaliaField" style="width:100%">
 										<f:validateLength maximum="1000" />
 									</p:inputTextarea>
+									<h:outputText id="avaCount"/>
 									
 									<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{mensagem.salvarMensagemAvaliacao()}" update="form:solicitacao_panel ">
 										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{avaliacao.solicitacao}" />
@@ -605,18 +611,18 @@
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) )}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
-<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}" -->
+<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}" -->
 						</p:commandLink>
 						
 						<!-- Botão Reformula -->
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
 							  <i class="fa fa-comment fa-stack-2x" />
@@ -629,7 +635,7 @@
 						<p:commandLink id="NegarAba"
 							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-ban fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Negar" />
@@ -639,7 +645,7 @@
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
+							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
@@ -652,7 +658,7 @@
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
 							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem-Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
+							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
 <!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
@@ -663,7 +669,7 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Respondida' or solicitacao.solicitacao.status eq 'Sem-Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
+							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Sem Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
 							disabled="#{solicitacao.solicitacao.status eq 'Aberta' or solicitacao.solicitacao.avaliacao ne '0'}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />
@@ -726,6 +732,43 @@
 				function scrollDown() {
 					document.getElementById("solicitacaoDetalhe").style.bottom = "0";
 					}
+
+				function Validate(oForm) {
+					var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png", ".docx", ".pdf", ".xlsx", ".ods", ".mp3", ".wav", ".AAC", ".FLAC", ".ALAC", ".ALE", ".FLV", ".mp4", ".avi", ".WMV", ".MOV"];    
+					var arrInputs = oForm.getElementsByTagName("input");
+					var oFile = document.getElementById("uploadForm:fileUpload_input").files[0];
+
+				    for (var i = 0; i &lt; arrInputs.length; i++) {
+				        var oInput = arrInputs[i];
+				        if (oInput.type == "file") {
+				            var sFileName = oInput.value;
+				            if (sFileName.length > 0) {
+				                var blnValid = false;
+								if (oFile.size &lt; 16 * (1024 * 1024)) {
+
+					                for (var j = 0; j &lt; _validFileExtensions.length; j++) {
+					                    var sCurExtension = _validFileExtensions[j];
+					                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+					                        blnValid = true;
+					                        break;
+					                    }
+					                }
+									
+					                if (!blnValid) {
+					                    alert("Formato inválido. São aceitos apenas: " + _validFileExtensions.join(", "));
+					                    return false;
+					                }
+					                
+								} 
+								else {
+									alert("Tamanho do arquivo excedeu o limite de 16 MB aceitos");
+				                    return false;
+								}
+				                
+				            }
+				        }
+				    }
+				}
 			</script>
 
 

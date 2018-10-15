@@ -20,7 +20,7 @@ public class EmailBean {
 	private static String email;
 	private static String assunto;
 	private static String mensagem;
-	private final static String destinatario = "atendimento.laip@cge.se.gov.br";
+	private final static String destinatario = "desenvolvimento.cge@cge.se.gov.br";
 	
 	public static void enviarEmail() {
 		String mensagemFinal = "Remetente: " +nome+ "\nE-mail: " +email+ "\n\n" +mensagem;

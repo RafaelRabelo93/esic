@@ -27,7 +27,8 @@ import org.primefaces.model.UploadedFile;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
-import br.gov.se.lai.entity.Anexo;
+import br.gov.se.lai.anexos.UploadFile;
+//import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Solicitacao;
 import br.gov.se.lai.entity.Usuario;
@@ -44,7 +45,6 @@ import br.gov.se.lai.utils.PrazosSolicitacao;
 @SessionScoped
 public class MensagemBean implements Serializable, PermissaoUsuario{
 	
-
 	private static final long serialVersionUID = -353994363743436917L;
 	private static Mensagem mensagem;
 	private String status;
@@ -53,7 +53,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private static List<Mensagem> mensagensSolicitacao;
 	private static List<Mensagem> mensagensHistorico;
 	private static List<Mensagem> mensagensTramites;
-	private Anexo anexo;
+//	private Anexo anexo;
 	private final int constanteTempo = 10;
 	private Usuario usuario;
 	private UploadedFile file;
@@ -63,9 +63,9 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	@PostConstruct
 	public void init() {
 		mensagem = new Mensagem();		
-		anexo = new Anexo();
+//		anexo = new Anexo();
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
-		AnexoBean.listarFiles();
+//		AnexoBean.listarFiles();
 		carregaMensagens();
 	}
 
@@ -85,20 +85,22 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
 				mensagensSolicitacao.add(mensagem);
 				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
-				verificaMensagem();
 				try {
 					if ((file.getContents().length != 0 && !file.equals(null))) {
-						System.out.println(anexo.toString());
-						AnexoBean anx = new AnexoBean();
-						anx.save(anexo, mensagem, file);
-						Set<Anexo> setAnexo = new HashSet<>();
-						setAnexo.add(anx.getAnexo());
-						mensagem.setAnexos(setAnexo);
+//						System.out.println(anexo.toString());
+//						AnexoBean anx = new AnexoBean();
+//						anx.save(anexo, mensagem, file);
+//						Set<Anexo> setAnexo = new HashSet<>();
+//						setAnexo.add(anx.getAnexo());
+//						mensagem.setAnexos(setAnexo);
+						UploadFile upload = new UploadFile();
+						upload.upload(file, mensagem.getIdMensagem());
 						MensagemDAO.saveOrUpdate(mensagem);
 					}
 				}catch (Exception e) {
 					e.getMessage();
 				}
+				verificaMensagem();
 				
 			}
 		
@@ -134,8 +136,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	 * Verificar se a mensagem já foi respondida, para então alterar o status e o prazo de resposta
 	 */
 	public void verificaMensagem() {
-		if(solicitacao.getStatus() != "Respondida") {
-			solicitacao.setStatus("Respondida");
+		if(solicitacao.getStatus() != "Atendida") {
+			solicitacao.setStatus("Atendida");
 			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
@@ -194,7 +196,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		switch (status) {
 		case "Recurso":
 			tipoAux = 3;
-			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ (solicitacao.getInstancia() - 1) +"º "+status.toLowerCase()+" no sistema.");
+			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" entrou no "+ solicitacao.getInstancia() +"º "+status.toLowerCase()+" no sistema.");
 			System.out.println(mensagem.getTexto());
 			break;
 			
@@ -246,7 +248,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			tipoAux = 0;
 			break;
 
-		case "Respondida":
+		case "Atendida":
 			tipoAux = 4;
 			mensagem.setTexto("Manifestação "+solicitacao.getProtocolo() +" recebeu resposta no sistema.");
 			System.out.println(mensagem.getTexto());
@@ -264,7 +266,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			System.out.println(mensagem.getTexto());
 			break;
 			
-		case "Sem-Resposta":
+		case "Sem Resposta":
 			tipoAux = 4;
 			mensagem.setTexto("Manifestação " + solicitacao.getProtocolo() + " não recebeu resposta no sistema.");
 			System.out.println(mensagem.getTexto());
@@ -372,13 +374,13 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		}
 	}
 
-	public Anexo getAnexo() {
-		return anexo;
-	}
-
-	public void setAnexo(Anexo anexo) {
-		this.anexo = anexo;
-	}
+//	public Anexo getAnexo() {
+//		return anexo;
+//	}
+//
+//	public void setAnexo(Anexo anexo) {
+//		this.anexo = anexo;
+//	}
 
 	public UploadedFile getFile() {
 		return file;
