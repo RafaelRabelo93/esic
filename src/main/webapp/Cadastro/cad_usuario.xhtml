@@ -27,7 +27,7 @@
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
 						<p:inputText rendered="#{usuario.usuario.perfil eq '0'}" id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick nickPlcHld" />
+							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>

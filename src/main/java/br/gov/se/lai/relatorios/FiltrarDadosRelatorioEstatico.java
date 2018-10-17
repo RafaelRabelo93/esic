@@ -46,8 +46,8 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	
 	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-	//protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
-	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
+	protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
+//	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
 	
 	
 	
@@ -61,11 +61,18 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoGeralDosPedidosInformacao() {
 		int numeroTotal = SolicitacaoDAO.listarGeral().size();
-		int numeroTotalAtendimentos = SolicitacaoDAO.listarGeralFinalizada().size();
-		int numeroTotalAberto = SolicitacaoDAO.listPorStatus("Aberta").size();
+		int numeroTotalTramite= SolicitacaoDAO.listPorStatus("Aberta").size() 
+								+ SolicitacaoDAO.listPorStatus("Transição").size() 
+								+ SolicitacaoDAO.listPorStatus("Atendida").size() 
+								+ SolicitacaoDAO.listPorStatus("Recurso").size() 
+								+ SolicitacaoDAO.listPorStatus("Prorrogada").size() 
+								+ SolicitacaoDAO.listPorStatus("Reencaminhada").size();
+//		int numeroTotalAtendidos = SolicitacaoDAO.listPorStatus("Atendida").size();
+		int numeroTotalFinalizados = SolicitacaoDAO.listarGeralFinalizada().size();
+		int numeroTotalSemResposta = SolicitacaoDAO.listPorStatus("Sem Resposta").size() + SolicitacaoDAO.listPorStatus("Negada").size();
 
-		String[] baseChart = { "Pedido", "Em aberto", "Atendimentos" };
-		int[] dadosRelacionadosBase = { numeroTotal, numeroTotalAberto, numeroTotalAtendimentos };
+		String[] baseChart = { "Total", "Em Trâmite", "Finalizados", "Sem Resposta" };
+		int[] dadosRelacionadosBase = { numeroTotal, numeroTotalTramite, numeroTotalFinalizados, numeroTotalSemResposta };
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
 		for (int i = 0; i < baseChart.length; i++) {
 			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));
@@ -93,20 +100,30 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			base.add(meses[i - 1]);
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			
-			if (i>=10) {
+			if (i<=9) {
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-0" + i + "%").size() 
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Transição", anoAtual + "-0" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Atendida", anoAtual + "-0" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Recurso", anoAtual + "-0" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Prorrogada", anoAtual + "-0" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Reencaminhada", anoAtual + "-0" + i + "%").size()	);
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual + "-0" + i + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Sem Resposta", anoAtual + "-0" + i + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual + "-0" + i + "%").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-" + i + "%").size() 
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Transição", anoAtual + "-" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Atendida", anoAtual + "-" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Recurso", anoAtual + "-" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Prorrogada", anoAtual + "-" + i + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Reencaminhada", anoAtual + "-" + i + "%").size()	);
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual + "-" + i + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Sem Resposta", anoAtual + "-" + i + "%").size());
 				dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual + "-" + i + "%").size());
-				dadosEspecificos.add(
-						SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-" + i + "%").size());
-				dadosEspecificos.add(SolicitacaoDAO
-						.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual + "-" + i + "%").size());
 				dadosRelacionadorBase.add(dadosEspecificos);
 			} 
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", anoAtual + "-0" + i + "%").size());
-			dadosEspecificos.add(
-					SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", anoAtual + "-0" + i + "%").size());
-			dadosEspecificos.add(SolicitacaoDAO
-					.listPorTipoStatusPeriodo("Informação", "Finalizada", anoAtual + "-0" + i + "%").size());
-			dadosRelacionadorBase.add(dadosEspecificos);
+			
 		}
 
 		for (int i = 0; i < base.size(); i++) {
@@ -131,9 +148,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		for (int i = anoInicial; i <= anoAtual; i++) {
 			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", i + "%").size());
-			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", i + "%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", i + "%").size() 
+					+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Transição", i + "%").size()
+					+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Atendida", i + "%").size()
+					+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Recurso", i + "%").size()
+					+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Prorrogada", i + "%").size()
+					+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Reencaminhada", i + "%").size()	);
 			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", i + "%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Sem Resposta", i + "%").size());
+			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", i + "%").size());
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
 
@@ -158,22 +181,30 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		for (int i = anoInicial; i <= anoAtual; i++) {
+		for (int i = anoAtual; i >= anoInicial; i--) {
 			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			int pedidosTotalPeriodo = 0;
-			int pedidosAbertoPeriodo = 0;
+			int pedidosTramitePeriodo = 0;
 			int pedidosFinalizadosPeriodo = 0;
+			int pedidosSemRespostaPeriodo = 0;
+			
 			for (int ano = anoInicial; ano <= i; ano++) {
+				pedidosTramitePeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", ano + "%").size() 
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Transição", ano + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Atendida", ano + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Recurso", ano + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Prorrogada", ano + "%").size()
+						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Reecaminhada", ano + "%").size();
+				pedidosFinalizadosPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", ano + "%").size();
+				pedidosSemRespostaPeriodo = SolicitacaoDAO.listPorTipoStatusPeriodo("Informação","Sem Resposta", ano + "%").size();
 				pedidosTotalPeriodo += SolicitacaoDAO.listPorTipoPeriodo("Informação", ano + "%").size();
-				pedidosAbertoPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", ano + "%")
-						.size();
-				pedidosFinalizadosPeriodo += SolicitacaoDAO
-						.listPorTipoStatusPeriodo("Informação", "Finalizada", ano + "%").size();
 			}
-			dadosEspecificos.add(pedidosTotalPeriodo);
-			dadosEspecificos.add(pedidosAbertoPeriodo);
+			
+			dadosEspecificos.add(pedidosTramitePeriodo);
 			dadosEspecificos.add(pedidosFinalizadosPeriodo);
+			dadosEspecificos.add(pedidosSemRespostaPeriodo);
+			dadosEspecificos.add(pedidosTotalPeriodo);
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
 
@@ -190,9 +221,6 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoOrgaoPedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH)+1;
-		int anoAtual = c.get(Calendar.YEAR);
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -203,27 +231,16 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			base.add(entidades.getSigla());
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			
-			if (mesAtual<=9) {
-				dadosEspecificos.add(SolicitacaoDAO
-						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
-						.size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-						anoAtual + "-0" + mesAtual + "%").size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-						"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta", "%").size() 
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Transição", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Atendida", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Recurso", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Prorrogada", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Reecaminhada", "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Finalizada", "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Sem Resposta", "%").size());
 				dadosRelacionadorBase.add(dadosEspecificos);
-			} else {
-				dadosEspecificos.add(SolicitacaoDAO
-						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-" + mesAtual + "%")
-						.size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-						anoAtual + "-" + mesAtual + "%").size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-						"Finalizada", anoAtual + "-" + mesAtual + "%").size());
-				dadosRelacionadorBase.add(dadosEspecificos);
-			} 
 			
-					
 		}
 
 		for (int i = 0; i < base.size(); i++) {
@@ -241,9 +258,6 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEntidadePedidoInformacao() {
 		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH)+1;
-		int anoAtual = c.get(Calendar.YEAR);
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -254,26 +268,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			base.add(entidades.getSigla());
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			 
-			if (mesAtual<=9) {
-				dadosEspecificos.add(SolicitacaoDAO
-						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-0" + mesAtual + "%")
-						.size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-						anoAtual + "-0" + mesAtual + "%").size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-						"Finalizada", anoAtual + "-0" + mesAtual + "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta", "%").size() 
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Transição", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Atendida", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Recurso", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Prorrogada", "%").size()
+						+ SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Reecaminhada", "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Finalizada", "%").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Sem Resposta", "%").size());
 				dadosRelacionadorBase.add(dadosEspecificos);
-			} else {
-				dadosEspecificos.add(SolicitacaoDAO
-						.listarPorEntidade(entidades.getIdEntidades(), "Informação", anoAtual + "-" + mesAtual + "%")
-						.size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação", "Aberta",
-						anoAtual + "-" + mesAtual + "%").size());
-				dadosEspecificos.add(SolicitacaoDAO.listarPorEntidade(entidades.getIdEntidades(), "Informação",
-						"Finalizada", anoAtual + "-" + mesAtual + "%").size());
-				dadosRelacionadorBase.add(dadosEspecificos);
-			} 
-			 
 			
 		}
 

@@ -42,8 +42,8 @@ public class DownloadFile {
 		
 		Class.forName("org.gjt.mm.mysql.Driver");
  
+		Connection conn = DriverManager.getConnection(url, user, password);
         try {
-            Connection conn = DriverManager.getConnection(url, user, password);
  
             String sql = "SELECT * FROM anexo WHERE Mensagem_idMensagem = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -61,7 +61,6 @@ public class DownloadFile {
                 
                 inputStream.close();
             }
-            conn.close();
             
             return file;
             
@@ -69,9 +68,12 @@ public class DownloadFile {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }finally{
+        	conn.close();
         }
         
         return file;
+        
         
     }
 	

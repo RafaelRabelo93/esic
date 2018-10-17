@@ -830,14 +830,14 @@ public class UsuarioBean implements Serializable {
 			Responsavel resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
-				NotificacaoEmail.enviarEmailHTML(resp.getEmail(), "Alteração de Email", "Sua senha para o login no E-SIC foi alterada.");
+				NotificacaoEmail.enviarEmailHTML(resp.getEmail(), "Alteração de Senha", "Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
 		} else {
 			Cidadao cid = CidadaoDAO.findCidadaoUsuario(usuario.getIdUsuario());
 			if (!cid.equals(null)) {
 				this.usuario = cid.getUsuario();
-				NotificacaoEmail.enviarEmailHTML(cid.getEmail(), "Alteração de Email", "Sua senha para o login no E-SIC foi alterada.");
+				NotificacaoEmail.enviarEmailHTML(cid.getEmail(), "Alteração de Senha", "Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
 		}

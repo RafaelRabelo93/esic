@@ -39,7 +39,7 @@ public class RelatorioDinamico {
 	public Map<String, ArrayList<Integer>> dadosChart;
 	public static String[] tipo = { "Pedidos totais do E-SIC", "Pedidos mensais do E-SIC", "Pedidos anuais do E-SIC",
 			"Pedidos anuais acumulados do E-SIC", "Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC",
-			"Pedidos por assunto do E-SIC", "Pedidos por tipo de pessoa do E-SIC", "Pedidos por estado do E-SIC" };
+			"Pedidos por Tema do E-SIC", "Pedidos por tipo de pessoa do E-SIC", "Pedidos por estado do E-SIC" };
 	public int[] metricas;
 	public boolean dataBool;
 	public boolean mesesBool;

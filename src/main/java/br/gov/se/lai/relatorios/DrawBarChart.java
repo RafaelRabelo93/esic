@@ -51,17 +51,20 @@ public class DrawBarChart {
 	     	BarChartModel model = new BarChartModel();
 	        ArrayList<ChartSeries> variaveis = new ArrayList<>();
 	    	
-	        ChartSeries pedido = new ChartSeries();
-	        ChartSeries aberto = new ChartSeries();
-	        ChartSeries atendido = new ChartSeries();
+	        ChartSeries tramite = new ChartSeries();
+	    	ChartSeries finalizado = new ChartSeries();
+	    	ChartSeries semResposta = new ChartSeries();
+	    	ChartSeries total = new ChartSeries();
 	        
-	        pedido.setLabel("Pedido");
-		    aberto.setLabel("Em aberto");
-		    atendido.setLabel("Atendidos");
-		    
-		    variaveis.add(pedido);
-		    variaveis.add(aberto);
-		    variaveis.add(atendido);
+	    	tramite.setLabel("Em Trâmite");
+	    	finalizado.setLabel("Finalizados");
+	    	semResposta.setLabel("Sem Resposta");
+	    	total.setLabel("Total");
+	    	
+	    	variaveis.add(tramite);
+	    	variaveis.add(finalizado);
+	    	variaveis.add(semResposta);
+	    	variaveis.add(total);
 
 		    switch ((int)tipoDados) {
 		    case 1:
@@ -82,24 +85,30 @@ public class DrawBarChart {
 	        for (ChartSeries chartSeries : variaveis) {
 	        	model.addSeries(chartSeries);
 			}
+	        
+	        model.setSeriesColors("f3a935,c73558,6ebe9f,55596a");
 	         
 	        return model;
 	    }
+	    
 	    private HorizontalBarChartModel initHorizontalBarModel( Map<String, ArrayList<Integer>> dadosChart, long tipoDados ) {
 	    	HorizontalBarChartModel model =  new HorizontalBarChartModel();
 	    	ArrayList<ChartSeries> variaveis = new ArrayList<>();
 	    	
-	    	ChartSeries pedido = new ChartSeries();
-	    	ChartSeries aberto = new ChartSeries();
-	    	ChartSeries atendido = new ChartSeries();
+	    	ChartSeries tramite = new ChartSeries();
+	    	ChartSeries finalizado = new ChartSeries();
+	    	ChartSeries semResposta = new ChartSeries();
+//	    	ChartSeries total = new ChartSeries();
 	    	
-	    	pedido.setLabel("Pedido");
-	    	aberto.setLabel("Em aberto");
-	    	atendido.setLabel("Atendidos");
+	    	tramite.setLabel("Em Trâmite");
+	    	finalizado.setLabel("Finalizados");
+	    	semResposta.setLabel("Sem Resposta");
+//	    	total.setLabel("Total");
 	    	
-	    	variaveis.add(pedido);
-	    	variaveis.add(aberto);
-	    	variaveis.add(atendido);
+	    	variaveis.add(tramite);
+	    	variaveis.add(finalizado);
+	    	variaveis.add(semResposta);
+//	    	variaveis.add(total);
 	    	
 	    	switch ((int)tipoDados) {
 	    	case 1:
@@ -137,6 +146,7 @@ public class DrawBarChart {
 	        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
 	        xAxis.setMin(0);
+	        xAxis.setTickInterval("1");
 	        xAxis.setMax(valorMaior);
 	         
 	        Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
@@ -145,7 +155,7 @@ public class DrawBarChart {
 	    }
 	     
 
-	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
+	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior) {
 	   
 	    	barModel = initBarModel( dadosChart, tipoDados );
 	         
@@ -155,6 +165,23 @@ public class DrawBarChart {
 	         
 	        Axis xAxis = barModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
+	         
+	        Axis yAxis = barModel.getAxis(AxisType.Y);
+	        yAxis.setLabel("Quantidade");
+	        yAxis.setMin(0);
+	        xAxis.setTickInterval("1");
+	        yAxis.setMax(valorMaior);
+	        
+	        return barModel;
+	    }
+	    
+	    public BarChartModel createBarModel2(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
+	 	   
+	    	barModel = initBarModel(dadosChart, tipoDados );
+	         
+	        barModel.setTitle(title);
+	        barModel.setLegendPosition("ne");
+	        barModel.setZoom(true);
 	         
 	        Axis yAxis = barModel.getAxis(AxisType.Y);
 	        yAxis.setLabel("Quantidade");

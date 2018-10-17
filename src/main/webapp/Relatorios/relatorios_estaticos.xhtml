@@ -27,7 +27,7 @@
 <!-- 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p> -->
 					    
 					 <h:panelGroup styleClass="inline">
-					    <h:commandLink onclick="exportAllCharts()" rendered="false" actionListener="#{chartExport.gerarRelatorio()}" styleClass="botaoLink" style="margin-bottom: 3em">
+					    <h:commandLink onclick="exportAllCharts()" rendered="true" actionListener="#{chartExport.gerarRelatorio()}" styleClass="botaoLink" style="margin-bottom: 3em">
 					    	<h:inputHidden id="ch1" value="#{chartExport.chartGeral}" />
 					    	<h:inputHidden id="ch2" value="#{chartExport.chartMensal}" />
 					    	<h:inputHidden id="ch3" value="#{chartExport.chartAnual}" />
@@ -37,21 +37,6 @@
 					    	<h:inputHidden id="ch7" value="#{chartExport.chartAssunto}" />
 					    	<h:inputHidden id="ch8" value="#{chartExport.chartPessoa}" />
 					    	<h:inputHidden id="ch9" value="#{chartExport.chartEstado}" />
-					    	<p:fileDownload value="#{chartExport.file}" />
-					    	<h:outputText value="Gerar Relatório Estatístico Com Bug" />
-					        <i class="fa fa-file-pdf-o" style="margin-left: .5em"/>
-					    </h:commandLink>
-					    
-					    <h:commandLink onclick="exportAllCharts2()" actionListener="#{chartExport.gerarRelatorio()}" styleClass="botaoLink" style="margin-bottom: 3em; margin-left: 1em">
-					    	<h:inputHidden id="ch10" value="#{chartExport.chartGeral}" />
-					    	<h:inputHidden id="ch20" value="#{chartExport.chartMensal}" />
-					    	<h:inputHidden id="ch30" value="#{chartExport.chartAnual}" />
-					    	<h:inputHidden id="ch40" value="#{chartExport.chartAnualAcu}" />
-					    	<h:inputHidden id="ch50" value="#{chartExport.chartOrgao}" />
-					    	<h:inputHidden id="ch60" value="#{chartExport.chartEntidade}" />
-					    	<h:inputHidden id="ch70" value="#{chartExport.chartAssunto}" />
-					    	<h:inputHidden id="ch80" value="#{chartExport.chartPessoa}" />
-					    	<h:inputHidden id="ch90" value="#{chartExport.chartEstado}" />
 					    	<p:fileDownload value="#{chartExport.file}" />
 					    	<h:outputText value="Gerar Relatório Estatístico" />
 					        <i class="fa fa-file-pdf-o" style="margin-left: .5em"/>
@@ -116,7 +101,7 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:500px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Assunto"/>
+						<p:outputLabel value="Relatório de Tema"/>
 						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -168,23 +153,26 @@
         document.getElementById('form:ch5').value = PF('chartOrgao').exportAsImage().src;
         document.getElementById('form:ch6').value = PF('chartEntidade').exportAsImage().src;
         document.getElementById('form:ch7').value = PF('chartAssunto').exportAsImage().src;
-        document.getElementById('form:ch8').value = PF('chartPessoa').exportAsImage().src;
+        document.getElementById('form:ch8').value = PF('chartTipoPessoa').exportAsImage().src;
         document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
     }
     
 	function exportAllCharts2() {
         // exportAsImage() will return a base64 png encoded string
-        document.getElementById('form:ch10').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch20').value = PF('chartMensal').exportAsImage().src;
-        document.getElementById('form:ch30').value = PF('chartAnual').exportAsImage().src;
-        document.getElementById('form:ch40').value = PF('chartAnualAcumulado').exportAsImage().src;
-        document.getElementById('form:ch50').value = PF('chartOrgao').exportAsImage().src;
-        document.getElementById('form:ch60').value = PF('chartEntidade').exportAsImage().src;
-        document.getElementById('form:ch70').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch80').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch90').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch1').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch2').value = PF('chartMensal').exportAsImage().src;
+        document.getElementById('form:ch3').value = PF('chartAnual').exportAsImage().src;
+        document.getElementById('form:ch4').value = PF('chartAnualAcumulado').exportAsImage().src;
+        document.getElementById('form:ch5').value = PF('chartOrgao').exportAsImage().src;
+        document.getElementById('form:ch6').value = PF('chartEntidade').exportAsImage().src;
+        document.getElementById('form:ch7').value = PF('chartAssunto').exportAsImage().src;
+        document.getElementById('form:ch8').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
     }
 
+	function ext() {
+		this.sortData = true;
+	}
 	</script>
 			</h:form>
 

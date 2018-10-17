@@ -42,7 +42,7 @@ public abstract class NotificacaoEmail implements Job{
 //	}
 	
 	public static void enviarEmailAutomatico(Solicitacao solicitacao, String titulo, String mensagem) {
-		String destinatario = ( solicitacao.getCidadao()).getEmail();
+		String destinatario = (solicitacao.getCidadao()).getEmail();
 //		String destinatario = "michael.mendonca@cge.se.gov.br";
 				
 		String msg = "<h4>Notificação do prazo de solicitação</h4>" + 
@@ -52,7 +52,7 @@ public abstract class NotificacaoEmail implements Job{
 				"	</tr>" + 
 				"</table>" + 
 				"<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-				"<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 		
 		try {
 			enviarEmailHTML(destinatario, titulo, msg);
@@ -112,7 +112,7 @@ public abstract class NotificacaoEmail implements Job{
 				"				</tr>" + 
 				"			</table>" +
 				"			<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-				"			<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"			<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 				
 				try {
 					enviarEmailHTML(destinatario, titulo, msg);
@@ -167,7 +167,7 @@ public abstract class NotificacaoEmail implements Job{
 				"			</table>" + 
 				"			<h5>Por favor, aguarde a resposta do órgão competente dentro do prazo estipulado</h5>" + 
 				"			<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar suas solicitações:</h5>" + 
-				"			<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"			<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 				
 				try {
 					enviarEmailHTML(destinatario, titulo, msg);
@@ -218,7 +218,7 @@ public abstract class NotificacaoEmail implements Job{
 				"				</tr>" + 
 				"			</table>" +
 				"			<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-				"			<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"			<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 				
 				try {
 					for (int i = 0; i < destinatarios.size(); i++) {
@@ -275,7 +275,7 @@ public abstract class NotificacaoEmail implements Job{
 						"	</tr>" +
 						"</table>" +
 						"<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualização completa:</h5>" +
-						"<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+						"<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 
 		try {
 			enviarEmailHTML(destinatario, titulo, msg);
@@ -332,7 +332,7 @@ public abstract class NotificacaoEmail implements Job{
 				"				</tr>" + 
 				"			</table>" +
 				"			<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-				"			<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"			<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 				
 				try {
 					for (int i = 0; i < destinatarios.size(); i++) {
@@ -347,7 +347,7 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailRequisicaoResponsavel(Usuario usuario, Entidades entidade, int idUser, int idEntidade, String emailUser, String hashcode) {
 		ArrayList<String> destinatarios = destinatarioResp(entidade, (short) 3);
 		
-		String link = DadosAutenticacao.getEnderecohomologacao()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
+		String link = DadosAutenticacao.getEndereco()+"/Cadastro/cad_responsavel.xhtml?access-key="+hashcode.substring(0, hashcode.length()/2)
 																+"&user="+idUser
 																+"&identidade="+idEntidade
 																+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())
@@ -401,7 +401,7 @@ public abstract class NotificacaoEmail implements Job{
 	}
 	
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String destinatario, String nomeUser) {
-		String link = DadosAutenticacao.getEnderecohomologacao()+"Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
+		String link = DadosAutenticacao.getEndereco()+"Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
 		String titulo = "esic-SE - Redefinição de senha";
 		
 		String msg = "<h4 style=\"margin-bottom:50px\">Se você esqueceu sua senha ou deseja redefini-la, utilize o botão abaixo para fazê-lo.</p>" + 
@@ -468,7 +468,7 @@ public abstract class NotificacaoEmail implements Job{
 				"				</tr>" + 
 				"			</table>" +
 					"			<h5 style=\"margin-bottom: 0\">Acesse o sistema para visualizar as solicitações:</h5>" + 
-					"			<a href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+					"			<a href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 		
 		try {
 			for (int i = 0; i < destinatarios.size(); i++) {
@@ -491,7 +491,7 @@ public abstract class NotificacaoEmail implements Job{
 						"			<br/>" +
 						"			<h3>Lembre-se do seu nome de usuário (" + cidadao.getUsuario().getNick() + ") e senha para acessar o sistema.</h3>" +
 						"			<h3 style=\"margin:0\">Acesse o sistema para realizar e visualizar manifestações:</h3>" + 
-						"			<a style=\"font-size: 15px\" href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+						"			<a style=\"font-size: 15px\" href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 		
 		try {
 			enviarEmailHTML(destinatario, titulo, msg);
@@ -511,7 +511,7 @@ public abstract class NotificacaoEmail implements Job{
 				"			<h2>Você foi cadastrado no sistema como responsável do órgão " + responsavel.getEntidades().getSigla() + " - " + responsavel.getEntidades().getNome() + ".</h2>" + 
 				"			<h3>Lembre-se do seu nome de usuário (" + responsavel.getUsuario().getNick() + ") e senha para acessar o sistema.</h3>" +
 				"			<h3 style=\"margin:0\">Acesse o sistema para visualizar e responder manifestações:</h3>" + 
-				"			<a style=\"font-size: 15px\" href=\"http://esic.se.gov.br\">http://esic.se.gov.br</a>";
+				"			<a style=\"font-size: 15px\" href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
 		
 		try {
 			enviarEmailHTML(destinatario, titulo, msg);
@@ -528,7 +528,7 @@ public abstract class NotificacaoEmail implements Job{
 		// Create the email message
 		ImageHtmlEmail emailHtml = new ImageHtmlEmail();
 		emailHtml.setDebug(true);
-		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());  
+		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
 		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 		emailHtml.addTo(destinatario);
 		emailHtml.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação
