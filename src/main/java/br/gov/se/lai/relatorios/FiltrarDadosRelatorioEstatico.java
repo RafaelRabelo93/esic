@@ -1,12 +1,16 @@
 package br.gov.se.lai.relatorios;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -139,13 +143,14 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 * @return
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualPedidoInformacao() {
-		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		Calendar c = Calendar.getInstance();
-		int anoAtual = c.get(Calendar.YEAR);
+		Integer anoAtual = c.get(Calendar.YEAR);
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
-
+		
 		for (int i = anoInicial; i <= anoAtual; i++) {
+			
 			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			dadosEspecificos.add(SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Aberta", i + "%").size() 
@@ -159,11 +164,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			dadosEspecificos.add(SolicitacaoDAO.listPorTipoPeriodo("Informação", i + "%").size());
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
-
+		
 		for (int i = 0; i < base.size(); i++) {
 			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
 		}
-
+		
 		return dadosChart;
 	}
 
@@ -175,13 +180,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 * @return
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualAcumuladoPedidoInformacao() {
-		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		Calendar c = Calendar.getInstance();
 		int anoAtual = c.get(Calendar.YEAR);
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		for (int i = anoAtual; i >= anoInicial; i--) {
+		for (int i = anoInicial; i <= anoAtual; i++) {
 			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			int pedidosTotalPeriodo = 0;
@@ -197,7 +202,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Prorrogada", ano + "%").size()
 						+ SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Reecaminhada", ano + "%").size();
 				pedidosFinalizadosPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação", "Finalizada", ano + "%").size();
-				pedidosSemRespostaPeriodo = SolicitacaoDAO.listPorTipoStatusPeriodo("Informação","Sem Resposta", ano + "%").size();
+				pedidosSemRespostaPeriodo += SolicitacaoDAO.listPorTipoStatusPeriodo("Informação","Sem Resposta", ano + "%").size();
 				pedidosTotalPeriodo += SolicitacaoDAO.listPorTipoPeriodo("Informação", ano + "%").size();
 			}
 			
@@ -207,7 +212,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			dadosEspecificos.add(pedidosTotalPeriodo);
 			dadosRelacionadorBase.add(dadosEspecificos);
 		}
-
+		
 		for (int i = 0; i < base.size(); i++) {
 			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
 		}

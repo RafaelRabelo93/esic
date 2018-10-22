@@ -2,6 +2,7 @@ package br.gov.se.lai.relatorios;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -50,12 +51,13 @@ public class DrawBarChart {
 	    private BarChartModel initBarModel(Map<String, ArrayList<Integer>> dadosChart, long tipoDados ) {
 	     	BarChartModel model = new BarChartModel();
 	        ArrayList<ChartSeries> variaveis = new ArrayList<>();
+	        ArrayList<ChartSeries> variaveis2 = new ArrayList<>();
 	    	
 	        ChartSeries tramite = new ChartSeries();
 	    	ChartSeries finalizado = new ChartSeries();
 	    	ChartSeries semResposta = new ChartSeries();
 	    	ChartSeries total = new ChartSeries();
-	        
+	    	
 	    	tramite.setLabel("Em Trâmite");
 	    	finalizado.setLabel("Finalizados");
 	    	semResposta.setLabel("Sem Resposta");
@@ -65,18 +67,21 @@ public class DrawBarChart {
 	    	variaveis.add(finalizado);
 	    	variaveis.add(semResposta);
 	    	variaveis.add(total);
-
+	    	
+	    	ChartSeries solicitacoes = new ChartSeries();
+	    	solicitacoes.setLabel("Solicitações");
+	    	variaveis2.add(solicitacoes);
+	    	
 		    switch ((int)tipoDados) {
 		    case 1:
-		    	variaveis = graficoGeral(variaveis, dadosChart);	
+		    	variaveis = graficoGeral(variaveis2, dadosChart);	
 		    	break;
 			case 2:
 				variaveis = graficoMensalComSeries(variaveis, dadosChart);	
 				break;
 //			case 3:
-//				variaveis = graficoMensalSemSeries(variaveis, dadosChart);	
+//				variaveis = graficoAnual(variaveis, dadosChart);	
 //				break;
-
 			default:
 				variaveis = graficoComSeries(variaveis, dadosChart);
 				break;
@@ -86,7 +91,7 @@ public class DrawBarChart {
 	        	model.addSeries(chartSeries);
 			}
 	        
-	        model.setSeriesColors("f3a935,c73558,6ebe9f,55596a");
+	        model.setSeriesColors("2196f3,858f9c,e77b40,5cb85c");
 	         
 	        return model;
 	    }
@@ -130,6 +135,8 @@ public class DrawBarChart {
 	    		model.addSeries(chartSeries);
 	    	}
 	    	
+	    	model.setSeriesColors("2196f3,858f9c,e77b40");
+	    	
 	    	return model;
 	    }
 	    
@@ -141,12 +148,11 @@ public class DrawBarChart {
 	        horizontalBarModel.setLegendPosition("e");
 	        horizontalBarModel.setStacked(true);
 	        horizontalBarModel.setZoom(true);
-
 	         
 	        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
 	        xAxis.setMin(0);
-	        xAxis.setTickInterval("1");
+//	        xAxis.setTickInterval("1");
 	        xAxis.setMax(valorMaior);
 	         
 	        Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
@@ -162,26 +168,13 @@ public class DrawBarChart {
 	        barModel.setTitle(title);
 	        barModel.setLegendPosition("ne");
 	        barModel.setZoom(true);
-	         
+//	        if (tipoDados == 3) {
+//	        	barModel.setExtender("ext");
+//	        }
+	        
 	        Axis xAxis = barModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
-	         
-	        Axis yAxis = barModel.getAxis(AxisType.Y);
-	        yAxis.setLabel("Quantidade");
-	        yAxis.setMin(0);
 	        xAxis.setTickInterval("1");
-	        yAxis.setMax(valorMaior);
-	        
-	        return barModel;
-	    }
-	    
-	    public BarChartModel createBarModel2(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior ) {
-	 	   
-	    	barModel = initBarModel(dadosChart, tipoDados );
-	         
-	        barModel.setTitle(title);
-	        barModel.setLegendPosition("ne");
-	        barModel.setZoom(true);
 	         
 	        Axis yAxis = barModel.getAxis(AxisType.Y);
 	        yAxis.setLabel("Quantidade");
@@ -190,7 +183,6 @@ public class DrawBarChart {
 	        
 	        return barModel;
 	    }
-
 	    
 	    private ArrayList<ChartSeries> graficoGeral(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ){
 		    for(String key : dadosChart.keySet()) {
@@ -207,8 +199,10 @@ public class DrawBarChart {
 		    	}
 	        	
 	        }
+//	        Collections.reverse(series);
 	    	return series;
 	    }
+	    
 
 	    private ArrayList<ChartSeries> graficoMensalSemSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart  ){
 	    	for(int mes = 0; mes < dadosChart.size(); mes++) {
@@ -225,7 +219,7 @@ public class DrawBarChart {
 	    
 	    private ArrayList<ChartSeries> graficoComSeries(ArrayList<ChartSeries> series, Map<String, ArrayList<Integer>> dadosChart ) {
 	    	for(String key : dadosChart.keySet()) {
-		    	for(int i=0; i < series.size(); i++) {
+		    	for(int i = series.size()-1; i >= 0; i--) {
 			       	series.get(i).set(key, dadosChart.get(key).get(i));
 		    	}
 		    }

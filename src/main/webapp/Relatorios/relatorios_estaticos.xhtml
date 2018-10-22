@@ -101,7 +101,7 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:500px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Tema"/>
+						<p:outputLabel value="Relatório Mensal de Tema"/>
 						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -109,7 +109,7 @@
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Tipo de Pessoa"/>
+						<p:outputLabel value="Relatório Mensal de Tipo de Pessoa"/>
 						<h:commandLink onclick="exportChartBean('chartTipoPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -117,7 +117,7 @@
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Estados"/>
+						<p:outputLabel value="Relatório Mensal de Estados"/>
 						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -170,9 +170,10 @@
         document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
     }
 
-	function ext() {
-		this.sortData = true;
-	}
+// 	function ext() {
+// 		this.cfg.seriesColors = ['#85802b', '#00749F'];
+// 		this.cfg.sortData = true;
+// 	}
 	</script>
 			</h:form>
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Relatorios {
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
 	public static String[] tipo = {"Pedidos totais do E-SIC", "Pedidos mensais do E-SIC", "Pedidos anuais do E-SIC", "Pedidos anuais acumulados do E-SIC",
-									"Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC", "Pedidos por assunto do E-SIC", "Pedidos por tipo de pessoa do E-SIC", 
+									"Pedidos por órgão do E-SIC", "Pedidos por entidade do E-SIC", "Pedidos por tema do E-SIC", "Pedidos por tipo de pessoa do E-SIC", 
 									"Pedidos por estado do E-SIC"};
 	public int[] metricas;
 	public boolean dataBool;
@@ -73,7 +74,7 @@ public class Relatorios {
 	 * 4- pedidos acumulados
 	 * 5 - pedidos por orgao
 	 * 6 - pedidos por entidade
-	 * 7- pedidos por assuntos
+	 * 7- pedidos por tema
 	 * 8 - pedidos por tipo de pessoa
 	 * 9- uf
 	 * @return 
@@ -170,6 +171,7 @@ public class Relatorios {
 		for (int i = 2012; i <= a.get(Calendar.YEAR); i++) {
 			anos.add(i);
 		}
+		Collections.reverse(anos);
 		return anos;
 	}
 	

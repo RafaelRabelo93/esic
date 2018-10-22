@@ -24,7 +24,7 @@ public class verificarStatusSolicitacao implements Job {
 		for (Solicitacao solicitacao : SolicitacaoDAO.listPorNaoFinalizada()) {
 			try {
 				updateStatusSolicitacao(solicitacao);
-				verificaTempoSolicitacao(solicitacao);
+//				verificaTempoSolicitacao(solicitacao);
 			} catch (NullPointerException e) {
 				System.out.println(e.getMessage());
 			}

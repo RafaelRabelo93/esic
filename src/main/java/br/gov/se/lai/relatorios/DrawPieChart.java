@@ -64,7 +64,7 @@ public class DrawPieChart implements Serializable{
 	        pieModel2.setTitle(title);
 	        pieModel2.setLegendPosition("e");
 	        pieModel2.setFill(true);
-	        pieModel2.setShowDataLabels(true);
+//	        pieModel2.setShowDataLabels(true);
 	        pieModel2.setDiameter(225);
 	        
 	        pieModel2.setSeriesColors("f3a935,c73558,6ebe9f,55596a,16a085,f39c12,e67e22,c0392b,bdc3c7,3498db,8e44ad,34495e");

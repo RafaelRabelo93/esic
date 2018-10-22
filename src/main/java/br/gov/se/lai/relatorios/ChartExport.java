@@ -5,9 +5,15 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Calendar;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 
@@ -42,6 +48,8 @@ public class ChartExport {
 	private String chartAssunto;
 	private String chartPessoa;
 	private String chartEstado;
+
+	private String nome;
 	
 	public void submittedBase64Str(ActionEvent event) throws IOException{
 		// You probably want to have a more comprehensive check here. 
@@ -60,8 +68,10 @@ public class ChartExport {
 	
 	public void gerarRelatorio() throws IOException {
 		
-	      PDDocument document = new PDDocument();  
-	      PDPageContentStream contentStream;
+		PDDocument document = new PDDocument();  
+		PDPageContentStream contentStream;
+		
+		try {
 	      
 	      // Cria página A4 em paisagem
 	      PDPage page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
@@ -90,58 +100,70 @@ public class ChartExport {
 	      PDImageXObject imgChartPessoa = LosslessFactory.createFromImage(document, criarImagem(chartPessoa));
 	      PDImageXObject imgChartEstado = LosslessFactory.createFromImage(document, criarImagem(chartEstado));
 	      
+	      Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/"));
+	      
+	      PDImageXObject pdImage = PDImageXObject.createFromFile(folder.toString()+"\\resources\\img\\esiclogo_se.png", document);
 	      
 	      // Página 01
 	      contentStream = new PDPageContentStream(document, page);
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80), pdImage.getWidth(), pdImage.getHeight());
 	      contentStream.drawImage(imgChartGeral, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartGeral.getHeight());
 	      contentStream.close();
 	      document.addPage(page);
 	      
 	      // Página 02
 	      contentStream = new PDPageContentStream(document, page2);
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
 	      contentStream.drawImage(imgChartMensal, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartMensal.getHeight());
 	      contentStream.close();
 	      document.addPage(page2);
 	      
 	      // Página 03
 	      contentStream = new PDPageContentStream(document, page3);
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
 	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartAnual.getHeight());
 	      contentStream.close();
 	      document.addPage(page3);
 	      
 	      // Página 04
 	      contentStream = new PDPageContentStream(document, page4);
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
 	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartAnualAcu.getHeight());
 	      contentStream.close();
 	      document.addPage(page4);
 	      
 	      // Página 05
 	      contentStream = new PDPageContentStream(document, page5);
-	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartOrgao.getHeight());
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (pageHeight*0.6));
 	      contentStream.close();
 	      document.addPage(page5);
 	      
 	      // Página 06
 	      contentStream = new PDPageContentStream(document, page6);
-	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartEntidade.getHeight());
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (pageHeight*0.6));
 	      contentStream.close();
 	      document.addPage(page6);
 	      
 	      // Página 07
 	      contentStream = new PDPageContentStream(document, page7);
-	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.15), (float) (pageHeight*0.05), (float) (imgChartAssunto.getWidth()*0.8), (float) (imgChartAssunto.getHeight()*0.8));
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartAssunto.getHeight()*0.8));
 	      contentStream.close();
 	      document.addPage(page7);
 	      
 	      // Página 08
 	      contentStream = new PDPageContentStream(document, page8);
-	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.15), (float) (pageHeight*0.05), (float) (imgChartPessoa.getWidth()*0.8), (float) (imgChartPessoa.getHeight()*0.8));
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartPessoa.getHeight()*0.8));
 	      contentStream.close();
 	      document.addPage(page8);
 	      
 	      // Página 09
 	      contentStream = new PDPageContentStream(document, page9);
-	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.15), (float) (pageHeight*0.05), (float) (imgChartEstado.getWidth()*0.8), (float) (imgChartEstado.getHeight()*0.8));
+	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartEstado.getHeight()*0.8));
 	      contentStream.close();
 	      document.addPage(page9);
 	      
@@ -151,9 +173,26 @@ public class ChartExport {
 	      byte[] buf = output.toByteArray();
 	      
 	      InputStream in = new ByteArrayInputStream(buf);
-	      file = new DefaultStreamedContent(in, "application/pdf", "relatorio.pdf");
+	      file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + getDataAtual() + ".pdf");
 	      
 	      document.close();
+	      
+		} catch (Exception e) {
+			e.printStackTrace();
+			document.close();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao gerar relatório"));
+		}
+	}
+	
+	private String getDataAtual() {
+		String data;
+		Calendar c = Calendar.getInstance();
+		int anoAtual = c.get(Calendar.YEAR);
+		int mesAtual = c.get(Calendar.MONTH);
+		
+		data = mesAtual + "_" + anoAtual;
+		
+		return data;
 	}
 	
 	public BufferedImage criarImagem(String imagem) throws IOException {
