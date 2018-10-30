@@ -16,6 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
@@ -56,8 +57,7 @@ public class Relatorios {
 	public String status;
 	public ArrayList<Integer> anos;
 	public BarChartModel barModel;
-	public HorizontalBarChartModel hBarModel;;
-	
+	public HorizontalBarChartModel hBarModel;
 	
 	
 	@PostConstruct
@@ -132,7 +132,13 @@ public class Relatorios {
 	public PieChartModel desenharPieChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		DrawPieChart modelPie = new DrawPieChart();
-		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1]);
+		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1], tipoDados);
+	}
+	
+	public DonutChartModel desenharDonutChart( long tipoDados) {
+		redirecionarFiltroDados(tipoDados);
+		DrawPieChart modelPie = new DrawPieChart();
+		return modelPie.createDonutModel(dadosChart, tipo[(int)tipoDados-1], tipoDados);
 	}
 	
 	/**
@@ -177,6 +183,22 @@ public class Relatorios {
 		}
 		Collections.reverse(anos);
 		return anos;
+	}
+	
+	public int getAnoAtual() {
+		Calendar c = Calendar.getInstance();
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		return anoAtual;
+	}
+	
+	public String getMesAtual() {
+		String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+		
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		
+		return meses[mesAtual-1];
 	}
 	
 
@@ -386,6 +408,6 @@ public class Relatorios {
 		this.hBarModel = hBarModel;
 	}
 
-
+	
 	
 }

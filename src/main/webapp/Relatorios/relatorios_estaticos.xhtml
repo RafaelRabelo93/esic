@@ -11,7 +11,7 @@
 	<ui:composition template="/templates/templateSemMenu.xhtml">
 
 		<ui:define name="content">
-
+			
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true"
 				redisplay="false" life="5000" severity="info,warn,error" />
@@ -20,7 +20,7 @@
 
 				<h:panelGroup>
 
-					<h1 style="margin-bottom: 0;">Relatórios Estatísticos</h1>
+					<h1 style="margin-bottom: 0;">Relatórios Estatísticos - #{relatorios.mesAtual} de #{relatorios.anoAtual}</h1>
 
 					<p:separator styleClass="separator"/>
 					
@@ -56,7 +56,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral"  style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral" responsive="true" style="witdh:80%"/>
 						<p:separator styleClass="separator2"/>
 						
 <!-- 						<p:outputLabel value="Relatório de Mensal"/> -->
@@ -64,7 +64,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 
 <!-- 						<p:outputLabel value="Relatório de Anual"/> -->
@@ -72,7 +72,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" style="height:300px" />
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" responsive="true" style="height:300px" />
 						<p:separator styleClass="separator2"/>
 
 <!-- 						<p:outputLabel value="Relatório de Anual Acumulado"/> -->
@@ -80,7 +80,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" style="height:300px" />
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
 <!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Direta Mensal"/> -->
@@ -88,7 +88,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao"  style="height:500px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 
 <!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Indireta Mensal"/> -->
@@ -96,7 +96,7 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}" widgetVar="chartEntidade" style="height:500px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}" widgetVar="chartEntidade" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
 <!-- 						<p:outputLabel value="Relatório Mensal de Tema"/> -->
@@ -104,34 +104,30 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  style="height:300px"/>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório Mensal de Tipo de Pessoa"/>
+<!-- 						<p:outputLabel value="Relatório Mensal de Tipo de Pessoa"/> -->
 						<h:commandLink onclick="exportChartBean('chartTipoPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart id="lastChart" type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  style="height:300px"/>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
 <!-- 						<p:outputLabel value="Relatório Mensal de Estados"/> -->
 						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
-					        <p:fileDownload value="#{chartExport.file}" />
-					        <i class="fa fa-download" />
+							<p:fileDownload value="#{chartExport.file}" />
+							<i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado"  style="height:300px"/>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" responsive="true"/>
 						<p:separator styleClass="separator2"/>
-
-				<p:blockUI block=":pageFull" trigger="lastChart">
-					<h:graphicImage value="#{resource['img/loading.gif']}" height="150" />
-				</p:blockUI>
-				
+						
 				</h:panelGroup>
 				
 
 	<script type="text/javascript">
-		
+
 	function exportChart(chart) {
 	    //export image
 	    $('#form\\:output').empty().append(PF(chart).exportAsImage());
@@ -171,10 +167,12 @@
         document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
     }
 
-// 	function ext() {
-// 		this.cfg.seriesColors = ['#85802b', '#00749F'];
-// 		this.cfg.sortData = true;
-// 	}
+	function ext() {
+	  this.cfg.seriesDefaults.rendererOptions.varyBarColor = true;
+	  this.cfg.legend = {
+	          show: false
+	     };
+	}    
 	</script>
 			</h:form>
 

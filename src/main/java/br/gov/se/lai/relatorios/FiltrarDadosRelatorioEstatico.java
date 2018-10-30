@@ -288,7 +288,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		} else {
 			auxp = anoAtual + "-" + mesAtual + "%";
 		} 
-		String periodo = auxp;
+		String periodo = "%";
 
 		Set<String> uf = new HashSet<>();
 		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
@@ -333,7 +333,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		} else {
 			auxp = anoAtual + "-" + mesAtual + "%";
 		} 
-		String periodo = auxp;
+		String periodo = "%";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -400,7 +400,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
 		Set<String> assunto = new HashSet<>();
-		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", periodo));
+		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", "%"));
 
 		if (assuntos != null) {
 			assunto = assuntos.stream().collect(Collectors.toSet());

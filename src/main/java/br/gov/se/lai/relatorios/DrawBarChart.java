@@ -77,7 +77,8 @@ public class DrawBarChart {
 	    	
 		    switch ((int)tipoDados) {
 		    case 1:
-		    	variaveis = graficoGeral(variaveis2, dadosChart);	
+		    	variaveis = graficoGeral(variaveis2, dadosChart);
+		    	model.setExtender("ext");
 		    	break;
 			case 2:
 				variaveis = graficoMensalComSeries(variaveis, dadosChart);	
@@ -179,6 +180,7 @@ public class DrawBarChart {
 	        barModel.setLegendCols(5);
 	        barModel.setZoom(true);
 	        barModel.setShowPointLabels(true);
+	        barModel.setShadow(false);
 	        
 	        Axis xAxis = barModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");

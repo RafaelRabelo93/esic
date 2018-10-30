@@ -2,9 +2,12 @@ package br.gov.se.lai.relatorios;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+
+import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 @ManagedBean
@@ -23,6 +26,7 @@ public class DrawPieChart implements Serializable{
 	 
 	    private PieChartModel pieModel1;
 	    private PieChartModel pieModel2;
+	    private DonutChartModel donutModel;
 	 
 	    @PostConstruct
 	    public void init() {
@@ -54,7 +58,7 @@ public class DrawPieChart implements Serializable{
 	    }
 	     
 	    @SuppressWarnings("unused")
-		public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title) {
+		public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
 	        pieModel2 = new PieChartModel();
 	         
 	        for(String key : dadosChart.keySet()) {
@@ -66,10 +70,35 @@ public class DrawPieChart implements Serializable{
 	        pieModel2.setFill(true);
 	        pieModel2.setDataFormat("%d%%");
 	        pieModel2.setDiameter(225);
+	        if (tipoDados == 9)	pieModel2.setLegendCols(3);
 	        
-	        pieModel2.setSeriesColors("f3a935,c73558,6ebe9f,55596a,16a085,f39c12,e67e22,c0392b,bdc3c7,3498db,8e44ad,34495e");
+	        pieModel2.setSeriesColors("e6194B, 3cb44b, ffe119, 4363d8, f58231, 911eb4, 42d4f4, f032e6, bfef45, fabebe, 469990, e6beff, 9A6324, fffac8, 800000, aaffc3, 808000, ffd8b1, 000075, a9a9a9, ffffff, 000000");
 	        
 	        return pieModel2;
+	    }
+	    
+	    @SuppressWarnings("unused")
+	    public DonutChartModel createDonutModel(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
+	    	donutModel = new DonutChartModel();
+	    	
+	    	Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
+	    	
+	    	for(String key : dadosChart.keySet()) {
+	    		circle1.put(key, dadosChart.get(key).get(0));
+	    	}
+	    	donutModel.addCircle(circle1);
+	    	
+	    	donutModel.setTitle(title);
+	    	donutModel.setLegendPosition("e");
+	    	donutModel.setFill(true);
+	    	donutModel.setDataFormat("%d%%");
+//	    	donutModel.setShowDataLabels(true);
+//	    	donutModel.setDiameter(225);
+	    	if (tipoDados == 9)	donutModel.setLegendCols(3);
+	    	
+//	    	donutModel.setSeriesColors("f3a935,c73558,6ebe9f,55596a,16a085,f39c12,e67e22,c0392b,bdc3c7,3498db,8e44ad,34495e");
+	    	
+	    	return donutModel;
 	    }
 	     
 	

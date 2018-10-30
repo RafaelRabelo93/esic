@@ -125,7 +125,8 @@ public class  EntidadesDAO {
 				"INNER JOIN Solicitacao as slt " + 
 				"ON slt.entidades.idEntidades = ent.idEntidades " + 
 				"WHERE ent.orgao = 1" +
-				"AND slt.dataIni LIKE '" + periodo + "' ";
+				"AND slt.dataIni LIKE '" + periodo + "' " +
+				"ORDER BY ent.sigla ASC";
     	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
     }
 	  
@@ -136,7 +137,8 @@ public class  EntidadesDAO {
 				"INNER JOIN Solicitacao as slt " + 
 				"ON slt.entidades.idEntidades = ent.idEntidades " + 
 				"WHERE ent.orgao = 0" +
-				"AND slt.dataIni LIKE '" + periodo + "' ";
+				"AND slt.dataIni LIKE '" + periodo + "' " +
+				"ORDER BY ent.sigla ASC";
     	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
     }
 }
