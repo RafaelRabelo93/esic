@@ -53,20 +53,23 @@ public class DrawBarChart {
 	        ArrayList<ChartSeries> variaveis = new ArrayList<>();
 	        ArrayList<ChartSeries> variaveis2 = new ArrayList<>();
 	    	
-	        ChartSeries tramite = new ChartSeries();
-	    	ChartSeries finalizado = new ChartSeries();
+	        ChartSeries total = new ChartSeries();
+	        ChartSeries atendidas = new ChartSeries();
 	    	ChartSeries semResposta = new ChartSeries();
-	    	ChartSeries total = new ChartSeries();
+	    	ChartSeries tramite = new ChartSeries();
+	    	ChartSeries naoVisu = new ChartSeries();
 	    	
-	    	tramite.setLabel("Em Trâmite");
-	    	finalizado.setLabel("Finalizados");
-	    	semResposta.setLabel("Sem Resposta");
 	    	total.setLabel("Total");
+	    	atendidas.setLabel("Atendidas");
+	    	semResposta.setLabel("Sem Resposta");
+	    	tramite.setLabel("Em Trâmite");
+	    	naoVisu.setLabel("Não Visualizadas");
 	    	
-	    	variaveis.add(tramite);
-	    	variaveis.add(finalizado);
-	    	variaveis.add(semResposta);
 	    	variaveis.add(total);
+	    	variaveis.add(atendidas);
+	    	variaveis.add(semResposta);
+	    	variaveis.add(tramite);
+	    	variaveis.add(naoVisu);
 	    	
 	    	ChartSeries solicitacoes = new ChartSeries();
 	    	solicitacoes.setLabel("Solicitações");
@@ -91,7 +94,7 @@ public class DrawBarChart {
 	        	model.addSeries(chartSeries);
 			}
 	        
-	        model.setSeriesColors("2196f3,858f9c,e77b40,5cb85c");
+	        model.setSeriesColors("47476b,005ce6,e60000,00b300,ff9900");
 	         
 	        return model;
 	    }
@@ -100,20 +103,23 @@ public class DrawBarChart {
 	    	HorizontalBarChartModel model =  new HorizontalBarChartModel();
 	    	ArrayList<ChartSeries> variaveis = new ArrayList<>();
 	    	
-	    	ChartSeries tramite = new ChartSeries();
-	    	ChartSeries finalizado = new ChartSeries();
+	    	ChartSeries total = new ChartSeries();
+	        ChartSeries atendidas = new ChartSeries();
 	    	ChartSeries semResposta = new ChartSeries();
-//	    	ChartSeries total = new ChartSeries();
+	    	ChartSeries tramite = new ChartSeries();
+	    	ChartSeries naoVisu = new ChartSeries();
 	    	
-	    	tramite.setLabel("Em Trâmite");
-	    	finalizado.setLabel("Finalizados");
+	    	total.setLabel("Total");
+	    	atendidas.setLabel("Atendidas");
 	    	semResposta.setLabel("Sem Resposta");
-//	    	total.setLabel("Total");
+	    	tramite.setLabel("Em Trâmite");
+	    	naoVisu.setLabel("Não Visualizadas");
 	    	
-	    	variaveis.add(tramite);
-	    	variaveis.add(finalizado);
+	    	variaveis.add(total);
+	    	variaveis.add(atendidas);
 	    	variaveis.add(semResposta);
-//	    	variaveis.add(total);
+	    	variaveis.add(tramite);
+	    	variaveis.add(naoVisu);
 	    	
 	    	switch ((int)tipoDados) {
 	    	case 1:
@@ -135,7 +141,8 @@ public class DrawBarChart {
 	    		model.addSeries(chartSeries);
 	    	}
 	    	
-	    	model.setSeriesColors("2196f3,858f9c,e77b40");
+//	    	model.setSeriesColors("005ce6,e60000,00b300,ff9900");
+	    	model.setSeriesColors("47476b,005ce6,e60000,00b300,ff9900");
 	    	
 	    	return model;
 	    }
@@ -146,40 +153,46 @@ public class DrawBarChart {
 	         
 	        horizontalBarModel.setTitle(title);
 	        horizontalBarModel.setLegendPosition("e");
-	        horizontalBarModel.setStacked(true);
+//	        horizontalBarModel.setStacked(true);
 	        horizontalBarModel.setZoom(true);
+	        horizontalBarModel.setShowPointLabels(true);
 	         
 	        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
 	        xAxis.setMin(0);
-//	        xAxis.setTickInterval("1");
+	        xAxis.setTickFormat("%i");
+//	        xAxis.setTickAngle(-30);
 	        xAxis.setMax(valorMaior);
 	         
 	        Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
-	        yAxis.setLabel("Quantidade");    
+	        yAxis.setLabel("Quantidade");  
 	        return horizontalBarModel;
 	    }
 	     
 
 	    public BarChartModel createBarModel(String title, Map<String, ArrayList<Integer>> dadosChart, long tipoDados, int valorMaior) {
 	   
-	    	barModel = initBarModel( dadosChart, tipoDados );
+	    	barModel = initBarModel(dadosChart, tipoDados);
 	         
 	        barModel.setTitle(title);
-	        barModel.setLegendPosition("ne");
+	        barModel.setLegendPosition("n");
+	        barModel.setLegendCols(5);
 	        barModel.setZoom(true);
-//	        if (tipoDados == 3) {
-//	        	barModel.setExtender("ext");
-//	        }
+	        barModel.setShowPointLabels(true);
 	        
 	        Axis xAxis = barModel.getAxis(AxisType.X);
 	        xAxis.setLabel("Metrica");
-	        xAxis.setTickInterval("1");
+	        xAxis.setTickFormat("%i");
 	         
 	        Axis yAxis = barModel.getAxis(AxisType.Y);
 	        yAxis.setLabel("Quantidade");
 	        yAxis.setMin(0);
 	        yAxis.setMax(valorMaior);
+	        yAxis.setTickFormat("%i");
+	        
+	        if(tipoDados == 5 || tipoDados == 6) {
+	        	xAxis.setTickAngle(30);
+	        }
 	        
 	        return barModel;
 	    }

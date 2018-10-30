@@ -50,10 +50,8 @@
 						    <p:outputPanel id="output" />
 						</p:dialog>
 					    
-						<p:outputLabel value="Relatório de Geral"/>
-						
+<!-- 						<p:outputLabel value="Relatório de Geral"/> -->
 						<h:inputHidden id="b64" value="#{chartExport.base64Str}" />
-						
 						<h:commandLink onclick="exportChartBean('chartGeral')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -61,47 +59,47 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Mensal"/>
+<!-- 						<p:outputLabel value="Relatório de Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartMensal')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal"  style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal" style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
-						<p:outputLabel value="Relatório de Anual"/>
+<!-- 						<p:outputLabel value="Relatório de Anual"/> -->
 						<h:commandLink onclick="exportChartBean('chartAnual')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" style="height:300px" />
 						<p:separator styleClass="separator2"/>
 
-						<p:outputLabel value="Relatório de Anual Acumulado"/>
+<!-- 						<p:outputLabel value="Relatório de Anual Acumulado"/> -->
 						<h:commandLink onclick="exportChartBean('chartAnualAcumulado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" style="height:300px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" style="height:300px" />
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório de Órgão"/>
+<!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Direta Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartOrgao')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(5)}" widgetVar="chartOrgao"  style="height:500px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao"  style="height:500px"/>
 						<p:separator styleClass="separator2"/>
 
-						<p:outputLabel value="Relatório de Entidade"/>
+<!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Indireta Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartEntidade')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="bar" model="#{relatorios.desenharBarChartHorizontal(6)}" widgetVar="chartEntidade"  style="height:500px"/>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}" widgetVar="chartEntidade" style="height:500px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório Mensal de Tema"/>
+<!-- 						<p:outputLabel value="Relatório Mensal de Tema"/> -->
 						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -114,10 +112,10 @@
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
 					    </h:commandLink>
-						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  style="height:300px"/>
+						<p:chart id="lastChart" type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 						
-						<p:outputLabel value="Relatório Mensal de Estados"/>
+<!-- 						<p:outputLabel value="Relatório Mensal de Estados"/> -->
 						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -125,9 +123,12 @@
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado"  style="height:300px"/>
 						<p:separator styleClass="separator2"/>
 
-
-		
+				<p:blockUI block=":pageFull" trigger="lastChart">
+					<h:graphicImage value="#{resource['img/loading.gif']}" height="150" />
+				</p:blockUI>
+				
 				</h:panelGroup>
+				
 
 	<script type="text/javascript">
 		
@@ -160,9 +161,9 @@
 	function exportAllCharts2() {
         // exportAsImage() will return a base64 png encoded string
         document.getElementById('form:ch1').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch2').value = PF('chartMensal').exportAsImage().src;
-        document.getElementById('form:ch3').value = PF('chartAnual').exportAsImage().src;
-        document.getElementById('form:ch4').value = PF('chartAnualAcumulado').exportAsImage().src;
+        document.getElementById('form:ch2').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch3').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch4').value = PF('chartGeral').exportAsImage().src;
         document.getElementById('form:ch5').value = PF('chartOrgao').exportAsImage().src;
         document.getElementById('form:ch6').value = PF('chartEntidade').exportAsImage().src;
         document.getElementById('form:ch7').value = PF('chartAssunto').exportAsImage().src;

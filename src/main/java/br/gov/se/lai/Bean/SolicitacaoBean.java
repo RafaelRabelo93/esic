@@ -871,7 +871,7 @@ public class SolicitacaoBean implements Serializable {
 	public void prorrogar() {
 //		alterarPrazo(solicitacao);
 		this.mensagem.setSolicitacao(solicitacao);
-		this.mensagem.setTipo((short) 2);
+		this.mensagem.setTipo((short) 7);
 		this.mensagem.setUsuario(((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		if (MensagemDAO.saveOrUpdate(mensagem)) {
@@ -980,7 +980,7 @@ public class SolicitacaoBean implements Serializable {
 
 			// Avisa ao cidadão
 			this.mensagem.setSolicitacao(solicitacao);
-			this.mensagem.setTipo((short) 2);
+			this.mensagem.setTipo((short) 7);
 			this.mensagem.setUsuario(usuario);
 			this.mensagem.setData(new Date(System.currentTimeMillis()));
 

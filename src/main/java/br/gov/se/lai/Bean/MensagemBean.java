@@ -49,6 +49,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private static Mensagem mensagem;
 	private String status;
 	private Calendar data;
+	private int idSolicitacao;
 	private Solicitacao solicitacao;
 	private static List<Mensagem> mensagensSolicitacao;
 	private static List<Mensagem> mensagensHistorico;
@@ -160,7 +161,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setUsuario(usuario);
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
-		mensagem.setTipo((short)2);
+		mensagem.setTipo((short)7);
 		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
@@ -437,6 +438,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setNota(int nota) {
 		this.nota = nota;
+	}
+
+	public int getIdSolicitacao() {
+		return idSolicitacao;
+	}
+
+	public void setIdSolicitacao(int idSolicitacao) {
+		this.idSolicitacao = idSolicitacao;
 	}
 
 	

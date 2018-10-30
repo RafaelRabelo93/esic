@@ -214,7 +214,8 @@ public class SolicitacaoDAO {
 					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 					"AND solicitacao.tipo = 'Informação'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
-	}	
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> queryDinamica(String query) {
 		return (List<Solicitacao>) Consultas.buscaPersonalizada(query, em); 
@@ -266,6 +267,158 @@ public class SolicitacaoDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listarAvaliadas(int idEntidade) {
 		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.entidades.idEntidades = "+idEntidade+" AND ( slt.avaliacao IS NOT NULL and slt.avaliacao != 0)",em)); 
-	}	
-
+	}
+	
+	// Consultas utilizadas exclusivamente para geração de gráficos
+		
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarTotalPorPeriodo(String periodo) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = 'Informação' AND slt.dataIni LIKE '" + periodo +  "')",em)); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarAtendidasPorPeriodo(String periodo) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE msg.tipo = 2 " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.tipo = 'Informação' " + 
+				"AND slt.status != 'Sem Resposta'";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarSemRespostaPorPeriodo(String periodo) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = 'Informação' " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND (slt.status = 'Sem Resposta' " + 
+				"OR (slt.status = 'Negada'  " + 
+				"AND slt.idSolicitacao NOT IN ( " + 
+				"SELECT DISTINCT slt2.idSolicitacao  " + 
+				"FROM Solicitacao as slt2  " + 
+				"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
+				"WHERE msg2.tipo = 2  " + 
+				"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarEmTramitePorPeriodo(String periodo) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = 'Informação' " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.visualizada = 1 " + 
+				"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
+				"FROM Solicitacao as slt2 " + 
+				"INNER JOIN Mensagem as msg2 " + 
+				"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
+				"WHERE msg2.tipo = 2 " + 
+				"AND slt2.dataIni LIKE '" + periodo + "' " + 
+				"AND slt2.tipo = 'Informação' " + 
+				"AND slt2.status != 'Sem Resposta') " + 
+				"AND slt.status != 'Sem Resposta' " + 
+				"AND slt.status != 'Negada'";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarNaoVisualizadasPorPeriodo(String periodo) {
+		String HQL = "SELECT slt " + 
+				"FROM Solicitacao as slt  " + 
+				"WHERE slt.tipo = 'Informação'  " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.visualizada = 0 " + 
+				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
+	}
+	
+	// Consultas utilizadas exclusivamente para geração de gráficos por órgão
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarTotalPorEntidade(String periodo, int idEntidade) {
+		String HQL = "SELECT slt FROM Solicitacao as slt "
+					+ "WHERE slt.tipo = 'Informação' "
+					+ "AND slt.dataIni LIKE '" + periodo +  "' "
+					+ "AND slt.entidades.idEntidades = " + idEntidade;
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada(HQL,em)); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarAtendidasPorEntidade(String periodo, int idEntidade) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE msg.tipo = 2 " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.tipo = 'Informação' " + 
+				"AND slt.status != 'Sem Resposta'" +
+				"AND slt.entidades.idEntidades = " + idEntidade + "";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarSemRespostaPorEntidade(String periodo, int idEntidade) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = 'Informação' " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND (slt.status = 'Sem Resposta' " + 
+				"OR (slt.status = 'Negada'  " + 
+				"AND slt.idSolicitacao NOT IN ( " + 
+				"SELECT DISTINCT slt2.idSolicitacao  " + 
+				"FROM Solicitacao as slt2  " + 
+				"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
+				"WHERE msg2.tipo = 2  " + 
+				"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))" +
+				"AND slt.entidades.idEntidades = " + idEntidade + "";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarEmTramitePorEntidade(String periodo, int idEntidade) {
+		String HQL= "SELECT DISTINCT slt " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = 'Informação' " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.visualizada = 1 " + 
+				"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
+				"FROM Solicitacao as slt2 " + 
+				"INNER JOIN Mensagem as msg2 " + 
+				"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
+				"WHERE msg2.tipo = 2 " + 
+				"AND slt2.dataIni LIKE '" + periodo + "' " + 
+				"AND slt2.tipo = 'Informação' " + 
+				"AND slt2.status != 'Sem Resposta') " + 
+				"AND slt.status != 'Sem Resposta' " + 
+				"AND slt.status != 'Negada'" +
+				"AND slt.entidades.idEntidades = " + idEntidade + "";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Solicitacao> listarNaoVisualizadasPorEntidade(String periodo, int idEntidade) {
+		String HQL = "SELECT slt " + 
+				"FROM Solicitacao as slt  " + 
+				"WHERE slt.tipo = 'Informação'  " + 
+				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.visualizada = 0 " + 
+				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
+				"AND slt.entidades.idEntidades = " + idEntidade + "";
+		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
+	}
+	
 }

@@ -28,6 +28,7 @@ public class Mensagem implements java.io.Serializable {
 	private static final long serialVersionUID = -4273056639466954495L;
 	private Integer idMensagem;
 	private Solicitacao solicitacao;
+	private int idSolicitacao;
 	private Usuario usuario;
 	private String texto;
 	private Date data;
@@ -121,6 +122,15 @@ public class Mensagem implements java.io.Serializable {
 	public void setNota(Integer nota) {
 		this.nota = nota;
 	}
+	
+//	@Column(name = "idSolicitacao", unique = true, nullable = false, insertable=false, updatable=false)
+//	public int getIdSolicitacao() {
+//		return idSolicitacao;
+//	}
+//
+//	public void setIdSolicitacao(int idSolicitacao) {
+//		this.idSolicitacao = idSolicitacao;
+//	}
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
 //	public Set<Anexo> getAnexos() {

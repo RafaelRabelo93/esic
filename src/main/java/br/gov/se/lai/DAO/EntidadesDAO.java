@@ -117,4 +117,26 @@ public class  EntidadesDAO {
 	public static List<Entidades> listOrgaoEntidade(int idOrgao) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idOrgaos = "+idOrgao,em)); 
 	}
+	
+	@SuppressWarnings("unchecked")
+  public static List<Entidades> listOrgaosComSolicitacoes(String periodo) {
+		String HQL = "SELECT DISTINCT ent " + 
+				"FROM Entidades as ent " + 
+				"INNER JOIN Solicitacao as slt " + 
+				"ON slt.entidades.idEntidades = ent.idEntidades " + 
+				"WHERE ent.orgao = 1" +
+				"AND slt.dataIni LIKE '" + periodo + "' ";
+    	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
+    }
+	  
+    @SuppressWarnings("unchecked")
+    public static List<Entidades> listEntidadesComSolicitacoes(String periodo) {		
+    	String HQL = "SELECT DISTINCT ent " + 
+				"FROM Entidades as ent " + 
+				"INNER JOIN Solicitacao as slt " + 
+				"ON slt.entidades.idEntidades = ent.idEntidades " + 
+				"WHERE ent.orgao = 0" +
+				"AND slt.dataIni LIKE '" + periodo + "' ";
+    	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
+    }
 }

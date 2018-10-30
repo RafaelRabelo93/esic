@@ -16,7 +16,7 @@
 	
 		<!-- Album Manual de Uso -->
 	
-		<div id="carrossel" style="width: 80%;" >
+		<h:panelGroup id="carrossel" style="width:80%" rendered="false">
 			<p:carousel numVisible="1" autoPlayInterval="5000" itemStyle="text-align:center;" breakpoint="100" responsive="true" style="margin-bottom:0; border:none; background-color:white">
 		        <p:tab title="Lorem Ipsum I">
 		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive">
@@ -38,7 +38,13 @@
 		            </h:panelGrid>
 		        </p:tab>
 		    </p:carousel>    
-		</div>
+	</h:panelGroup>
+	
+	<h2>Gráficos Estatísticos</h2>
+	<h:panelGroup id="charts" styleClass="inline" style="width:100%; display: flex; justify-content: space-around;">
+		<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" responsive="true" widgetVar="chartMensal" style="width:40%"/>
+		<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" responsive="true" widgetVar="chartAnualAcumulado" style="width:40%"/>
+	</h:panelGroup>
 	 	
 		<!-- Botões Fim -->
 		

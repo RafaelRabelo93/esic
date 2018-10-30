@@ -190,7 +190,7 @@ public class ChartExport {
 		int anoAtual = c.get(Calendar.YEAR);
 		int mesAtual = c.get(Calendar.MONTH);
 		
-		data = mesAtual + "_" + anoAtual;
+		data = mesAtual+1 + "_" + anoAtual;
 		
 		return data;
 	}
