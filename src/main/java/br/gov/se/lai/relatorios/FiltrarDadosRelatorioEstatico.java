@@ -211,22 +211,47 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		Calendar c = Calendar.getInstance();
 		int anoAtual = c.get(Calendar.YEAR);
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		
+		String periodo;
+		if (mesAtual<=9) {
+			periodo = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			periodo = anoAtual + "-" + mesAtual + "%";
+		} 
 		
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listOrgaosComSolicitacoes(anoAtual + "%"));
-
-		for (Entidades entidades : orgaos) {
-			base.add(entidades.getSigla());
+		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listOrgaosComSolicitacoes(periodo));
+		
+		if(orgaos.isEmpty()) {
+//			orgaos = new ArrayList<>(EntidadesDAO.listOrgaos());
+//			while(orgaos.size() > 7) {
+//				orgaos.remove(orgaos.size()-1);
+//			}
+			base.add("Nenhum");
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			
-			dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
 			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		else {
+		
+			for (Entidades entidades : orgaos) {
+				base.add(entidades.getSigla());
+				ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+				
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			}
 			
 		}
 
@@ -247,23 +272,48 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		Calendar c = Calendar.getInstance();
 		int anoAtual = c.get(Calendar.YEAR);
-
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		
+		String periodo;
+		if (mesAtual<=9) {
+			periodo = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			periodo = anoAtual + "-" + mesAtual + "%";
+		} 
+		
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listEntidadesComSolicitacoes(anoAtual + "%"));
-
-		for (Entidades entidades : orgaos) {
-			base.add(entidades.getSigla());
+		ArrayList<Entidades> orgaos = new ArrayList<>(EntidadesDAO.listEntidadesComSolicitacoes(periodo));
+		
+		if(orgaos.isEmpty()) {
+//			orgaos = new ArrayList<>(EntidadesDAO.listEntidades());
+//			while(orgaos.size() > 7) {
+//				orgaos.remove(orgaos.size()-1);
+//			}
+			base.add("");
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			
-			dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
-			dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "%", entidades.getIdEntidades()).size());
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
+			dadosEspecificos.add(0);
 			dadosRelacionadorBase.add(dadosEspecificos);
-			 
+		}
+		else {
+			
+			for (Entidades entidades : orgaos) {
+				base.add(entidades.getSigla());
+				ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+				
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(periodo, entidades.getIdEntidades()).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			}
+			
 		}
 
 		for (int i = 0; i < base.size(); i++) {
@@ -283,13 +333,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String auxp; 
+		
+		String periodo; 
 		if (mesAtual<=9) {
-			auxp = anoAtual + "-0" + mesAtual + "%";
+			periodo = anoAtual + "-0" + mesAtual + "%";
 		} else {
-			auxp = anoAtual + "-" + mesAtual + "%";
+			periodo = anoAtual + "-" + mesAtual + "%";
 		} 
-		String periodo = "%";
+		
+		periodo = "%";
 
 		Set<String> uf = new LinkedHashSet<>();
 		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
@@ -328,13 +380,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String auxp; 
+		
+		String periodo; 
 		if (mesAtual<=9) {
-			auxp = anoAtual + "-0" + mesAtual + "%";
+			periodo = anoAtual + "-0" + mesAtual + "%";
 		} else {
-			auxp = anoAtual + "-" + mesAtual + "%";
+			periodo = anoAtual + "-" + mesAtual + "%";
 		} 
-		String periodo = "%";
+		
+		periodo = "%";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
@@ -389,19 +443,20 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
-		String auxp; 
+		
+		String periodo; 
 		if (mesAtual<=9) {
-			auxp = anoAtual + "-0" + mesAtual + "%";
+			periodo = anoAtual + "-0" + mesAtual + "%";
 		} else {
-			auxp = anoAtual + "-" + mesAtual + "%";
+			periodo = anoAtual + "-" + mesAtual + "%";
 		} 
-		String periodo = auxp;
+		
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
 		Set<String> assunto = new HashSet<>();
-		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", "%"));
+		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", periodo));
 
 		if (assuntos != null) {
 			assunto = assuntos.stream().collect(Collectors.toSet());

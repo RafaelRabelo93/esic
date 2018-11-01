@@ -32,8 +32,8 @@ public class Relatorios {
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
 	public static String[] tipo = {"Pedidos totais do E-SIC", "Pedidos Mensais do E-SIC", "Pedidos Anuais do E-SIC", "Pedidos Anuais acumulados do E-SIC",
-									"Pedidos por Órgão da Administração Direta", "Pedidos por Entidade Órgão da Administração Indireta", "Pedidos por Tema do E-SIC", "Pedidos por Tipo de Pessoa", 
-									"Pedidos por Ente Federativo"};
+									"Pedidos Mensais por Órgão da Administração Direta", "Pedidos Mensais por Entidade Órgão da Administração Indireta", "Pedidos Mensais por Tema do E-SIC", "Pedidos Totais por Tipo de Pessoa", 
+									"Pedidos Totais por Ente Federativo"};
 	public int[] metricas;
 	public boolean dataBool;
 	public boolean mesesBool;
@@ -169,8 +169,8 @@ public class Relatorios {
 			valorMaior = Collections.max(list,null) > valorMaior ? Collections.max(list,null) : valorMaior;
 		}
 		
-		if (valorMaior*0.2 < 5) {
-			return ((valorMaior + 5)/10)*10;
+		if (valorMaior*0.2 < 10) {
+			return ((valorMaior/10)*10)+10;
 		} 
 		else return (int) ((valorMaior+(valorMaior*0.2))/10)*10;
 	}
