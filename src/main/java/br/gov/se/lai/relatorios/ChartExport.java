@@ -1,5 +1,6 @@
 package br.gov.se.lai.relatorios;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -16,6 +17,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
+import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
 import java.io.File;
 
@@ -26,6 +28,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.color.PDJPXColorSpace;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -100,70 +104,311 @@ public class ChartExport {
 	      PDImageXObject imgChartPessoa = LosslessFactory.createFromImage(document, criarImagem(chartPessoa));
 	      PDImageXObject imgChartEstado = LosslessFactory.createFromImage(document, criarImagem(chartEstado));
 	      
-	      Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/"));
+//	      Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/"));
 	      
-	      PDImageXObject pdImage = PDImageXObject.createFromFile(folder.toString()+"\\resources\\img\\esiclogo_se.png", document);
+//	      PDImageXObject pdImage = PDImageXObject.createFromFile(folder.toString()+"\\resources\\img\\esiclogo_se.png", document);
+//	      PDImageXObject pdImage = PDImageXObject.createFromFile(ChartExport.class.getResource("resources/img/esiclogo_se.png").getPath(), document);
+	      
+	      Relatorios relatorio = new Relatorios();
+	      
+	      PDFont font = PDType1Font.HELVETICA;
+	      int marginTop = 30;
+	      int fontSize = 20;
+	      
+	      Color color = new Color(52, 105, 170);
+	      
+	      String line1 = "Acesso à Informação Pública - Transparência Passiva";
+	      String line2 = "Estatística Mensal de Atendimento - Art. 30 , III, da Lei nº 12.527/2011";
+	      String line3 = relatorio.getMesAtual() + " de " + relatorio.getAnoAtual();
+	      String fonte = "Fonte: esic.se.gov.br";
 	      
 	      // Página 01
 	      contentStream = new PDPageContentStream(document, page);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80), pdImage.getWidth(), pdImage.getHeight());
-	      contentStream.drawImage(imgChartGeral, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartGeral.getHeight());
+	      
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+//	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80), pdImage.getWidth(), pdImage.getHeight());
+	      contentStream.drawImage(imgChartGeral, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartGeral.getWidth()*0.85), (float) (imgChartGeral.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page);
 	      
 	      // Página 02
 	      contentStream = new PDPageContentStream(document, page2);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartMensal, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartMensal.getHeight());
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+	      
+	      contentStream.drawImage(imgChartMensal, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page2);
 	      
 	      // Página 03
 	      contentStream = new PDPageContentStream(document, page3);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartAnual.getHeight());
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page3);
 	      
 	      // Página 04
 	      contentStream = new PDPageContentStream(document, page4);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), imgChartAnualAcu.getHeight());
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page4);
 	      
 	      // Página 05
 	      contentStream = new PDPageContentStream(document, page5);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (pageHeight*0.6));
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page5);
 	      
 	      // Página 06
 	      contentStream = new PDPageContentStream(document, page6);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (pageHeight*0.6));
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+//	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
+	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page6);
 	      
 	      // Página 07
 	      contentStream = new PDPageContentStream(document, page7);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartAssunto.getHeight()*0.8));
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page7);
 	      
 	      // Página 08
 	      contentStream = new PDPageContentStream(document, page8);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartPessoa.getHeight()*0.8));
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page8);
 	      
 	      // Página 09
 	      contentStream = new PDPageContentStream(document, page9);
-	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.05), (float) (pageWidth*0.9), (float) (imgChartEstado.getHeight()*0.8));
+
+	      contentStream.setNonStrokingColor(color);
+	      contentStream.addRect(170, 500, 700, 70);
+	      contentStream.fill();
+	      
+	      contentStream.beginText();
+	      	contentStream.setNonStrokingColor(Color.WHITE);
+	      	contentStream.setLeading(15f);
+		  	contentStream.setFont(font, fontSize);
+		  	contentStream.newLineAtOffset(startX(font, fontSize, line1, pageWidth), startY(font, fontSize, pageHeight, marginTop));
+		  	contentStream.showText(line1);
+		  	contentStream.newLine();
+		  	contentStream.setFont(font, 14);
+		  	contentStream.showText(line2);
+		  	contentStream.newLine();
+		  	contentStream.showText(line3);
+	      contentStream.endText();
+
+	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 10);
+		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
+		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page9);
 	      
@@ -193,6 +438,22 @@ public class ChartExport {
 		data = mesAtual+1 + "_" + anoAtual;
 		
 		return data;
+	}
+	
+	private float startX(PDFont font, int fontSize, String line, float pageWidth) throws IOException {
+		float titleWidth = font.getStringWidth(line) / 1000 * fontSize;
+		
+        float startX = (pageWidth - titleWidth) / 2;
+        
+		return startX;
+	}
+	
+	private float startY(PDFont font, int fontSize, float pageHeight, float marginTop) throws IOException {
+        float titleHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
+		
+		float startY = pageHeight - marginTop - titleHeight;
+		
+		return startY;
 	}
 	
 	public BufferedImage criarImagem(String imagem) throws IOException {

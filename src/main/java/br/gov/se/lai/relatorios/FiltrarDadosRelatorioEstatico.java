@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -278,7 +279,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 * @return
 	 */
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPedidoInformacao() {
-		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		Calendar c = Calendar.getInstance();
 		int mesAtual = c.get(Calendar.MONTH)+1;
 		int anoAtual = c.get(Calendar.YEAR);
@@ -290,7 +291,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		} 
 		String periodo = "%";
 
-		Set<String> uf = new HashSet<>();
+		Set<String> uf = new LinkedHashSet<>();
 		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", periodo));
 		if (estados != null) {
 			uf = estados.stream().collect(Collectors.toSet());
@@ -301,9 +302,9 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 		for (String estadoEnviado : uf) {
 			if(estadoEnviado.equals("")) {
-				base.add("Não Informado");
+				base.add("Não Informado - " + Collections.frequency(estados, estadoEnviado));
 			} else {
-				base.add(estadoEnviado);
+				base.add(estadoEnviado + " - " + Collections.frequency(estados, estadoEnviado));
 			}
 			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(estados, estadoEnviado)))));
 		}
@@ -362,13 +363,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			}
 		}
 
-		base.add("Pessoa Jurídica");
+		base.add("Pessoa Jurídica - " + numeroJuridica );
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroJuridica)));
-		base.add("Pessoa Física Feminino");
+		base.add("Pessoa Física Feminino - " + numeroFisicaFeminino);
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaFeminino)));
-		base.add("Pessoa Física Masculino");
+		base.add("Pessoa Física Masculino - " + numeroFisicaMasculino);
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaMasculino)));
-		base.add("Pessoa Não Identificada");
+		base.add("Pessoa Não Identificada - " + (pessoas.size()-(numeroFisicaFeminino+numeroFisicaMasculino+numeroJuridica)));
 		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(pessoas.size()-(numeroFisicaFeminino+numeroFisicaMasculino+numeroJuridica))));
 
 		for (int i = 0; i < base.size(); i++) {
@@ -412,7 +413,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		}
 
 		for (String ass : assunto) {
-			base.add(ass);
+			base.add(ass + " - " + Collections.frequency(assuntos, ass));
 			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(assuntos, ass)))));
 		}
 

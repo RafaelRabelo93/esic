@@ -11,6 +11,10 @@
 	<ui:composition template="/templates/templateSemMenu.xhtml">
 
 		<ui:define name="content">
+		
+		<p:blockUI block="form" widgetVar="blockUIWidget">
+	        <h:outputText value="Please wait..."/>
+	    </p:blockUI>
 			
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true"
@@ -50,7 +54,6 @@
 						    <p:outputPanel id="output" />
 						</p:dialog>
 					    
-<!-- 						<p:outputLabel value="Relatório de Geral"/> -->
 						<h:inputHidden id="b64" value="#{chartExport.base64Str}" />
 						<h:commandLink onclick="exportChartBean('chartGeral')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
@@ -59,7 +62,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral" responsive="true" style="witdh:80%"/>
 						<p:separator styleClass="separator2"/>
 						
-<!-- 						<p:outputLabel value="Relatório de Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartMensal')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -67,7 +69,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 
-<!-- 						<p:outputLabel value="Relatório de Anual"/> -->
 						<h:commandLink onclick="exportChartBean('chartAnual')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -75,7 +76,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" responsive="true" style="height:300px" />
 						<p:separator styleClass="separator2"/>
 
-<!-- 						<p:outputLabel value="Relatório de Anual Acumulado"/> -->
 						<h:commandLink onclick="exportChartBean('chartAnualAcumulado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -83,7 +83,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
-<!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Direta Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartOrgao')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -91,7 +90,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 
-<!-- 						<p:outputLabel value="Relatório de Pedidos por Órgão de Administração Indireta Mensal"/> -->
 						<h:commandLink onclick="exportChartBean('chartEntidade')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -99,7 +97,6 @@
 						<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}" widgetVar="chartEntidade" responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
-<!-- 						<p:outputLabel value="Relatório Mensal de Tema"/> -->
 						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -107,7 +104,6 @@
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
-<!-- 						<p:outputLabel value="Relatório Mensal de Tipo de Pessoa"/> -->
 						<h:commandLink onclick="exportChartBean('chartTipoPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
 					        <i class="fa fa-download" />
@@ -115,18 +111,24 @@
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  responsive="true"/>
 						<p:separator styleClass="separator2"/>
 						
-<!-- 						<p:outputLabel value="Relatório Mensal de Estados"/> -->
 						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 							<p:fileDownload value="#{chartExport.file}" />
 							<i class="fa fa-download" />
 					    </h:commandLink>
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" responsive="true"/>
-						<p:separator styleClass="separator2"/>
 						
 				</h:panelGroup>
 				
 
 	<script type="text/javascript">
+
+    $(document).ready(function() {
+        blockUIWidget.show();
+    });
+
+    $(window).load(function() {
+        blockUIWidget.hide();
+    });
 
 	function exportChart(chart) {
 	    //export image

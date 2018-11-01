@@ -212,7 +212,8 @@ public class SolicitacaoDAO {
 					"JOIN  Cidadao as cidadao "+
 					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
 					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
-					"AND solicitacao.tipo = 'Informação'";
+					"AND solicitacao.tipo = 'Informação'" +
+					"ORDER BY solicitacao.cidadao.estado ASC";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
 	

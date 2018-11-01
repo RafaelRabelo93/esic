@@ -57,8 +57,7 @@ public class DrawPieChart implements Serializable{
 	        return pieModel1;
 	    }
 	     
-	    @SuppressWarnings("unused")
-		public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
+	    public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
 	        pieModel2 = new PieChartModel();
 	         
 	        for(String key : dadosChart.keySet()) {
@@ -68,16 +67,16 @@ public class DrawPieChart implements Serializable{
 	        pieModel2.setTitle(title);
 	        pieModel2.setLegendPosition("e");
 	        pieModel2.setFill(true);
-	        pieModel2.setDataFormat("%d%%");
 	        pieModel2.setDiameter(225);
+	        pieModel2.setShowDatatip(true);
+	        pieModel2.setShadow(false);
 	        if (tipoDados == 9)	pieModel2.setLegendCols(3);
 	        
-	        pieModel2.setSeriesColors("e6194B, 3cb44b, ffe119, 4363d8, f58231, 911eb4, 42d4f4, f032e6, bfef45, fabebe, 469990, e6beff, 9A6324, fffac8, 800000, aaffc3, 808000, ffd8b1, 000075, a9a9a9, ffffff, 000000");
+	        pieModel2.setSeriesColors("e6194B, 3cb44b, ffe119, 4363d8, f58231, 911eb4, 42d4f4, f032e6, bfef45, fabebe, 469990, e6beff, 9A6324, 800000, aaffc3, 808000, ffd8b1, 000075, a9a9a9");
 	        
 	        return pieModel2;
 	    }
 	    
-	    @SuppressWarnings("unused")
 	    public DonutChartModel createDonutModel(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
 	    	donutModel = new DonutChartModel();
 	    	
@@ -91,9 +90,7 @@ public class DrawPieChart implements Serializable{
 	    	donutModel.setTitle(title);
 	    	donutModel.setLegendPosition("e");
 	    	donutModel.setFill(true);
-	    	donutModel.setDataFormat("%d%%");
-//	    	donutModel.setShowDataLabels(true);
-//	    	donutModel.setDiameter(225);
+	    	donutModel.setShowDataLabels(true);
 	    	if (tipoDados == 9)	donutModel.setLegendCols(3);
 	    	
 //	    	donutModel.setSeriesColors("f3a935,c73558,6ebe9f,55596a,16a085,f39c12,e67e22,c0392b,bdc3c7,3498db,8e44ad,34495e");

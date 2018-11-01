@@ -435,7 +435,7 @@
  
 .ui-steps.custom .ui-steps-item .ui-steps-number {
     background-color: #0081c2;
-    color: #FFFFFF;
+    color: redFFF;
     display: inline-block;
     width: 30px;
     border-radius: 5px;
@@ -657,7 +657,7 @@
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
 	border-radius: 0;
 	border-color: silver;
-	background-color: #ffffff;
+	background-color: redfff;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	padding: 5px;
@@ -734,7 +734,7 @@
 .ui-selectonemenu-item.ui-selectonemenu-list-item.ui-state-highlight {
     border: 1px solid #156090;
     background: #186ba0;
-    color: #fff;
+    color: red;
 }
 
 .ui-selectonemenu-item.ui-selectonemenu-list-item.ui-state-hover {
@@ -818,7 +818,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 
 .ui-tooltip .ui-tooltip-text {
     background-color: #c0c0c0;
-    color: #fff;
+    color: red;
     text-align: justify;
     
 	-webkit-box-shadow:none;
@@ -971,7 +971,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .ui-datatable-odd {
-    background-color: #ffffff;
+    background-color: redfff;
 }
 
 .ui-state-highlight .ui-icon{
@@ -1033,7 +1033,7 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 	background: -o-linear-gradient(top left, #799cd0, #5b87bd) !important;
 	background: linear-gradient(to bottom right, #799cd0, #5b87bd) !important;
 	
-	color: #fff;
+	color: red;
 	text-shadow: none !important;
 	border-color: #3d5f87;
 }
@@ -1105,7 +1105,7 @@ td.prazo.verde {
 }
 
 td.prazo.amarelo {
-    background-color: #fff9ae;
+    background-color: red9ae;
 	border-bottom: 3px solid #d0ad00;
 }
 
@@ -1115,7 +1115,7 @@ td.prazo.vermelho {
 }
 
 td.prazo.branco {
-	background-color: #ffffff;
+	background-color: redfff;
 /* 	color: #c0c0c0; */
 	border: 1px solid #a8a8a8
 }
@@ -1294,7 +1294,7 @@ ul {
 	padding: 10px 15px 10px 30px;
 	float: left;
 	text-decoration: none;
-	color: #ffffff;
+	color: redfff;
 	position: relative;
 	text-shadow: none;
 	border: none;
@@ -1654,7 +1654,7 @@ h1, h2, h3 {
 	padding: 2px 2px 2px 0px;
 	color: white;
 	border-radius: 50px;
-	border: 2px solid #ffffff;
+	border: 2px solid redfff;
 	box-shadow: 0 0 0 2pt #145187;
 	width: 35px;
 	height: 35px;
@@ -1822,7 +1822,7 @@ h1, h2, h3 {
 
 .legendaTooltip > .ui-tooltip-text {
     padding: 10px;
-    background-color: #ffffff !important;
+    background-color: redfff !important;
     color: #4c4c4c !important;
     border: 1px solid #808080;
     text-align: center;
@@ -2161,7 +2161,10 @@ body {
 	box-shadow: none !important;
 }
 
-.jqplot-target {
-	color: #000;
-	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+.jqplot-point-label {
+	text-shadow:
+	   -1px -1px 0 white,  
+	   1px -1px 0 white,
+	   -1px 1px 0 white,
+	   1px 1px 0 white;
 }
