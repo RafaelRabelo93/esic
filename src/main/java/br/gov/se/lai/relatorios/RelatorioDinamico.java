@@ -92,6 +92,10 @@ public class RelatorioDinamico {
 		barModel = null;
 		return "/Relatorios/relatorios_especificos";
 	}
+	public String redirecionarRelatorioPorEntidade() {
+		barModel = null;
+		return "/Relatorios/relatorios_porOrgao";
+	}
 
 	public void limparGrafico(AjaxBehaviorEvent e) {
 		barModel = new BarChartModel();

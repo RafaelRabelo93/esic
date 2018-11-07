@@ -70,7 +70,7 @@ public class ChartExport {
 	}
 	
 	
-	public void gerarRelatorio() throws IOException {
+	public void gerarRelatorio(short tipo) throws IOException {
 		
 		PDDocument document = new PDDocument();  
 		PDPageContentStream contentStream;
@@ -78,31 +78,29 @@ public class ChartExport {
 		try {
 	      
 	      // Cria página A4 em paisagem
-	      PDPage page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page2 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page3 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page4 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page5 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page6 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page7 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page8 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      PDPage page9 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-	      
-	      PDRectangle pageSize = page.getMediaBox();
-	      float pageWidth = pageSize.getWidth();
-	      float pageHeight = pageSize.getHeight();
+			PDPage page, page2, page3, page4, page5, page6, page7, page8, page9;
+			page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page2 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page3 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page4 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page7 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page8 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			page9 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+			  
+			PDRectangle pageSize = page.getMediaBox();
+			float pageWidth = pageSize.getWidth();
+			float pageHeight = pageSize.getHeight();
 	      
 	      
 	      // Criar Imagens
-	      PDImageXObject imgChartGeral = LosslessFactory.createFromImage(document, criarImagem(chartGeral));
-	      PDImageXObject imgChartMensal = LosslessFactory.createFromImage(document, criarImagem(chartMensal));
-	      PDImageXObject imgChartAnual = LosslessFactory.createFromImage(document, criarImagem(chartAnual));
-	      PDImageXObject imgChartAnualAcu = LosslessFactory.createFromImage(document, criarImagem(chartAnualAcu));
-	      PDImageXObject imgChartOrgao = LosslessFactory.createFromImage(document, criarImagem(chartOrgao));
-	      PDImageXObject imgChartEntidade = LosslessFactory.createFromImage(document, criarImagem(chartEntidade));
-	      PDImageXObject imgChartAssunto = LosslessFactory.createFromImage(document, criarImagem(chartAssunto));
-	      PDImageXObject imgChartPessoa = LosslessFactory.createFromImage(document, criarImagem(chartPessoa));
-	      PDImageXObject imgChartEstado = LosslessFactory.createFromImage(document, criarImagem(chartEstado));
+		PDImageXObject imgChartGeral, imgChartMensal, imgChartAnual, imgChartAnualAcu, imgChartOrgao, imgChartEntidade, imgChartAssunto, imgChartPessoa, imgChartEstado;
+		imgChartGeral = LosslessFactory.createFromImage(document, criarImagem(chartGeral));
+		imgChartMensal = LosslessFactory.createFromImage(document, criarImagem(chartMensal));
+		imgChartAnual = LosslessFactory.createFromImage(document, criarImagem(chartAnual));
+		imgChartAnualAcu = LosslessFactory.createFromImage(document, criarImagem(chartAnualAcu));
+		imgChartAssunto = LosslessFactory.createFromImage(document, criarImagem(chartAssunto));
+		imgChartPessoa = LosslessFactory.createFromImage(document, criarImagem(chartPessoa));
+		imgChartEstado = LosslessFactory.createFromImage(document, criarImagem(chartEstado));
 	      
 //	      Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/"));
 	      
@@ -207,7 +205,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnual.getWidth()*0.85), (float) (imgChartAnual.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -239,7 +237,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnualAcu.getWidth()*0.85), (float) (imgChartAnualAcu.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -251,6 +249,13 @@ public class ChartExport {
 	      contentStream.close();
 	      document.addPage(page4);
 	      
+	      if (tipo == 1) {
+	    	  page5 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+	    	  page6 = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+	      
+	    	  imgChartOrgao = LosslessFactory.createFromImage(document, criarImagem(chartOrgao));
+	    	  imgChartEntidade = LosslessFactory.createFromImage(document, criarImagem(chartEntidade));
+	    	  
 	      // Página 05
 	      contentStream = new PDPageContentStream(document, page5);
 
@@ -271,7 +276,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartOrgao.getWidth()*0.85), (float) (imgChartOrgao.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -304,7 +309,7 @@ public class ChartExport {
 	      contentStream.endText();
 
 //	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartEntidade.getWidth()*0.85), (float) (imgChartEntidade.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -315,6 +320,8 @@ public class ChartExport {
 	      
 	      contentStream.close();
 	      document.addPage(page6);
+	      
+	      }
 	      
 	      // Página 07
 	      contentStream = new PDPageContentStream(document, page7);
@@ -336,7 +343,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAssunto.getWidth()*0.85), (float) (imgChartAssunto.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -368,7 +375,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartPessoa.getWidth()*0.85), (float) (imgChartPessoa.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -400,7 +407,7 @@ public class ChartExport {
 		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartEstado.getWidth()*0.85), (float) (imgChartEstado.getHeight()*0.85));
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);

@@ -244,7 +244,7 @@ public class SolicitacaoDAO {
 				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
-	}	
+	}
 	
 	
 	@SuppressWarnings("unchecked")
@@ -420,6 +420,42 @@ public class SolicitacaoDAO {
 				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
 		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> listarAssuntosPorEntidade(String tipo, String periodo, int idEntidade) {
+		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
+				"JOIN  Competencias as competencias "+
+				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
+				"JOIN  Acoes as acoes  "+
+				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
+				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"AND solicitacao.tipo = '"+tipo+"'" +
+				"AND solicitacao.entidades.idEntidades = " + idEntidade;
+		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Cidadao> listarCidadaoPorEntidade(String tipo, String periodo, int idEntidade) {
+		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
+				"JOIN Cidadao as cidadao "+
+				"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"AND solicitacao.tipo = '"+tipo+"'" +
+				"AND solicitacao.entidades.idEntidades = " + idEntidade;
+		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> listarPorFederacaoPorEntidade(String tipo, String periodo, int idEntidade) {
+		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
+					"JOIN  Cidadao as cidadao "+
+					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
+					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+					"AND solicitacao.tipo = 'Informação'" +
+					"AND solicitacao.entidades.idEntidades = " + idEntidade +
+					"ORDER BY solicitacao.cidadao.estado ASC";
+		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
 	
 }

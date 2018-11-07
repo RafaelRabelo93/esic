@@ -230,7 +230,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //			while(orgaos.size() > 7) {
 //				orgaos.remove(orgaos.size()-1);
 //			}
-			base.add("Nenhum");
+			base.add("");
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
 			dadosEspecificos.add(0);
 			dadosEspecificos.add(0);
@@ -479,6 +479,276 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		return dadosChart;
 	}
 	
+//	===============================================================
+//	Funções para geração de Relatório Completo por Órgão / Entidade
+//	===============================================================
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoGeralPorEntidade(int idEntidade) {
+		int numeroTotal = SolicitacaoDAO.listarTotalPorEntidade("%", idEntidade).size();
+		int numeroTotalAtendidos = SolicitacaoDAO.listarAtendidasPorEntidade("%", idEntidade).size();
+		int numeroTotalTramite = SolicitacaoDAO.listarEmTramitePorEntidade("%", idEntidade).size();
+		int numeroTotalNaoVisualizados = SolicitacaoDAO.listarNaoVisualizadasPorEntidade("%", idEntidade).size();
+		int numeroTotalSemResposta = SolicitacaoDAO.listarSemRespostaPorEntidade("%", idEntidade).size();
+	
+		String[] baseChart = { "Total", "Atendidas", "Sem Resposta", "Em Trâmite", "Não Visualizadas" };
+		int[] dadosRelacionadosBase = { numeroTotal, numeroTotalAtendidos, numeroTotalSemResposta, numeroTotalTramite, numeroTotalNaoVisualizados };
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		for (int i = 0; i < baseChart.length; i++) {
+			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));
+			dadosChart.put(baseChart[i], dados);
+		}
+	
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoMensalPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		int anoAtual = c.get(Calendar.YEAR);
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+	
+		for (int i = 1; i <= mesAtual; i++) {
+			base.add(meses[i - 1]);
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			
+			if (i<=9) {
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} 
+			
+		}
+	
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		Calendar c = Calendar.getInstance();
+		Integer anoAtual = c.get(Calendar.YEAR);
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		for (int i = anoInicial; i <= anoAtual; i++) {
+			
+			base.add(String.valueOf(i));
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(i + "%", idEntidade).size());
+			dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(i + "%", idEntidade).size());
+			dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(i + "%", idEntidade).size());
+			dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(i + "%", idEntidade).size());
+			dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(i + "%", idEntidade).size());
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+		
+		return dadosChart;
+	}
+
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAnualAcumuladoPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		Calendar c = Calendar.getInstance();
+		int anoAtual = c.get(Calendar.YEAR);
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+
+		for (int i = anoInicial; i <= anoAtual; i++) {
+			base.add(String.valueOf(i));
+			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
+			int pedidosTotalPeriodo = 0;
+			int pedidosAtendidasPeriodo = 0;
+			int pedidosSemRespostaPeriodo = 0;
+			int pedidosTramitePeriodo = 0;
+			int pedidosNaoVisualizadasPeriodo = 0;
+			
+			for (int ano = anoInicial; ano <= i; ano++) {
+				pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorEntidade(ano + "%", idEntidade).size();
+				pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorEntidade(ano + "%", idEntidade).size();
+				pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorEntidade(ano + "%", idEntidade).size();
+				pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorEntidade(ano + "%", idEntidade).size();
+				pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorEntidade(ano + "%", idEntidade).size();
+				
+			}
+			
+			dadosEspecificos.add(pedidosTotalPeriodo);
+			dadosEspecificos.add(pedidosAtendidasPeriodo);
+			dadosEspecificos.add(pedidosSemRespostaPeriodo);
+			dadosEspecificos.add(pedidosTramitePeriodo);
+			dadosEspecificos.add(pedidosNaoVisualizadasPeriodo);
+			dadosRelacionadorBase.add(dadosEspecificos);
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoAssuntoPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		String periodo; 
+		if (mesAtual<=9) {
+			periodo = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			periodo = anoAtual + "-" + mesAtual + "%";
+		} 
+		
+
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+
+		Set<String> assunto = new HashSet<>();
+		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntosPorEntidade("Informação", periodo, idEntidade));
+
+		if (assuntos != null) {
+			assunto = assuntos.stream().collect(Collectors.toSet());
+			assunto.remove("");
+		}
+		
+		if (assuntos.size() == 0 ) {
+			assunto.add("Nenhum");
+		}
+
+		for (String ass : assunto) {
+			base.add(ass + " - " + Collections.frequency(assuntos, ass));
+			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(assuntos, ass)))));
+		}
+
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTipoPessoaGeneroPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new HashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		String periodo; 
+		if (mesAtual<=9) {
+			periodo = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			periodo = anoAtual + "-" + mesAtual + "%";
+		} 
+		
+		periodo = "%";
+
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+
+		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadaoPorEntidade("Informação", periodo, idEntidade));
+		int numeroJuridica = 0;
+		int numeroFisicaFeminino = 0;
+		int numeroFisicaMasculino = 0;
+		for (Cidadao cidadao : pessoas) {
+			try{
+				if (cidadao.getTipo().equals(true)) {
+					switch (cidadao.getSexo()) {
+					case "F":
+						numeroFisicaFeminino++;
+						break;
+					case "M":
+						numeroFisicaMasculino++;
+						break;
+					default:
+						break;
+					}
+				} else {
+					numeroJuridica++;
+				}
+			}catch (NullPointerException e) {
+			}
+		}
+
+		base.add("Pessoa Jurídica - " + numeroJuridica );
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroJuridica)));
+		base.add("Pessoa Física Feminino - " + numeroFisicaFeminino);
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaFeminino)));
+		base.add("Pessoa Física Masculino - " + numeroFisicaMasculino);
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(numeroFisicaMasculino)));
+		base.add("Pessoa Não Identificada - " + (pessoas.size()-(numeroFisicaFeminino+numeroFisicaMasculino+numeroJuridica)));
+		dadosRelacionadorBase.add(new ArrayList<>(Arrays.asList(pessoas.size()-(numeroFisicaFeminino+numeroFisicaMasculino+numeroJuridica))));
+
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoEstadosPorEntidade(int idEntidade) {
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		Calendar c = Calendar.getInstance();
+		int mesAtual = c.get(Calendar.MONTH)+1;
+		int anoAtual = c.get(Calendar.YEAR);
+		
+		String periodo; 
+		if (mesAtual<=9) {
+			periodo = anoAtual + "-0" + mesAtual + "%";
+		} else {
+			periodo = anoAtual + "-" + mesAtual + "%";
+		} 
+		
+		periodo = "%";
+
+		Set<String> uf = new LinkedHashSet<>();
+		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacaoPorEntidade("Informação", periodo, idEntidade));
+		if (estados != null) {
+			uf = estados.stream().collect(Collectors.toSet());
+//			uf.remove("");
+		}
+
+		ArrayList<String> base = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
+		
+		if (uf.size() == 0 ) {
+			uf.add("Nenhum");
+		} 
+		
+		for (String estadoEnviado : uf) {
+			if(estadoEnviado.equals("")) {
+				base.add("Não Informado - " + Collections.frequency(estados, estadoEnviado));
+			} else {
+				base.add(estadoEnviado + " - " + Collections.frequency(estados, estadoEnviado));
+			}
+			dadosRelacionadorBase.add(new ArrayList<Integer>(Arrays.asList((Collections.frequency(estados, estadoEnviado)))));
+		}
+		
+		for (int i = 0; i < base.size(); i++) {
+			dadosChart.put(base.get(i), dadosRelacionadorBase.get(i));
+		}
+
+		return dadosChart;
+	
+	}
+		
 /*	//Forma de função para montar estrutura para ser lida na classe Relatorios
  * // e que acaba sendo fonte de informação para plotar no gráfico.
  * public static Map<String, ArrayList<Integer>> nome() {

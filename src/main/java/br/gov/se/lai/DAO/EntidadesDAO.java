@@ -107,7 +107,7 @@ public class  EntidadesDAO {
 	public static List<Entidades>  FindSigla(String sigla) {		
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.sigla = '"+sigla+"'",em));
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listPersonalizada(int idEntidades) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idEntidades = "+idEntidades,em)); 
@@ -116,6 +116,15 @@ public class  EntidadesDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listOrgaoEntidade(int idOrgao) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idOrgaos = "+idOrgao,em)); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> getSigla(int idOrgao) {
+		String HQL = "SELECT ent.sigla " +
+					"FROM Entidades as ent " +
+					"WHERE ent.idEntidades = " +idOrgao;
+		
+		return (List<String>) (Consultas.buscaPersonalizada(HQL,em));
 	}
 	
 	@SuppressWarnings("unchecked")

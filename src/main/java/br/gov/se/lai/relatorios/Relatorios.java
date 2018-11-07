@@ -21,19 +21,38 @@ import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 import br.gov.se.lai.Bean.EntidadesBean;
+import br.gov.se.lai.DAO.EntidadesDAO;
+import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 
 @ManagedBean(name = "relatorios")
 @SessionScoped
 public class Relatorios {
 
-	
 	public int tipoRelatorio;
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
-	public static String[] tipo = {"Pedidos totais do E-SIC", "Pedidos Mensais do E-SIC", "Pedidos Anuais do E-SIC", "Pedidos Anuais acumulados do E-SIC",
-									"Pedidos Mensais por Órgão da Administração Direta", "Pedidos Mensais por Entidade Órgão da Administração Indireta", "Pedidos Mensais por Tema do E-SIC", "Pedidos Totais por Tipo de Pessoa", 
-									"Pedidos Totais por Ente Federativo"};
+	public int idEntidade;
+	public String sigla;
+	public String[] tipo = {
+							"Pedidos totais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Mensais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Anuais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Anuais acumulados do E-SIC - " +getMesAtual() + " de " +getAnoAtual() ,
+							"Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Mensais por Tema do E-SIC  - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Totais por Tipo de Pessoa - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Totais por Ente Federativo - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos totais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Mensais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Anuais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Anuais acumulados do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Mensais por Tema do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Totais por Tipo de Pessoa por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							"Pedidos Totais por Ente Federativo por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
+							};
+	
 	public int[] metricas;
 	public boolean dataBool;
 	public boolean mesesBool;
@@ -110,7 +129,29 @@ public class Relatorios {
 		case 9:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPedidoInformacao();
 			break;
+		case 10:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralPorEntidade(idEntidade);
+			break;
+		case 11:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPorEntidade(idEntidade);
+			break;
+		case 12:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualPorEntidade(idEntidade);
+			break;
+		case 13:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualAcumuladoPorEntidade(idEntidade);
+			break;
+		case 14:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPorEntidade(idEntidade);
+			break;
+		case 15:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTipoPessoaGeneroPorEntidade(idEntidade);
+			break;
+		case 16:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPorEntidade(idEntidade);
+			break;
 		}
+			
 		
 		return dadosChart;
 	}
@@ -201,6 +242,18 @@ public class Relatorios {
 		return meses[mesAtual-1];
 	}
 	
+	public String getSigla() {
+		List<String> sigla = EntidadesDAO.getSigla(48);
+		
+		if (sigla.isEmpty()) {
+			return "O";
+		} else {
+			System.out.println(sigla);
+			return sigla.get(0);
+		}
+			
+//		return sigla;
+	}
 
 	public int getTipoRelatorio() {
 		return tipoRelatorio;
@@ -408,6 +461,12 @@ public class Relatorios {
 		this.hBarModel = hBarModel;
 	}
 
+	public int getIdEntidade() {
+		return idEntidade;
+	}
 	
+	public void setIdEntidade(int idEntidade) {
+		this.idEntidade = idEntidade;
+	}
 	
 }

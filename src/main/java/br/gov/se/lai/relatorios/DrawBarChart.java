@@ -86,6 +86,13 @@ public class DrawBarChart {
 //			case 3:
 //				variaveis = graficoAnual(variaveis, dadosChart);	
 //				break;
+			 case 10:
+		    	variaveis = graficoGeral(variaveis2, dadosChart);
+		    	model.setExtender("ext");
+		    	break;
+			 case 11:
+				variaveis = graficoMensalComSeries(variaveis, dadosChart);	
+				break;
 			default:
 				variaveis = graficoComSeries(variaveis, dadosChart);
 				break;
