@@ -51,8 +51,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	
 	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-	protected final static int anoInicial = 2012;				//Comentado por motivo de não existe armazenamento disponível dos anos anteriores.
-//	protected final static int anoInicial = 2018;				//Contagem iniciando no ano vigente do sistema.
+	protected final static int anoInicial = 2012;
 	
 	
 	
@@ -521,11 +520,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
 				dadosRelacionadorBase.add(dadosEspecificos);
 			} else {
-				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
-				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
-				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
-				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
-				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "-0" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(anoAtual + "-" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(anoAtual + "-" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(anoAtual + "-" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(anoAtual + "-" + i + "%", idEntidade).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(anoAtual + "-" + i + "%", idEntidade).size());
 				dadosRelacionadorBase.add(dadosEspecificos);
 			} 
 			

@@ -3,6 +3,7 @@ package br.gov.se.lai.Bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -51,6 +52,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	public void init() {
 		entidades = new Entidades();
 		todasEntidades = EntidadesDAO.list();
+//		todasEntidades.sort(Comparator.comparing(Entidades::getSigla));
 		todasEntidadesAtivas = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		listOrgaosAtivos = EntidadesDAO.listOrgaos();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	

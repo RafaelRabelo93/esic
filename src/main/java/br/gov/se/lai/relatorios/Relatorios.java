@@ -22,6 +22,7 @@ import org.primefaces.model.chart.PieChartModel;
 
 import br.gov.se.lai.Bean.EntidadesBean;
 import br.gov.se.lai.DAO.EntidadesDAO;
+import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
 
@@ -32,27 +33,10 @@ public class Relatorios {
 	public int tipoRelatorio;
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
+	public Entidades entidade;
 	public int idEntidade;
 	public String sigla;
-	public String[] tipo = {
-							"Pedidos totais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Mensais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Anuais do E-SIC - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Anuais acumulados do E-SIC - " +getMesAtual() + " de " +getAnoAtual() ,
-							"Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Mensais por Tema do E-SIC  - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Totais por Tipo de Pessoa - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Totais por Ente Federativo - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos totais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Mensais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Anuais do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Anuais acumulados do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Mensais por Tema do E-SIC por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Totais por Tipo de Pessoa por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							"Pedidos Totais por Ente Federativo por Órgão - " +getMesAtual() + " de " +getAnoAtual(),
-							};
-	
+	public String[] tipo = new String[16];
 	public int[] metricas;
 	public boolean dataBool;
 	public boolean mesesBool;
@@ -64,7 +48,7 @@ public class Relatorios {
 	public boolean tipoPessoaBool;
 	public Date periodoIni;
 	public Date periodoFim;
-	public String[] meses ;
+//	public String[] meses ;
 	public String[] anosSelecionados;
 	public String[] orgaos;
 	public String[] entidades;
@@ -74,15 +58,23 @@ public class Relatorios {
 	public String tipoSolicitacao;
 	public String param;
 	public String status;
-	public ArrayList<Integer> anos;
+//	public ArrayList<Integer> anos;
 	public BarChartModel barModel;
 	public HorizontalBarChartModel hBarModel;
+	public List<Integer> anos;
+	public List<Integer> meses;
+	public Integer anoInicial;
+	public Integer anoFinal;
+	public Integer mesInicial;
+	public Integer mesFinal;
 	
 	
 	@PostConstruct
 	public void Relatorios() {
-		anos = retornarListaAnosAteHoje();
+		anos = SolicitacaoDAO.listarAnos();
+//		anos = retornarListaAnosAteHoje();
 	}
+	
 	
 	/**
 	 * Significado dos inteiros que direcionam qual tipo de filtragem irá ser realizada.
@@ -104,51 +96,68 @@ public class Relatorios {
 		switch ((int)tipoDados){
 		case 1:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralDosPedidosInformacao();
+			tipo[0] = "Pedidos Totais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 2:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPedidoInformacao();
+			tipo[1] = "Pedidos Mensais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 3:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualPedidoInformacao();
+			tipo[2] = "Pedidos Anuais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 4:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualAcumuladoPedidoInformacao();
+			tipo[3] = "Pedidos Anuais Acumulados do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 5:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoOrgaoPedidoInformacao();
+			tipo[4] = "Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 6:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEntidadePedidoInformacao();
+			tipo[5] = "Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 7:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPedidoInformacao();
+			tipo[6] = "Pedidos Mensais por Tema do E-SIC  - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 8:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTipoPessoaGeneroPedidoInformacao();
+			tipo[7] = "Pedidos Totais por Tipo e Gênero de Pessoa - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 9:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPedidoInformacao();
+			tipo[8] = "Pedidos Totais por Ente Federativo - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 10:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralPorEntidade(idEntidade);
+			entidade = EntidadesDAO.find(idEntidade);
+			tipo[9] = "Pedidos Totais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 11:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPorEntidade(idEntidade);
+			tipo[10] = "Pedidos Mensais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 12:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualPorEntidade(idEntidade);
+			tipo[11] = "Pedidos Anuais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 13:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualAcumuladoPorEntidade(idEntidade);
+			tipo[12] = "Pedidos Anuais acumulados da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 14:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPorEntidade(idEntidade);
+			tipo[13] = "Pedidos Mensais por Tema da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 15:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTipoPessoaGeneroPorEntidade(idEntidade);
+			tipo[14] = "Pedidos Totais por Tipo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		case 16:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPorEntidade(idEntidade);
+			tipo[15] = "Pedidos Totais por Ente Federativo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
 			break;
 		}
 			
@@ -357,13 +366,13 @@ public class Relatorios {
 		this.periodoFim = periodoFim;
 	}
 
-	public String[] getMeses() {
-		return meses;
-	}
-
-	public void setMeses(String[] meses) {
-		this.meses = meses;
-	}
+//	public String[] getMeses() {
+//		return meses;
+//	}
+//
+//	public void setMeses(String[] meses) {
+//		this.meses = meses;
+//	}
 
 	public String[] getOrgaos() {
 		return orgaos;
@@ -429,13 +438,13 @@ public class Relatorios {
 		this.status = status;
 	}
 
-	public ArrayList<Integer> getAnos() {
-		return anos;
-	}
-
-	public void setAnos(ArrayList<Integer> anos) {
-		this.anos = anos;
-	}
+//	public ArrayList<Integer> getAnos() {
+//		return anos;
+//	}
+//
+//	public void setAnos(ArrayList<Integer> anos) {
+//		this.anos = anos;
+//	}
 
 	public String[] getAnosSelecionados() {
 		return anosSelecionados;
@@ -467,6 +476,60 @@ public class Relatorios {
 	
 	public void setIdEntidade(int idEntidade) {
 		this.idEntidade = idEntidade;
+	}
+	
+	public Entidades getEntidade() {
+		return entidade;
+	}
+	
+	public void setEntidade(Entidades entidade) {
+		this.entidade = entidade;
+	}
+	
+	public List<Integer> getAnos() {
+		return anos;
+	}
+	
+	public void setAnos(List<Integer> anos) {
+		this.anos = anos;
+	}
+	
+	public Integer getAnoInicial() {
+		return anoInicial;
+	}
+
+
+	public void setAnoInicial(Integer anoInicial) {
+		this.anoInicial = anoInicial;
+	}
+
+
+	public Integer getAnoFinal() {
+		return anoFinal;
+	}
+
+
+	public void setAnoFinal(Integer anoFinal) {
+		this.anoFinal = anoFinal;
+	}
+
+
+	public Integer getMesInicial() {
+		return mesInicial;
+	}
+
+
+	public void setMesInicial(Integer mesInicial) {
+		this.mesInicial = mesInicial;
+	}
+
+
+	public Integer getMesFinal() {
+		return mesFinal;
+	}
+
+	public void setMesFinal(Integer mesFinal) {
+		this.mesFinal = mesFinal;
 	}
 	
 }

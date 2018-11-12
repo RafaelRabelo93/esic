@@ -95,7 +95,8 @@ public class  EntidadesDAO {
     
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> list() {		
-        return em.createNativeQuery("SELECT * FROM esic.entidades", Entidades.class).getResultList();
+        return em.createNativeQuery("SELECT * FROM esic.entidades ORDER BY entidades.sigla ASC", Entidades.class).getResultList();
+//        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent ORDER BY ent.sigla ASC",em));
     }  
 	
 	@SuppressWarnings("unchecked")

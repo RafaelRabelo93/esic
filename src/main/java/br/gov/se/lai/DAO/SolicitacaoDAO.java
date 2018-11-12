@@ -458,4 +458,18 @@ public class SolicitacaoDAO {
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
 	
+	// Consultas utilizadas para obter datas com solicitações realizadas
+	
+	@SuppressWarnings("unchecked")
+	public static List<Integer> listarAnos() {
+		String HQL = "SELECT DISTINCT EXTRACT(YEAR FROM sol.dataIni) FROM Solicitacao as sol ORDER BY EXTRACT(YEAR FROM sol.dataIni) ASC";
+		return (List<Integer>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Integer> listarMesesDoAno(int ano) {
+		String HQL = "SELECT DISTINCT EXTRACT(MONTH FROM sol.dataIni) FROM Solicitacao as sol WHERE sol.dataIni LIKE '" + ano + "-%' ORDER BY EXTRACT(MONTH FROM sol.dataIni) ASC;";
+		return (List<Integer>) Consultas.buscaPersonalizada(HQL, em);
+	}
+	
 }

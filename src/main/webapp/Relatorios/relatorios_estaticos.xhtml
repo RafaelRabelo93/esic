@@ -22,7 +22,7 @@
 
 			<h:form id="form" style="padding: 1.5vw 15vw">
 
-				<h:panelGroup>
+				<h:panelGroup styleClass="column">
 
 					<h1 style="margin-bottom: 0;">Relatórios Estatísticos - #{relatorios.mesAtual} de #{relatorios.anoAtual}</h1>
 
@@ -47,8 +47,59 @@
 					    </h:commandLink>
 				    </h:panelGroup>
 				    
-				    <br/>
-	
+				    <p:outputLabel value="Período: " rendered="true"  /> 
+				    <h:panelGroup styleClass="inline">
+				    
+						<h:outputText value="de" />
+						
+						<p:selectOneMenu id="anoInicial" value="#{relatorios.anoInicial}" required="true" style="margin: 0 .5em 0 1em;">
+							<f:selectItems value="#{relatorios.anos}" var="ano" itemLabel="#{ano}" itemValue="#{ano}"/>
+						</p:selectOneMenu>
+						
+						<p:selectOneMenu id="mesInicial" value="#{relatorios.mesInicial}" required="true" style="margin: 0 1em 0 .5em">
+							<f:selectItem itemLabel="Janeiro" itemValue="1"/>
+                            <f:selectItem itemLabel="Fevereiro" itemValue="2"/>
+                            <f:selectItem itemLabel="Março" itemValue="3"/>
+                            <f:selectItem itemLabel="Abril" itemValue="4"/>
+                            <f:selectItem itemLabel="Maio" itemValue="5"/>
+                            <f:selectItem itemLabel="Junho" itemValue="6"/>
+                            <f:selectItem itemLabel="Julho" itemValue="7"/>
+                            <f:selectItem itemLabel="Agosto" itemValue="8"/>
+                            <f:selectItem itemLabel="Setembro" itemValue="9"/>
+                            <f:selectItem itemLabel="Outubro" itemValue="10"/>
+                            <f:selectItem itemLabel="Novembro" itemValue="11"/>
+                            <f:selectItem itemLabel="Dezembro" itemValue="12"/>
+						</p:selectOneMenu>
+						
+						<h:outputText value="à" style="margin: "/>
+						
+						<p:selectOneMenu id="anoFinal" value="#{relatorios.anoFinal}" required="true" style="margin: 0 .5em 0 1em">
+							 <f:selectItems value="#{relatorios.anos}" var="ano" itemLabel="#{ano}" itemValue="#{ano}"/>
+						</p:selectOneMenu>
+						
+						<p:selectOneMenu id="mesFinal" value="#{relatorios.mesFinal}" required="true" style="margin: 0 1em 0 .5em">
+							<f:selectItem itemLabel="Janeiro" itemValue="1"/>
+                            <f:selectItem itemLabel="Fevereiro" itemValue="2"/>
+                            <f:selectItem itemLabel="Março" itemValue="3"/>
+                            <f:selectItem itemLabel="Abril" itemValue="4"/>
+                            <f:selectItem itemLabel="Maio" itemValue="5"/>
+                            <f:selectItem itemLabel="Junho" itemValue="6"/>
+                            <f:selectItem itemLabel="Julho" itemValue="7"/>
+                            <f:selectItem itemLabel="Agosto" itemValue="8"/>
+                            <f:selectItem itemLabel="Setembro" itemValue="9"/>
+                            <f:selectItem itemLabel="Outubro" itemValue="10"/>
+                            <f:selectItem itemLabel="Novembro" itemValue="11"/>
+                            <f:selectItem itemLabel="Dezembro" itemValue="12"/>
+						</p:selectOneMenu>
+					 </h:panelGroup>
+				    
+				    <h:panelGroup styleClass="column inline" style="margin-bottom:1em">
+						<p:commandLink id="okBtn" value="OK" styleClass="botaoLink" update="@all" action="#{relatorios.gerarPeríodo}"
+							style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
+						</p:commandLink>
+					</h:panelGroup>
+					
+					<h:panelGroup id="chartPanel">	
 						<h:inputHidden id="b64" value="#{chartExport.base64Str}" />
 						<h:commandLink onclick="exportChartBean('chartGeral')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
 					        <p:fileDownload value="#{chartExport.file}" />
@@ -111,6 +162,7 @@
 							<i class="fa fa-download" />
 					    </h:commandLink>
 						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" responsive="true"/>
+					</h:panelGroup>
 						
 				</h:panelGroup>
 				
