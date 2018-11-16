@@ -697,7 +697,8 @@
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-list {
-    max-width: 50vw;
+/*     max-width: 50vw; */
+    width: auto;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-list-item {
@@ -719,6 +720,11 @@
 .ui-selectonemenu-panel .ui-selectonemenu-filter {
 	width: 94% !important;
 /* 	padding-right: 5px !important; */
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper {
+	max-height: 450px !important;
+	height: auto !important;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
@@ -782,7 +788,7 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 	box-shadow: none !important;
     border: 1px solid lightgray;
     margin-top: -1px;
-    width: auto !important;
+/*     width: auto !important; */
 }
 
 .notaDataList .ui-datalist .ui-datalist-header, .notaDataList .ui-datalist .ui-datalist-footer {

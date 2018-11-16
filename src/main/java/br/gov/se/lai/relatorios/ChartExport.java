@@ -107,8 +107,6 @@ public class ChartExport {
 //	      PDImageXObject pdImage = PDImageXObject.createFromFile(folder.toString()+"\\resources\\img\\esiclogo_se.png", document);
 //	      PDImageXObject pdImage = PDImageXObject.createFromFile(ChartExport.class.getResource("resources/img/esiclogo_se.png").getPath(), document);
 	      
-	      Relatorios relatorio = new Relatorios();
-	      
 	      PDFont font = PDType1Font.HELVETICA;
 	      int marginTop = 30;
 	      int fontSize = 20;
@@ -117,8 +115,9 @@ public class ChartExport {
 	      
 	      String line1 = "Acesso à Informação Pública - Transparência Passiva";
 	      String line2 = "Estatística Mensal de Atendimento - Art. 30 , III, da Lei nº 12.527/2011";
-	      String line3 = relatorio.getMesAtual() + " de " + relatorio.getAnoAtual();
+	      String line3 = getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
 	      String fonte = "Fonte: esic.se.gov.br";
+	      String data = "Gerado em " + getDataAtual() ;
 	      
 	      // Página 01
 	      contentStream = new PDPageContentStream(document, page);
@@ -148,6 +147,13 @@ public class ChartExport {
 		      contentStream.setFont(font, 10);
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
 	      contentStream.endText();
 	      
 	      contentStream.close();
@@ -182,6 +188,13 @@ public class ChartExport {
 		      contentStream.showText(fonte);
 	      contentStream.endText();
 	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page2);
 	      
@@ -214,6 +227,13 @@ public class ChartExport {
 		      contentStream.showText(fonte);
 	      contentStream.endText();
 	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
+	      contentStream.endText();
+	      
 	      contentStream.close();
 	      document.addPage(page3);
 	      
@@ -244,6 +264,13 @@ public class ChartExport {
 		      contentStream.setFont(font, 10);
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
+	      contentStream.endText();
+	      
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
 	      contentStream.endText();
 	      
 	      contentStream.close();
@@ -284,6 +311,13 @@ public class ChartExport {
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
 	      contentStream.endText();
+
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
+	      contentStream.endText();
 	      
 	      contentStream.close();
 	      document.addPage(page5);
@@ -316,6 +350,13 @@ public class ChartExport {
 		      contentStream.setFont(font, 10);
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
+	      contentStream.endText();
+
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
 	      contentStream.endText();
 	      
 	      contentStream.close();
@@ -351,6 +392,13 @@ public class ChartExport {
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
 	      contentStream.endText();
+
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
+	      contentStream.endText();
 	      
 	      contentStream.close();
 	      document.addPage(page7);
@@ -382,6 +430,13 @@ public class ChartExport {
 		      contentStream.setFont(font, 10);
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
+	      contentStream.endText();
+
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
 	      contentStream.endText();
 	      
 	      contentStream.close();
@@ -415,6 +470,13 @@ public class ChartExport {
 		      contentStream.newLineAtOffset(startX(font, 10, fonte, pageWidth), 30);
 		      contentStream.showText(fonte);
 	      contentStream.endText();
+
+	      contentStream.beginText();
+		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
+		      contentStream.setFont(font, 7);
+		      contentStream.newLineAtOffset(startX(font, 7, data, pageWidth), 20);
+		      contentStream.showText(data);
+	      contentStream.endText();
 	      
 	      contentStream.close();
 	      document.addPage(page9);
@@ -425,7 +487,7 @@ public class ChartExport {
 	      byte[] buf = output.toByteArray();
 	      
 	      InputStream in = new ByteArrayInputStream(buf);
-	      file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + getDataAtual() + ".pdf");
+	      file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
 	      
 	      document.close();
 	      
@@ -436,15 +498,24 @@ public class ChartExport {
 		}
 	}
 	
+	private String getMesFinal() {
+		String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+		
+		return meses[FiltrarDadosRelatorioEstatico.mesFinal-1];
+	}
+	
 	private String getDataAtual() {
 		String data;
 		Calendar c = Calendar.getInstance();
-		int anoAtual = c.get(Calendar.YEAR);
+		int diaAtual = c.get(Calendar.DAY_OF_MONTH);
 		int mesAtual = c.get(Calendar.MONTH);
+		int anoAtual = c.get(Calendar.YEAR);
+		int horaAtual = c.get(Calendar.HOUR_OF_DAY);
+		int minAtual = c.get(Calendar.MINUTE);
 		
-		data = mesAtual+1 + "_" + anoAtual;
+		data = diaAtual + "/" + mesAtual + "/" + anoAtual + " às " + horaAtual + ":" + minAtual;
 		
-		return data;
+ 		return data;
 	}
 	
 	private float startX(PDFont font, int fontSize, String line, float pageWidth) throws IOException {

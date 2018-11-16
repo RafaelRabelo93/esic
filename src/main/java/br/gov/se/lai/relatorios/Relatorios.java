@@ -64,18 +64,26 @@ public class Relatorios {
 	public List<Integer> anos;
 	public List<Integer> meses;
 	public Integer anoInicial;
-	public Integer anoFinal;
 	public Integer mesInicial;
-	public Integer mesFinal;
 	
-	
+	public int anoFinal;
+	public int mesFinal;
+		
 	@PostConstruct
 	public void Relatorios() {
 		anos = SolicitacaoDAO.listarAnos();
+		anoFinal = FiltrarDadosRelatorioEstatico.getAnoFinal();
+		mesFinal = FiltrarDadosRelatorioEstatico.getMesFinal();
 //		anos = retornarListaAnosAteHoje();
 	}
 	
-	
+	@SuppressWarnings("unused")
+	public String gerarPeriodo() {
+		FiltrarDadosRelatorioEstatico.setMesFinal(mesFinal);
+		FiltrarDadosRelatorioEstatico.setAnoFinal(anoFinal);
+		return "Relatorios/relatorio_mensal.xhtml";
+	}
+		
 	/**
 	 * Significado dos inteiros que direcionam qual tipo de filtragem irá ser realizada.
 	 * 
@@ -96,68 +104,68 @@ public class Relatorios {
 		switch ((int)tipoDados){
 		case 1:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralDosPedidosInformacao();
-			tipo[0] = "Pedidos Totais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[0] = "Pedidos Totais do E-SIC - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 2:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPedidoInformacao();
-			tipo[1] = "Pedidos Mensais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[1] = "Pedidos Mensais do E-SIC - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 3:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualPedidoInformacao();
-			tipo[2] = "Pedidos Anuais do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[2] = "Pedidos Anuais do E-SIC - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 4:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualAcumuladoPedidoInformacao();
-			tipo[3] = "Pedidos Anuais Acumulados do E-SIC - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[3] = "Pedidos Anuais Acumulados do E-SIC - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 5:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoOrgaoPedidoInformacao();
-			tipo[4] = "Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[4] = "Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 6:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEntidadePedidoInformacao();
-			tipo[5] = "Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[5] = "Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 7:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPedidoInformacao();
-			tipo[6] = "Pedidos Mensais por Tema do E-SIC  - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[6] = "Pedidos Mensais por Tema do E-SIC  - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 8:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTipoPessoaGeneroPedidoInformacao();
-			tipo[7] = "Pedidos Totais por Tipo e Gênero de Pessoa - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[7] = "Pedidos Totais por Tipo e Gênero de Pessoa - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 9:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPedidoInformacao();
-			tipo[8] = "Pedidos Totais por Ente Federativo - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[8] = "Pedidos Totais por Ente Federativo - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 10:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoGeralPorEntidade(idEntidade);
 			entidade = EntidadesDAO.find(idEntidade);
-			tipo[9] = "Pedidos Totais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[9] = "Pedidos Totais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 11:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoMensalPorEntidade(idEntidade);
-			tipo[10] = "Pedidos Mensais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[10] = "Pedidos Mensais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 12:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualPorEntidade(idEntidade);
-			tipo[11] = "Pedidos Anuais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[11] = "Pedidos Anuais da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 13:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAnualAcumuladoPorEntidade(idEntidade);
-			tipo[12] = "Pedidos Anuais acumulados da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[12] = "Pedidos Anuais acumulados da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 14:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPorEntidade(idEntidade);
-			tipo[13] = "Pedidos Mensais por Tema da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[13] = "Pedidos Mensais por Tema da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 15:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTipoPessoaGeneroPorEntidade(idEntidade);
-			tipo[14] = "Pedidos Totais por Tipo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[14] = "Pedidos Totais por Tipo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 16:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPorEntidade(idEntidade);
-			tipo[15] = "Pedidos Totais por Ente Federativo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +getAnoAtual();
+			tipo[15] = "Pedidos Totais por Ente Federativo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
 		}
 			
@@ -245,10 +253,7 @@ public class Relatorios {
 	public String getMesAtual() {
 		String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
 		
-		Calendar c = Calendar.getInstance();
-		int mesAtual = c.get(Calendar.MONTH)+1;
-		
-		return meses[mesAtual-1];
+		return meses[mesFinal-1];
 	}
 	
 	public String getSigla() {
@@ -262,6 +267,12 @@ public class Relatorios {
 		}
 			
 //		return sigla;
+	}
+	
+	public void setarData() {
+//		FiltrarDadosRelatorioEstatico.set
+		FiltrarDadosRelatorioEstatico.setAnoFinal(anoFinal);
+		FiltrarDadosRelatorioEstatico.setMesFinal(mesFinal);
 	}
 
 	public int getTipoRelatorio() {

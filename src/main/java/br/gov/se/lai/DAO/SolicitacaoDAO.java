@@ -207,11 +207,11 @@ public class SolicitacaoDAO {
 	}	
 
 	@SuppressWarnings("unchecked")
-	public static List<String> listarPorFederacao(String tipo, String periodo) {
+	public static List<String> listarPorFederacao(String tipo, String dataInicial, String dataFinal) {
 		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
 					"JOIN  Cidadao as cidadao "+
 					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+					"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 					"AND solicitacao.tipo = 'Informação'" +
 					"ORDER BY solicitacao.cidadao.estado ASC";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
@@ -224,24 +224,24 @@ public class SolicitacaoDAO {
 
 	
 	@SuppressWarnings("unchecked")
-	public static List<Cidadao> listarCidadao(String tipo, String periodo) {
+	public static List<Cidadao> listarCidadao(String tipo, String dataInicial, String dataFinal) {
 		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
 				"JOIN Cidadao as cidadao "+
 				"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
 	}	
 	
 
 	@SuppressWarnings("unchecked")
-	public static List<String> listarAssuntos(String tipo, String periodo) {
+	public static List<String> listarAssuntos(String tipo, String dataInicial, String dataFinal) {
 		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
 				"JOIN  Competencias as competencias "+
 				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
 				"JOIN  Acoes as acoes  "+
 				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
-				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
@@ -273,31 +273,31 @@ public class SolicitacaoDAO {
 	// Consultas utilizadas exclusivamente para geração de gráficos
 		
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarTotalPorPeriodo(String periodo) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = 'Informação' AND slt.dataIni LIKE '" + periodo +  "')",em)); 
+	public static List<Solicitacao> listarTotalPorPeriodo(String dataInicial, String dataFinal) {
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = 'Informação' AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59')",em)); 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarAtendidasPorPeriodo(String periodo) {
+	public static List<Solicitacao> listarAtendidasPorPeriodo(String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE msg.tipo = 2 " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59 ' " + 
 				"AND slt.tipo = 'Informação' " + 
 				"AND slt.status != 'Sem Resposta'";
 		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarSemRespostaPorPeriodo(String periodo) {
+	public static List<Solicitacao> listarSemRespostaPorPeriodo(String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE slt.tipo = 'Informação' " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND (slt.status = 'Sem Resposta' " + 
 				"OR (slt.status = 'Negada'  " + 
 				"AND slt.idSolicitacao NOT IN ( " + 
@@ -310,20 +310,20 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarEmTramitePorPeriodo(String periodo) {
+	public static List<Solicitacao> listarEmTramitePorPeriodo(String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE slt.tipo = 'Informação' " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 1 " + 
 				"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
 				"FROM Solicitacao as slt2 " + 
 				"INNER JOIN Mensagem as msg2 " + 
 				"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
 				"WHERE msg2.tipo = 2 " + 
-				"AND slt2.dataIni LIKE '" + periodo + "' " + 
+				"AND slt2.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt2.tipo = 'Informação' " + 
 				"AND slt2.status != 'Sem Resposta') " + 
 				"AND slt.status != 'Sem Resposta' " + 
@@ -332,11 +332,11 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarNaoVisualizadasPorPeriodo(String periodo) {
+	public static List<Solicitacao> listarNaoVisualizadasPorPeriodo(String dataInicial, String dataFinal) {
 		String HQL = "SELECT slt " + 
 				"FROM Solicitacao as slt  " + 
 				"WHERE slt.tipo = 'Informação'  " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 0 " + 
 				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')";
 		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
@@ -345,22 +345,22 @@ public class SolicitacaoDAO {
 	// Consultas utilizadas exclusivamente para geração de gráficos por órgão
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarTotalPorEntidade(String periodo, int idEntidade) {
+	public static List<Solicitacao> listarTotalPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
 		String HQL = "SELECT slt FROM Solicitacao as slt "
 					+ "WHERE slt.tipo = 'Informação' "
-					+ "AND slt.dataIni LIKE '" + periodo +  "' "
+					+ "AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "
 					+ "AND slt.entidades.idEntidades = " + idEntidade;
 		return (List<Solicitacao>) (Consultas.buscaPersonalizada(HQL,em)); 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarAtendidasPorEntidade(String periodo, int idEntidade) {
+	public static List<Solicitacao> listarAtendidasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE msg.tipo = 2 " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.tipo = 'Informação' " + 
 				"AND slt.status != 'Sem Resposta'" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
@@ -368,13 +368,13 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarSemRespostaPorEntidade(String periodo, int idEntidade) {
+	public static List<Solicitacao> listarSemRespostaPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE slt.tipo = 'Informação' " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND (slt.status = 'Sem Resposta' " + 
 				"OR (slt.status = 'Negada'  " + 
 				"AND slt.idSolicitacao NOT IN ( " + 
@@ -388,20 +388,20 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarEmTramitePorEntidade(String periodo, int idEntidade) {
+	public static List<Solicitacao> listarEmTramitePorEntidade(int idEntidade, String dataInicial, String dataFinal) {
 		String HQL= "SELECT DISTINCT slt " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
 				"WHERE slt.tipo = 'Informação' " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 1 " + 
 				"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
 				"FROM Solicitacao as slt2 " + 
 				"INNER JOIN Mensagem as msg2 " + 
 				"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
 				"WHERE msg2.tipo = 2 " + 
-				"AND slt2.dataIni LIKE '" + periodo + "' " + 
+				"AND slt2.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt2.tipo = 'Informação' " + 
 				"AND slt2.status != 'Sem Resposta') " + 
 				"AND slt.status != 'Sem Resposta' " + 
@@ -411,11 +411,11 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarNaoVisualizadasPorEntidade(String periodo, int idEntidade) {
+	public static List<Solicitacao> listarNaoVisualizadasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
 		String HQL = "SELECT slt " + 
 				"FROM Solicitacao as slt  " + 
 				"WHERE slt.tipo = 'Informação'  " + 
-				"AND slt.dataIni LIKE '" + periodo + "' " + 
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 0 " + 
 				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
@@ -423,35 +423,35 @@ public class SolicitacaoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<String> listarAssuntosPorEntidade(String tipo, String periodo, int idEntidade) {
+	public static List<String> listarAssuntosPorEntidade(String tipo, int idEntidade, String dataInicial, String dataFinal ) {
 		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
 				"JOIN  Competencias as competencias "+
 				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
 				"JOIN  Acoes as acoes  "+
 				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
-				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 				"AND solicitacao.tipo = '"+tipo+"'" +
 				"AND solicitacao.entidades.idEntidades = " + idEntidade;
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Cidadao> listarCidadaoPorEntidade(String tipo, String periodo, int idEntidade) {
+	public static List<Cidadao> listarCidadaoPorEntidade(String tipo, int idEntidade, String dataInicial, String dataFinal ) {
 		String HQL= "SELECT solicitacao.cidadao FROM  Solicitacao as solicitacao "+
 				"JOIN Cidadao as cidadao "+
 				"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-				"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 				"AND solicitacao.tipo = '"+tipo+"'" +
 				"AND solicitacao.entidades.idEntidades = " + idEntidade;
 		return (List<Cidadao>) Consultas.buscaPersonalizada(HQL, em); 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<String> listarPorFederacaoPorEntidade(String tipo, String periodo, int idEntidade) {
+	public static List<String> listarPorFederacaoPorEntidade(String tipo, int idEntidade, String dataInicial, String dataFinal ) {
 		String HQL= "SELECT solicitacao.cidadao.estado FROM  Solicitacao as solicitacao "+
 					"JOIN  Cidadao as cidadao "+
 					"ON solicitacao.cidadao.idCidadao = cidadao.idCidadao "+
-					"WHERE solicitacao.dataIni LIKE '"+periodo+"' "+
+					"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 					"AND solicitacao.tipo = 'Informação'" +
 					"AND solicitacao.entidades.idEntidades = " + idEntidade +
 					"ORDER BY solicitacao.cidadao.estado ASC";

@@ -129,25 +129,25 @@ public class  EntidadesDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-  public static List<Entidades> listOrgaosComSolicitacoes(String periodo) {
+  public static List<Entidades> listOrgaosComSolicitacoes(String dataInicial, String dataFinal) {
 		String HQL = "SELECT DISTINCT ent " + 
 				"FROM Entidades as ent " + 
 				"INNER JOIN Solicitacao as slt " + 
 				"ON slt.entidades.idEntidades = ent.idEntidades " + 
 				"WHERE ent.orgao = 1" +
-				"AND slt.dataIni LIKE '" + periodo + "' " +
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " +
 				"ORDER BY ent.sigla ASC";
     	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
     }
 	  
     @SuppressWarnings("unchecked")
-    public static List<Entidades> listEntidadesComSolicitacoes(String periodo) {		
+    public static List<Entidades> listEntidadesComSolicitacoes(String dataInicial, String dataFinal) {		
     	String HQL = "SELECT DISTINCT ent " + 
 				"FROM Entidades as ent " + 
 				"INNER JOIN Solicitacao as slt " + 
 				"ON slt.entidades.idEntidades = ent.idEntidades " + 
 				"WHERE ent.orgao = 0" +
-				"AND slt.dataIni LIKE '" + periodo + "' " +
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " +
 				"ORDER BY ent.sigla ASC";
     	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
     }

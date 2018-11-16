@@ -61,7 +61,30 @@
 						 <f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
 					</p:selectOneMenu>
 					
-					<p:commandLink id="okBtn" value="OK" styleClass="botaoLink" update="@all"
+					<p:outputLabel value="Data: " rendered="true"  /> 
+				    <h:panelGroup styleClass="inline">
+				    
+						<p:selectOneMenu id="anoFinal" value="#{relatorios.anoFinal}" required="true" style="margin: 0 .5em 0 0;">
+							<f:selectItems value="#{relatorios.anos}" var="ano" itemLabel="#{ano}" itemValue="#{ano}"/>
+						</p:selectOneMenu>
+						
+						<p:selectOneMenu id="mesFinal" value="#{relatorios.mesFinal}" required="true" style="margin: 0 1em 0 .5em;">
+							<f:selectItem itemLabel="Janeiro" itemValue="1"/>
+						 	<f:selectItem itemLabel="Fevereiro" itemValue="2"/>
+							<f:selectItem itemLabel="Março" itemValue="3"/>
+							<f:selectItem itemLabel="Abril" itemValue="4"/>
+							<f:selectItem itemLabel="Maio" itemValue="5"/>
+							<f:selectItem itemLabel="Junho" itemValue="6"/>
+							<f:selectItem itemLabel="Julho" itemValue="7"/>
+							<f:selectItem itemLabel="Agosto" itemValue="8"/>
+							<f:selectItem itemLabel="Setembro" itemValue="9"/>
+							<f:selectItem itemLabel="Outubro" itemValue="10"/>
+							<f:selectItem itemLabel="Novembro" itemValue="11"/>
+							<f:selectItem itemLabel="Dezembro" itemValue="12"/>
+						</p:selectOneMenu>
+					 </h:panelGroup>
+					
+					<p:commandLink id="okBtn" value="OK" styleClass="botaoLink" update="@all" action="#{relatorios.gerarPeriodo}"
 						style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
 					</p:commandLink>
 					
@@ -214,14 +237,14 @@
 
 	function exportAllCharts() {
         // exportAsImage() will return a base64 png encoded string
-        document.getElementById('form:ch1').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch2').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch3').value = PF('chartGeral').exportAsImage().src;
-        document.getElementById('form:ch4').value = PF('chartGeral').exportAsImage().src;
+		document.getElementById('form:ch1').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch2').value = PF('chartMensal').exportAsImage().src;
+        document.getElementById('form:ch3').value = PF('chartAnual').exportAsImage().src;
+        document.getElementById('form:ch4').value = PF('chartAnualAcumulado').exportAsImage().src;
         document.getElementById('form:ch5').value = PF('chartOrgao').exportAsImage().src;
         document.getElementById('form:ch6').value = PF('chartEntidade').exportAsImage().src;
         document.getElementById('form:ch7').value = PF('chartAssunto').exportAsImage().src;
-        document.getElementById('form:ch8').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch8').value = PF('chartTipoPessoa').exportAsImage().src;
         document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
     }
     
