@@ -36,6 +36,8 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import br.gov.se.lai.DAO.EntidadesDAO;
+
 @ManagedBean(name = "chartExport")
 @SessionScoped
 public class ChartExport {
@@ -115,7 +117,8 @@ public class ChartExport {
 	      
 	      String line1 = "Acesso à Informação Pública - Transparência Passiva";
 	      String line2 = "Estatística Mensal de Atendimento - Art. 30 , III, da Lei nº 12.527/2011";
-	      String line3 = getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
+	      String line3 = "Relatório Geral - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
+	      String _line3 = "Relatório " + EntidadesDAO.find(FiltrarDadosRelatorioEstatico.idEntidade).getSigla() + " - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
 	      String fonte = "Fonte: esic.se.gov.br";
 	      String data = "Gerado em " + getDataAtual() ;
 	      
@@ -136,7 +139,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 //	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80), pdImage.getWidth(), pdImage.getHeight());
@@ -176,7 +179,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 	      
 	      contentStream.drawImage(imgChartMensal, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
@@ -215,7 +218,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnual.getWidth()*0.85), (float) (imgChartAnual.getHeight()*0.85));
@@ -254,7 +257,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnualAcu.getWidth()*0.85), (float) (imgChartAnualAcu.getHeight()*0.85));
@@ -300,7 +303,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartOrgao.getWidth()*0.85), (float) (imgChartOrgao.getHeight()*0.85));
@@ -339,7 +342,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 //	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
@@ -381,7 +384,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAssunto.getWidth()*0.85), (float) (imgChartAssunto.getHeight()*0.85));
@@ -420,7 +423,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartPessoa.getWidth()*0.85), (float) (imgChartPessoa.getHeight()*0.85));
@@ -459,7 +462,7 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	contentStream.showText(line3);
+		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
 	      contentStream.endText();
 
 	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartEstado.getWidth()*0.85), (float) (imgChartEstado.getHeight()*0.85));
@@ -486,8 +489,14 @@ public class ChartExport {
 	      document.save(output);
 	      byte[] buf = output.toByteArray();
 	      
+	      Relatorios relatorio = new Relatorios();
+	      
 	      InputStream in = new ByteArrayInputStream(buf);
-	      file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
+	      if (tipo == 1) {
+	    	  file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_Geral_"  + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
+	      } else {
+	    	  file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + EntidadesDAO.find(FiltrarDadosRelatorioEstatico.idEntidade).getSigla() + "_" + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
+	      }
 	      
 	      document.close();
 	      

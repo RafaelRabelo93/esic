@@ -54,20 +54,14 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	protected final static int anoInicial = 2012;
 	protected final static int mesInicial = 1;
 	
+	public static int idEntidade;
+
 	public static String dataFinal;
 	
 	static Calendar c = Calendar.getInstance();
 	
 	public static int anoFinal = c.get(Calendar.YEAR);;
 	public static int mesFinal = c.get(Calendar.MONTH)+1;
-	
-	public static String getDataFinal() {
-		return dataFinal;
-	}
-
-	public static void setDataFinal(String dataFinal) {
-		FiltrarDadosRelatorioEstatico.dataFinal = dataFinal;
-	}
 	
 	private static String dataInicial() {
 		String dataInicial;
@@ -872,6 +866,22 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 
 	public static void setMesFinal(Integer mesFinal) {
 		FiltrarDadosRelatorioEstatico.mesFinal = mesFinal;
+	}
+	
+	public static String getDataFinal() {
+		return dataFinal;
+	}
+
+	public static void setDataFinal(String dataFinal) {
+		FiltrarDadosRelatorioEstatico.dataFinal = dataFinal;
+	}
+	
+	public static int getIdEntidade() {
+		return idEntidade;
+	}
+
+	public static void setIdEntidade(int idEntidade) {
+		FiltrarDadosRelatorioEstatico.idEntidade = idEntidade;
 	}
 
 	

@@ -81,6 +81,7 @@ public class Relatorios {
 	public String gerarPeriodo() {
 		FiltrarDadosRelatorioEstatico.setMesFinal(mesFinal);
 		FiltrarDadosRelatorioEstatico.setAnoFinal(anoFinal);
+		FiltrarDadosRelatorioEstatico.setIdEntidade(idEntidade);
 		return "Relatorios/relatorio_mensal.xhtml";
 	}
 		
