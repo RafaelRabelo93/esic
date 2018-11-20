@@ -49,6 +49,7 @@
 		<!-- Botões Fim -->
 		
 		<div class="menuAcesso">
+			<h:panelGroup styleClass="inline">
 				<div class="botaoFoot">
 					<h:commandLink href="#manual">
 						<div id="titulo">
@@ -68,8 +69,9 @@
 							<p style="font-size:17px; color:#333">Acesso ao LAI</p>
 					</h:outputLink>
 				</div>
-				
-				
+			</h:panelGroup>
+			
+			<h:panelGroup styleClass="inline">
 				<div class="botaoFoot">
 					<h:commandLink action="/Relatorios/relatorio_mensal">
 						<div id="titulo">
@@ -79,6 +81,17 @@
 							<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
 					</h:commandLink>
 				</div>
+				
+				<div class="botaoFoot">
+					<h:outputLink value="http://transparencia.se.gov.br/">
+							<div id="titulo">
+							<p:graphicImage value="#{resource['img/icon/transparencia_icon.png']}" width="20%" height="20%"/>
+							<h:outputText value="Transparência" style="padding-left:5%"/>
+						</div>
+							<p style="font-size:17px; color:#333">Portal da Transparência de Sergipe</p>
+					</h:outputLink>
+				</div>
+			</h:panelGroup>
 		</div>
 	</div>
 	

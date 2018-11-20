@@ -34,7 +34,7 @@ public class Relatorios {
 	public int tipoGrafico;
 	public Map<String, ArrayList<Integer>> dadosChart;
 	public Entidades entidade;
-	public int idEntidade;
+	public int idEntidade = 0;
 	public String sigla;
 	public String[] tipo = new String[16];
 	public int[] metricas;

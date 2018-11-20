@@ -92,6 +92,8 @@ public class ChartExport {
 			PDRectangle pageSize = page.getMediaBox();
 			float pageWidth = pageSize.getWidth();
 			float pageHeight = pageSize.getHeight();
+			
+			Dimension scaledDim = new Dimension();
 	      
 	      
 	      // Criar Imagens
@@ -109,6 +111,8 @@ public class ChartExport {
 //	      PDImageXObject pdImage = PDImageXObject.createFromFile(folder.toString()+"\\resources\\img\\esiclogo_se.png", document);
 //	      PDImageXObject pdImage = PDImageXObject.createFromFile(ChartExport.class.getResource("resources/img/esiclogo_se.png").getPath(), document);
 	      
+		String entidade = null;
+		
 	      PDFont font = PDType1Font.HELVETICA;
 	      int marginTop = 30;
 	      int fontSize = 20;
@@ -118,9 +122,13 @@ public class ChartExport {
 	      String line1 = "Acesso à Informação Pública - Transparência Passiva";
 	      String line2 = "Estatística Mensal de Atendimento - Art. 30 , III, da Lei nº 12.527/2011";
 	      String line3 = "Relatório Geral - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
-	      String _line3 = "Relatório " + EntidadesDAO.find(FiltrarDadosRelatorioEstatico.idEntidade).getSigla() + " - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
 	      String fonte = "Fonte: esic.se.gov.br";
 	      String data = "Gerado em " + getDataAtual() ;
+	      
+	      if(tipo == 2) {
+	    	  entidade = EntidadesDAO.find(FiltrarDadosRelatorioEstatico.idEntidade).getSigla();
+	    	  line3 = "Relatório " + entidade + " - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
+	      }
 	      
 	      // Página 01
 	      contentStream = new PDPageContentStream(document, page);
@@ -139,11 +147,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
-
-//	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80), pdImage.getWidth(), pdImage.getHeight());
-	      contentStream.drawImage(imgChartGeral, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartGeral.getWidth()*0.85), (float) (imgChartGeral.getHeight()*0.85));
+	      
+	      scaledDim = getScaledDimension(new Dimension(imgChartGeral.getWidth(), imgChartGeral.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartGeral, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -179,10 +187,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 	      
-	      contentStream.drawImage(imgChartMensal, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartMensal.getWidth()*0.85), (float) (imgChartMensal.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartMensal.getWidth(), imgChartMensal.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartMensal, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -218,10 +227,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAnual, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnual.getWidth()*0.85), (float) (imgChartAnual.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartAnual.getWidth(), imgChartAnual.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartAnual, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -257,10 +267,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAnualAcu, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAnualAcu.getWidth()*0.85), (float) (imgChartAnualAcu.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartAnualAcu.getWidth(), imgChartAnualAcu.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartAnualAcu, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -303,10 +314,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartOrgao, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartOrgao.getWidth()*0.85), (float) (imgChartOrgao.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartOrgao.getWidth(), imgChartOrgao.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartOrgao, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -342,11 +354,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-//	      contentStream.drawImage(pdImage, (float) (pageWidth*0.05), (float) (pageHeight*0.80));
-	      contentStream.drawImage(imgChartEntidade, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartEntidade.getWidth()*0.85), (float) (imgChartEntidade.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartEntidade.getWidth(), imgChartEntidade.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartEntidade, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -384,10 +396,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartAssunto, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartAssunto.getWidth()*0.85), (float) (imgChartAssunto.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartAssunto.getWidth(), imgChartAssunto.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartAssunto, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -423,10 +436,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartPessoa, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartPessoa.getWidth()*0.85), (float) (imgChartPessoa.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartPessoa.getWidth(), imgChartPessoa.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartPessoa, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -462,10 +476,11 @@ public class ChartExport {
 		  	contentStream.setFont(font, 14);
 		  	contentStream.showText(line2);
 		  	contentStream.newLine();
-		  	if(tipo == 1) contentStream.showText(line3); else contentStream.showText(_line3);
+		  	contentStream.showText(line3);
 	      contentStream.endText();
 
-	      contentStream.drawImage(imgChartEstado, (float) (pageWidth*0.05), (float) (pageHeight*0.2), (float) (imgChartEstado.getWidth()*0.85), (float) (imgChartEstado.getHeight()*0.85));
+	      scaledDim = getScaledDimension(new Dimension(imgChartEstado.getWidth(), imgChartEstado.getHeight()), new Dimension((int) (pageWidth*0.85), (int) pageHeight));
+	      contentStream.drawImage(imgChartEstado, centralizar(pageWidth, scaledDim.width), centralizar(pageHeight, scaledDim.height), scaledDim.width, scaledDim.height);
 	      
 	      contentStream.beginText();
 		      contentStream.setNonStrokingColor(Color.DARK_GRAY);
@@ -489,13 +504,11 @@ public class ChartExport {
 	      document.save(output);
 	      byte[] buf = output.toByteArray();
 	      
-	      Relatorios relatorio = new Relatorios();
-	      
 	      InputStream in = new ByteArrayInputStream(buf);
 	      if (tipo == 1) {
 	    	  file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_Geral_"  + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
 	      } else {
-	    	  file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + EntidadesDAO.find(FiltrarDadosRelatorioEstatico.idEntidade).getSigla() + "_" + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
+	    	  file = new DefaultStreamedContent(in, "application/pdf", "Relatorio_" + entidade + "_" + FiltrarDadosRelatorioEstatico.mesFinal + "_" + FiltrarDadosRelatorioEstatico.anoFinal + ".pdf");
 	      }
 	      
 	      document.close();
@@ -511,6 +524,37 @@ public class ChartExport {
 		String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
 		
 		return meses[FiltrarDadosRelatorioEstatico.mesFinal-1];
+	}
+	
+	private static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+		  int original_width = imgSize.width;
+		  int original_height = imgSize.height;
+		  int bound_width = boundary.width;
+		  int bound_height = boundary.height;
+		  int new_width = original_width;
+		  int new_height = original_height;
+
+		  // first check if we need to scale width
+		  if (original_width > bound_width) {
+		    //scale width to fit
+		    new_width = bound_width;
+		    //scale height to maintain aspect ratio
+		    new_height = (new_width * original_height) / original_width;
+		  }
+
+		  // then check if we need to scale even with the new height
+		  if (new_height > bound_height) {
+		    //scale height to fit instead
+		    new_height = bound_height;
+		    //scale width to maintain aspect ratio
+		    new_width = (new_height * original_width) / original_height;
+		  }
+
+		  return new Dimension(new_width, new_height);
+	}
+	
+	private float centralizar(float tamanhoPagina, float tamanhoImagem) {
+		return (tamanhoPagina - tamanhoImagem) / 2;
 	}
 	
 	private String getDataAtual() {
