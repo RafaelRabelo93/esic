@@ -50,47 +50,39 @@
 		
 		<div class="menuAcesso">
 			<h:panelGroup styleClass="inline">
-				<div class="botaoFoot">
-					<h:commandLink href="#manual">
+					<h:commandLink href="#manual" styleClass="botaoFoot">
 						<div id="titulo">
 							<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
 							<h:outputText value="Manual" style="padding-left:5%"/>
 						</div>
 						<p style="font-size:17px; color:#333">Visualizar manual do usuário</p>
 					</h:commandLink>
-				</div>
 				
-				<div class="botaoFoot">
-					<h:outputLink value="http://lai.se.gov.br/">
-							<div id="titulo">
-							<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
-							<h:outputText value="LAI" style="padding-left:5%"/>
-						</div>
-							<p style="font-size:17px; color:#333">Acesso ao LAI</p>
-					</h:outputLink>
-				</div>
+				<h:outputLink value="http://lai.se.gov.br/" styleClass="botaoFoot">
+						<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
+						<h:outputText value="LAI" style="padding-left:5%"/>
+					</div>
+						<p style="font-size:17px; color:#333">Acesso ao LAI</p>
+				</h:outputLink>
 			</h:panelGroup>
 			
 			<h:panelGroup styleClass="inline">
-				<div class="botaoFoot">
-					<h:commandLink action="/Relatorios/relatorio_mensal">
-						<div id="titulo">
-							<p:graphicImage value="#{resource['img/icon/statistics.png']}" width="20%" height="20%"/>
-							<h:outputText value="Estatística" style="padding-left:5%"/>
-						</div>
-							<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
-					</h:commandLink>
-				</div>
+				<h:commandLink action="/Relatorios/relatorio_mensal" styleClass="botaoFoot">
+					<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/statistics.png']}" width="20%" height="20%"/>
+						<h:outputText value="Estatística" style="padding-left:5%"/>
+					</div>
+						<p style="font-size:17px; color:#333">Relatórios estatísticos</p>
+				</h:commandLink>
 				
-				<div class="botaoFoot">
-					<h:outputLink value="http://transparencia.se.gov.br/">
-							<div id="titulo">
-							<p:graphicImage value="#{resource['img/icon/transparencia_icon.png']}" width="20%" height="20%"/>
-							<h:outputText value="Transparência" style="padding-left:5%"/>
-						</div>
-							<p style="font-size:17px; color:#333">Portal da Transparência de Sergipe</p>
-					</h:outputLink>
-				</div>
+				<h:outputLink value="http://transparencia.se.gov.br/" styleClass="botaoFoot">
+					<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/transparencia_icon.png']}" width="20%" height="20%"/>
+						<h:outputText value="Transparência" style="padding-left:5%"/>
+					</div>
+						<p style="font-size:17px; color:#333">Portal da Transparência de Sergipe</p>
+				</h:outputLink>
 			</h:panelGroup>
 		</div>
 	</div>

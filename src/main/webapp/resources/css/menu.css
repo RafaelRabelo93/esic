@@ -374,11 +374,8 @@
     -webkit-transition: background-position 1s;
     -o-transition: background-position 1s;
     transition: background-position 1s;
-}
-
-
-.botaoFoot a{
-	color: #1b4882;
+    
+    color: #1b4882;
 	text-decoration: none;	
 	font-size: 200%;
   	font-family: "lato", Sans-serif;
@@ -386,6 +383,17 @@
   	text-align: center;
     text-align-last: center;
 }
+
+
+/* .botaoFoot a{ */
+/* 	color: #1b4882; */
+/* 	text-decoration: none;	 */
+/* 	font-size: 200%; */
+/*   	font-family: "lato", Sans-serif; */
+/*   	font-weight: 100; */
+/*   	text-align: center; */
+/*     text-align-last: center; */
+/* } */
 
 .botaoFoot:hover {
 	background-position: -100% 0;

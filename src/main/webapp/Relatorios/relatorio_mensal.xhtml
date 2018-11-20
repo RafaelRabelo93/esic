@@ -64,11 +64,11 @@
 					<p:outputLabel value="Data: " rendered="true"  /> 
 				    <h:panelGroup styleClass="inline">
 				    
-						<p:selectOneMenu id="anoFinal" value="#{relatorios.anoFinal}" required="true" style="margin: 0 .5em 0 0;">
+						<p:selectOneMenu id="anoFinal" value="#{relatorios.anoFinal}" required="true" style="margin: 0 .5em 0 0; width: 70px" >
 							<f:selectItems value="#{relatorios.anos}" var="ano" itemLabel="#{ano}" itemValue="#{ano}"/>
 						</p:selectOneMenu>
 						
-						<p:selectOneMenu id="mesFinal" value="#{relatorios.mesFinal}" required="true" style="margin: 0 1em 0 .5em;">
+						<p:selectOneMenu id="mesFinal" value="#{relatorios.mesFinal}" required="true" style="margin: 0 1em 0 .5em; width: 100px">
 							<f:selectItem itemLabel="Janeiro" itemValue="1"/>
 						 	<f:selectItem itemLabel="Fevereiro" itemValue="2"/>
 							<f:selectItem itemLabel="Março" itemValue="3"/>
@@ -83,7 +83,7 @@
 							<f:selectItem itemLabel="Dezembro" itemValue="12"/>
 						</p:selectOneMenu>
 					 </h:panelGroup>
-					
+					 
 					<p:commandLink id="okBtn" value="OK" styleClass="botaoLink" update="@all" action="#{relatorios.gerarPeriodo}"
 						style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
 					</p:commandLink>

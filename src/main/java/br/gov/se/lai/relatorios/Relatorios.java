@@ -65,8 +65,9 @@ public class Relatorios {
 	public List<Integer> meses;
 	public Integer anoInicial;
 	public Integer mesInicial;
+	public Map<String, Integer> mesesDoAno;
 	
-	public int anoFinal;
+	public int anoFinal = 2018;
 	public int mesFinal;
 		
 	@PostConstruct
@@ -84,7 +85,7 @@ public class Relatorios {
 		FiltrarDadosRelatorioEstatico.setIdEntidade(idEntidade);
 		return "Relatorios/relatorio_mensal.xhtml";
 	}
-		
+	
 	/**
 	 * Significado dos inteiros que direcionam qual tipo de filtragem irá ser realizada.
 	 * 
@@ -274,6 +275,52 @@ public class Relatorios {
 //		FiltrarDadosRelatorioEstatico.set
 		FiltrarDadosRelatorioEstatico.setAnoFinal(anoFinal);
 		FiltrarDadosRelatorioEstatico.setMesFinal(mesFinal);
+	}
+	
+	public void listarMesesDoAno() {
+		meses = SolicitacaoDAO.listarMesesDoAno(anoFinal);
+		
+//		for (Integer temp : meses) {
+//			
+//			switch (temp) {
+//				case 1:
+//					mesesDoAno.put("Janeiro", temp);
+//					break;
+//				case 2:
+//					mesesDoAno.put("Fevereiro", temp);
+//					break;
+//				case 3:
+//					mesesDoAno.put("Março", temp);
+//					break;
+//				case 4:
+//					mesesDoAno.put("Abril", temp);
+//					break;
+//				case 5:
+//					mesesDoAno.put("Maio", temp);
+//					break;
+//				case 6:
+//					mesesDoAno.put("Junho", temp);
+//					break;
+//				case 7:
+//					mesesDoAno.put("Julho", temp);
+//					break;
+//				case 8:
+//					mesesDoAno.put("Agosto", temp);
+//					break;
+//				case 9:
+//					mesesDoAno.put("Setembro", temp);
+//					break;
+//				case 10:
+//					mesesDoAno.put("Outubro", temp);
+//					break;
+//				case 11:
+//					mesesDoAno.put("Novembro", temp);
+//					break;
+//				case 12:
+//					mesesDoAno.put("Dezembro", temp);
+//					break;
+//			}
+//		}
 	}
 
 	public int getTipoRelatorio() {
@@ -506,6 +553,14 @@ public class Relatorios {
 		this.anos = anos;
 	}
 	
+	public List<Integer> getMeses() {
+		return meses;
+	}
+	
+	public void setMeses(List<Integer> meses) {
+		this.meses = meses;
+	}
+	
 	public Integer getAnoInicial() {
 		return anoInicial;
 	}
@@ -543,5 +598,14 @@ public class Relatorios {
 	public void setMesFinal(Integer mesFinal) {
 		this.mesFinal = mesFinal;
 	}
+	
+	public Map<String, Integer> getMesesDoAno() {
+		return mesesDoAno;
+	}
+
+	public void setMesesDoAno(Map<String, Integer> mesesDoAno) {
+		this.mesesDoAno = mesesDoAno;
+	}
+
 	
 }

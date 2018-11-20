@@ -468,7 +468,7 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Integer> listarMesesDoAno(int ano) {
-		String HQL = "SELECT DISTINCT EXTRACT(MONTH FROM sol.dataIni) FROM Solicitacao as sol WHERE sol.dataIni LIKE '" + ano + "-%' ORDER BY EXTRACT(MONTH FROM sol.dataIni) ASC;";
+		String HQL = "SELECT DISTINCT EXTRACT(MONTH FROM sol.dataIni) FROM Solicitacao as sol WHERE sol.dataIni LIKE '" + ano + "-%' ORDER BY EXTRACT(MONTH FROM sol.dataIni) ASC";
 		return (List<Integer>) Consultas.buscaPersonalizada(HQL, em);
 	}
 	

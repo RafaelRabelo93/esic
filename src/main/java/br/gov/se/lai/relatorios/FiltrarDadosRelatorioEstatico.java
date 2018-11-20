@@ -82,18 +82,18 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		
 		if (anoFinal != 0 && mesFinal != 0) {
 			if (mesFinal<=9) {
-				dataFinal = anoFinal + "-0" + mesFinal + "-" + "30";
+				dataFinal = anoFinal + "-0" + mesFinal + "-" + "31";
 			} else {
-				dataFinal = anoFinal + "-" + mesFinal + "-" + "30";
+				dataFinal = anoFinal + "-" + mesFinal + "-" + "31";
 			}
 		} else {
 			Calendar c = Calendar.getInstance();
 			int mesAtual = c.get(Calendar.MONTH)+1;
 			int anoAtual = c.get(Calendar.YEAR);
 			if (mesAtual<=9) {
-				dataFinal = anoAtual + "-0" + mesAtual + "-" + "30";
+				dataFinal = anoAtual + "-0" + mesAtual + "-" + "31";
 			} else {
-				dataFinal = anoAtual + "-" + mesAtual + "-" + "30";
+				dataFinal = anoAtual + "-" + mesAtual + "-" + "31";
 			}
 		}
 		
@@ -189,14 +189,26 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		
 		for (int i = anoInicial; i <= anoFinal; i++) {
 			
-			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO.listarTotalPorPeriodo(i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorPeriodo(i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorPeriodo(i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorPeriodo(i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(i + "-01-01", i + "-12-31").size());
-			dadosRelacionadorBase.add(dadosEspecificos);
+			
+			if (i == anoFinal) {
+				base.add(String.valueOf(i));
+				dadosEspecificos = new ArrayList<>();
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorPeriodo(i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorPeriodo(i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorPeriodo(i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorPeriodo(i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(i + "-01-01", dataFinal()).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				base.add(String.valueOf(i));
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorPeriodo(i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorPeriodo(i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorPeriodo(i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorPeriodo(i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(i + "-01-01", i + "-12-31").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			}
 		}
 		
 		for (int i = 0; i < base.size(); i++) {
@@ -232,11 +244,25 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			int pedidosNaoVisualizadasPeriodo = 0;
 			
 			for (int ano = anoInicial; ano <= i; ano++) {
-				pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorPeriodo(ano + "-01-01", ano + "-12-31").size();
-				pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
-				pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorPeriodo(ano + "-01-01", ano + "-12-31").size();
-				pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorPeriodo(ano + "-01-01", ano + "-12-31").size();
-				pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+				if (ano == anoFinal) {
+					pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorPeriodo(ano + "-01-01", dataFinal()).size();
+					pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorPeriodo(ano + "-01-01", dataFinal()).size();
+					pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorPeriodo(ano + "-01-01", dataFinal()).size();
+					pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorPeriodo(ano + "-01-01", dataFinal()).size();
+					pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(ano + "-01-01", dataFinal()).size();
+				} else {
+					pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+					pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+					pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+					pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorPeriodo(ano + "-01-01", ano + "-12-31").size();
+					pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+				}
+				
+//				pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+//				pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+//				pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorPeriodo(ano + "-01-01", ano + "-12-31").size();
+//				pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorPeriodo(ano + "-01-01", ano + "-12-31").size();
+//				pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorPeriodo(ano + "-01-01", ano + "-12-31").size();
 				
 			}
 			
@@ -625,14 +651,26 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		
 		for (int i = anoInicial; i <= anoFinal; i++) {
 			
-			base.add(String.valueOf(i));
 			ArrayList<Integer> dadosEspecificos = new ArrayList<>();
-			dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
-			dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
-			dadosRelacionadorBase.add(dadosEspecificos);
+			
+			if (i == anoFinal) {
+				base.add(String.valueOf(i));
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(idEntidade, i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, i + "-01-01", dataFinal()).size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, i + "-01-01", dataFinal()).size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			} else {
+				base.add(String.valueOf(i));
+				dadosEspecificos.add(SolicitacaoDAO.listarTotalPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
+				dadosEspecificos.add(SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, i + "-01-01", i + "-12-31").size());
+				dadosRelacionadorBase.add(dadosEspecificos);
+			}
+			
 		}
 		
 		for (int i = 0; i < base.size(); i++) {
@@ -662,11 +700,20 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 			int pedidosNaoVisualizadasPeriodo = 0;
 			
 			for (int ano = anoInicial; ano <= i; ano++) {
-				pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
-				pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
-				pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
-				pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
-				pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+				
+				if (ano == anoFinal) {
+					pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorEntidade(idEntidade, ano + "-01-01", dataFinal()).size();
+					pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, ano + "-01-01", dataFinal()).size();
+					pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, ano + "-01-01", dataFinal()).size();
+					pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, ano + "-01-01", dataFinal()).size();
+					pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, ano + "-01-01", dataFinal()).size();
+				} else {
+					pedidosTotalPeriodo += SolicitacaoDAO.listarTotalPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+					pedidosAtendidasPeriodo += SolicitacaoDAO.listarAtendidasPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+					pedidosSemRespostaPeriodo += SolicitacaoDAO.listarSemRespostaPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+					pedidosTramitePeriodo += SolicitacaoDAO.listarEmTramitePorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+					pedidosNaoVisualizadasPeriodo += SolicitacaoDAO.listarNaoVisualizadasPorEntidade(idEntidade, ano + "-01-01", ano + "-12-31").size();
+				}
 				
 			}
 			
