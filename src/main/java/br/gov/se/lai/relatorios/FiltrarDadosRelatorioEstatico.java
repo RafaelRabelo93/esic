@@ -49,8 +49,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	 */
 
 	
-	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
-			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+	protected final static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
 	protected final static int anoInicial = 2012;
 	protected final static int mesInicial = 1;
 	
@@ -60,7 +59,7 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	
 	static Calendar c = Calendar.getInstance();
 	
-	public static int anoFinal = c.get(Calendar.YEAR);;
+	public static int anoFinal = c.get(Calendar.YEAR);
 	public static int mesFinal = c.get(Calendar.MONTH)+1;
 	
 	private static String dataInicial() {
@@ -298,14 +297,14 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //			periodo = anoAtual + "-" + mesAtual + "%";
 //		} 
 		
-		String dataIni;
+		String dataIni = anoFinal + "-01-01";;
 		String dataFim;
 		
 		if (mesFinal<=9) {
-			dataIni = anoFinal + "-0" + mesFinal + "-01";
+//			dataIni = anoFinal + "-0" + mesFinal + "-01";
 			dataFim = anoFinal + "-0" + mesFinal + "-31";
 		} else {
-			dataIni = anoFinal + "-" + mesFinal + "-01";
+//			dataIni = anoFinal + "-" + mesFinal + "-01";
 			dataFim = anoFinal + "-" + mesFinal + "-31";
 		}
 		
@@ -372,14 +371,14 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //			periodo = anoAtual + "-" + mesAtual + "%";
 //		} 
 		
-		String dataIni;
+		String dataIni = anoFinal + "-01-01";
 		String dataFim;
 		
 		if (mesFinal<=9) {
-			dataIni = anoFinal + "-0" + mesFinal + "-01";
+//			dataIni = anoFinal + "-0" + mesFinal + "-01";
 			dataFim = anoFinal + "-0" + mesFinal + "-31";
 		} else {
-			dataIni = anoFinal + "-" + mesFinal + "-01";
+//			dataIni = anoFinal + "-" + mesFinal + "-01";
 			dataFim = anoFinal + "-" + mesFinal + "-31";
 		}
 		
@@ -445,9 +444,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //		} 
 //		
 //		periodo = "%";
+		
+		String dataIni = anoFinal + "-01-01";
 
 		Set<String> uf = new LinkedHashSet<>();
-		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", dataInicial(), dataFinal()));
+		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacao("Informação", dataIni, dataFinal()));
 		if (estados != null) {
 			uf = estados.stream().collect(Collectors.toSet());
 //			uf.remove("");
@@ -492,11 +493,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //		} 
 //		
 //		periodo = "%";
+		
+		String dataIni = anoFinal + "-01-01";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadao("Informação", dataInicial(), dataFinal()));
+		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadao("Informação", dataIni, dataFinal()));
 		int numeroJuridica = 0;
 		int numeroFisicaFeminino = 0;
 		int numeroFisicaMasculino = 0;
@@ -554,12 +557,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //			periodo = anoAtual + "-" + mesAtual + "%";
 //		} 
 		
+		String dataIni = anoFinal + "-01-01";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
 		Set<String> assunto = new HashSet<>();
-		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", dataInicial(), dataFinal()));
+		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntos("Informação", dataIni, dataFinal()));
 
 		if (assuntos != null) {
 			assunto = assuntos.stream().collect(Collectors.toSet());
@@ -744,13 +748,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 //			periodo = anoAtual + "-0" + mesAtual + "%";
 //		} else {
 //			periodo = anoAtual + "-" + mesAtual + "%";
-//		} 
+//		}
+		
+		String dataIni = anoFinal + "-01-01";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
 		Set<String> assunto = new HashSet<>();
-		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntosPorEntidade("Informação", idEntidade, dataInicial(), dataFinal()));
+		ArrayList<String> assuntos = new ArrayList<>(SolicitacaoDAO.listarAssuntosPorEntidade("Informação", idEntidade, dataIni, dataFinal()));
 
 		if (assuntos != null) {
 			assunto = assuntos.stream().collect(Collectors.toSet());
@@ -787,11 +793,13 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		} 
 		
 		periodo = "%";
+		
+		String dataIni = anoFinal + "-01-01";
 
 		ArrayList<String> base = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> dadosRelacionadorBase = new ArrayList<>();
 
-		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadaoPorEntidade("Informação", idEntidade, dataInicial(), dataFinal()));
+		ArrayList<Cidadao> pessoas = new ArrayList<Cidadao>(SolicitacaoDAO.listarCidadaoPorEntidade("Informação", idEntidade, dataIni, dataFinal()));
 		int numeroJuridica = 0;
 		int numeroFisicaFeminino = 0;
 		int numeroFisicaMasculino = 0;
@@ -845,9 +853,11 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 		} 
 		
 		periodo = "%";
+		
+		String dataIni = anoFinal + "-01-01";
 
 		Set<String> uf = new LinkedHashSet<>();
-		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacaoPorEntidade("Informação", idEntidade, dataInicial(), dataFinal()));
+		ArrayList<String> estados = new ArrayList<>(SolicitacaoDAO.listarPorFederacaoPorEntidade("Informação", idEntidade, dataIni, dataFinal()));
 		if (estados != null) {
 			uf = estados.stream().collect(Collectors.toSet());
 //			uf.remove("");
@@ -875,6 +885,44 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 
 		return dadosChart;
 	
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTiposSolicitacoes() {
+		int totalInformacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Informação"));
+		int totalSolicitacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Solicitação"));
+		int totalReclamacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Reclamação"));
+		int totalDenuncias = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Denúncia"));
+		int totalSugestoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Sugestão"));
+		int totalElogios = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Elogio"));
+		
+		String[] baseChart = { "Pedidos de Informação", "Solicitações", "Reclamações", "Denúncias", "Sugestões", "Elogios" };
+		int[] dadosRelacionadosBase = { totalInformacoes, totalSolicitacoes, totalReclamacoes, totalDenuncias, totalSugestoes, totalElogios };
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		for (int i = 0; i < baseChart.length; i++) {
+			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));
+			dadosChart.put(baseChart[i], dados);
+		}
+		
+		return dadosChart;
+	}
+	
+	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTiposSolicitacoesPorEntidade() {
+		int totalInformacoes = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Informação"));
+		int totalSolicitacoes = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Solicitação"));
+		int totalReclamacoes = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Reclamação"));
+		int totalDenuncias = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Denúncia"));
+		int totalSugestoes = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Sugestão"));
+		int totalElogios = Math.toIntExact(SolicitacaoDAO.contarPorEntidade("Elogio"));
+		
+		String[] baseChart = { "Pedidos de Informação", "Solicitações", "Reclamações", "Denúncias", "Sugestões", "Elogios" };
+		int[] dadosRelacionadosBase = { totalInformacoes, totalSolicitacoes, totalReclamacoes, totalDenuncias, totalSugestoes, totalElogios };
+		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
+		for (int i = 0; i < baseChart.length; i++) {
+			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));
+			dadosChart.put(baseChart[i], dados);
+		}
+		
+		return dadosChart;
 	}
 
 		

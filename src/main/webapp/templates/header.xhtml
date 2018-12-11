@@ -29,19 +29,20 @@
 				</div>
 
 				<div id="barraNav" class="barraNav">
+					
 					<h:panelGroup styleClass="inline">
-						<h:outputLink value="../../esic/index.xhtml">
-							<h:graphicImage value="#{resource['img/brasao_governo_sergipe_w.png']}" style="padding: 0.5vw 0; margin-left: 1em" height="60" />
-						</h:outputLink>
-	
 						<h:outputLink value="#{usuario.redirecionarIndex()}" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
-<!-- 							<h:outputText value="e-SIC" /> -->
 							<h:graphicImage value="#{resource['img/esiclogo_w.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
 						</h:outputLink>
-						
+
 						<h:outputText value="Versão Teste (v0.9)" style="color: white; margin-left: 10px" />
 					</h:panelGroup>
 					
+					
+					<h:outputLink value="../../esic/index.xhtml">
+						<h:graphicImage value="#{resource['img/brasao_governo_sergipe_w.png']}" style="padding: 0.5vw 0; margin-left: 1em" height="60" />
+					</h:outputLink>
+										
 					<ul id="menuSM">
 						<li><h:outputLink value="#{usuario.redirecionarIndex()}">Início</h:outputLink></li>
 						

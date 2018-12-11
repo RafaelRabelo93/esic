@@ -1048,6 +1048,46 @@ public class SolicitacaoBean implements Serializable {
 		list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
 	}
 	
+	public Long contarTotalPorTipo(String tipo) {
+		return SolicitacaoDAO.contarPorTipo(tipo);
+	}
+	
+	public Long contarAtendidasPorTipo(String tipo) {
+		return SolicitacaoDAO.contarAtendidasPorTipo(tipo);
+	}
+	
+	public Long contarSemRespostaPorTipo(String tipo) {
+		return SolicitacaoDAO.contarSemRespostaPorTipo(tipo);
+	}
+	
+	public Long contarEmTramitePorTipo(String tipo) {
+		return SolicitacaoDAO.contarEmTramitePorTipo(tipo);
+	}
+	
+	public Long contarNaoVisualizadasPorTipo(String tipo) {
+		return SolicitacaoDAO.contarNaoVisualizadasPorTipo(tipo);
+	}
+	
+	public Long contarTotalPorEntidade(String tipo) {
+		return SolicitacaoDAO.contarPorEntidade(tipo);
+	}
+	
+	public Long contarAtendidasPorEntidade(String tipo) {
+		return SolicitacaoDAO.contarAtendidasPorEntidade(tipo);
+	}
+	
+	public Long contarSemRespostaPorEntidade(String tipo) {
+		return SolicitacaoDAO.contarSemRespostaPorEntidade(tipo);
+	}
+	
+	public Long contarEmTramitePorEntidade(String tipo) {
+		return SolicitacaoDAO.contarEmTramitePorEntidade(tipo);
+	}
+	
+	public Long contarNaoVisualizadasPorEntidade(String tipo) {
+		return SolicitacaoDAO.contarNaoVisualizadasPorEntidade(tipo);
+	}
+	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

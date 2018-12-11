@@ -57,7 +57,7 @@ public class DrawPieChart implements Serializable{
 	        return pieModel1;
 	    }
 	     
-	    public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados) {
+	    public PieChartModel createPieModel2(Map<String, ArrayList<Integer>> dadosChart, String title, long tipoDados, int diametro) {
 	        pieModel2 = new PieChartModel();
 	         
 	        for(String key : dadosChart.keySet()) {
@@ -67,12 +67,19 @@ public class DrawPieChart implements Serializable{
 	        pieModel2.setTitle(title);
 	        pieModel2.setLegendPosition("e");
 	        pieModel2.setFill(true);
-	        pieModel2.setDiameter(225);
+	        pieModel2.setDiameter(diametro);
 	        pieModel2.setShowDatatip(true);
 	        pieModel2.setShadow(false);
 	        if (tipoDados == 9 || tipoDados == 16)	pieModel2.setLegendCols(3);
 	        
 	        pieModel2.setSeriesColors("e6194B, 3cb44b, ffe119, 4363d8, f58231, 911eb4, 42d4f4, f032e6, bfef45, fabebe, 469990, e6beff, 9A6324, 800000, aaffc3, 808000, ffd8b1, 000075, a9a9a9");
+	        
+	        if (diametro > 300) {
+	        	pieModel2.setExtender("bigPieExt");
+	        	pieModel2.setShowDataLabels(true);
+	        	pieModel2.setSeriesColors("02264d, 033e7c, 0563c7, 066fe0, 3896fa, 6ab0fb");
+	        	pieModel2.setSliceMargin(10);
+	        }
 	        
 	        return pieModel2;
 	    }

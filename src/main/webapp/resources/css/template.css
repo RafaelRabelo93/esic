@@ -1856,12 +1856,67 @@ h1, h2, h3 {
 	
 }
 
+.dashboardSmallPannel {
+	-moz-justify-content: space-evenly;
+ 	-ms-justify-content: space-evenly;
+ 	-o-justify-content: space-evenly;
+ 	-webkit-justify-content: space-evenly;
+ 	justify-content: space-evenly;
+ 	
+/*  	width: 100%; */
+}
+
 .menuDashboard {
 	border: 1px solid silver;
 	border-top: 5px solid #165389;
 	border-radius: 3px;
 	
 	margin-bottom: 3vh;
+}
+
+.menuDashboardSmall {
+	border: 1px solid silver;
+	border-bottom: 5px solid #165389;
+	border-radius: 3px;
+	
+/* 	margin-bottom: 3vh; */
+	background: white;
+	
+	width: -webkit-max-content;
+	width: -moz-max-content;
+	width: max-content;
+	
+	height: 100%;
+	min-height: 200px;
+}
+
+.menuDashboardSmall > .panel {
+	margin: 1.5em 1em;
+}
+
+.menuDashboardSmall .panel > .ui-separator {
+	border-bottom: 0;
+	margin: .5em 0;
+	padding: 0 !important;
+}
+
+.dashBoardHeader {
+	background: #165389;
+	 
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	
+	padding: .3em 0;
+	
+/* 	Estilo do link */
+	text-decoration: none;
+	color: white;
+	text-decoration: none;	
+	font-size: 1.2em;
+  	font-family: "lato", Sans-serif;
+  	font-weight: 100;
+  	text-align: left;
 }
 
 .dashboard {
@@ -1878,9 +1933,21 @@ h1, h2, h3 {
 	min-width: 100px;
 }
 
+.dashboardSmall {
+    padding: 0 1em;
+    height: inherit;
+}
+
+.dashboardSmall > .panel {
+/* 	margin: 1.5em 1em; */
+	text-align: center;
+	min-width: 100px;
+}
+
 .panel > .ui-separator {
 	border: 1px solid #e3e3e3;
 	border-bottom: none;
+	margin: .5em 0
 }
 
 .btnConsulta2 {
@@ -2173,4 +2240,23 @@ body {
 	   1px -1px 0 white,
 	   -1px 1px 0 white,
 	   1px 1px 0 white;
+}
+
+.bigChart .jqplot-series-canvas {
+	background: transparent;
+}
+
+.bigChart .jqplot-cursor-tooltip {
+	color: white;
+	background-color: red;
+}
+
+.tooltipDialog {
+	border: 0;
+	box-shadow: none
+}
+
+.tooltipDialog .ui-dialog-content {
+	padding: 0 !important;
+	border: none !important;
 }

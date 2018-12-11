@@ -29,7 +29,7 @@
 			 </h:panelGroup>
 			
 
-			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
+			<p id="title" style="max-width: 700px;">Serviço de Informação ao Cidadão</p>
 			
 				<!-- ====== MENU CIDADÃO ====== -->
 					<!-- Consulta (Cidadão) -->
@@ -63,17 +63,6 @@
 					</h:commandLink>
 				</h:panelGroup>
 				
-				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.verificaCidadaoConsulta}" rendered="false">
-					<p:graphicImage styleClass="icone"
-						value="#{resource['img/icon/search.png']}" width="100px" />
-
-					<h:panelGroup styleClass="column">
-						<h:outputText styleClass="titulo" value="Consulta" />
-						<h:outputText styleClass="subTitulo"
-							value="Acompanhar andamento da manifestação realizada" />
-					</h:panelGroup>
-				</h:commandLink>
-
 				<!-- Nova solicitação -->
 				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					
@@ -267,10 +256,9 @@
 <!-- 				</h:panelGroup> -->
 
 
-				<!-- ====== MENU REPRESENTANTE ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
-				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel  and responsavel.temPerfilAtivo()) 
-				or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				<!-- ====== MENU RESPONSÁVEL ====== -->
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3') 
+				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel  and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')} ">
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoTotal}" />
@@ -300,6 +288,433 @@
 						<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
 					</h:commandLink>
 				</h:panelGroup>
+				
+<!-- 				(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3') -->
+<!-- 				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')  -->
+				
+				
+				<!-- ====== MENU ADMINISTRADOR ====== -->
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				
+					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(17)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
+					
+					<h:panelGroup id="dashboardPanel" styleClass="inline">
+					
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em">
+							<h:panelGroup styleClass="dashboardSmallPannel inline">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-info" />
+										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Informação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Informação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Informação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Informação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Informação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-hand-o-up" />
+										<p style="margin: 0; margin-left: .5em">Solicitações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Solicitação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Solicitação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Solicitação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Solicitação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Solicitação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+								
+							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-thumbs-o-down" />
+										<p style="margin: 0; margin-left: .5em">Reclamações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Reclamação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Reclamação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Reclamação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Reclamação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Reclamação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-exclamation-circle" />
+										<p style="margin: 0; margin-left: .5em">Denúncias</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Denúncia')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Denúncia')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Denúncia')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Denúncia')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Denúncia')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+						</h:panelGroup>
+							
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em; height: 100%;">
+						
+							<h:panelGroup styleClass="menuDashboardSmall column" style="margin-bottom: 1em;">
+								<h:panelGroup styleClass="dashBoardHeader inline">
+									<i class="fa fa-comments" />
+									<p style="margin: 0; margin-left: .5em">Sugestões</p>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="dashboardSmall inline">
+									<h:panelGroup styleClass="panel column">
+										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Sugestão')}" />
+										<p:separator />
+										<h:outputText value="Total" />
+									</h:panelGroup>
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="menuDashboardSmall column">
+								<h:panelGroup styleClass="dashBoardHeader inline">
+									<i class="fa fa-thumbs-o-up" />
+									<p style="margin: 0; margin-left: .5em">Elogios</p>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="dashboardSmall inline">
+									<h:panelGroup styleClass="panel column">
+										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Elogio')}" />
+										<p:separator />
+										<h:outputText value="Total" />
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						
+						</h:panelGroup>
+						
+					</h:panelGroup>
+				
+				</h:panelGroup>
+				
+				<!-- ====== MENU GESTOR ====== -->
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
+					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())}">
+				
+					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
+					 
+					<h:panelGroup id="dashboardPanel2" styleClass="inline">
+					
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em">
+							<h:panelGroup styleClass="dashboardSmallPannel inline">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-info" />
+										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Informação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Informação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Informação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Informação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Informação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-hand-o-up" />
+										<p style="margin: 0; margin-left: .5em">Solicitações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Solicitação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Solicitação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Solicitação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Solicitação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Solicitação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+								
+							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-thumbs-o-down" />
+										<p style="margin: 0; margin-left: .5em">Reclamações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Reclamação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Reclamação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Reclamação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Reclamação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Reclamação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline">
+										<i class="fa fa-exclamation-circle" />
+										<p style="margin: 0; margin-left: .5em">Denúncias</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Denúncia')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Denúncia')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Denúncia')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Denúncia')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Denúncia')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+						</h:panelGroup>
+							
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em; height: 100%;">
+						
+							<h:panelGroup styleClass="menuDashboardSmall column" style="margin-bottom: 1em;">
+								<h:panelGroup styleClass="dashBoardHeader inline">
+									<i class="fa fa-comments" />
+									<p style="margin: 0; margin-left: .5em">Sugestões</p>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="dashboardSmall inline">
+									<h:panelGroup styleClass="panel column">
+										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Sugestão')}" />
+										<p:separator />
+										<h:outputText value="Total" />
+									</h:panelGroup>
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="menuDashboardSmall column">
+								<h:panelGroup styleClass="dashBoardHeader inline">
+									<i class="fa fa-thumbs-o-up" />
+									<p style="margin: 0; margin-left: .5em">Elogios</p>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="dashboardSmall inline">
+									<h:panelGroup styleClass="panel column">
+										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Elogio')}" />
+										<p:separator />
+										<h:outputText value="Total" />
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						
+						</h:panelGroup>
+						
+					</h:panelGroup>
+				
+				</h:panelGroup>
+				
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.consultarSolicitacao}" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
+					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+					<p:graphicImage styleClass="icone"
+						value="#{resource['img/icon/search.png']}" width="100px" />
+
+					<h:panelGroup styleClass="column">
+						<h:outputText styleClass="titulo" value="Consulta" />
+						<h:outputText styleClass="subTitulo"
+							value="Acompanhar andamento das manifestações" />
+					</h:panelGroup>
+				</h:commandLink>
 				
 				<h:panelGroup class="menuBtn"
 					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
@@ -368,7 +783,8 @@
 					</h:panelGroup>
 
 				</h:panelGroup>
-
+				
+				
 		    </h:panelGroup>
 			
 			<h:panelGroup styleClass="legendaPanel">
@@ -389,6 +805,31 @@
 		    </h:panelGroup>
 
 		</h:form>
+		
+		<!-- JAVASCRIPT -->
+		<script>
+			function bigPieExt() {
+				this.cfg.grid = {             
+					background: 'transparent',
+					gridLineColor: '#303030',
+					drawBorder: false,
+					shadow: false
+				};
+				this.cfg.legend= {
+		        	show: false,
+			    };
+				this.cfg.seriesDefaults = {
+			        renderer: $.jqplot.PieRenderer,
+			        shadow: false,
+			        lineWidth: 1,
+			        markerOptions: {
+			            shadow: false,
+			            size: 7,
+			            style: 'circle'
+			        }
+			    }
+			}
+		</script>
 		
 	</ui:composition>
 

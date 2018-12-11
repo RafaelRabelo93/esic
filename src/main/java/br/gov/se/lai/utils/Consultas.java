@@ -22,6 +22,19 @@ public class Consultas {
         
     }
     
+    public static Long contadorSQL(String query, EntityManager em) {        
+    	Long in = null;
+    	try {        	
+    		//em.clear();
+    		in = (Long) em.createQuery(query).getSingleResult();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return in;
+    	
+    }
+    
+    
     public static List<?> buscaSQL(String query, EntityManager em) {        
         List<?> list = null;        
 		try {      

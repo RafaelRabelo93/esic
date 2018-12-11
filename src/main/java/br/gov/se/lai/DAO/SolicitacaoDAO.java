@@ -472,4 +472,248 @@ public class SolicitacaoDAO {
 		return (List<Integer>) Consultas.buscaPersonalizada(HQL, em);
 	}
 	
+	
+	// Consultas do dashboard de gestor por tipo de solicitação
+	public static Long contarPorTipo(String tipo) {
+		String HQL = "SELECT COUNT(*) FROM Solicitacao as sol WHERE sol.tipo = '" + tipo + "'";
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
+	public static Long contarAtendidasPorTipo(String tipo) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE msg.tipo = 2 " + 
+				"AND slt.tipo = '" + tipo + "' " + 
+				"AND slt.status != 'Sem Resposta'";
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
+	public static Long contarSemRespostaPorTipo(String tipo) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = '" + tipo + "' " + 
+				"AND (slt.status = 'Sem Resposta' " + 
+				"OR (slt.status = 'Negada'  " + 
+				"AND slt.idSolicitacao NOT IN ( " + 
+				"SELECT DISTINCT slt2.idSolicitacao  " + 
+				"FROM Solicitacao as slt2  " + 
+				"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
+				"WHERE msg2.tipo = 2  " + 
+				"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))";
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
+	public static Long contarEmTramitePorTipo(String tipo) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+				"FROM Solicitacao as slt " + 
+				"INNER JOIN Mensagem as msg  " + 
+				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+				"WHERE slt.tipo = '" + tipo + "' " +
+				"AND slt.visualizada = 1 " + 
+				"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
+				"FROM Solicitacao as slt2 " + 
+				"INNER JOIN Mensagem as msg2 " + 
+				"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
+				"WHERE msg2.tipo = 2 " + 
+				"AND slt2.tipo = '" + tipo + "' " + 
+				"AND slt2.status != 'Sem Resposta') " + 
+				"AND slt.status != 'Sem Resposta' " + 
+				"AND slt.status != 'Negada'";
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
+	public static Long contarNaoVisualizadasPorTipo(String tipo) {
+		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+				"FROM Solicitacao as slt  " + 
+				"WHERE slt.tipo =  '" + tipo + "' " + 
+				"AND slt.visualizada = 0 " + 
+				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')";
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
+	// Consultas do dashboard de gestor por tipo de solicitação por orgao
+		public static Long contarPorEntidade(String tipo) {
+			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+			
+			if(usuarioBean != null) {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao) FROM Solicitacao as slt "
+							+ "WHERE slt.tipo = '" + tipo + "'"
+							+ " AND (";
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							} 
+							query += "slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades();
+						}
+					}
+					
+					query += ")";
+					
+					return Consultas.contadorSQL(query, em);
+				}
+			}
+			
+			return null;			
+			
+		}
+		
+		public static Long contarAtendidasPorEntidade(String tipo) {
+			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+			
+			if(usuarioBean != null) {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
+							"FROM Solicitacao as slt " + 
+							"INNER JOIN Mensagem as msg  " + 
+							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+							"WHERE msg.tipo = 2 " + 
+							"AND slt.tipo = '" + tipo + "' " + 
+							"AND slt.status != 'Sem Resposta' " +
+							" AND (";
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += "slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades();
+						}
+					}
+					
+					query += ")";
+					
+					return Consultas.contadorSQL(query, em);
+				}
+			}
+			
+			return null;			
+			
+		}
+		
+		public static Long contarSemRespostaPorEntidade(String tipo) {
+			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+			
+			if(usuarioBean != null) {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+							"FROM Solicitacao as slt " + 
+							"INNER JOIN Mensagem as msg  " + 
+							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+							"WHERE slt.tipo = '" + tipo + "' " + 
+							"AND (slt.status = 'Sem Resposta' " + 
+							"OR (slt.status = 'Negada'  " + 
+							"AND slt.idSolicitacao NOT IN ( " + 
+							"SELECT DISTINCT slt2.idSolicitacao  " + 
+							"FROM Solicitacao as slt2  " + 
+							"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
+							"WHERE msg2.tipo = 2  " + 
+							"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))" +
+							" AND (";
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += "slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades();
+						}
+					}
+					
+					query += ")";
+					
+					return Consultas.contadorSQL(query, em);
+				}
+			}
+			
+			return null;
+			
+		}
+		
+		public static Long contarEmTramitePorEntidade(String tipo) {
+			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+			
+			if(usuarioBean != null) {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+							"FROM Solicitacao as slt " + 
+							"INNER JOIN Mensagem as msg  " + 
+							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
+							"WHERE slt.tipo = '" + tipo + "' " +
+							"AND slt.visualizada = 1 " + 
+							"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
+							"FROM Solicitacao as slt2 " + 
+							"INNER JOIN Mensagem as msg2 " + 
+							"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
+							"WHERE msg2.tipo = 2 " + 
+							"AND slt2.tipo = '" + tipo + "' " + 
+							"AND slt2.status != 'Sem Resposta') " + 
+							"AND slt.status != 'Sem Resposta' " + 
+							"AND slt.status != 'Negada'" +
+							" AND (";
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += "slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades();
+						}
+					}
+					
+					query += ")";
+					
+					return Consultas.contadorSQL(query, em);
+				}
+			}
+			
+			return null;
+		}
+		
+		public static Long contarNaoVisualizadasPorEntidade(String tipo) {
+			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+			
+			if(usuarioBean != null) {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
+							"FROM Solicitacao as slt  " + 
+							"WHERE slt.tipo =  '" + tipo + "' " + 
+							"AND slt.visualizada = 0 " + 
+							"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
+							" AND (";
+							
+					for (int i = 0; i < ListResp.size(); i++) {
+						if (ListResp.get(i).isAtivo()) {
+							if(query.contains("slt.entidades.idEntidades")) {
+								query += " OR ";
+							}
+							query += "slt.entidades.idEntidades = " + ListResp.get(i).getEntidades().getIdEntidades();
+						}
+					}
+					
+					query += ")";
+					
+					return Consultas.contadorSQL(query, em);
+				}
+			}
+			
+			return null;
+		}
+	
 }

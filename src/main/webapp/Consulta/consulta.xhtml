@@ -66,7 +66,7 @@
 
 					<h:panelGroup id="solicitacao_panel" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1'}" style="display: block; max-width: 100% !important">
 						<p:dataTable id="solicitacoes" widgetVar="slt" var="slt"
-							emptyMessage="Nao há solicitação" sortBy="#{slt.status}"
+							emptyMessage="Nao há solicitação" sortBy="#{slt.dataLimite}" sortOrder="descending"
 							expandableRowGroups="false" resizableColumns="true"
 							liveResize="true" value="#{solicitacao.filteredSolicitacoes}"
 							rowStyleClass="#{slt.status}" style="margin-bottom:1vw;"

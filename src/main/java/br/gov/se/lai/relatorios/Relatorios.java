@@ -1,5 +1,6 @@
 package br.gov.se.lai.relatorios;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -15,6 +16,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.ItemSelectEvent;
+import org.primefaces.event.MoveEvent;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
@@ -36,7 +40,7 @@ public class Relatorios {
 	public Entidades entidade;
 	public int idEntidade = 0;
 	public String sigla;
-	public String[] tipo = new String[16];
+	public String[] tipo = new String[18];
 	public int[] metricas;
 	public boolean dataBool;
 	public boolean mesesBool;
@@ -66,7 +70,8 @@ public class Relatorios {
 	public Integer anoInicial;
 	public Integer mesInicial;
 	public Map<String, Integer> mesesDoAno;
-	
+	public int customTooltip;
+
 	public int anoFinal = 2018;
 	public int mesFinal;
 		
@@ -76,6 +81,7 @@ public class Relatorios {
 		anoFinal = FiltrarDadosRelatorioEstatico.getAnoFinal();
 		mesFinal = FiltrarDadosRelatorioEstatico.getMesFinal();
 //		anos = retornarListaAnosAteHoje();
+		customTooltip = 99;
 	}
 	
 	@SuppressWarnings("unused")
@@ -85,6 +91,16 @@ public class Relatorios {
 		FiltrarDadosRelatorioEstatico.setIdEntidade(idEntidade);
 		return "Relatorios/relatorio_mensal.xhtml";
 	}
+	
+//	public void showCustomTooltip(ItemSelectEvent event) {
+//		System.out.println("Antes :" + customTooltip);
+////		if (customTooltip != 99) {
+////			RequestContext.getCurrentInstance().closeDialog("dashboard" + customTooltip);
+////		}
+//		customTooltip = event.getItemIndex();
+//		org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('dashboard" + customTooltip + "').show();");
+//		System.out.println("Depois :" + customTooltip);
+//    }
 	
 	/**
 	 * Significado dos inteiros que direcionam qual tipo de filtragem irá ser realizada.
@@ -122,11 +138,11 @@ public class Relatorios {
 			break;
 		case 5:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoOrgaoPedidoInformacao();
-			tipo[4] = "Pedidos Mensais por Órgão da Administração Direta - " +getMesAtual() + " de " +anoFinal;
+			tipo[4] = "Pedidos por Órgão da Administração Direta - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 6:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEntidadePedidoInformacao();
-			tipo[5] = "Pedidos Mensais por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +anoFinal;
+			tipo[5] = "Pedidos por Entidade Órgão da Administração Indireta - " +getMesAtual() + " de " +anoFinal;
 			break;
 		case 7:
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoAssuntoPedidoInformacao();
@@ -169,6 +185,13 @@ public class Relatorios {
 			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoEstadosPorEntidade(idEntidade);
 			tipo[15] = "Pedidos Totais por Ente Federativo da " +entidade.getSigla() + " - " +getMesAtual() + " de " +anoFinal;
 			break;
+		case 17:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTiposSolicitacoes();
+//			tipo[16] = "Tipos de Manifestações";
+			break;
+		case 18:
+			dadosChart = FiltrarDadosRelatorioEstatico.gerarAcompanhamentoTiposSolicitacoesPorEntidade();
+			break;
 		}
 			
 		
@@ -192,7 +215,13 @@ public class Relatorios {
 	public PieChartModel desenharPieChart( long tipoDados) {
 		redirecionarFiltroDados(tipoDados);
 		DrawPieChart modelPie = new DrawPieChart();
-		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1], tipoDados);
+		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1], tipoDados, 255);
+	}
+	
+	public PieChartModel desenharBigPieChart( long tipoDados) {
+		redirecionarFiltroDados(tipoDados);
+		DrawPieChart modelPie = new DrawPieChart();
+		return modelPie.createPieModel2(dadosChart, tipo[(int)tipoDados-1], tipoDados, 400);
 	}
 	
 	public DonutChartModel desenharDonutChart( long tipoDados) {
@@ -608,4 +637,11 @@ public class Relatorios {
 	}
 
 	
+	public int getCustomTooltip() {
+		return customTooltip;
+	}
+
+	public void setCustomTooltip(int customTooltip) {
+		this.customTooltip = customTooltip;
+	}
 }
