@@ -22,7 +22,7 @@ public class Consultas {
         
     }
     
-    public static Long contadorSQL(String query, EntityManager em) {        
+    public static int contadorSQL(String query, EntityManager em) {        
     	Long in = null;
     	try {        	
     		//em.clear();
@@ -30,7 +30,7 @@ public class Consultas {
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	return in;
+    	return in.intValue();
     	
     }
     

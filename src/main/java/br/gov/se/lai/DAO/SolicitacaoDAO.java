@@ -273,13 +273,14 @@ public class SolicitacaoDAO {
 	// Consultas utilizadas exclusivamente para geração de gráficos
 		
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarTotalPorPeriodo(String dataInicial, String dataFinal) {
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.tipo = 'Informação' AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59')",em)); 
+	public static int listarTotalPorPeriodo(String dataInicial, String dataFinal) {
+		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao) FROM Solicitacao as slt WHERE slt.tipo = 'Informação' AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59')";
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarAtendidasPorPeriodo(String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarAtendidasPorPeriodo(String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -287,12 +288,12 @@ public class SolicitacaoDAO {
 				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59 ' " + 
 				"AND slt.tipo = 'Informação' " + 
 				"AND slt.status != 'Sem Resposta'";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarSemRespostaPorPeriodo(String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarSemRespostaPorPeriodo(String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -306,12 +307,12 @@ public class SolicitacaoDAO {
 				"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
 				"WHERE msg2.tipo = 2  " + 
 				"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarEmTramitePorPeriodo(String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarEmTramitePorPeriodo(String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -328,34 +329,34 @@ public class SolicitacaoDAO {
 				"AND slt2.status != 'Sem Resposta') " + 
 				"AND slt.status != 'Sem Resposta' " + 
 				"AND slt.status != 'Negada'";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarNaoVisualizadasPorPeriodo(String dataInicial, String dataFinal) {
-		String HQL = "SELECT slt " + 
+	public static int listarNaoVisualizadasPorPeriodo(String dataInicial, String dataFinal) {
+		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt  " + 
 				"WHERE slt.tipo = 'Informação'  " + 
 				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 0 " + 
 				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	// Consultas utilizadas exclusivamente para geração de gráficos por órgão
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarTotalPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
-		String HQL = "SELECT slt FROM Solicitacao as slt "
+	public static int listarTotalPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
+		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao) FROM Solicitacao as slt "
 					+ "WHERE slt.tipo = 'Informação' "
 					+ "AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "
 					+ "AND slt.entidades.idEntidades = " + idEntidade;
-		return (List<Solicitacao>) (Consultas.buscaPersonalizada(HQL,em)); 
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarAtendidasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarAtendidasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -364,12 +365,12 @@ public class SolicitacaoDAO {
 				"AND slt.tipo = 'Informação' " + 
 				"AND slt.status != 'Sem Resposta'" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarSemRespostaPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarSemRespostaPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -384,12 +385,12 @@ public class SolicitacaoDAO {
 				"WHERE msg2.tipo = 2  " + 
 				"AND slt2.tipo = 'Informação' AND slt2.status != 'Sem Resposta')))" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarEmTramitePorEntidade(int idEntidade, String dataInicial, String dataFinal) {
-		String HQL= "SELECT DISTINCT slt " + 
+	public static int listarEmTramitePorEntidade(int idEntidade, String dataInicial, String dataFinal) {
+		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
 				"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
@@ -407,19 +408,19 @@ public class SolicitacaoDAO {
 				"AND slt.status != 'Sem Resposta' " + 
 				"AND slt.status != 'Negada'" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em);
+		return Consultas.contadorSQL(HQL, em);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> listarNaoVisualizadasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
-		String HQL = "SELECT slt " + 
+	public static int listarNaoVisualizadasPorEntidade(int idEntidade, String dataInicial, String dataFinal) {
+		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt  " + 
 				"WHERE slt.tipo = 'Informação'  " + 
 				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " + 
 				"AND slt.visualizada = 0 " + 
 				"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
 				"AND slt.entidades.idEntidades = " + idEntidade + "";
-		return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL, em); 
+		return Consultas.contadorSQL(HQL, em); 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -474,12 +475,12 @@ public class SolicitacaoDAO {
 	
 	
 	// Consultas do dashboard de gestor por tipo de solicitação
-	public static Long contarPorTipo(String tipo) {
+	public static int contarPorTipo(String tipo) {
 		String HQL = "SELECT COUNT(*) FROM Solicitacao as sol WHERE sol.tipo = '" + tipo + "'";
 		return Consultas.contadorSQL(HQL, em);
 	}
 	
-	public static Long contarAtendidasPorTipo(String tipo) {
+	public static int contarAtendidasPorTipo(String tipo) {
 		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
@@ -490,7 +491,7 @@ public class SolicitacaoDAO {
 		return Consultas.contadorSQL(HQL, em);
 	}
 	
-	public static Long contarSemRespostaPorTipo(String tipo) {
+	public static int contarSemRespostaPorTipo(String tipo) {
 		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
@@ -507,7 +508,7 @@ public class SolicitacaoDAO {
 		return Consultas.contadorSQL(HQL, em);
 	}
 	
-	public static Long contarEmTramitePorTipo(String tipo) {
+	public static int contarEmTramitePorTipo(String tipo) {
 		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
 				"FROM Solicitacao as slt " + 
 				"INNER JOIN Mensagem as msg  " + 
@@ -526,7 +527,7 @@ public class SolicitacaoDAO {
 		return Consultas.contadorSQL(HQL, em);
 	}
 	
-	public static Long contarNaoVisualizadasPorTipo(String tipo) {
+	public static int contarNaoVisualizadasPorTipo(String tipo) {
 		String HQL = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
 				"FROM Solicitacao as slt  " + 
 				"WHERE slt.tipo =  '" + tipo + "' " + 
@@ -536,7 +537,7 @@ public class SolicitacaoDAO {
 	}
 	
 	// Consultas do dashboard de gestor por tipo de solicitação por orgao
-		public static Long contarPorEntidade(String tipo) {
+		public static int contarPorEntidade(String tipo) {
 			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 			
 			if(usuarioBean != null) {
@@ -562,11 +563,11 @@ public class SolicitacaoDAO {
 				}
 			}
 			
-			return null;			
+			return 0;			
 			
 		}
 		
-		public static Long contarAtendidasPorEntidade(String tipo) {
+		public static int contarAtendidasPorEntidade(String tipo) {
 			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 			
 			if(usuarioBean != null) {
@@ -597,11 +598,11 @@ public class SolicitacaoDAO {
 				}
 			}
 			
-			return null;			
+			return 0;			
 			
 		}
 		
-		public static Long contarSemRespostaPorEntidade(String tipo) {
+		public static int contarSemRespostaPorEntidade(String tipo) {
 			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 			
 			if(usuarioBean != null) {
@@ -638,11 +639,11 @@ public class SolicitacaoDAO {
 				}
 			}
 			
-			return null;
+			return 0;
 			
 		}
 		
-		public static Long contarEmTramitePorEntidade(String tipo) {
+		public static int contarEmTramitePorEntidade(String tipo) {
 			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 			
 			if(usuarioBean != null) {
@@ -681,10 +682,10 @@ public class SolicitacaoDAO {
 				}
 			}
 			
-			return null;
+			return 0;
 		}
 		
-		public static Long contarNaoVisualizadasPorEntidade(String tipo) {
+		public static int contarNaoVisualizadasPorEntidade(String tipo) {
 			UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 			
 			if(usuarioBean != null) {
@@ -713,7 +714,7 @@ public class SolicitacaoDAO {
 				}
 			}
 			
-			return null;
+			return 0;
 		}
 	
 }
