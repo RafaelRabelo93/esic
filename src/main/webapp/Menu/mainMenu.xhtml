@@ -36,24 +36,29 @@
 				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoTotal}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalDoCidadao()}" />
 							<p:separator />
 							<h:outputText value="Total" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoPendente}" />
-							<p:separator />
-							<h:outputText value="Pendentes" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasDoCidadao()}" />
 							<p:separator />
 							<h:outputText value="Atendidas" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoFinalizadas}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaDoCidadao()}" />
 							<p:separator />
-							<h:outputText value="Finalizadas" />
+							<h:outputText value="Sem Resposta" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramiteDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Em Trâmite" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Não Visualizadas" />
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -257,28 +262,33 @@
 
 
 				<!-- ====== MENU RESPONSÁVEL ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3') 
-				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel  and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')} ">
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and responsavel.nivel ne '3')
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and responsavel.nivel ne '3')}" >
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoTotal}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
 							<p:separator />
 							<h:outputText value="Total" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoPendente}" />
-							<p:separator />
-							<h:outputText value="Pendentes" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoRespondida}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasPorResponsavel()}" />
 							<p:separator />
 							<h:outputText value="Atendidas" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.solicitacaoFinalizadas}" />
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaPorResponsavel()}" />
 							<p:separator />
-							<h:outputText value="Finalizadas" />
+							<h:outputText value="Sem Resposta" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramitePorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Em Trâmite" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasPorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Não Visualizadas" />
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -304,7 +314,7 @@
 							<h:panelGroup styleClass="dashboardSmallPannel inline">
 							
 								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #1295db">
 										<i class="fa fa-info" />
 										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
 									</h:panelGroup>
@@ -340,8 +350,24 @@
 									
 								</h:panelGroup>
 								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #f0ce14;">
+										<i class="fa fa-comments" />
+										<p style="margin: 0; margin-left: .5em">Sugestões</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Sugestão')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
 								<h:panelGroup styleClass="menuDashboardSmall column">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #2b9c1f;">
 										<i class="fa fa-hand-o-up" />
 										<p style="margin: 0; margin-left: .5em">Solicitações</p>
 									</h:panelGroup>
@@ -382,7 +408,7 @@
 							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
 							
 								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e69914;">
 										<i class="fa fa-thumbs-o-down" />
 										<p style="margin: 0; margin-left: .5em">Reclamações</p>
 									</h:panelGroup>
@@ -418,8 +444,23 @@
 									
 								</h:panelGroup>
 								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e0299d;">
+										<i class="fa fa-thumbs-o-up" />
+										<p style="margin: 0; margin-left: .5em">Elogios</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Elogio')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+									
 								<h:panelGroup styleClass="menuDashboardSmall column">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #dd1717;">
 										<i class="fa fa-exclamation-circle" />
 										<p style="margin: 0; margin-left: .5em">Denúncias</p>
 									</h:panelGroup>
@@ -459,48 +500,14 @@
 							
 						</h:panelGroup>
 							
-						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em; height: 100%;">
-						
-							<h:panelGroup styleClass="menuDashboardSmall column" style="margin-bottom: 1em;">
-								<h:panelGroup styleClass="dashBoardHeader inline">
-									<i class="fa fa-comments" />
-									<p style="margin: 0; margin-left: .5em">Sugestões</p>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="dashboardSmall inline">
-									<h:panelGroup styleClass="panel column">
-										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Sugestão')}" />
-										<p:separator />
-										<h:outputText value="Total" />
-									</h:panelGroup>
-								</h:panelGroup>
-								
-							</h:panelGroup>
-							
-							<h:panelGroup styleClass="menuDashboardSmall column">
-								<h:panelGroup styleClass="dashBoardHeader inline">
-									<i class="fa fa-thumbs-o-up" />
-									<p style="margin: 0; margin-left: .5em">Elogios</p>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="dashboardSmall inline">
-									<h:panelGroup styleClass="panel column">
-										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Elogio')}" />
-										<p:separator />
-										<h:outputText value="Total" />
-									</h:panelGroup>
-								</h:panelGroup>
-							</h:panelGroup>
-						
-						</h:panelGroup>
-						
 					</h:panelGroup>
 				
 				</h:panelGroup>
 				
 				<!-- ====== MENU GESTOR ====== -->
-				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
-					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())}">
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
+				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and responsavel.nivel eq '3')
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and responsavel.nivel eq '3')}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					 
@@ -510,7 +517,7 @@
 							<h:panelGroup styleClass="dashboardSmallPannel inline">
 							
 								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #1295db">
 										<i class="fa fa-info" />
 										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
 									</h:panelGroup>
@@ -546,8 +553,24 @@
 									
 								</h:panelGroup>
 								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #f0ce14;">
+										<i class="fa fa-comments" />
+										<p style="margin: 0; margin-left: .5em">Sugestões</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Sugestão')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
 								<h:panelGroup styleClass="menuDashboardSmall column">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #2b9c1f;">
 										<i class="fa fa-hand-o-up" />
 										<p style="margin: 0; margin-left: .5em">Solicitações</p>
 									</h:panelGroup>
@@ -588,7 +611,7 @@
 							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
 							
 								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e69914;">
 										<i class="fa fa-thumbs-o-down" />
 										<p style="margin: 0; margin-left: .5em">Reclamações</p>
 									</h:panelGroup>
@@ -624,8 +647,23 @@
 									
 								</h:panelGroup>
 								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e0299d;">
+										<i class="fa fa-thumbs-o-up" />
+										<p style="margin: 0; margin-left: .5em">Elogios</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Elogio')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+									
 								<h:panelGroup styleClass="menuDashboardSmall column">
-									<h:panelGroup styleClass="dashBoardHeader inline">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #dd1717;">
 										<i class="fa fa-exclamation-circle" />
 										<p style="margin: 0; margin-left: .5em">Denúncias</p>
 									</h:panelGroup>
@@ -665,47 +703,11 @@
 							
 						</h:panelGroup>
 							
-						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em; height: 100%;">
-						
-							<h:panelGroup styleClass="menuDashboardSmall column" style="margin-bottom: 1em;">
-								<h:panelGroup styleClass="dashBoardHeader inline">
-									<i class="fa fa-comments" />
-									<p style="margin: 0; margin-left: .5em">Sugestões</p>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="dashboardSmall inline">
-									<h:panelGroup styleClass="panel column">
-										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Sugestão')}" />
-										<p:separator />
-										<h:outputText value="Total" />
-									</h:panelGroup>
-								</h:panelGroup>
-								
-							</h:panelGroup>
-							
-							<h:panelGroup styleClass="menuDashboardSmall column">
-								<h:panelGroup styleClass="dashBoardHeader inline">
-									<i class="fa fa-thumbs-o-up" />
-									<p style="margin: 0; margin-left: .5em">Elogios</p>
-								</h:panelGroup>
-								
-								<h:panelGroup styleClass="dashboardSmall inline">
-									<h:panelGroup styleClass="panel column">
-										<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Elogio')}" />
-										<p:separator />
-										<h:outputText value="Total" />
-									</h:panelGroup>
-								</h:panelGroup>
-							</h:panelGroup>
-						
-						</h:panelGroup>
-						
 					</h:panelGroup>
 				
 				</h:panelGroup>
 				
-				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.consultarSolicitacao}" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
-					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.consultarSolicitacao}" rendered="false">
 					<p:graphicImage styleClass="icone"
 						value="#{resource['img/icon/search.png']}" width="100px" />
 
@@ -717,23 +719,9 @@
 				</h:commandLink>
 				
 				<h:panelGroup class="menuBtn"
-					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or
-					 (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo()) 
-					 or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-
-					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao" rendered="false">
-						<h:commandLink styleClass="link"
-							action="#{solicitacao.consultarSolicitacao}">
-							<f:setPropertyActionListener value="0"
-								target="#{solicitacao.idEntidades}" />
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/monitor.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Solicitações" />
-							<p>Acompanhamento de solicitações</p>
-						</h:commandLink>
-					</h:panelGroup>
+				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
+					or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())
+					or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 
 					<!-- Consulta órgão/entidade -->
 					<h:panelGroup class="botao">
@@ -781,7 +769,19 @@
 							<p>Registrar usuário</p>
 						</h:commandLink>
 					</h:panelGroup>
+					
+					<!-- Consulta (Representante) -->
+					<h:panelGroup class="botao">
+						<h:commandLink styleClass="link"
+							action="#{solicitacao.consultarSolicitacao}">
+							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
 
+							<h:outputText styleClass="tituloMenu" value="Consulta" />
+							<p>Acompanhamento das manifestações</p>
+						</h:commandLink>
+					</h:panelGroup>
+					
 				</h:panelGroup>
 				
 				

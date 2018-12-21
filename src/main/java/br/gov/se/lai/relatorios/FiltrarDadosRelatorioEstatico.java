@@ -888,15 +888,15 @@ public class FiltrarDadosRelatorioEstatico implements Serializable {
 	}
 	
 	public static Map<String, ArrayList<Integer>> gerarAcompanhamentoTiposSolicitacoes() {
-		int totalInformacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Informação"));
-		int totalSolicitacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Solicitação"));
-		int totalReclamacoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Reclamação"));
-		int totalDenuncias = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Denúncia"));
-		int totalSugestoes = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Sugestão"));
-		int totalElogios = Math.toIntExact(SolicitacaoDAO.contarPorTipo("Elogio"));
+		int totalInformacoes = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Informação"));
+		int totalSolicitacoes = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Solicitação"));
+		int totalReclamacoes = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Reclamação"));
+		int totalDenuncias = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Denúncia"));
+		int totalSugestoes = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Sugestão"));
+		int totalElogios = Math.toIntExact(SolicitacaoDAO.contarTotalPorTipo("Elogio"));
 		
-		String[] baseChart = { "Pedidos de Informação", "Solicitações", "Reclamações", "Denúncias", "Sugestões", "Elogios" };
-		int[] dadosRelacionadosBase = { totalInformacoes, totalSolicitacoes, totalReclamacoes, totalDenuncias, totalSugestoes, totalElogios };
+		String[] baseChart = { "Pedidos de Informação", "Sugestões", "Solicitações", "Reclamações", "Elogios", "Denúncias"};
+		int[] dadosRelacionadosBase = { totalInformacoes, totalSugestoes, totalSolicitacoes, totalReclamacoes, totalElogios, totalDenuncias };
 		Map<String, ArrayList<Integer>> dadosChart = new LinkedHashMap<>();
 		for (int i = 0; i < baseChart.length; i++) {
 			ArrayList<Integer> dados = new ArrayList<>(Arrays.asList(dadosRelacionadosBase[i]));

@@ -33,7 +33,7 @@
 					 	</p:inputText> 
 					 	
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
-						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true">
+						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.entidadesSolicitacaoResponsavel()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu> 

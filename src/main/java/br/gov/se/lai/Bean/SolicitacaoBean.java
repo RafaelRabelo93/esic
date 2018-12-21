@@ -612,45 +612,45 @@ public class SolicitacaoBean implements Serializable {
 	}
 
 	public static void calcularQuantitativoSolicitacao() {
-		List<Solicitacao> aux = new ArrayList<>();
-
-		aux = SolicitacaoDAO.list();
-		solicitacaoTotal = aux != null ? aux.size() : 0;
-
-		aux = SolicitacaoDAO.listStatus("Atendida");
-		solicitacaoRespondida = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Aberta");
-		solicitacaoPendente = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Recurso");
-		solicitacaoPendente += aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Reencaminhada");
-		solicitacaoPendente += aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Prorrogada");
-		solicitacaoPendente += aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Transição");
-		solicitacaoPendente += aux != null ? aux.size() : 0;
-		
-		aux = SolicitacaoDAO.listStatus("Finalizada");
-		solicitacaoFinalizadas = aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Sem Resposta");
-		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
-		aux = SolicitacaoDAO.listStatus("Negada");
-		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
-
-		if(visualizaDenunciaNaBoard()) {
-				aux = SolicitacaoDAO.listPorTipo("Denúncia");
-				solicitacaoTotal += aux != null ? aux.size() : 0;
-				solicitacaoDenuncia = aux != null ? aux.size() : 0;
-				
-				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
-				solicitacaoFinalizadas += aux != null ? aux.size() : 0;
-				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Atendida");
-				solicitacaoRespondida += aux != null ? aux.size() : 0;
-				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
-				solicitacaoPendente += aux != null ? aux.size() : 0;
-			
-		}
-		
+//		List<Solicitacao> aux = new ArrayList<>();
+//
+//		aux = SolicitacaoDAO.list();
+//		solicitacaoTotal = aux != null ? aux.size() : 0;
+//
+//		aux = SolicitacaoDAO.listStatus("Atendida");
+//		solicitacaoRespondida = aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Aberta");
+//		solicitacaoPendente = aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Recurso");
+//		solicitacaoPendente += aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Reencaminhada");
+//		solicitacaoPendente += aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Prorrogada");
+//		solicitacaoPendente += aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Transição");
+//		solicitacaoPendente += aux != null ? aux.size() : 0;
+//		
+//		aux = SolicitacaoDAO.listStatus("Finalizada");
+//		solicitacaoFinalizadas = aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Sem Resposta");
+//		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
+//		aux = SolicitacaoDAO.listStatus("Negada");
+//		solicitacaoFinalizadas += aux != null ? aux.size() : 0;
+//
+//		if(visualizaDenunciaNaBoard()) {
+//				aux = SolicitacaoDAO.listPorTipo("Denúncia");
+//				solicitacaoTotal += aux != null ? aux.size() : 0;
+//				solicitacaoDenuncia = aux != null ? aux.size() : 0;
+//				
+//				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Finalizada");
+//				solicitacaoFinalizadas += aux != null ? aux.size() : 0;
+//				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Atendida");
+//				solicitacaoRespondida += aux != null ? aux.size() : 0;
+//				aux = SolicitacaoDAO.listPorTipoStatus("Denúncia", "Aberta");
+//				solicitacaoPendente += aux != null ? aux.size() : 0;
+//			
+//		}
+//		
 	}
 
 	public static void addQuantidadeSolicitacaoTotal() {
@@ -1048,44 +1048,119 @@ public class SolicitacaoBean implements Serializable {
 		list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
 	}
 	
-	public Long contarTotalPorTipo(String tipo) {
-		return SolicitacaoDAO.contarPorTipo(tipo);
+	public int contarTotalPorTipo(String tipo) {
+		return SolicitacaoDAO.contarTotalPorTipo(tipo);
 	}
 	
-	public Long contarAtendidasPorTipo(String tipo) {
+	public int contarAtendidasPorTipo(String tipo) {
 		return SolicitacaoDAO.contarAtendidasPorTipo(tipo);
 	}
 	
-	public Long contarSemRespostaPorTipo(String tipo) {
+	public int contarSemRespostaPorTipo(String tipo) {
 		return SolicitacaoDAO.contarSemRespostaPorTipo(tipo);
 	}
 	
-	public Long contarEmTramitePorTipo(String tipo) {
+	public int contarEmTramitePorTipo(String tipo) {
 		return SolicitacaoDAO.contarEmTramitePorTipo(tipo);
 	}
 	
-	public Long contarNaoVisualizadasPorTipo(String tipo) {
+	public int contarNaoVisualizadasPorTipo(String tipo) {
 		return SolicitacaoDAO.contarNaoVisualizadasPorTipo(tipo);
 	}
 	
-	public Long contarTotalPorEntidade(String tipo) {
+	public int contarTotalPorEntidade(String tipo) {
 		return SolicitacaoDAO.contarPorEntidade(tipo);
 	}
 	
-	public Long contarAtendidasPorEntidade(String tipo) {
+	public int contarAtendidasPorEntidade(String tipo) {
 		return SolicitacaoDAO.contarAtendidasPorEntidade(tipo);
 	}
 	
-	public Long contarSemRespostaPorEntidade(String tipo) {
+	public int contarSemRespostaPorEntidade(String tipo) {
 		return SolicitacaoDAO.contarSemRespostaPorEntidade(tipo);
 	}
 	
-	public Long contarEmTramitePorEntidade(String tipo) {
+	public int contarEmTramitePorEntidade(String tipo) {
 		return SolicitacaoDAO.contarEmTramitePorEntidade(tipo);
 	}
 	
-	public Long contarNaoVisualizadasPorEntidade(String tipo) {
+	public int contarNaoVisualizadasPorEntidade(String tipo) {
 		return SolicitacaoDAO.contarNaoVisualizadasPorEntidade(tipo);
+	}
+	
+	public int contarTotalDoCidadao() {
+		return SolicitacaoDAO.contarTotalDoCidadao();
+	}
+	
+	public int contarAtendidasDoCidadao() {
+		return SolicitacaoDAO.contarAtendidasDoCidadao();
+	}
+	
+	public int contarSemRespostaDoCidadao() {
+		return SolicitacaoDAO.contarSemRespostaDoCidadao();
+	}
+	
+	public int contarEmTramiteDoCidadao() {
+		return SolicitacaoDAO.contarEmTramiteDoCidadao();
+	}
+	
+	public int contarNaoVisualizadasDoCidadao() {
+		return SolicitacaoDAO.contarNaoVisualizadaDoCidadao();
+	}
+	
+	public int contarTotalPorResponsavel() {
+		int count = 0;
+		count += SolicitacaoDAO.contarPorEntidade("Informação");
+		count += SolicitacaoDAO.contarPorEntidade("Solicitação");
+		count += SolicitacaoDAO.contarPorEntidade("Elogio");
+		count += SolicitacaoDAO.contarPorEntidade("Denúncia");
+		count += SolicitacaoDAO.contarPorEntidade("Reclamação");
+		count += SolicitacaoDAO.contarPorEntidade("Sugestão");
+		return count;
+	}
+	
+	public int contarAtendidasPorResponsavel() {
+		int count = 0;
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Informação");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Solicitação");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Elogio");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Denúncia");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Reclamação");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Sugestão");
+		return count;
+	}
+	
+	public int contarSemRespostaPorResponsavel() {
+		int count = 0;
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Informação");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Solicitação");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Elogio");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Denúncia");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Reclamação");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Sugestão");
+		return count;
+	}
+	
+	public int contarEmTramitePorResponsavel() {
+		int count = 0;
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Informação");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Solicitação");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Elogio");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Denúncia");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Reclamação");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Sugestão");
+		return count;
+	}
+	
+	public int contarNaoVisualizadasPorResponsavel() {
+		int count = 0;
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Informação");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Solicitação");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Elogio");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Denúncia");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Reclamação");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Sugestão");
+		return count;
 	}
 	
 	// GETTERS E SETTERS

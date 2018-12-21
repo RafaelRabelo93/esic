@@ -77,7 +77,8 @@ public class DrawPieChart implements Serializable{
 	        if (diametro > 300) {
 	        	pieModel2.setExtender("bigPieExt");
 	        	pieModel2.setShowDataLabels(true);
-	        	pieModel2.setSeriesColors("02264d, 033e7c, 0563c7, 066fe0, 3896fa, 6ab0fb");
+//	        	pieModel2.setSeriesColors("02264d, 033e7c, 0563c7, 066fe0, 3896fa, 6ab0fb");
+	        	pieModel2.setSeriesColors("1295db, f0ce14, 2b9c1f, e69914, e0299d, dd1717");
 	        	pieModel2.setSliceMargin(10);
 	        }
 	        
