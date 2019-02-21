@@ -18,7 +18,7 @@
 			style="-webkit-box-align: center!important;-ms-flex-align: center!important;align-items: center!important; width:75%; background-color: #30659e; border-radius:10px;
 			background: linear-gradient(to bottom right, #135186, #276eb3);"> 
 			
-				<h1 style="color:#a6d0f6!important"> Bem vindo ao novo e-SIC!</h1>
+				<h1 style="color:#a6d0f6!important"> Bem vindo ao SE-Ouv!</h1>
 				<p style="color:white!important">Lembre-se de alterar sua senha para continuar usando o sistema de forma segura</p>
 				
 				<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button" style="background: white; -ms-flex-item-align: center;-ms-grid-row-align: center;align-self: center;" >
@@ -29,7 +29,7 @@
 			 </h:panelGroup>
 			
 
-			<p id="title" style="max-width: 700px;">Serviço de Informação ao Cidadão</p>
+			<p id="title" style="max-width: 700px;">Sistema Estadual de Ouvidorias</p>
 			
 				<!-- ====== MENU CIDADÃO ====== -->
 					<!-- Consulta (Cidadão) -->
@@ -262,13 +262,13 @@
 
 
 				<!-- ====== MENU RESPONSÁVEL ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and responsavel.nivel ne '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and responsavel.nivel ne '3')}" >
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')) and !solicitacao.isResponsavelOGE()}" >
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
 							<p:separator />
-							<h:outputText value="Total" />
+							<h:outputText value="Totala" />
 						</h:panelGroup>
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasPorResponsavel()}" />
@@ -304,7 +304,7 @@
 				
 				
 				<!-- ====== MENU ADMINISTRADOR ====== -->
-				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or solicitacao.isResponsavelOGE()}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(17)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					
@@ -506,8 +506,8 @@
 				
 				<!-- ====== MENU GESTOR ====== -->
 				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
-				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and responsavel.nivel eq '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and responsavel.nivel eq '3')}">
+				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')) and !solicitacao.isResponsavelOGE()}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					 

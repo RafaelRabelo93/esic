@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import br.gov.se.lai.Bean.SolicitacaoBean;
 import br.gov.se.lai.Bean.UsuarioBean;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Entidades;
@@ -64,15 +65,21 @@ public class SolicitacaoDAO {
 	public static List<Solicitacao> list() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if(usuarioBean != null) 
-		{
-			if(usuarioBean.getUsuario().getPerfil() == 3 || usuarioBean.getUsuario().getPerfil() == 4 && !usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
-			{
+		{	
+			if(usuarioBean.getUsuario().getPerfil() == 3 || usuarioBean.getUsuario().getPerfil() == 4 && !usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
 				return (List<Solicitacao>) Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.cidadao.usuario.idUsuario = "+usuarioBean.getUsuario().getIdUsuario(),em);
-			}else 
-			{
-				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) 
-				{
+			} else {
+				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
+					
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
+					
+					for (Responsavel resp : ListResp) {
+						if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+							String query2 = "FROM Solicitacao as slt";
+							
+							return (List<Solicitacao>) Consultas.buscaPersonalizada(query2,em);
+						}
+					}
 					
 					String query = "FROM Solicitacao as slt WHERE (  ";
 							
@@ -86,19 +93,13 @@ public class SolicitacaoDAO {
 							for (int j = 1 ;  j <= ListResp.get(i).getNivel(); j++) {
 								query = query+" OR slt.instancia = "+ j;
 							}
-							query += ") AND slt.tipo != 'Denúncia')";
+							query += ") AND (slt.tipo != 'Denúncia' OR slt.liberaDenuncia = 1))";
 						}
-//						if(i == ListResp.size()-1) {
-//							query += ")";
-//						}else {
-//							query += ") OR ";
-//						}
 
 					}
 					
 					return (List<Solicitacao>) Consultas.buscaPersonalizada(query,em);
-				}else if(usuarioBean.getUsuario().getPerfil() != 1)
-				{
+				} else if(usuarioBean.getUsuario().getPerfil() == 5 || usuarioBean.getUsuario().getPerfil() == 6) {
 					return  (List<Solicitacao>)  em.createNativeQuery("SELECT * FROM esic.solicitacao ", Solicitacao.class).getResultList();		
 				}else {
 					return null;
@@ -544,9 +545,15 @@ public class SolicitacaoDAO {
 				if(usuarioBean.getUsuario().getPerfil() == 2 || usuarioBean.getUsuario().getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
 					
-					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao) FROM Solicitacao as slt "
-							+ "WHERE slt.tipo = '" + tipo + "'"
-							+ " AND (";
+					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao) FROM Solicitacao as slt ";
+					
+					if(tipo.equals("Denúncia")) {
+						query += "WHERE (slt.tipo =  '" + tipo + "' AND slt.liberaDenuncia = 1)";
+					} else {
+						query += "WHERE slt.tipo =  '" + tipo + "' ";
+					}
+					
+					query += " AND (";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
@@ -578,10 +585,16 @@ public class SolicitacaoDAO {
 							"FROM Solicitacao as slt " + 
 							"INNER JOIN Mensagem as msg  " + 
 							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
-							"WHERE msg.tipo = 2 " + 
-							"AND slt.tipo = '" + tipo + "' " + 
-							"AND slt.status != 'Sem Resposta' " +
-							" AND (";
+							"WHERE msg.tipo = 2 ";
+							
+					if(tipo.equals("Denúncia")) {
+						query += "AND (slt.tipo = '" + tipo + "' AND slt.liberaDenuncia = 1)";
+					} else {
+						query += "AND slt.tipo = '" + tipo + "' ";
+					}
+							
+					query += "AND slt.status != 'Sem Resposta' " +
+							 " AND (";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
@@ -612,17 +625,29 @@ public class SolicitacaoDAO {
 					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
 							"FROM Solicitacao as slt " + 
 							"INNER JOIN Mensagem as msg  " + 
-							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
-							"WHERE slt.tipo = '" + tipo + "' " + 
-							"AND (slt.status = 'Sem Resposta' " + 
-							"OR (slt.status = 'Negada'  " + 
-							"AND slt.idSolicitacao NOT IN ( " + 
-							"SELECT DISTINCT slt2.idSolicitacao  " + 
-							"FROM Solicitacao as slt2  " + 
-							"INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " + 
-							"WHERE msg2.tipo = 2  " + 
-							"AND slt2.tipo = '" + tipo + "' AND slt2.status != 'Sem Resposta')))" +
-							" AND (";
+							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  ";
+							
+					if(tipo.equals("Denúncia")) {
+						query += "WHERE slt.tipo = '" + tipo + "'  AND slt.liberaDenuncia = 1";
+					} else {
+						query += "WHERE slt.tipo = '" + tipo + "' ";
+					}
+							
+					query += "AND (slt.status = 'Sem Resposta' " + 
+							 "OR (slt.status = 'Negada'  " + 
+							 "AND slt.idSolicitacao NOT IN ( " + 
+							 "SELECT DISTINCT slt2.idSolicitacao  " + 
+							 "FROM Solicitacao as slt2  " + 
+							 "INNER JOIN Mensagem as msg2 ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao " +
+							 "WHERE msg2.tipo = 2  ";
+							 
+					 if(tipo.equals("Denúncia")) {
+						 query += "AND slt2.tipo = '" + tipo + "' AND slt2.status != 'Sem Resposta' AND slt.liberaDenuncia = 1)))";
+					 } else {
+						 query += "AND slt2.tipo = '" + tipo + "' AND slt2.status != 'Sem Resposta')))";
+					 }
+							 
+					 query += " AND (";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
@@ -653,19 +678,32 @@ public class SolicitacaoDAO {
 					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
 							"FROM Solicitacao as slt " + 
 							"INNER JOIN Mensagem as msg  " + 
-							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  " + 
-							"WHERE slt.tipo = '" + tipo + "' " +
-							"AND slt.visualizada = 1 " + 
-							"AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
-							"FROM Solicitacao as slt2 " + 
-							"INNER JOIN Mensagem as msg2 " + 
-							"ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
-							"WHERE msg2.tipo = 2 " + 
-							"AND slt2.tipo = '" + tipo + "' " + 
-							"AND slt2.status != 'Sem Resposta') " + 
-							"AND slt.status != 'Sem Resposta' " + 
-							"AND slt.status != 'Negada'" +
-							" AND (";
+							"ON slt.idSolicitacao = msg.solicitacao.idSolicitacao  "; 
+							
+					if(tipo.equals("Denúncia")) {
+						query += "WHERE (slt.tipo = '" + tipo + "' AND slt.liberaDenuncia = 1)";
+					} else {
+						query += "WHERE slt.tipo = '" + tipo + "' ";
+					}
+					
+					query += "AND slt.visualizada = 1 " + 
+							 "AND slt.idSolicitacao NOT IN (SELECT DISTINCT slt2.idSolicitacao " + 
+							 "FROM Solicitacao as slt2 " + 
+							 "INNER JOIN Mensagem as msg2 " + 
+							 "ON slt2.idSolicitacao = msg2.solicitacao.idSolicitacao  " + 
+							 "WHERE msg2.tipo = 2 ";
+					
+					if(tipo.equals("Denúncia")) {
+						query += "AND (slt2.tipo = '" + tipo + "' AND slt2.liberaDenuncia = 1)";
+					} else {
+						query += "AND slt2.tipo = '" + tipo + "' ";
+					}
+					
+					
+					query += "AND slt2.status != 'Sem Resposta') " + 
+							 "AND slt.status != 'Sem Resposta' " + 
+							 "AND slt.status != 'Negada'" +
+							 " AND (";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {
@@ -693,11 +731,17 @@ public class SolicitacaoDAO {
 					List<Responsavel> ListResp = new ArrayList<Responsavel>(ResponsavelDAO.findResponsavelUsuario(usuarioBean.getUsuario().getIdUsuario()));
 					
 					String query = "SELECT COUNT(DISTINCT slt.idSolicitacao)" + 
-							"FROM Solicitacao as slt  " + 
-							"WHERE slt.tipo =  '" + tipo + "' " + 
-							"AND slt.visualizada = 0 " + 
-							"AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
-							" AND (";
+							"FROM Solicitacao as slt  ";
+					
+					if(tipo.equals("Denúncia")) {
+						query += "WHERE slt.tipo =  '" + tipo + "' AND slt.liberaDenuncia = 1";
+					} else {
+						query += "WHERE slt.tipo =  '" + tipo + "' ";
+					}
+					
+					query += "AND slt.visualizada = 0 " + 
+							 "AND (slt.status = 'Aberta' OR slt.status = 'Transição')" +
+							 " AND (";
 							
 					for (int i = 0; i < ListResp.size(); i++) {
 						if (ListResp.get(i).isAtivo()) {

@@ -21,59 +21,19 @@
 
 
 				<div class="ficha">
-					<p:steps activeIndex="2" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de manifestação" url="/index.xhtml"/> 
-						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
+					<p:steps activeIndex="3" styleClass="custom" readonly="false">
+						<p:menuitem value="Tipo de manifestação" url="/index.xhtml"/>
+						<p:menuitem value="Identificação" url="#" />
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario3.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
 						<p:menuitem value="Realizar Manifestação" url="#" />
 					</p:steps>
 
 					<h:panelGroup styleClass="box" style="margin-top: 1em">
+						
+						<p>#{solicitacao.sigilo}</p>
 
 						<h:outputText value="Realizar #{solicitacao.solicitacao.tipo}" rendered="#{solicitacao.solicitacao.tipo ne 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						<h:outputText value="Realizar Pedido de Informação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
-						
-						<h:panelGroup styleClass="column" style="max-width:780px;" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-						
-								<p style="margin-bottom:0; text-align: left;">Denúncias sem a identificação do denunciante são consideradas anônimas, sendo aceitas somente após análise preliminar.</p>
-								<p style="text-align: left;">As falta de dados do denunciante na denúncia anônima impossibilita uma resposta final e pode dificultar ou inviabilizar a conclusão desse processo.</p>
-								
-								<p style="margin-bottom:0;text-align: left">As denúncias sigilosas são aquelas em que os dados de identificação do denunciante são mantidos em sigilo.</p>
-								<p style="margin-bottom:0;text-align: left">Desta forma, sua demanda poderá ser analisada com mais eficiência, além de garantir uma resposta no final do processo.</p>
-								<p style="text-align: left;">Para melhor realização do processo, informe o máximo de dados possível em seu cadastro, identificando-se corretamente.</p>
-							
-<!-- 							<p:selectOneRadio value="#{solicitacao.modoAnonimo}" disabled="#{usuario.usuario.nick eq null}"> -->
-<!-- 					            <f:selectItem itemLabel="Realizar denúncia anonimamente" itemValue="true" /> -->
-<!-- 					            <f:selectItem itemLabel="Realizar denúncia sigilosa" itemValue="false" /> -->
-<!-- 					        </p:selectOneRadio> -->
-					        
-					        <h:panelGroup id="anonimo" styleClass="inline"  rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-								<p:selectOneRadio id="modoAnonimo" value="#{solicitacao.modoAnonimo}"
-									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
-									<f:selectItem itemValue="true" />
-									<p:ajax update="sigilo identificacao" listener="#{solicitacao.DenunciaOuSigiloOuIdentificavel}" />
-								</p:selectOneRadio>
-								<h:outputLabel value="Realizar denúncia anonimamente" style="margin:10px 0 0 0"/>
-							</h:panelGroup>
-							
-							<h:panelGroup id="sigilo" styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-								<p:selectOneRadio id="modoSigilo" value="#{solicitacao.modoSigilo}" 									
-									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
-									<f:selectItem itemValue="true" />
-									<p:ajax update="anonimo identificacao" listener="#{solicitacao.SigiloOuDenunciaOuIdentificavel}" />
-								</p:selectOneRadio>
-								<h:outputLabel value="Realizar denúncia de forma sigilosa" style="margin:10px 0 0 0"/>
-							</h:panelGroup>
-
-							<h:panelGroup id="identificacao" styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-								<p:selectOneRadio id="identificacaoMode" value="#{solicitacao.modoIdentificavel}" 									
-									style="width:60px" disabled="#{usuario.usuario.nick eq null}" >
-									<f:selectItem itemValue="true" />
-									<p:ajax update="anonimo sigilo" listener="#{solicitacao.IdentificavelOuSigiloOuDenuncia}" />
-								</p:selectOneRadio>
-								<h:outputLabel value="Realizar denúncia de forma identificável" style="margin:10px 0 0 0"/>
-							</h:panelGroup>
-					        
-						</h:panelGroup>
 						
 						<p:outputLabel value="Órgão:" for="orgao"/>
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />

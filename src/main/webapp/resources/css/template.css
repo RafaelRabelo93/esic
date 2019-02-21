@@ -1819,6 +1819,11 @@ h1, h2, h3 {
 	color: white !important;
 }
 
+.reformulacao {
+	background: #ff80c0;
+	color: white !important;
+}
+
 .statusBox {
 /* 	color: white; */
 	color: #c0c0c0;

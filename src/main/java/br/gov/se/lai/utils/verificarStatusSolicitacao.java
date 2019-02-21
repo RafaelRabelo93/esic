@@ -23,8 +23,8 @@ public class verificarStatusSolicitacao implements Job {
 		System.out.println("Entrou em verificacoes");
 		for (Solicitacao solicitacao : SolicitacaoDAO.listPorNaoFinalizada()) {
 			try {
-//				updateStatusSolicitacao(solicitacao);
-//				verificaTempoSolicitacao(solicitacao);
+				updateStatusSolicitacao(solicitacao);
+				verificaTempoSolicitacao(solicitacao);
 			} catch (NullPointerException e) {
 				System.out.println(e.getMessage());
 			}

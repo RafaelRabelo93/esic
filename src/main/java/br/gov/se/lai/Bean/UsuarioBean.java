@@ -964,9 +964,6 @@ public class UsuarioBean implements Serializable {
 		return UsuarioDAO.listarGestoresSistema();
 	}
 	
-//	public void emailTeste() {
-//		NotificacaoEmail.emailNovaSolicitacao();
-//	}
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

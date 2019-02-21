@@ -197,7 +197,7 @@
 							<p:column headerText="Cidadão" width="150" visible="#{solicitacao.list[9]}"
 								sortBy="#{slt.cidadao.usuario.nome}" filterBy="#{slt.cidadao.usuario.nome}"
 								filterMatchMode="contains" filterable="false" rendered="#{usuario.usuario.perfil ne '3' }">
-<!-- 								<h:outputText value="#{slt.sigilo eq false ? slt.cidadao.usuario.nome : 'Sigilo'}" /> -->
+
 								<h:outputText value="#{slt.cidadao.usuario.nome}"/>
 							</p:column>
 							
@@ -212,6 +212,7 @@
 								<h:outputText id="statusRecurso" value="Recurso" styleClass="statusBox recurso" rendered="#{slt.status eq 'Recurso'}"/>
 								<h:outputText id="statusSemResp" value="Sem Resposta" styleClass="statusBox semResposta" rendered="#{slt.status eq 'Sem Resposta'}"/>
 								<h:outputText id="statusTransicao" value="Transição" styleClass="statusBox transicao" rendered="#{slt.status eq 'Transição'}"/>
+								<h:outputText id="statusReformulacao" value="Reformulação" styleClass="statusBox reformulacao" rendered="#{slt.status eq 'Reformulação'}"/>
 								
 								<!-- TOOL-TIPS -->
 								<p:tooltip for="statusAberta" position="bottom" style="width: 700px" rendered="#{slt.status eq 'Aberta'}">
@@ -282,7 +283,7 @@
 							<h:outputText value="Solicitante:"	style="color:#1a568c; font-size:18px" />
 							<h:panelGroup styleClass="inline">
 								<h:outputText value="#{solicitacao.solicitacao.cidadao.usuario.nome}"/>
-								<h:outputText value="(Sigilo)" rendered="#{solicitacao.solicitacao.sigilo eq true}" style="margin-left:.5em; font-weight:bold; color:#c02222"/>
+								<h:outputText value="(Sigilo)" rendered="#{solicitacao.solicitacao.sigilo eq '1'}" style="margin-left:.5em; font-weight:bold; color:#c02222"/>
 							</h:panelGroup>
 							
 							
@@ -307,8 +308,8 @@
 
 							<h:outputText value="Tipo de solicitacao:"
 								style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.tipo}" rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq true)}"/>
-							<h:outputText value="Denúncia Sigilosa" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq true}" />
+							<h:outputText value="#{solicitacao.solicitacao.tipo}" rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2')}"/>
+							<h:outputText value="Denúncia Sigilosa" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2'}" />
 							
 
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
@@ -478,19 +479,58 @@
 									</p:commandLink>
 								</div>
 								
+								<div id="SolReformula" class="box aba" style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Pedido de reformulação:" for="solReformula"	style="margin-bottom: 5px" />
+									<p:inputTextarea id="solReformula" value="#{solicitacao.mensagem.texto}" rows="10" required="true" 
+										counter="solReforCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField solReformulaField">
+										<f:validateLength maximum="3000" />
+									</p:inputTextarea>
+									<h:outputText id="solReforCount" />
+									
+									<p:commandLink class="botaoLink" action="#{solicitacao.reformulacao}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+										<h:outputText value="Enviar" />
+										<i class="fa fa-arrow-up" style="margin-left: 3px" />
+									</p:commandLink>
+								</div>
+								
 								<div id="Reformula" class="box aba" style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Pedido de reformulação:" for="reformula"	style="margin-bottom: 5px" />
-									<p:inputTextarea id="reformula" value="#{mensagem.mensagem.texto}" rows="10" required="true" 
+									<p:outputLabel value="Reformulação:" for="Reformula"	style="margin-bottom: 5px" />
+									<p:inputTextarea id="Reformula" value="#{solicitacao.mensagem.texto}" rows="10" required="true" 
 										counter="reforCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
-										style="width:99%" styleClass="abaField reformulaField">
+										style="width:99%" styleClass="abaField ReformulaField">
 										<f:validateLength maximum="3000" />
 									</p:inputTextarea>
 									<h:outputText id="reforCount" />
 									
-									<p:commandLink class="botaoLink" action="#{mensagem.save}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" action="#{solicitacao.respostaReformulacao}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
-										<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{mensagem.solicitacao}" />
+									</p:commandLink>
+								</div>
+								
+								<div id="Mudar" class="box aba" style="display: none; padding: 1vh 1vw">
+									<p:outputLabel for="tipoSlt" value="Selecione o tipo:" />
+							        <p:selectOneMenu id="tipoSlt" value="#{solicitacao.tipoMudar}" styleClass="abaField mudarField">
+							            <f:selectItem itemLabel="Pedido de Informação" itemValue="Pedido de Informação" />
+							            <f:selectItem itemLabel="Solicitação" itemValue="Solicitação" />
+							            <f:selectItem itemLabel="Sugestão" itemValue="Sugestão" />
+							            <f:selectItem itemLabel="Reclamação" itemValue="Reclamação" />
+							            <f:selectItem itemLabel="Elogio" itemValue="Elogio" />
+							            <f:selectItem itemLabel="Denúncia" itemValue="Denúncia" />
+							        </p:selectOneMenu>
+							        
+									<p:outputLabel value="Justificativa:" for="justMuda" style="margin-bottom: 5px" />
+									<p:inputTextarea id="justMuda" value="#{solicitacao.mensagem.texto}" rows="10" required="true" 
+										counter="mudarCount" maxlength="3000" counterTemplate="{0} caracteres restantes."
+										style="width:99%" styleClass="abaField mudarField">
+										<f:validateLength maximum="3000" />
+									</p:inputTextarea>
+									<h:outputText id="mudarCount" />
+									
+									<p:commandLink class="botaoLink" action="#{solicitacao.mudarTipo}" ajax="false" style="margin-top: 5px"	update="form:solicitacao_panel ">
+										<h:outputText value="Enviar" />
+										<i class="fa fa-arrow-up" style="margin-left: 3px" />
 									</p:commandLink>
 								</div>
 								
@@ -599,6 +639,7 @@
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
 									</p:commandLink>
 								</div>
+								
 							</p:outputPanel>
 						</h:form>
 
@@ -610,19 +651,19 @@
 						<!-- Botão Resposta -->
 						<p:commandLink id="RespostaAba"
 							onclick="abrirAba('Resposta');selecionarAba('RespostaAba');desativarCampos('respostaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) )}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disResposta()}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
 <!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}" -->
 						</p:commandLink>
 						
-						<!-- Botão Reformula -->
-						<p:commandLink id="ReformulaAba"
-							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('reformulaField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
+						<!-- Botão Solicitação Reformulação -->
+						<p:commandLink id="SolReformulaAba"
+							onclick="abrirAba('SolReformula');selecionarAba('SolReformulaAba');desativarCampos('solReformulaField')"
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disReformula()}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg">
 							  <i class="fa fa-comment fa-stack-2x" />
@@ -631,11 +672,34 @@
 							<h:outputText value="Solicitar Reformulação" />
 						</p:commandLink>
 						
+						<!-- Botão Reformulação -->
+						<p:commandLink id="ReformulaAba"
+							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('ReformulaField')"
+							rendered="#{solicitacao.isCidadao() and solicitacao.solicitacao.status eq 'Reformulação'}"
+							styleClass="blankSquareBtn">
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-comment fa-stack-2x" />
+							  <i class="fa fa-repeat fa-stack-1x fa-inverse" />
+							</span>
+							<h:outputText value="Reformular Manifestação" />
+						</p:commandLink>
+						
+						<!-- Botão Mudar Tipo -->
+						<p:commandLink id="MudarAba" class="botaoAba"
+							onclick="abrirAba('Mudar');selecionarAba('MudarAba');desativarCampos('mudarField')"
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disMudar()}"
+							styleClass="blankSquareBtn">
+							<i class="fa fa-exchange fa-3x" style="margin-bottom: 5px" />
+							<h:outputText value="Mudar Tipo" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{entidades.solicitacao}" />
+						</p:commandLink>
+						
 						<!-- Botão Negar -->
 						<p:commandLink id="NegarAba"
 							onclick="abrirAba('Negar');selecionarAba('NegarAba');desativarCampos('negarField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disNegar()}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-ban fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Negar" />
@@ -644,22 +708,22 @@
 						<!-- Botão Encaminhar -->
 						<p:commandLink id="EncaminharAba" class="botaoAba"
 							onclick="abrirAba('Encaminhar');selecionarAba('EncaminharAba');desativarCampos('encaminharField')"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) }"
-							disabled="#{solicitacao.ehEncaminhavel() eq false or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Prorrogada' or solicitacao.solicitacao.status eq 'Negada'}"
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disEncaminhar()}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
 								target="#{entidades.solicitacao}" />
 						</p:commandLink>
+						
 
 						<!-- Botão Prorrogar -->
 						<p:commandLink id="ProrrogarAba" class="botaoAba"
 							onclick="abrirAba('Prorrogar');selecionarAba('ProrrogarAba');desativarCampos('prorrogarField')"
 							styleClass="blankSquareBtn"
-							rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) ) and solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Sem Resposta' or solicitacao.solicitacao.tipo eq 'Denúncia' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada' or solicitacao.solicitacao.status eq 'Prorrogada'}">
-<!-- 						 or ((solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação') and solicitacao.ehProrrogavel() eq false)}"> -->
+							rendered="#{solicitacao.isResponsavel()}"
+							disabled="#{solicitacao.disProrrogar()}" >
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
@@ -669,8 +733,8 @@
 						<!-- Botão Avalia -->
 						<p:commandLink id="AvaliaAba"
 							onclick="abrirAba('Avalia');selecionarAba('AvaliaAba');desativarCampos('avaliaField')"
-							rendered="#{(usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)) and (solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Sem Resposta') and (solicitacao.solicitacao.tipo ne 'Informação' or solicitacao.solicitacao.tipo ne 'Solicitação')}"
-							disabled="#{solicitacao.solicitacao.status eq 'Aberta' or solicitacao.solicitacao.avaliacao ne '0'}"
+							rendered="#{solicitacao.isCidadao()}"
+							disabled="#{solicitacao.disAvaliar()}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-star-half-o fa-3x" />
 							<h:outputText value="Avaliar resposta" />
@@ -679,8 +743,8 @@
 						<!-- Botão Recurso -->
 						<p:commandLink id="RecursoAba"
 							onclick="abrirAba('Recurso');selecionarAba('RecursoAba');desativarCampos('recursoField')"
-							rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel) and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação')}"
-							disabled="#{solicitacao.recursoLiberado() eq false or solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.datafim ne null}"
+							rendered="#{solicitacao.isCidadao()}"
+							disabled="#{solicitacao.disRecurso()}"
 							update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Realizar Recurso" />
@@ -689,9 +753,40 @@
 							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
 								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
-
+						
+						<!-- Botão Liberar Denuncia -->
+						<p:commandLink id="LiberaDenunciaAba"
+							onclick="PF('dlgConfirm').show();"
+							rendered="#{solicitacao.isResponsavelOGE() and solicitacao.solicitacao.tipo eq 'Denúncia'}"
+							disabled="#{solicitacao.solicitacao.liberaDenuncia}"
+							styleClass="blankSquareBtn">
+							<i class="fa fa-eye fa-3x" style="margin-bottom: 5px" />
+							<h:outputText value="Liberar Visualização" />
+							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{solicitacao.solicitacao}" />
+						</p:commandLink>
+						
 					</h:panelGroup>
 				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog header="Confirmação" showHeader="false" widgetVar="dlgConfirm" modal="true" height="100" draggable="false">
+				<h:form>
+					<h:panelGroup styleClass="column">
+					    <h:outputText value="Deseja permitir a visualização deste Denúncia por #{solicitacao.solicitacao.entidades.nome} ?" />
+				    		
+						<h:panelGroup styleClass="inline">
+				    		<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" action="#{solicitacao.liberarDenuncia()}" oncomplete="PF('dlgConfirm').hide;">
+								<h:outputText value="Sim" />
+								<i class="fa fa-check" style="margin-left: 3px" />
+							</p:commandLink>
+							
+				    		<p:commandLink class="botaoLink" ajax="false" style="margin-top: 5px" onclick="PF('dlgConfirm').hide;">
+								<h:outputText value="Não" />
+								<i class="fa fa-times" style="margin-left: 3px" />
+							</p:commandLink>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:form>
 			</p:dialog>
 			
 			<!-- JAVASCRIPT -->

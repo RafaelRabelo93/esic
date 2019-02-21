@@ -92,9 +92,10 @@ public class SolicitacaoBean implements Serializable {
 	private Mensagem mensagemEncaminhar;
 	private UploadedFile file;
 	private Acoes acoesTemporaria;
-	private boolean modoAnonimo;
-	private boolean modoSigilo;
-	private boolean modoIdentificavel;
+	public short sigilo;
+//	private boolean modoAnonimo;
+//	private boolean modoSigilo;
+//	private boolean modoIdentificavel;
 	private final static int constanteTempo = 20;
 	private final static int constanteAdicionalTempo = 10;
 	private final static int constanteDeRecurso = 2;
@@ -110,6 +111,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoDenuncia;
 	public static int solicitacaoFinalizadas;
 	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, true, false, false, true, true);
+	private String tipoMudar;
 	
 	@PostConstruct
 	public void init() {
@@ -135,19 +137,32 @@ public class SolicitacaoBean implements Serializable {
 		String page = null;
 		gerarDataLimite();
 		gerarDataFim(); // caso seja Elogio/Sugestão
-		if (solicitacao.getTipo().equals("Denúncia")) {
-			settarCidadaoDenuncia(); // Caso específico para Denuncia
-			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
-		} else {
-			settarCidadao();
-			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
-		}
+//		if (solicitacao.getTipo().equals("Denúncia")) {
+//			settarCidadaoDenuncia(); // Caso específico para Denuncia
+//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+//		} else {
+//			settarCidadao();
+//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+//		}
 
 		// Salvar Solicitação
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
 		this.solicitacao.setInstancia((short) 0);
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
+		this.solicitacao.setSigilo(sigilo);
+		
+		// Setar cidadão por sigilo
+		if (sigilo == 0 || sigilo == 1) {
+			settarCidadao();
+			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+		} else if (sigilo == 2) {
+			try {
+				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
+			} catch (Exception e) {
+				solicitacao.setCidadao(CidadaoDAO.findCidadaoUsuario(0));
+			}
+		}
 
 		try {
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
@@ -156,8 +171,17 @@ public class SolicitacaoBean implements Serializable {
 				dadosRecebimentoSolicitacao(solicitacao);
 			}
 			
-		if (solicitacao.getTipo().equals("Denúncia"))	this.mensagem.setUsuario(UsuarioDAO.findUsuario(0));
-		else	this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+//		if (solicitacao.getTipo().equals("Denúncia")) {
+//			this.mensagem.setUsuario(UsuarioDAO.findUsuario(0));
+//		} else	{
+//			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+//		}
+		
+		if (sigilo == 0 || sigilo == 1) {
+			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+		} else if (sigilo == 2) {
+			this.mensagem.setUsuario(UsuarioDAO.findUsuario(0));
+		}
 		
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		this.mensagem.setSolicitacao(solicitacao);
@@ -176,13 +200,13 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 			
-			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
-				addQuantidadeSolicitacaoTotal();
-				addQuantidadeSolicitacaoPendente();
-			} else if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Reclamação")) {
-				addQuantidadeSolicitacaoTotal();
-				addQuantidadeSolicitacaoFinalizada();
-			}
+//			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
+//				addQuantidadeSolicitacaoTotal();
+//				addQuantidadeSolicitacaoPendente();
+//			} else if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Reclamação")) {
+//				addQuantidadeSolicitacaoTotal();
+//				addQuantidadeSolicitacaoFinalizada();
+//			}
 			
 			if(!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo")) {
 				NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
@@ -231,15 +255,15 @@ public class SolicitacaoBean implements Serializable {
 	 * no final de semana, o prazo inicia a contar no primeiro dia da semana.
 	 */
 	public void gerarDataLimite() {
-		if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Elogio")) {
-			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
-			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
-			this.solicitacao.setStatus("Finalizada");
-
-		} else {
+//		if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Elogio")) {
+//			this.solicitacao.setDataLimite(new Date(System.currentTimeMillis()));
+//			this.solicitacao.setDatafim(new Date(System.currentTimeMillis()));
+//			this.solicitacao.setStatus("Finalizada");
+//
+//		} else {
 			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
 			this.solicitacao.setStatus("Aberta");
-		}
+//		}
 	}
 
 	/**
@@ -267,7 +291,7 @@ public class SolicitacaoBean implements Serializable {
 	 */
 	public void settarCidadaoDenuncia() {
 		try {
-			if (modoAnonimo) {
+			if (sigilo == 3) {
 //				Usuario usuarioAnonimo = new Usuario();
 //				usuarioAnonimo.setNome("Anônimo");
 //				usuarioAnonimo.setNick("anonimo");
@@ -280,8 +304,8 @@ public class SolicitacaoBean implements Serializable {
 				solicitacao.setCidadao(userBean.getCidadao());
 			}
 			
-			if(modoSigilo) {
-				solicitacao.setSigilo(true);
+			if(sigilo == 2) {
+				solicitacao.setSigilo((short) 2);
 			}
 		} catch (NullPointerException e) {
 			solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
@@ -381,7 +405,7 @@ public class SolicitacaoBean implements Serializable {
 					return "/Cadastro/cad_cidadao";
 				} else {
 					finalizarSolicitacao();
-					return "/Solicitacao/questionario1";
+					return "/Solicitacao/questionario2";
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -401,11 +425,12 @@ public class SolicitacaoBean implements Serializable {
 	public String iniciarSolicitacao() {
 		finalizarSolicitacao();
 		solicitacao.setTipo(this.tipo);
-		if (estaUsuarioLogado()) {
+		if (!estaUsuarioLogado()) {
 //			System.out.println("Modo anônimo ativado");
-			setModoAnonimo(true);
-			setModoSigilo(false);
-			setModoIdentificavel(false);
+			solicitacao.setSigilo((short) 2);
+//			setModoAnonimo(true);
+//			setModoSigilo(false);
+//			setModoIdentificavel(false);
 		}
 		CompetenciasBean competencias = new CompetenciasBean();
 		competencias.listCompetencias = new ArrayList<Competencias>();
@@ -494,13 +519,12 @@ public class SolicitacaoBean implements Serializable {
 			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 		}
 
-		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
-			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("CGE").get(0).getIdEntidades())
-					&& resp.getNivel() >= 2) {
-				ArrayList<Solicitacao> listDenuncia = new ArrayList<>(SolicitacaoDAO.listPorTipo("Denúncia"));
-				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorTipo("Denúncia")));
-			}
-		}
+//		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+//			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("OGE").get(0).getIdEntidades()) && resp.getNivel() >= 2) {
+//				ArrayList<Solicitacao> listDenuncia = new ArrayList<>(SolicitacaoDAO.listPorTipo("Denúncia"));
+//				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorTipo("Denúncia")));
+//			}
+//		}
 
 		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
 			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
@@ -544,12 +568,11 @@ public class SolicitacaoBean implements Serializable {
 	public String consultarSolicitacaoEspecifica(int idEntidade) {
 		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(idEntidade);
 
-		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
-			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("CGE").get(0))
-					&& resp.getNivel() >= 2) {
-				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
-			}
-		}
+//		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+//			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("CGE").get(0)) && resp.getNivel() >= 2) {
+//				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
+//			}
+//		}
 
 		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
 			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
@@ -700,8 +723,8 @@ public class SolicitacaoBean implements Serializable {
 		
 		List<Responsavel> r = ResponsavelDAO.findResponsavelUsuarioAtivo(u.getUsuario().getIdUsuario());
 		boolean respValido = false;
-		String nomeDaEntidade = "Controladoria Geral do Estado";
-		String siglaEntidade =  "CGE";
+		String nomeDaEntidade = "Ouvidoria Geral do Estado";
+		String siglaEntidade =  "OGE";
 		if(!r.isEmpty()) {
 			for(Responsavel resp : r) {
 				if(resp.getNivel() == (short)3 &&
@@ -733,52 +756,53 @@ public class SolicitacaoBean implements Serializable {
 	// específicos
 
 	public String Denuncia() {
-		solicitacao.setEntidades(EntidadesDAO.FindSigla("CGE").get(0));
+		solicitacao.setEntidades(EntidadesDAO.FindSigla("OGE").get(0));
 		solicitacao.setTipo("Denúncia");
-		setModoAnonimo(false);
-		setModoSigilo(true);
-		setModoIdentificavel(false);
+//		setModoAnonimo(false);
+//		setModoSigilo(true);
+//		setModoIdentificavel(false);
+		solicitacao.setSigilo((short) 2);
 
 		CompetenciasBean.idCompetencias = 0;
 		AcoesBean.carregarLista();
 		return "/Solicitacao/solicitacao.xhtml?faces-redirect=true";
 	}
 	
-	public void DenunciaOuSigiloOuIdentificavel(AjaxBehaviorEvent e) {
-		
-		if(modoAnonimo) {
-			if(modoSigilo) {
-				setModoSigilo(false);
-			}
-			
-			if(modoIdentificavel) {
-				setModoIdentificavel(false);
-			}
-		}
-	}
-	
-	public void SigiloOuDenunciaOuIdentificavel(AjaxBehaviorEvent e) {
-		if(modoSigilo) {
-			if(modoAnonimo) {
-				setModoAnonimo(false);
-			}
-			if (modoIdentificavel) {
-				setModoIdentificavel(false);
-			}
-		}
-	}
-
-	public void IdentificavelOuSigiloOuDenuncia(AjaxBehaviorEvent e) {
-		if(modoIdentificavel) {
-			if(modoAnonimo) {
-				setModoAnonimo(false);
-			}
-			
-			if (modoSigilo) {
-				setModoSigilo(false);
-			}
-		}
-	}
+//	public void DenunciaOuSigiloOuIdentificavel(AjaxBehaviorEvent e) {
+//		
+//		if(modoAnonimo) {
+//			if(modoSigilo) {
+//				setModoSigilo(false);
+//			}
+//			
+//			if(modoIdentificavel) {
+//				setModoIdentificavel(false);
+//			}
+//		}
+//	}
+//	
+//	public void SigiloOuDenunciaOuIdentificavel(AjaxBehaviorEvent e) {
+//		if(modoSigilo) {
+//			if(modoAnonimo) {
+//				setModoAnonimo(false);
+//			}
+//			if (modoIdentificavel) {
+//				setModoIdentificavel(false);
+//			}
+//		}
+//	}
+//
+//	public void IdentificavelOuSigiloOuDenuncia(AjaxBehaviorEvent e) {
+//		if(modoIdentificavel) {
+//			if(modoAnonimo) {
+//				setModoAnonimo(false);
+//			}
+//			
+//			if (modoSigilo) {
+//				setModoSigilo(false);
+//			}
+//		}
+//	}
 
 	public boolean estaUsuarioLogado() {
 		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
@@ -898,11 +922,32 @@ public class SolicitacaoBean implements Serializable {
 		rmvQuantidadeSolicitacaoRespondida();
 		mensagem = new Mensagem();
 	}
+	
+	public void liberarDenuncia() {
+		Mensagem msgTramite = new Mensagem();
+		
+		solicitacao.setLiberaDenuncia(true);
+		
+		msgTramite.setSolicitacao(solicitacao);
+		msgTramite.setTexto("Visualização liberada por " + userBean.getNomeCompleto() + " para " + solicitacao.getEntidades().getNome() + ".");
+		msgTramite.setTipo((short) 4);
+		msgTramite.setData(new Date(System.currentTimeMillis()));
+		msgTramite.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		
+		if (MensagemDAO.saveOrUpdate(msgTramite)) {
+			MensagemBean.attMensagemTramites(msgTramite);
+		}
+		
+		try {
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void onRowSelect(SelectEvent event) {
 		int rownum = filteredSolicitacoes.indexOf((Solicitacao) event.getObject());
 		solicitacao = SolicitacaoDAO.findSolicitacao(rownum);
-
 	}
 
 	private boolean verificaSeRespondida(Solicitacao solicitacao) {
@@ -951,7 +996,134 @@ public class SolicitacaoBean implements Serializable {
 			return false;
 		}
 	}
-
+	
+	public void mudarTipo() {
+		Responsavel resp;
+		Mensagem msgTramite = new Mensagem();
+		String tipoAtual = solicitacao.getTipo();
+		String tipoFinal = tipoMudar;
+		
+		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		if(usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6 ) {
+			resp = new Responsavel();
+			resp.setUsuario(usuario);
+			resp.setEmail("admin_esic@cge.se.gov.br");
+		}else {
+			resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
+		}
+				
+		// Justificativa
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 7);
+		this.mensagem.setUsuario(usuario);
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		
+		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+			this.solicitacao.setTipo(tipoMudar);
+		}
+		
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+			MensagemBean.attMensagemSolicitacao(mensagem);
+			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+		}
+		
+		mensagem = new Mensagem();
+		
+		msgTramite.setSolicitacao(solicitacao);
+		msgTramite.setTexto("Tipo de manifestação alterada de " + tipoAtual + " para " + tipoFinal + " por " + usuario.getNome());
+		msgTramite.setTipo((short) 4);
+		msgTramite.setData(new Date(System.currentTimeMillis()));
+		msgTramite.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		
+		if (MensagemDAO.saveOrUpdate(msgTramite)) {
+			MensagemBean.attMensagemHistorico(msgTramite);
+		}
+		
+		try {
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+		}
+	}
+	
+	public void reformulacao() {
+		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
+		// Justificativa
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 7);
+		this.mensagem.setUsuario(usuario);
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+			MensagemBean.attMensagemSolicitacao(mensagem);
+//			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+		}
+		
+		mensagem = new Mensagem();
+		
+		Mensagem msgTramite = new Mensagem();
+		msgTramite.setSolicitacao(solicitacao);
+		msgTramite.setTexto("Pedido de reformulação de manifestação realizado por " + usuario.getNome());
+		msgTramite.setTipo((short) 4);
+		msgTramite.setData(new Date(System.currentTimeMillis()));
+		msgTramite.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		
+		if (MensagemDAO.saveOrUpdate(msgTramite)) {
+			MensagemBean.attMensagemHistorico(msgTramite);
+		}
+		
+		if (SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+			solicitacao.setStatus("Reformulação");
+		}
+		
+		try {
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+		}
+		
+	}
+	
+	public void respostaReformulacao() {
+		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
+		gerarDataLimite();
+		
+		// Reformulação
+		this.mensagem.setSolicitacao(solicitacao);
+		this.mensagem.setTipo((short) 1);
+		this.mensagem.setUsuario(usuario);
+		this.mensagem.setData(new Date(System.currentTimeMillis()));
+		
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+			MensagemBean.attMensagemSolicitacao(mensagem);
+//			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+		}
+		
+		mensagem = new Mensagem();
+		
+		Mensagem msgTramite = new Mensagem();
+		msgTramite.setSolicitacao(solicitacao);
+		msgTramite.setTexto("Pedido de reformulação atendido pelo manifestante.");
+		msgTramite.setTipo((short) 4);
+		msgTramite.setData(new Date(System.currentTimeMillis()));
+		msgTramite.setUsuario(UsuarioDAO.buscarUsuario("Sistema"));
+		
+		if (MensagemDAO.saveOrUpdate(msgTramite)) {
+			MensagemBean.attMensagemHistorico(msgTramite);
+		}
+		
+		try {
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+		}
+	}
+	
 	// +++++++++++++++++++++++++++ Reencaminhar
 
 	public void encaminhar() {
@@ -1109,13 +1281,14 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	public int contarTotalPorResponsavel() {
+		
 		int count = 0;
 		count += SolicitacaoDAO.contarPorEntidade("Informação");
 		count += SolicitacaoDAO.contarPorEntidade("Solicitação");
 		count += SolicitacaoDAO.contarPorEntidade("Elogio");
-		count += SolicitacaoDAO.contarPorEntidade("Denúncia");
 		count += SolicitacaoDAO.contarPorEntidade("Reclamação");
 		count += SolicitacaoDAO.contarPorEntidade("Sugestão");
+		count += SolicitacaoDAO.contarPorEntidade("Denúncia");
 		return count;
 	}
 	
@@ -1124,9 +1297,9 @@ public class SolicitacaoBean implements Serializable {
 		count += SolicitacaoDAO.contarAtendidasPorEntidade("Informação");
 		count += SolicitacaoDAO.contarAtendidasPorEntidade("Solicitação");
 		count += SolicitacaoDAO.contarAtendidasPorEntidade("Elogio");
-		count += SolicitacaoDAO.contarAtendidasPorEntidade("Denúncia");
 		count += SolicitacaoDAO.contarAtendidasPorEntidade("Reclamação");
 		count += SolicitacaoDAO.contarAtendidasPorEntidade("Sugestão");
+		count += SolicitacaoDAO.contarAtendidasPorEntidade("Denúncia");
 		return count;
 	}
 	
@@ -1135,9 +1308,9 @@ public class SolicitacaoBean implements Serializable {
 		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Informação");
 		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Solicitação");
 		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Elogio");
-		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Denúncia");
 		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Reclamação");
 		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Sugestão");
+		count += SolicitacaoDAO.contarSemRespostaPorEntidade("Denúncia");
 		return count;
 	}
 	
@@ -1146,9 +1319,9 @@ public class SolicitacaoBean implements Serializable {
 		count += SolicitacaoDAO.contarEmTramitePorEntidade("Informação");
 		count += SolicitacaoDAO.contarEmTramitePorEntidade("Solicitação");
 		count += SolicitacaoDAO.contarEmTramitePorEntidade("Elogio");
-		count += SolicitacaoDAO.contarEmTramitePorEntidade("Denúncia");
 		count += SolicitacaoDAO.contarEmTramitePorEntidade("Reclamação");
 		count += SolicitacaoDAO.contarEmTramitePorEntidade("Sugestão");
+		count += SolicitacaoDAO.contarEmTramitePorEntidade("Denúncia");
 		return count;
 	}
 	
@@ -1157,11 +1330,126 @@ public class SolicitacaoBean implements Serializable {
 		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Informação");
 		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Solicitação");
 		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Elogio");
-		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Denúncia");
 		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Reclamação");
 		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Sugestão");
+		count += SolicitacaoDAO.contarNaoVisualizadasPorEntidade("Denúncia");
 		return count;
 	}
+	
+	
+	// Condições de Visualização e Ativação dos botões
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public boolean isResponsavel() {
+		Usuario usuario = userBean.getUsuario();
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && userBean.isPerfilAlterarCidadaoResponsavel())) {
+			return true;
+		} else return false;
+	}
+	
+	public boolean isResponsavelOGE() {
+		Usuario usuario = userBean.getUsuario();
+		
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && userBean.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+					return true;
+				}
+			}
+			return false;
+		} else return false;
+	}
+	
+	public boolean isCidadao() {
+		Usuario usuario = userBean.getUsuario();
+		if (usuario.getPerfil() == 3 || (usuario.getPerfil() == 4 && !userBean.isPerfilAlterarCidadaoResponsavel())) {
+			return true;
+		} else return false;
+	}
+	
+	public boolean disResposta() {
+		try {
+			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Recurso") || solicitacao.getStatus().equals("Prorrogada")) {
+				return false;
+			} else return true;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	public boolean disReformula() {
+		try {
+			if ((this.solicitacao.getStatus().equals("Aberta") || this.solicitacao.getStatus().equals("Recurso") || this.solicitacao.getStatus().equals("Prorrogada")) && this.solicitacao.getSigilo() != 2) {
+				return false;
+			} else return true;
+		} catch (Exception e) {
+//			e.printStackTrace();
+			return true;
+		}
+	}
+	
+	public boolean disMudar() {
+		try {
+			if (solicitacao.getStatus().equals("Finalizada") || solicitacao.getStatus().equals("Sem-resposta")) {
+				return true;
+			} else return false;
+		} catch (Exception e) {
+//			e.printStackTrace();
+			return true;
+		}
+	}
+	
+	public boolean disNegar() {
+		try {
+			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Recurso") || solicitacao.getStatus().equals("Prorrogada")) {
+				return false;
+			} else return true;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	public boolean disProrrogar() {
+		try {
+			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Recurso")) {
+				return false;
+			} else return true;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	public boolean disRecurso() {
+		try {
+			if (!recursoLiberado() || solicitacao.getStatus().equals("Finalizada") || !solicitacao.getDatafim().equals(null)) {
+				return true;
+			} else return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	public boolean disEncaminhar() {
+		try {
+			if (!ehEncaminhavel() || solicitacao.getStatus().equals("Atendida") || solicitacao.getStatus().equals("Prorrogada") || solicitacao.getStatus().equals("Negada")) {
+				return true;
+			} else return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	public boolean disAvaliar() {
+		try {
+			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getAvaliacao() != 0) {
+				return true;
+			} else return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	
+	
 	
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1336,13 +1624,13 @@ public class SolicitacaoBean implements Serializable {
 		}
 	}
 
-	public boolean isModoAnonimo() {
-		return modoAnonimo;
-	}
-
-	public void setModoAnonimo(boolean modoAnonimo) {
-		this.modoAnonimo = modoAnonimo;
-	}
+//	public boolean isModoAnonimo() {
+//		return modoAnonimo;
+//	}
+//
+//	public void setModoAnonimo(boolean modoAnonimo) {
+//		this.modoAnonimo = modoAnonimo;
+//	}
 
 	public boolean getForm() {
 		return form;
@@ -1446,13 +1734,13 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacaoFinalizadas = solicitacaoFinalizadas;
 	}
 
-	public boolean isModoSigilo() {
-		return modoSigilo;
-	}
-
-	public void setModoSigilo(boolean modoSigilo) {
-		this.modoSigilo = modoSigilo;
-	}
+//	public boolean isModoSigilo() {
+//		return modoSigilo;
+//	}
+//
+//	public void setModoSigilo(boolean modoSigilo) {
+//		this.modoSigilo = modoSigilo;
+//	}
 
 	public int getIdCompetencias() {
 		return idCompetencias;
@@ -1462,13 +1750,13 @@ public class SolicitacaoBean implements Serializable {
 		this.idCompetencias = idCompetencias;
 	}
 
-	public boolean isModoIdentificavel() {
-		return modoIdentificavel;
-	}
-
-	public void setModoIdentificavel(boolean modoIdentificavel) {
-		this.modoIdentificavel = modoIdentificavel;
-	}
+//	public boolean isModoIdentificavel() {
+//		return modoIdentificavel;
+//	}
+//
+//	public void setModoIdentificavel(boolean modoIdentificavel) {
+//		this.modoIdentificavel = modoIdentificavel;
+//	}
 	
 	public List<Boolean> getList() {
 		return list;
@@ -1476,6 +1764,22 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setList(List<Boolean> list) {
 		this.list = list;
+	}
+
+	public String getTipoMudar() {
+		return tipoMudar;
+	}
+
+	public void setTipoMudar(String tipoMudar) {
+		this.tipoMudar = tipoMudar;
+	}
+
+	public short getSigilo() {
+		return sigilo;
+	}
+
+	public void setSigilo(short sigilo) {
+		this.sigilo = sigilo;
 	}
 
 }

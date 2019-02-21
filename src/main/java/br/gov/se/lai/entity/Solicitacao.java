@@ -41,9 +41,10 @@ public class Solicitacao implements java.io.Serializable {
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
 	private boolean encaminhada;
 	private boolean visualizada;
-	private boolean sigilo;
+	private short sigilo;
 	private Integer formaRecebimento;
 	private Integer avaliacao;
+	private boolean liberaDenuncia;
 
 	public Solicitacao() {
 	}
@@ -54,10 +55,10 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento, boolean visualizada) {
+			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento, boolean visualizada, short sigilo, boolean liberaDenuncia) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
-		this.competencias = competencias;
+//		this.competencias = competencias;
 		this.dataIni = dataIni;
 		this.dataIni = dataLimite;
 		this.status = status;
@@ -69,6 +70,8 @@ public class Solicitacao implements java.io.Serializable {
 		this.mensagems = mensagems;
 		this.formaRecebimento = formaRecebimento;
 		this.visualizada = visualizada;
+		this.sigilo = sigilo;
+		this.liberaDenuncia = liberaDenuncia;
 	}
 
 	@Id
@@ -234,14 +237,21 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@Column(name = "sigilo", length = 1)
-	public boolean isSigilo() {
+	public short getSigilo() {
 		return sigilo;
 	}
 
-	public void setSigilo(boolean sigilo) {
+	public void setSigilo(short sigilo) {
 		this.sigilo = sigilo;
 	}
-	
+
+	public boolean isLiberaDenuncia() {
+		return liberaDenuncia;
+	}
+
+	public void setLiberaDenuncia(boolean liberaDenuncia) {
+		this.liberaDenuncia = liberaDenuncia;
+	}
 	
 
 }

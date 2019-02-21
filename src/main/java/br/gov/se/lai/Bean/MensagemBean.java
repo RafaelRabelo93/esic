@@ -163,16 +163,19 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTipo((short)7);
 		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
+		
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);
 			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 		}
+		
 		solicitacao.setStatus("Negada");
 		if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 			salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 		}
-		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
-		SolicitacaoBean.addQuantidadeSolicitacaoFinalizada();
+		
+//		SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
+//		SolicitacaoBean.addQuantidadeSolicitacaoFinalizada();
 		
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";

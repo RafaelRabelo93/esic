@@ -6,108 +6,58 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{solicitacao.finalizarSolicitacao()}" >
+<h:body>
 
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-		
+			
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
- 
-			<h:form id="questionario2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' or solicitacao.solicitacao.tipo eq 'Denúncia'}" onmouseover="#{acoes.carregarLista()}">
+			
+			<h:form id="solicitacao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4'}" >
 
 				<div class="ficha">
 
-					<p:steps activeIndex="1" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de manifestação" url="/index.xhtml" />
-						<p:menuitem value="Determinar Órgão / Entidade" url="/Solicitacao/questionario2.xhtml" />
-						<p:menuitem value="Realizar Manifestação" url="#"/>
+					<p:steps activeIndex="1" styleClass="custom" readonly="true">
+						<p:menuitem value="Tipo de manifestação" url="#" />
+						<p:menuitem value="Identificação" url="#" />
+						<p:menuitem value="Determinar Órgão / Entidade" url="#" />
+						<p:menuitem value="Realizar Solicitação" url="#" />
 					</p:steps>
 
-					<h:panelGroup styleClass="box" style="margin-bottom:1vw; width:50vw">
+					<div style="display:flex; align-content:space-around; flex-flow: column nowrap; border:1px solid lightgray;background:white; margin-bottom:1vw; padding: 2vw 3vw 0 3vw;">
 
-					<h:outputText value="Selecionar Órgão / Entidade" style="color:#1a568c; font-size:25px; margin: 0 5vw; align-self:center" />
-					<p style="text-align: left; align-self: center;">Caso não saiba para onde deseja encaminhar sua manifestação, preencha os campos de assunto e categoria abaixo para identificar os órgãos relacionados.</p>
-					
-					<h:panelGroup styleClass="inline">
-						<p:outputLabel value="Já sei a que órgão/entidade quero enviar" style="font-weight: bold" />
-						<p:selectBooleanCheckbox value="#{solicitacao.form}" >
-							 <p:ajax update="panel" listener="#{solicitacao.limparEntidade}" event="change"/>
-						</p:selectBooleanCheckbox>
-					</h:panelGroup>
-					
-					<h:panelGroup id="panel" styleClass="inline" style="width: 100%; justify-content: space-between; align-items: flex-start">
-						
-						<h:panelGroup styleClass="column" rendered="#{!solicitacao.form}" style="margin-top: 15px; width: 100%;">
-							<p style="margin:0">Realize a busca do órgão a ser realizado a manifestação de acordo com o assunto e categoria desejados.</p>
-							<p:outputLabel value="Buscar Órgão/Entidade:" style="font-weight: bold" />
-						
-							<p:outputLabel value="Tema:" for="tema" />
-	        				<p:selectOneMenu id="tema" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtrarCompetencias}" update="assunto entidades_panel" />
-								 <p:ajax update="assunto" resetValues="true"/>
-								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
-								 <f:selectItems value="#{acoes.acaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
-							</p:selectOneMenu> 
-							<p:inputText id="assuntoTxt" value="" size="40" rendered="assunto.value==0" maxlength="65"/>
+						<h:outputText value="Escolha o tipo de identificação da manifestação" style="color:#1a568c; font-size:30px; align-self: center; margin-bottom: 2vh" />
 
-							<p:outputLabel value="Assunto:" for="assunto" />
-							<p:selectOneMenu id="assunto" widgetVar="assunto" value="#{competencias.idCompetencias}" disabled="#{solicitacao.form}" style="max-width: 95%;" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtraEntidades}" update = "entidades_panel" />
-								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true" />
-								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.idCompetencias}"/>
-							</p:selectOneMenu>
+						<h:panelGroup styleClass="column" style="max-width:780px;">
+						
+<!-- 								<p style="margin-bottom:0; text-align: left;">Denúncias sem a identificação do denunciante são consideradas anônimas, sendo aceitas somente após análise preliminar.</p> -->
+							<p style="text-align: left;">As falta de dados do usuário na manifestação anônima impossibilita uma resposta final e pode dificultar ou inviabilizar a conclusão desse processo.</p>
 							
-							<p:outputLabel value="Selecione o Órgão/Entidade:" />
-							<h:panelGroup id="entidades_panel">
-								<p:dataTable id="entidades" widget="entidades" var="ent" disabledSelection="#{solicitacao.form}" emptyMessage="Selecione Assunto e Categoria" value="#{competencias.listEntidades}" selection="#{solicitacao.solicitacao.entidades}" rowKey="#{ent}" >
-							        <p:ajax event="rowEdit" oncomplete="PF('entidades').filter()"/>
-							        <p:column selectionMode="single" width="20"/>
-							        <p:column headerText="Sigla" width="80">
-							            <h:outputText value="#{ent.sigla}" />
-							        </p:column>
-							        <p:column headerText="Nome">
-							            <h:outputText value="#{ent.nome}" />
-							        </p:column>
-							    </p:dataTable>
-							</h:panelGroup>
+							<p style="margin-bottom:0;text-align: left">As manifestações sigilosas são aquelas em que os dados de identificação do manifestante são mantidos em sigilo.</p>
+							<p style="margin-bottom:0;text-align: left">Desta forma, sua demanda poderá ser analisada com mais eficiência, além de garantir uma resposta no final do processo.</p>
+							<p style="text-align: left;">Para melhor realização do processo, informe o máximo de dados possível em seu cadastro, identificando-se corretamente.</p>
+					        
+					        <p:selectOneRadio id="sigilo" value="#{solicitacao.sigilo}">
+					            <f:selectItem itemLabel="Manifestação Identificada" itemValue="0" />
+					            <f:selectItem itemLabel="Manifestação Sigilosa" itemValue="1" />
+					            <f:selectItem itemLabel="Manifestação Anônima" itemValue="2" />
+					        </p:selectOneRadio>
+					        
+						    <p:commandLink class="botaoLink" action="questionario3">
+								<h:outputText value="Continuar" />
+								<i class="fa fa-arrow-right" style="margin-left: 5px" />
+							</p:commandLink>
+					        
 						</h:panelGroup>
-						
-						<h:panelGroup id="select_orgao" styleClass="column" rendered="#{solicitacao.form}" style="margin-top: 15px;width: 100%;">
-							<p style="margin:0">Selecione diretamento o órgão a qual deseja direcionar a manifestação.</p>
-							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao"  style="font-weight: bold" />
-   				            <p:selectOneMenu id="orgao" value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" styleClass="field selectField" filter="true" filterMatchMode="contains">
-                                <p:ajax event="change" listener="#{competencias.filtrarCompetenciasEntidade}" update = "select_orgao" />
-<!--                                 <p:ajax listener="#{solicitacao.definirEntidadeDeSolicitacao}"/> -->
-								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
-								<f:selectItems value="#{entidades.todasEntidadesAtivas}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
-							</p:selectOneMenu>
-							
-							<p:outputLabel value="Assunto:" for="assunto2" />
-	        				<p:selectOneMenu id="assunto2" value="#{competencias.idCompetencias}" disabled="#{!(solicitacao.form)}" styleClass="field buscaField">
-								 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>
-								 <f:selectItems value="#{competencias.listCompetencias}" var="comp" itemLabel="#{comp.descricao}" itemValue="#{comp.idCompetencias}"/>
-							</p:selectOneMenu> 
-						</h:panelGroup>
-						
-					</h:panelGroup>
-						
-					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" action="#{solicitacao.questionarioParaSolicitacao}">
-						<h:outputText value="Continuar" />
-						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
-						<f:setPropertyActionListener value="#{competencias.idCompetencias}" target="#{solicitacao.idCompetencias}" />
-						<f:setPropertyActionListener value="#{competencias.idEntidade}" target="#{solicitacao.idEntidades}"/>
-						
-						<i class="fa fa-arrow-right" style="margin-left: 5px" />
-					</p:commandLink>
+					</div>
 
 				</div>
 
 			</h:form>
-		
+
 		</ui:define>
 
 	</ui:composition>

@@ -12,35 +12,35 @@
 
 	<h:form class="form">
 
-	<div class="menuSec">
+	<div class="menuSec" style="padding:0">
 	
 		<!-- Album Manual de Uso -->
 	
-		<h:panelGroup id="carrossel" style="width:80%" rendered="false">
-			<p:carousel numVisible="1" autoPlayInterval="5000" itemStyle="text-align:center;" breakpoint="100" responsive="true" style="margin-bottom:0; border:none; background-color:white">
-		        <p:tab title="Lorem Ipsum I">
-		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive">
-		             	<h:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360" />
-		                <h:outputText
-		                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus, purus in tempus interdum, magna nibh scelerisque ante, vitae pharetra ante mi eget mauris. Proin ultricies est urna, interdum commodo dui dignissim non. Aenean maximus felis sed ante condimentum eleifend. Nam pharetra est et mi facilisis, sit amet rutrum tortor feugiat. Praesent aliquet lectus nec erat porta hendrerit. Morbi pharetra at quam in feugiat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut arcu est, fermentum non tristique vel, accumsan in libero. Mauris imperdiet pretium lectus. Sed nulla est, cursus in scelerisque ut, gravida ac justo. Cras auctor nunc ut nisi iaculis hendrerit. Integer ut ligula in mauris pharetra fringilla vitae eu sem. Aenean ullamcorper odio tortor, vitae posuere sem faucibus quis. Proin dictum luctus ipsum vitae vehicula." />
-					</h:panelGrid>
-		        </p:tab>
-		        <p:tab title="Lorem Ipsum II">
-		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive">
-		                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/>
-		                <h:outputText value="Cras aliquet, libero sit amet condimentum pulvinar, ante ex dignissim mauris, in posuere eros libero et odio. Etiam eu fermentum nibh, sed venenatis nulla. Curabitur non nisi quis dolor ultrices laoreet in tristique lorem. Sed sed gravida ex. Nam et nisi tempor, interdum est a, ornare purus. Vestibulum dapibus ultricies mi eget hendrerit. Curabitur dapibus ut libero ut pharetra. In tincidunt, dolor vel dictum elementum, lectus nibh pellentesque erat, nec lacinia nisl urna ac nibh. Praesent porta iaculis massa, in tempus metus condimentum ac. Vestibulum justo sem, malesuada non consequat eu, congue at ipsum. Aliquam vel nisl non tellus maximus euismod." />
-		            </h:panelGrid>
-		        </p:tab>
-		        <p:tab title="Lorem Ipsum III">
-		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive">
-		                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/>
-		                <h:outputText value="Aenean sed commodo nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse tempus, neque at elementum tincidunt, dolor erat hendrerit risus, eget mollis quam dolor at dolor. Duis elementum tincidunt nisi ac aliquam. Morbi luctus mauris in turpis lobortis dictum. Integer eget dapibus leo, in consequat dui. Integer id mauris maximus, tempor eros eget, porttitor erat. Suspendisse vitae ex vel sapien ultrices elementum ut varius est. Sed ullamcorper sem ut tincidunt egestas. Suspendisse potenti. Nunc sagittis libero a magna vehicula, et faucibus lorem lacinia. Cras egestas tellus finibus rutrum fermentum." />
-		            </h:panelGrid>
-		        </p:tab>
-		    </p:carousel>    
-		</h:panelGroup>
+<!-- 		<h:panelGroup id="carrossel" style="width:80%" rendered="false"> -->
+<!-- 			<p:carousel numVisible="1" autoPlayInterval="5000" itemStyle="text-align:center;" breakpoint="100" responsive="true" style="margin-bottom:0; border:none; background-color:white"> -->
+<!-- 		        <p:tab title="Lorem Ipsum I"> -->
+<!-- 		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive"> -->
+<!-- 		             	<h:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360" /> -->
+<!-- 		                <h:outputText -->
+<!-- 		                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus, purus in tempus interdum, magna nibh scelerisque ante, vitae pharetra ante mi eget mauris. Proin ultricies est urna, interdum commodo dui dignissim non. Aenean maximus felis sed ante condimentum eleifend. Nam pharetra est et mi facilisis, sit amet rutrum tortor feugiat. Praesent aliquet lectus nec erat porta hendrerit. Morbi pharetra at quam in feugiat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut arcu est, fermentum non tristique vel, accumsan in libero. Mauris imperdiet pretium lectus. Sed nulla est, cursus in scelerisque ut, gravida ac justo. Cras auctor nunc ut nisi iaculis hendrerit. Integer ut ligula in mauris pharetra fringilla vitae eu sem. Aenean ullamcorper odio tortor, vitae posuere sem faucibus quis. Proin dictum luctus ipsum vitae vehicula." /> -->
+<!-- 					</h:panelGrid> -->
+<!-- 		        </p:tab> -->
+<!-- 		        <p:tab title="Lorem Ipsum II"> -->
+<!-- 		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive"> -->
+<!-- 		                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/> -->
+<!-- 		                <h:outputText value="Cras aliquet, libero sit amet condimentum pulvinar, ante ex dignissim mauris, in posuere eros libero et odio. Etiam eu fermentum nibh, sed venenatis nulla. Curabitur non nisi quis dolor ultrices laoreet in tristique lorem. Sed sed gravida ex. Nam et nisi tempor, interdum est a, ornare purus. Vestibulum dapibus ultricies mi eget hendrerit. Curabitur dapibus ut libero ut pharetra. In tincidunt, dolor vel dictum elementum, lectus nibh pellentesque erat, nec lacinia nisl urna ac nibh. Praesent porta iaculis massa, in tempus metus condimentum ac. Vestibulum justo sem, malesuada non consequat eu, congue at ipsum. Aliquam vel nisl non tellus maximus euismod." /> -->
+<!-- 		            </h:panelGrid> -->
+<!-- 		        </p:tab> -->
+<!-- 		        <p:tab title="Lorem Ipsum III"> -->
+<!-- 		            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-responsive"> -->
+<!-- 		                <p:graphicImage value="#{resource['img/manual/printPagina.png']}" width="640" height="360"/> -->
+<!-- 		                <h:outputText value="Aenean sed commodo nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse tempus, neque at elementum tincidunt, dolor erat hendrerit risus, eget mollis quam dolor at dolor. Duis elementum tincidunt nisi ac aliquam. Morbi luctus mauris in turpis lobortis dictum. Integer eget dapibus leo, in consequat dui. Integer id mauris maximus, tempor eros eget, porttitor erat. Suspendisse vitae ex vel sapien ultrices elementum ut varius est. Sed ullamcorper sem ut tincidunt egestas. Suspendisse potenti. Nunc sagittis libero a magna vehicula, et faucibus lorem lacinia. Cras egestas tellus finibus rutrum fermentum." /> -->
+<!-- 		            </h:panelGrid> -->
+<!-- 		        </p:tab> -->
+<!-- 		    </p:carousel>     -->
+<!-- 		</h:panelGroup> -->
 	
-	<h2>Gráficos Estatísticos</h2>
+<!-- 	<h2>Gráficos Estatísticos</h2> -->
 <!-- 	<h:panelGroup id="charts" styleClass="inline" style="width:100%; display: flex; justify-content: space-around;"> -->
 <!-- 		<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" responsive="true" widgetVar="chartMensal" style="width:40%"/> -->
 <!-- 		<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" responsive="true" widgetVar="chartAnualAcumulado" style="width:40%"/> -->
