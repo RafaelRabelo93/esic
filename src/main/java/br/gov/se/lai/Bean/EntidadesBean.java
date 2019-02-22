@@ -142,7 +142,8 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 5 || user.getPerfil() == 6) {
+		UsuarioBean u = new UsuarioBean();
+		if(user.getPerfil() == 5 || user.getPerfil() == 6 || u.isResponsavelOGE()) {
 			return true;
 		}else {
 			return false;

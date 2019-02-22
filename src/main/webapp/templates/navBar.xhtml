@@ -61,7 +61,7 @@
 			</h:panelGroup>
 			
 		<!-- Entidade -->
-		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true))}">
+		<h:panelGroup styleClass="dropdown" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and !usuario.isResponsavelOGE()}">
 			<h:commandLink action="#{entidades.consultarEntidades}" class="dropbtn">
 				<i class="fa fa-building" />
 				<h:outputText value="Entidade" style="margin:0 7px"/>
@@ -69,7 +69,7 @@
 		</h:panelGroup>
 		
 		<!-- Entidade Admin -->
-		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 			<h:commandLink class="dropbtn">
 				<i class="fa fa-building" />
 				<h:outputText value="Entidade" style="margin:0 7px"/>
@@ -82,7 +82,7 @@
 		</h:panelGroup>
 		
 		<!-- Ações -->
-		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5'}">
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or usuario.isResponsavelOGE()}">
 			<h:commandLink class="dropbtn">
 				<i class="fa fa-refresh" />
 				<h:outputText value="Funções" style="margin:0 7px"/>
@@ -95,16 +95,16 @@
 		</h:panelGroup>
 		
 		<!-- Estatistica -->
-		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-			<h:commandLink class="dropbtn" action="/Relatorios/relatorios">
+		<h:panelGroup styleClass="dropdown" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
+			<h:commandLink class="dropbtn" action="/Relatorios/relatorio_mensal">
 				<i class="fa fa-bar-chart" />
 				<h:outputText value="Gráficos" style="margin:0 7px"/>
 				<i class="fa fa-caret-down"/>
 			</h:commandLink>
-			<div class="dropdown-content">
-				<h:commandLink value="Relatórios Mensais" action="/Relatorios/relatorios_estaticos"/>
-				<h:commandLink value="Relatórios Específicos" action="#{relatorioDinamico.redirecionarRelatorio()}" />
-			</div>
+<!-- 			<div class="dropdown-content"> -->
+<!-- 				<h:commandLink value="Relatórios Mensais" action="/Relatorios/relatorio_mensal"/> -->
+<!-- 				<h:commandLink value="Relatórios Específicos" action="#{relatorioDinamico.redirecionarRelatorio()}" /> -->
+<!-- 			</div> -->
 		</h:panelGroup>
 		
 		</div>

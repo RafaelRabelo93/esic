@@ -113,7 +113,7 @@
 								<h:outputText value=" Nova Função" />
 							</p:commandLink>
 							
-							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
 								<h:outputText value=" Nova Função" />
 							</p:commandLink>

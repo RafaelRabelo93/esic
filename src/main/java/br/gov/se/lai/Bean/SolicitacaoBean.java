@@ -1347,11 +1347,12 @@ public class SolicitacaoBean implements Serializable {
 		} else return false;
 	}
 	
-	public boolean isResponsavelOGE() {
-		Usuario usuario = userBean.getUsuario();
+	public static boolean isResponsavelOGE() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		Usuario usuario = u.getUsuario();
 		
-		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && userBean.isPerfilAlterarCidadaoResponsavel())) {
-			for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : u.getUsuario().getResponsavels()) {
 				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
 					return true;
 				}

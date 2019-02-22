@@ -964,6 +964,20 @@ public class UsuarioBean implements Serializable {
 		return UsuarioDAO.listarGestoresSistema();
 	}
 	
+	public boolean isResponsavelOGE() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		Usuario usuario = u.getUsuario();
+		
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : u.getUsuario().getResponsavels()) {
+				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+					return true;
+				}
+			}
+			return false;
+		} else return false;
+	}
+	
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

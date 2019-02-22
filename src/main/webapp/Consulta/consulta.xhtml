@@ -757,7 +757,7 @@
 						<!-- Botão Liberar Denuncia -->
 						<p:commandLink id="LiberaDenunciaAba"
 							onclick="PF('dlgConfirm').show();"
-							rendered="#{solicitacao.isResponsavelOGE() and solicitacao.solicitacao.tipo eq 'Denúncia'}"
+							rendered="#{usuario.isResponsavelOGE() and solicitacao.solicitacao.tipo eq 'Denúncia'}"
 							disabled="#{solicitacao.solicitacao.liberaDenuncia}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-eye fa-3x" style="margin-bottom: 5px" />

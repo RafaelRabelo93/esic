@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+			<h:form id="cad_competencias2" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 
 				<div class="ficha">
 
@@ -65,7 +65,7 @@
 
 				</div>
 
-					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%">
+					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%" rendered="false">
 							<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}">
 								<f:facet name="header">
 									Competências
@@ -94,7 +94,7 @@
 							</p:dataTable>
 						</h:panelGroup>
 
-					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%; margin-bottom: 2em">
+					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%; margin-bottom: 2em" rendered="false">
 						<h:outputText value="Salvar" />
 						<i class="fa fa-check" style="color: white; margin-left: 3px" />
 					</p:commandLink>

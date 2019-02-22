@@ -87,7 +87,7 @@
 						
 						<p:column headerText="Editar" width="15" style="text-align: center" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }" >
 							<p:commandLink class="botaoLinkIcon" update="dialog" onclick="PF('editDialog').show();"
-								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) and responsavel.permissaoDeAcessoEntidades(resp.entidades.idOrgaos, resp.entidades.idEntidades) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
+								disabled="#{!(responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) and responsavel.permissaoDeAcessoEntidades(resp.entidades.idOrgaos, resp.entidades.idEntidades) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE())}">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
 							</p:commandLink>
@@ -150,7 +150,7 @@
 								<p:outputLabel value="Órgão/Entidade:" for="orgao" rendered="true" />
 								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains" >
 									<f:selectItem itemLabel="#{responsavel.responsavel.entidades.sigla} - #{responsavel.responsavel.entidades.nome}" itemValue="#{responsavel.responsavel.entidades.idEntidades}"/>
-									<f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+									<f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 								</p:selectOneMenu>
 	
 								<p:outputLabel value="Nível: "  for="nivel"/>

@@ -384,7 +384,7 @@ public class ResponsavelBean implements Serializable{
 	 * @return
 	 */
 	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
-		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6) {
+		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6 || usuarioBean.isResponsavelOGE()) {
 			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>(EntidadesDAO.listAtivas());
 			return entidadesPossiveisDeCadastro;
 		}else {
@@ -402,7 +402,7 @@ public class ResponsavelBean implements Serializable{
 	public boolean possivelEditarResponsavelDasEntidades(int idOrgao){
 		boolean retorno = false;
 		for (Responsavel resp : listRespDaEntidade) {
-			if(resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) {
+			if((resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) || resp.getEntidades().getIdOrgaos() == 0) {
 				retorno =  true;
 				break;
 			}
@@ -498,6 +498,8 @@ public class ResponsavelBean implements Serializable{
 		}
 		return siglaRetorno;
 	}
+	
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {

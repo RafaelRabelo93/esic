@@ -263,7 +263,7 @@
 
 				<!-- ====== MENU RESPONSÁVEL ====== -->
 				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')) and !solicitacao.isResponsavelOGE()}" >
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')) and !usuario.isResponsavelOGE()}" >
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
@@ -304,7 +304,7 @@
 				
 				
 				<!-- ====== MENU ADMINISTRADOR ====== -->
-				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or solicitacao.isResponsavelOGE()}">
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(17)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					
@@ -507,7 +507,7 @@
 				<!-- ====== MENU GESTOR ====== -->
 				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
 				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')) and !solicitacao.isResponsavelOGE()}">
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')) and !usuario.isResponsavelOGE()}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					 
@@ -723,6 +723,18 @@
 					or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())
 					or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 
+					<!-- Consulta (Representante) -->
+					<h:panelGroup class="botao">
+						<h:commandLink styleClass="link"
+							action="#{solicitacao.consultarSolicitacao}">
+							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
+
+							<h:outputText styleClass="tituloMenu" value="Consulta" />
+							<p>Acompanhamento das manifestações</p>
+						</h:commandLink>
+					</h:panelGroup>
+					
 					<!-- Consulta órgão/entidade -->
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
@@ -747,7 +759,7 @@
 					</h:panelGroup>
 
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/house.png']}" width="150px" />
@@ -759,7 +771,7 @@
 					</h:panelGroup>
 					
 					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'  or usuario.isResponsavelOGE()}">
 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
 							<p:graphicImage styleClass="icone"
 								value="#{resource['img/icon/clipboard.png']}" width="150px" />
@@ -767,18 +779,6 @@
 							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
 							<p>Registrar usuário</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link"
-							action="#{solicitacao.consultarSolicitacao}">
-							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Consulta" />
-							<p>Acompanhamento das manifestações</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
