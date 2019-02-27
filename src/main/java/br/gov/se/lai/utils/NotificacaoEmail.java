@@ -571,7 +571,7 @@ public abstract class NotificacaoEmail implements Job{
 		msg.append("		</tr>");
 		msg.append("		<tr>");
 		msg.append("			<td style=\"padding: 20px; border: none; text-align: center; font-size: 12px; color: #757575;\">");
-		msg.append("				<p style=\"margin: 0\">Controladoria-Geral do Estado de Sergipe - 2018</p>");
+		msg.append("				<p style=\"margin: 0\">Ouvidoria Geral do Estado - 2018</p>");
 		msg.append("			</td>");
 		msg.append("		</tr>");
 		msg.append("	</table>");

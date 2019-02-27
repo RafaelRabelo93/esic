@@ -15,7 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 			
-			<h:form id="solicitacao" styleClass="cad_form" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4'}" >
+			<h:form id="solicitacao" styleClass="cad_form">
 
 				<div class="ficha">
 
@@ -30,22 +30,29 @@
 
 						<h:outputText value="Escolha o tipo de identificação da manifestação" style="color:#1a568c; font-size:30px; align-self: center; margin-bottom: 2vh" />
 
-						<h:panelGroup styleClass="column" style="max-width:780px;">
+						<h:panelGroup id="panel" styleClass="column" style="max-width:780px;">
 						
+								<p style="margin-bottom:0; text-align: left;">A Ouvidoria garante que os seus dados servirão para avaliar melhor as políticas públicas e propor melhorias voltadas para você ou para sua comunidade.</p>
 <!-- 								<p style="margin-bottom:0; text-align: left;">Denúncias sem a identificação do denunciante são consideradas anônimas, sendo aceitas somente após análise preliminar.</p> -->
-							<p style="text-align: left;">As falta de dados do usuário na manifestação anônima impossibilita uma resposta final e pode dificultar ou inviabilizar a conclusão desse processo.</p>
+<!-- 							<p style="text-align: left;">A falta de dados do usuário na manifestação anônima impossibilita uma resposta final e pode dificultar ou inviabilizar a conclusão desse processo.</p> -->
 							
-							<p style="margin-bottom:0;text-align: left">As manifestações sigilosas são aquelas em que os dados de identificação do manifestante são mantidos em sigilo.</p>
-							<p style="margin-bottom:0;text-align: left">Desta forma, sua demanda poderá ser analisada com mais eficiência, além de garantir uma resposta no final do processo.</p>
-							<p style="text-align: left;">Para melhor realização do processo, informe o máximo de dados possível em seu cadastro, identificando-se corretamente.</p>
+<!-- 							<p style="margin-bottom:0;text-align: left">As manifestações sigilosas são aquelas em que os dados de identificação do manifestante são mantidos em sigilo.</p> -->
+<!-- 							<p style="margin-bottom:0;text-align: left">Desta forma, sua demanda poderá ser analisada com mais eficiência, além de garantir uma resposta no final do processo.</p> -->
+<!-- 							<p style="text-align: left;">Para melhor realização do processo, informe o máximo de dados possível em seu cadastro, identificando-se corretamente.</p> -->
 					        
-					        <p:selectOneRadio id="sigilo" value="#{solicitacao.sigilo}">
-					            <f:selectItem itemLabel="Manifestação Identificada" itemValue="0" />
-					            <f:selectItem itemLabel="Manifestação Sigilosa" itemValue="1" />
-					            <f:selectItem itemLabel="Manifestação Anônima" itemValue="2" />
+					        <p:selectOneRadio id="sigilo" value="#{solicitacao.sigilo}" style="margin-top:1em">
+					        	<f:selectItem itemLabel="Manifestação Identificada" itemValue="0" />
+					       		<f:selectItem itemLabel="Manifestação Sigilosa" itemValue="1" />
+								<f:selectItem itemLabel="Manifestação Anônima" itemValue="2" />
+								<p:ajax update="panel panelTexto" event="change"/>
 					        </p:selectOneRadio>
 					        
-						    <p:commandLink class="botaoLink" action="questionario3">
+					        <h:panelGroup id="panelTexto" style="margin: 1em; padding: 1em; background: #dae3f6; color: #0081c2; border-radius: 3px;" rendered="#{solicitacao.sigilo ne '0'}">
+					        	<h:outputText rendered="#{solicitacao.sigilo eq '2'}" value="As manifestações registradas de maneira anônima são consideradas &quot;Comunicações&quot; e não é possível o seu acompanhamento. Caso deseje acompanhar o andamento da sua manifestação e receber uma resposta do órgão ou entidade, por favor identifique-se." />
+					        	<h:outputText rendered="#{solicitacao.sigilo eq '1'}" value="As manifestações sigilosas são aquelas em que as informações pessoais do manifestante são protegidas pelos órgãos e entidades públicas por força da Lei nº 12.527/11 (Lei de Acesso à Informação), restringindo o acesso a quaisquer dados relativos à intimidade, vida privada, honra e imagem, exceto nos casos em que é obrigada a divulgá-las por previsão em lei ou ordem judicial." />
+					        </h:panelGroup>
+					        
+						    <p:commandLink class="botaoLink" action="questionario3" style="margin-bottom: 1em">
 								<h:outputText value="Continuar" />
 								<i class="fa fa-arrow-right" style="margin-left: 5px" />
 							</p:commandLink>

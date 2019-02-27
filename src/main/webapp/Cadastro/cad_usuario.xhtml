@@ -52,6 +52,7 @@
 							promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
 								<f:validateLength minimum="6" maximum="64" />
 						</p:password>
+						<p style="font-size:.9em; color:gray;">Sua senha deve conter pelo menos 6 caracteres.</p>
 						<p:password id="senha3" match="senha4"
 							placeholder="Digite sua senha" required="true" value="#{usuario.usuarioNovo.senha}" maxlength="20" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
 										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">

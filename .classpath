@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="br/gov/se/lai/DAO/AttachmentDAO.java|br/gov/se/lai/entity/Attachment.java|br/gov/se/lai/Bean/AnexoBean.java|br/gov/se/lai/DAO/AnexoDAO.java|br/gov/se/lai/entity/Anexo.java|br/gov/se/lai/Bean/AttachmentBean.java" kind="src" output="target/classes" path="src/main/java">
+	<classpathentry excluding="br/gov/se/lai/DAO/AttachmentDAO.java|br/gov/se/lai/entity/Attachment.java|br/gov/se/lai/Bean/AnexoBean.java|br/gov/se/lai/DAO/AnexoDAO.java|br/gov/se/lai/entity/Anexo.java" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>

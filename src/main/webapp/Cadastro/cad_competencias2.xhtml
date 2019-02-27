@@ -56,43 +56,42 @@
 
 					</h:panelGroup>
 					
-						<p:commandLink styleClass="botaoLink" id="selecAcao" action="#{competencias.addLista}" update="cad_competencias2" 
+						<p:commandLink styleClass="botaoLink" id="selecAcao" action="#{competencias.addLista}" update="cad_competencias2:table" 
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('selecAcao').click();}" style="margin: 0;">
 							<h:outputLabel value="Adicionar"/>
 							<i class="fa fa-plus" style="margin-left: 5px"/>
 						</p:commandLink>
-					
 
 				</div>
 
-					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%" rendered="false">
-							<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}">
-								<f:facet name="header">
-									Competências
-								</f:facet>
-								<p:column headerText="Órgão/Entidade">
-									<h:outputText value="#{comp.entidades.nome}" />
-								</p:column>
-								<p:column headerText="Ações">
-										<h:outputLabel value="#{comp.acoes.titulo}" />
-								</p:column>
-								<p:column headerText="Descrição">
-									<p:inplace editor="true">
-										<p:inputTextarea value="#{comp.descricao}" maxlength="200">
-											<f:validateLength maximum="200"/>
-										</p:inputTextarea>
-									</p:inplace>
-								</p:column>
-								<p:column style="width:32px;text-align: center">
-									<p:commandLink  class="botaoLinkIcon" update="cad_competencias2"
-										action="#{competencias.listaCompetenciasUpdate}" title="View">
-										<i class=" fa fa-trash" />
-										<f:setPropertyActionListener value="#{comp}"
-											target="#{competencias.competencias}" />
-									</p:commandLink> 
-								</p:column>
-							</p:dataTable>
-						</h:panelGroup>
+					<h:panelGroup id="entidades_panel" style="margin-bottom:1vw; width: 80%">
+						<p:dataTable id="table" var="comp" emptyMessage="Nenhuma competência criada" value="#{competencias.listCompetencias}">
+							<f:facet name="header">
+								Competências
+							</f:facet>
+							<p:column headerText="Órgão/Entidade">
+								<h:outputText value="#{comp.entidades.nome}" />
+							</p:column>
+							<p:column headerText="Ações">
+									<h:outputLabel value="#{comp.acoes.titulo}" />
+							</p:column>
+							<p:column headerText="Descrição">
+								<p:inplace editor="true">
+									<p:inputTextarea value="#{comp.descricao}" maxlength="200">
+										<f:validateLength maximum="200"/>
+									</p:inputTextarea>
+								</p:inplace>
+							</p:column>
+							<p:column style="width:32px;text-align: center">
+								<p:commandLink  class="botaoLinkIcon" update="cad_competencias2"
+									action="#{competencias.listaCompetenciasUpdate}" title="View">
+									<i class=" fa fa-trash" />
+									<f:setPropertyActionListener value="#{comp}"
+										target="#{competencias.competencias}" />
+								</p:commandLink> 
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" action="#{competencias.save}" style="margin-right: 10%; margin-bottom: 2em" rendered="false">
 						<h:outputText value="Salvar" />
@@ -111,17 +110,22 @@
 								<f:validateLength maximum="80"/>
 							</p:inputText>
 
-							<p:outputLabel value="Descrição:" for="descr" />
-							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" autoResize="false" style="width:100%"	counterTemplate="{0} caracteres restantes."	value="#{acoes.acao.descricao}" >
-								<f:validateLength maximum="200"/>
-							</p:inputTextarea>
-							<h:outputText id="display" />
+<!-- 							<p:outputLabel value="Descrição:" for="descr" /> -->
+<!-- 							<p:inputTextarea id="descr" cols="100" rows="8" counter="display" maxlength="200" autoResize="false" style="width:100%"	counterTemplate="{0} caracteres restantes."	value="#{acoes.acao.descricao}" > -->
+<!-- 								<f:validateLength maximum="200"/> -->
+<!-- 							</p:inputTextarea> -->
+<!-- 							<h:outputText id="display" /> -->
 
 						</p:panelGrid>
 
-						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  oncomplete="PF('dlg2').hide();"
+						<p:commandLink class="botaoLink" actionListener="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" rendered="false" oncomplete="PF('dlg2').hide();"
 										update="cad_competencias2:acoes cad_competencias2:descricao cad_competencias2:entidades_panel dialog:dlg">
 							<h:outputText value="Salvar" />
+							<i class="fa fa-check" style="padding-left: 3px" />
+						</p:commandLink>
+						
+						<p:commandLink class="botaoLink" action="../index.xhtmls" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;">
+							<h:outputText value="Concluir" />
 							<i class="fa fa-check" style="padding-left: 3px" />
 						</p:commandLink>
 

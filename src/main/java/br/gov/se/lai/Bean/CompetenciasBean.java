@@ -33,7 +33,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private List<Entidades> entidades;
 	public static List<Entidades> listEntidades;
 	public List<Competencias> listCompetencias;
-	public  List<Competencias> listCompetencias2;
+	public List<Competencias> listCompetencias2;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	public static int idAcoes;
@@ -81,10 +81,11 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 * @return
 	 */
 	//Alterar, utilizar metodo com entidade vindo no parâmetro
-	public String consultarCompetencias() {
+	public void consultarCompetencias() {
 		listCompetencias2 = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
 		listCompetencias = listCompetencias2;
-		return "/Alterar/alterar_competencias.xhtml?faces-redirect=true" ;
+		System.out.println("Executei");
+//		return "/Alterar/alterar_competencias.xhtml?faces-redirect=true" ;
 	}
 
 	/**

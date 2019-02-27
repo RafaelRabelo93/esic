@@ -85,21 +85,21 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 *	Caso seja cidadão não salva a ação e joga aviso de usuário sem permissão.
 	 */
 	public void save() {
-		if(verificaPermissao() ) {
-			if(usuarioBean.verificaGestor()) {
-				acao.setStatus("Não-vinculada");
-				AcoesDAO.saveOrUpdate(acao);
-				getAcoesNaoVinculadas().add(acao);
-				getAcoes().add(acao);
-			}else if(usuarioBean.verificaResponsavel() || usuarioBean.verificaResponsavelCidadaoPerfil() ){
-				acao.setStatus("Pendente");
-				AcoesDAO.saveOrUpdate(acao);
-				getAcoesPendentes().add(acao);
-			}
-		}else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
+//		if(verificaPermissao() ) {
+		if(usuarioBean.getUsuario().getPerfil() == (short)6 || usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.isResponsavelOGE()) {
+			acao.setStatus("Não-vinculada");
+			AcoesDAO.saveOrUpdate(acao);
+			getAcoesNaoVinculadas().add(acao);
+			getAcoes().add(acao);
+		} else if(usuarioBean.getUsuario().getPerfil() == (short)4 || usuarioBean.getUsuario().getPerfil() == (short)2 ){
+			acao.setStatus("Pendente");
+			AcoesDAO.saveOrUpdate(acao);
+			getAcoesPendentes().add(acao);
 		}
+//		}else {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
+//		}
 		acao = new Acoes();
 	}
 	

@@ -15,9 +15,7 @@
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 				
-			<h:form id="solicitacao" styleClass="cad_form" prependId="false"
-				rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4' or solicitacao.solicitacao.tipo eq 'Denúncia'}"
-				enctype="multipart/form-data" onsubmit="return Validate(this);" >
+			<h:form id="solicitacao" styleClass="cad_form" prependId="false" enctype="multipart/form-data" onsubmit="return Validate(this);" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' or solicitacao.manifestacaoAnon eq true}" >
 
 
 				<div class="ficha">
@@ -30,10 +28,14 @@
 
 					<h:panelGroup styleClass="box" style="margin-top: 1em">
 						
-						<p>#{solicitacao.sigilo}</p>
-
+<!-- 						<p>#{solicitacao.sigilo}</p> -->
+						
 						<h:outputText value="Realizar #{solicitacao.solicitacao.tipo}" rendered="#{solicitacao.solicitacao.tipo ne 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						<h:outputText value="Realizar Pedido de Informação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						
+						<h:panelGroup id="panelTexto" style="margin: 1em; padding: 1em; background: #dae3f6; color: #0081c2; border-radius: 3px; max-width: 700px;" rendered="#{solicitacao.sigilo eq '2'}">
+							<h:outputText value="As manifestações registradas de maneira anônima são consideradas &quot;Comunicações&quot; e não é possível o seu acompanhamento. Caso deseje acompanhar o andamento da sua manifestação e receber uma resposta do órgão ou entidade, por favor identifique-se." />
+						</h:panelGroup>
 						
 						<p:outputLabel value="Órgão:" for="orgao"/>
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />
@@ -44,7 +46,7 @@
 						<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	/>
 						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.competencias.descricao}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
 
-						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' and !solicitacao.manifestacaoAnon}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />
 							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
@@ -229,7 +231,7 @@
 						
                         <p:fileUpload id="fileUpload" value="#{solicitacao.file}" mode="simple" skinSimple="true" label="Adicionar Anexo" style="margin-top: 1em" />
 
-<!-- 						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="15000000" skinSimple="true" -->
+<!-- 						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="1000000" skinSimple="true" -->
 <!-- 							allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
 <!-- 							fileLimit="1" style="margin-top: 1em" auto="false" -->
 <!-- 							invalidSizeMessage="Arquivo muito grande." invalidFileMessage="Formato não suportado."/> -->
@@ -326,7 +328,7 @@
 		            var sFileName = oInput.value;
 		            if (sFileName.length > 0) {
 		                var blnValid = false;
-						if (oFile.size &lt; 16 * (1024 * 1024)) {
+						if (oFile.size &lt; 15 * (1024 * 1024)) {
 
 			                for (var j = 0; j &lt; _validFileExtensions.length; j++) {
 			                    var sCurExtension = _validFileExtensions[j];
@@ -343,7 +345,7 @@
 			                
 						} 
 						else {
-							alert("Tamanho do arquivo excedeu o limite de 16 MB aceitos");
+							alert("Tamanho do arquivo excedeu o limite de 15 MB aceitos");
 		                    return false;
 						}
 		                

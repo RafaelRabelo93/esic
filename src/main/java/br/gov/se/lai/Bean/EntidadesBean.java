@@ -72,7 +72,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 					EntidadesDAO.saveOrUpdate(entidades);
 					serEntidadeOrgao(entidades);
 					entidades =  new Entidades();
-					return "cad_competencias2";
+					return "/Alterar/alterar_competencias.xhtml?faces-redirect=true";
 					
 				}else {
 					FacesContext.getCurrentInstance().addMessage(null,

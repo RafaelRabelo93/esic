@@ -942,16 +942,20 @@ public class UsuarioBean implements Serializable {
 	}
 	
 	public boolean verificaAdmin() {
-		return usuario.getPerfil()==(short)6;
+		if (usuario.getPerfil()==(short)6) return true;
+		else return false;
 	}
 	public boolean verificaGestor() {
-		return usuario.getPerfil()==(short)5;
+		if (usuario.getPerfil()==(short)5) return true;
+		else return false;
 	}
 	public boolean verificaResponsavelCidadaoPerfil() {
-		return usuario.getPerfil()==(short)4;
+		if (usuario.getPerfil()==(short)4) return true;
+		else return false;
 	}
 	public boolean verificaResponsavel() {
-		return usuario.getPerfil()==(short)2;
+		if (usuario.getPerfil()==(short)2) return true;
+		else return false;
 	}
 	
 	public String redirecionarIndex() {

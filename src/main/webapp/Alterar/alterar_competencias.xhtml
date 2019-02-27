@@ -11,7 +11,11 @@
 	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
-		
+			
+			<f:metadata>  
+			    <f:event type="preRenderView" listener="#{competencias.consultarCompetencias}"/>  
+			</f:metadata>
+			
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
             

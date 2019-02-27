@@ -1432,7 +1432,7 @@ i.fa.fa-home {
 /* 	margin-top: 20px; */
 }
 
-.btnDenuncia {
+.btnAnon {
 	list-style: none;
 	margin: 1vh 2vw;
 	
@@ -1460,13 +1460,15 @@ i.fa.fa-home {
  	-webkit-align-self: center; 
  	align-self: center;
 	
-	width: 400px;
+	width: 325px;
+	
+	padding: .5em;
 	
 /*	Estilo do botão */
 	border: 1px solid #c0c0c0;
     border-radius: 7px;
     background-size: 200% 100%;
-    background-image: linear-gradient(to right, white 50%, #9f0000 50%);
+    background-image: linear-gradient(to right, white 50%, #1b4882 50%);
     -webkit-transition: background-position 1s;
     -moz-transition: background-position 1s;
     transition: background-position 1s;
@@ -1481,37 +1483,45 @@ i.fa.fa-home {
   	text-align: left;
 }
 
-.btnDenuncia > .column {
+.btnAnon i {
+	color: #135186;
+}
+
+.btnAnon > .column {
     margin-left: 1.7em;
 }
 
-.btnDenuncia > img {
-    background-color: #9f0000;
+.btnAnon > img {
+    background-color: #135186;
     padding: 15px;
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
 
-.btnDenuncia:hover {
+.btnAnon:hover {
 	background-position: -100% 0;
 }
 
-.tituloDenuncia {
-    color: darkred;
+.btnAnon:hover i {
+	color: white;
+}
+
+.tituloAnon {
+    color: #135186;
     font-size: 35px;
     font-weight: bold;
     font-variant-caps: all-petite-caps;
 }
 
-.btnDenuncia:hover .tituloDenuncia{
+.btnAnon:hover .tituloAnon{
 	color: white !important;
 	-webkit-transition: color 1s;
 	-moz-transition: color 1s;
 	transition: color 1s;
 }
 
-.btnDenuncia:hover .subTitulo {
-	color: #eaacac!important;
+.btnAnon:hover .subTitulo {
+	color: #a4dff2 !important;
 	-webkit-transition: color 1s;
     -moz-transition: color 1s;
     transition: color 1s;

@@ -174,12 +174,10 @@
 								width="100" style="text-align:center" visible="#{solicitacao.list[7]}"
 								filterBy="#{slt.dataLimite}" filterMatchMode="exact"
 								filterable="false">
-								<h:outputText value="#{slt.dataLimite}"
-									rendered="#{slt.tipo eq 'Informação' or slt.tipo eq 'Solicitação' or slt.tipo eq 'Denúncia'}">
+								<h:outputText value="#{slt.dataLimite}"	rendered="#{slt.dataLimite ne null}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
-								<h:outputText value=" ----------- " style="color: #c0c0c0;"
-									rendered="#{slt.tipo eq 'Sugestão' or slt.tipo eq 'Elogio' or slt.tipo eq 'Reclamação'}" />
+								<h:outputText value=" ----------- " style="color: #c0c0c0;"	rendered="#{slt.dataLimite eq null}" />
 							</p:column>
 <!-- 							styleClass="prazo #{(slt.status eq 'Finalizada' or slt.tipo ne 'Informação' or slt.tipo ne 'Solicitação') ? 'branco' : (slt.prazoTipo eq 3 ? 'verde' : (slt.prazoTipo eq 2 ? 'amarelo' : (slt.prazoTipo eq 1 ? 'vermelho' : 'branco')))}" -->
 

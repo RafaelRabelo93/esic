@@ -11,6 +11,8 @@
 	<ui:composition>
 
 		<h:form class="form mainMenuPanel" id="mainMenu">
+		
+<!-- 			 <f:event type="preRenderView" listener="#{solicitacao.resetManifestacaoAnon()}"/> -->
 			
 			<h:panelGroup class="mainMenu">
 			
@@ -29,7 +31,7 @@
 			 </h:panelGroup>
 			
 
-			<p id="title" style="max-width: 700px;">Sistema Estadual de Ouvidorias</p>
+			<p id="title" style="max-width: 700px;">Sistema de Ouvidorias do Estado de Sergipe</p>
 			
 				<!-- ====== MENU CIDADÃO ====== -->
 					<!-- Consulta (Cidadão) -->
@@ -77,7 +79,7 @@
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/acessInfo.png']}" width="150px" />
-								<h:outputText styleClass="tituloMenu" value="Informação" />
+								<h:outputText styleClass="tituloMenu" value="Informação (e-SIC)" />
 								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
@@ -142,8 +144,7 @@
 						<h:commandLink id="btnElogio" styleClass="link card"
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/like.png']}" width="150px" />
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Elogio" />
 								<f:setPropertyActionListener value="Elogio"	target="#{solicitacao.tipo}" />
 							</div>
@@ -239,14 +240,16 @@
 	
 					</h:panelGroup>
 					
-					<!-- Denúncia Anônima -->
-					<h:commandLink styleClass="btnDenuncia inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
-						<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
-						<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone2.png']}" width="100px"/>
+					<!-- Manifestação Anônima -->
+					<h:commandLink styleClass="btnAnon inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
+						<f:setPropertyActionListener value="#{true}" target="#{solicitacao.manifestacaoAnon}" />
+						<f:setPropertyActionListener value="2" target="#{solicitacao.sigilo}" />
+<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone2.png']}" width="100px"/> -->
+						<i class="fa fa-user-secret fa-3x"/>
 						
 						<h:panelGroup styleClass="column">
-							<h:outputText styleClass="tituloDenuncia" value="Denúncia" style="color: darkred;font-size:35px; padding: 2% 0; color:"/>
-							<h:outputText styleClass="subTitulo" value="Realizar denúncia anônima" />
+							<h:outputText styleClass="tituloAnon" value="Manifestação Anônima" style="font-size:35px; padding: 2% 0; color:"/>
+<!-- 							<h:outputText styleClass="subTitulo" value="Realizar manifestação anônima" /> -->
 						</h:panelGroup>
 					</h:commandLink>
 				

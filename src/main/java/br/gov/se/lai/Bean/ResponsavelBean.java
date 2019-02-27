@@ -402,7 +402,7 @@ public class ResponsavelBean implements Serializable{
 	public boolean possivelEditarResponsavelDasEntidades(int idOrgao){
 		boolean retorno = false;
 		for (Responsavel resp : listRespDaEntidade) {
-			if((resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) || resp.getEntidades().getIdOrgaos() == 0) {
+			if((resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) || resp.getEntidades().getSigla().equals("OGE")) {
 				retorno =  true;
 				break;
 			}

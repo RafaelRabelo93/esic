@@ -112,6 +112,7 @@ public class SolicitacaoBean implements Serializable {
 	public static int solicitacaoFinalizadas;
 	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, true, false, false, true, true);
 	private String tipoMudar;
+	public boolean manifestacaoAnon;
 	
 	@PostConstruct
 	public void init() {
@@ -136,7 +137,7 @@ public class SolicitacaoBean implements Serializable {
 
 		String page = null;
 		gerarDataLimite();
-		gerarDataFim(); // caso seja Elogio/Sugestão
+//		gerarDataFim(); // caso seja Elogio/Sugestão
 //		if (solicitacao.getTipo().equals("Denúncia")) {
 //			settarCidadaoDenuncia(); // Caso específico para Denuncia
 //			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
@@ -167,7 +168,7 @@ public class SolicitacaoBean implements Serializable {
 		try {
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 
-			if (solicitacao.getTipo().equals("Solicitação")) {
+			if (solicitacao.getTipo().equals("Solicitação") && !isManifestacaoAnon()) {
 				dadosRecebimentoSolicitacao(solicitacao);
 			}
 			
@@ -222,6 +223,8 @@ public class SolicitacaoBean implements Serializable {
 
 		} finally {
 			solicitacao = new Solicitacao();
+			setManifestacaoAnon(false);
+			System.out.println("Setou");
 			finalizarSolicitacao();
 			return page;
 		}
@@ -248,6 +251,11 @@ public class SolicitacaoBean implements Serializable {
 		} catch (NullPointerException e) {
 		}
 
+	}
+	
+	public void resetManifestacaoAnon() {
+		setManifestacaoAnon(false);
+		System.out.println("Resetou");
 	}
 
 	/**
@@ -427,6 +435,7 @@ public class SolicitacaoBean implements Serializable {
 		solicitacao.setTipo(this.tipo);
 		if (!estaUsuarioLogado()) {
 //			System.out.println("Modo anônimo ativado");
+//			setManifestacaoAnon(true);
 			solicitacao.setSigilo((short) 2);
 //			setModoAnonimo(true);
 //			setModoSigilo(false);
@@ -434,7 +443,11 @@ public class SolicitacaoBean implements Serializable {
 		}
 		CompetenciasBean competencias = new CompetenciasBean();
 		competencias.listCompetencias = new ArrayList<Competencias>();
-		return "Solicitacao/questionario2.xhtml?faces-redirect=true";
+		if (isManifestacaoAnon()) {
+			return "Solicitacao/questionario1.xhtml?faces-redirect=true";
+		} else {
+			return "Solicitacao/questionario2.xhtml?faces-redirect=true";
+		}
 	}
 
 //	/**
@@ -1781,6 +1794,14 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setSigilo(short sigilo) {
 		this.sigilo = sigilo;
+	}
+
+	public boolean isManifestacaoAnon() {
+		return manifestacaoAnon;
+	}
+
+	public void setManifestacaoAnon(boolean manifestacaoAnon) {
+		this.manifestacaoAnon = manifestacaoAnon;
 	}
 
 }
