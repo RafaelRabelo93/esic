@@ -526,26 +526,21 @@ public class SolicitacaoBean implements Serializable {
 	 * 
 	 */
 	public String consultarSolicitacao() {
-//		if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("OGE").get(0).getIdEntidades())) {
-//			this.filteredSolicitacoes = SolicitacaoDAO.list();
-//		} else {
-//			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
-//		}
+		if (getIdEntidades() == 0) {
+			this.filteredSolicitacoes = SolicitacaoDAO.list();
+		} else {
+			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+		}
 
-		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
-			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("OGE").get(0).getIdEntidades()) && resp.isAtivo()) {
+//		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+//			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("OGE").get(0).getIdEntidades()) && resp.getNivel() >= 2) {
 //				ArrayList<Solicitacao> listDenuncia = new ArrayList<>(SolicitacaoDAO.listPorTipo("Denúncia"));
 //				this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorTipo("Denúncia")));
-				this.filteredSolicitacoes = SolicitacaoDAO.list();
-				return "/Consulta/consulta";
-			}
-		}
-//		
-		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+//			}
+//		}
 
 		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
-//			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
-			this.filteredSolicitacoes = SolicitacaoDAO.list();
+			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
 		}
 
 		return "/Consulta/consulta";

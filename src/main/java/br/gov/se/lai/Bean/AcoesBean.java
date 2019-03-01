@@ -91,7 +91,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			AcoesDAO.saveOrUpdate(acao);
 			getAcoesNaoVinculadas().add(acao);
 			getAcoes().add(acao);
-			getAcoesCadastradas().add(acao);
 		} else if(usuarioBean.getUsuario().getPerfil() == (short)4 || usuarioBean.getUsuario().getPerfil() == (short)2 ){
 			acao.setStatus("Pendente");
 			AcoesDAO.saveOrUpdate(acao);
