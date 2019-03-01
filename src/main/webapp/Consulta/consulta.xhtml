@@ -393,8 +393,8 @@
 
 								</p:dataScroller>
 							</p:tab>
-							<p:tab title="Histórico da Solicitação"
-								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia'}">
+							<p:tab title="Histórico da Solicitação">
+<!-- 								rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia'}"> -->
 								<p:dataScroller value="#{mensagem.mensagensHistorico}" var="msg"
 									chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
@@ -426,7 +426,7 @@
 
 							</p:tab>
 							<p:tab title="Trâmite Interno"
-								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)  and (solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia')}">
+								rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}">
 								<p:dataScroller value="#{mensagem.mensagensTramites}" var="msg"	chunkSize="2" rows="2" style="margin-bottom:1vw;">
 
 									<f:facet name="loader">
