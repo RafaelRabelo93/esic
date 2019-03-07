@@ -39,6 +39,8 @@ import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
+import com.mchange.v1.util.ListUtils;
+
 import br.gov.se.lai.DAO.AcoesDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
@@ -531,7 +533,9 @@ public class SolicitacaoBean implements Serializable {
 //		} else {
 //			this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 //		}
-
+		
+		this.filteredSolicitacoes = new ArrayList<Solicitacao>();
+		
 		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
 			if (resp.getEntidades().getIdEntidades().equals(EntidadesDAO.FindSigla("OGE").get(0).getIdEntidades()) && resp.isAtivo()) {
 //				ArrayList<Solicitacao> listDenuncia = new ArrayList<>(SolicitacaoDAO.listPorTipo("Denúncia"));
@@ -541,7 +545,20 @@ public class SolicitacaoBean implements Serializable {
 			}
 		}
 //		
-		this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
+		List<Solicitacao> tempList = new ArrayList<Solicitacao>();
+		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+			
+			if (resp.isAtivo()) {
+				if (tempList.isEmpty()) {
+					tempList = SolicitacaoDAO.listarPorEntidade(resp.getEntidades().getIdEntidades());
+				}
+				else {
+					tempList.addAll(SolicitacaoDAO.listarPorEntidade(resp.getEntidades().getIdEntidades()));
+				}
+			}
+			
+		}
+		this.filteredSolicitacoes = tempList;
 
 		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
 //			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));

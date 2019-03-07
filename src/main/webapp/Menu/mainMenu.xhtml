@@ -265,8 +265,8 @@
 
 
 				<!-- ====== MENU RESPONSÁVEL ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel ne '3')) and !usuario.isResponsavelOGE()}" >
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}" >
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
@@ -296,7 +296,7 @@
 					</h:panelGroup>
 					
 					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
-						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+<!-- 						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" /> -->
 						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
 						<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
 					</h:commandLink>
@@ -509,8 +509,8 @@
 				
 				<!-- ====== MENU GESTOR ====== -->
 				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
-				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')) and !usuario.isResponsavelOGE()}">
+				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.gestorAtivo())
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					 
