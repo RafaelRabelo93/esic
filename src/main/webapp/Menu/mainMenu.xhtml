@@ -11,47 +11,80 @@
 	<ui:composition>
 
 		<h:form class="form mainMenuPanel" id="mainMenu">
+		
+<!-- 			 <f:event type="preRenderView" listener="#{solicitacao.resetManifestacaoAnon()}"/> -->
 			
 			<h:panelGroup class="mainMenu">
+			
+			<h:panelGroup rendered="#{usuario.acessoMigrado}" styleClass="box column" 
+			style="-webkit-box-align: center!important;-ms-flex-align: center!important;align-items: center!important; width:75%; background-color: #30659e; border-radius:10px;
+			background: linear-gradient(to bottom right, #135186, #276eb3);"> 
+			
+				<h1 style="color:#a6d0f6!important"> Bem vindo ao SE-Ouv!</h1>
+				<p style="color:white!important">Lembre-se de alterar sua senha para continuar usando o sistema de forma segura</p>
 				
-			<p id="title" style="max-width: 700px;">Sistema de Informação ao Cidadão</p>
+				<p:commandLink styleClass="botaoLink" action="Alterar/alterar_senha" update="@all" type="button" style="background: white; -ms-flex-item-align: center;-ms-grid-row-align: center;align-self: center;" >
+					<h:outputText value="Alterar Senha" style="color:#1a568c !important"/>
+					<i class="fa fa-key" style="color: #1a568c; padding-left: 5px" />
+				</p:commandLink>
+			
+			 </h:panelGroup>
+			
+
+			<p id="title" style="max-width: 700px;">Sistema de Ouvidorias do Estado de Sergipe</p>
+			
 				<!-- ====== MENU CIDADÃO ====== -->
-				<h:panelGroup class="menuBtn"
-					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
-					<h:panelGroup class="container">
-						<h:commandLink id="btnDenuncia" styleClass="link card"
-							action="#{solicitacao.Denuncia()}">
-							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/megaphone.png']}" width="60%" />
-								<h:outputText styleClass="tituloMenu" value="Denúncia" />
-								<p>Realizar denúncia</p>
-								<f:setPropertyActionListener value="Denúncia"
-									target="#{solicitacao.tipo}" />
-							</div>
-
-							<div class="face back">
-								<p>Comunicação de prática de ato ilícito cuja solução
-									dependa da atuação de órgãos de controle interno ou externo</p>
-							</div>
-						</h:commandLink>
+					<!-- Consulta (Cidadão) -->
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+					<h:panelGroup styleClass="dashboard inline">
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Total" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Atendidas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Sem Resposta" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramiteDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Em Trâmite" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasDoCidadao()}" />
+							<p:separator />
+							<h:outputText value="Não Visualizadas" />
+						</h:panelGroup>
 					</h:panelGroup>
-
+					
+					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.verificaCidadaoConsulta}">
+						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
+						<p style="margin: 0; margin-left: .5em">Acompanhar manifestações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- Nova solicitação -->
+				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+					
 					<h:panelGroup class="container">
 						<h:commandLink id="btnInfo" styleClass="link card"
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/info.png']}" width="60%" />
-								<h:outputText styleClass="tituloMenu" value="Informação" />
-								<p>Realizar pedido de informação</p>
-								<f:setPropertyActionListener value="Informação"
-									target="#{solicitacao.tipo}" />
+									value="#{resource['img/icon/acessInfo.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Informação (e-SIC)" />
+								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
-								<p>Fornece orientação ou esclarecimento sobre assuntos
-									relacionados à administração pública estadual</p>
+								<p>Pedido de informação ou documentos com base na Lei de Acesso à Informação (Lei nº 12.527/2011)</p>
 							</div>
 						</h:commandLink>
 					</h:panelGroup>
@@ -61,11 +94,9 @@
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/chat.png']}" width="60%" />
+									value="#{resource['img/icon/chat.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
-								<p>Realizar solicitação</p>
-								<f:setPropertyActionListener value="Solicitação"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -76,34 +107,13 @@
 					</h:panelGroup>
 
 					<h:panelGroup class="container">
-						<h:commandLink id="btnElogio" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
-							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/like.png']}" width="60%" />
-								<h:outputText styleClass="tituloMenu" value="Elogio" />
-								<p>Realizar elogio</p>
-								<f:setPropertyActionListener value="Elogio"
-									target="#{solicitacao.tipo}" />
-							</div>
-
-							<div class="face back">
-								<p>Demonstração, reconhecimento ou satisfação sobre o
-									serviço oferecido ou atendimento recebido</p>
-							</div>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<h:panelGroup class="container">
 						<h:commandLink id="btnSugestao" styleClass="link card"
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/sugestion.png']}" width="60%" />
+									value="#{resource['img/icon/sugestion.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
-								<p>Realizar sugestão</p>
-								<f:setPropertyActionListener value="Sugestão"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -119,11 +129,9 @@
 							action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/dislike.png']}" width="60%" />
+									value="#{resource['img/icon/dislike.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
-								<p>Realizar reclamação</p>
-								<f:setPropertyActionListener value="Reclamação"
-									target="#{solicitacao.tipo}" />
+								<f:setPropertyActionListener value="Reclamação"	target="#{solicitacao.tipo}" />
 							</div>
 
 							<div class="face back">
@@ -132,148 +140,609 @@
 						</h:commandLink>
 					</h:panelGroup>
 
+					<h:panelGroup class="container">
+						<h:commandLink id="btnElogio" styleClass="link card"
+							action="#{solicitacao.iniciarSolicitacao()}">
+							<div class="face front link">
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Elogio" />
+								<f:setPropertyActionListener value="Elogio"	target="#{solicitacao.tipo}" />
+							</div>
+
+							<div class="face back">
+								<p>Demonstração, reconhecimento ou satisfação sobre o
+									serviço oferecido ou atendimento recebido</p>
+							</div>
+						</h:commandLink>
+					</h:panelGroup>
+					
+					<h:panelGroup class="container">
+						<h:commandLink id="btnDenuncia" styleClass="link card"
+							action="#{solicitacao.iniciarSolicitacao()}">
+							<div class="face front link">
+								<p:graphicImage styleClass="icone"
+									value="#{resource['img/icon/megaphone.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Denúncia" />
+								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.tipo}" />
+							</div>
+
+							<div class="face back">
+								<p>Comunicação de prática de ato ilícito cuja solução
+									dependa da atuação de órgãos de controle interno ou externo</p>
+							</div>
+						</h:commandLink>
+					</h:panelGroup>
+
 				</h:panelGroup>
 
-				<!-- Consulta (Cidadão) -->
-				<h:commandLink styleClass="btnConsulta inline"
-					action="#{solicitacao.verificaCidadaoConsulta}"
-					rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+
+				<!-- ====== MENU LOGOFF ====== -->
+				<h:panelGroup  class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+
+					<!-- LAI -->
+<!-- 					<h:panelGroup class="botao"> -->
+<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
+<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
+<!-- 								width="150px" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
+<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado	de Sergipe</p> -->
+<!-- 						</a> -->
+<!-- 					</h:panelGroup> -->
+
+					<!-- Cadastro de usuário -->
+							<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
+								<h:commandLink action="/Cadastro/cad_usuario">
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/clipboard.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Cadastro" />
+		
+									<p>Registrar usuário para realizar manifestações.</p>
+								</h:commandLink>
+							</h:panelGroup>
+		
+							<!-- Continuar Cadastro Cidadão -->
+							<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
+								<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/contract.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Primeiro Acesso" />
+		
+									<p>Continuar cadastro como cidadão para realizar manifestações.</p>
+								</h:commandLink>
+							</h:panelGroup>
+		
+							<!-- Continuar Cadastro Responsável -->
+							<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
+							<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
+							<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="150px" /> -->
+		
+							<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
+		
+							<!-- 						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p> -->
+							<!-- 					</h:commandLink> -->
+							<!-- 				</h:panelGroup> -->
+		
+							<!-- Manifestação -->
+							<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+								<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
+		
+									<p:graphicImage styleClass="icone"
+										value="#{resource['img/icon/hand.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Manifestação" />
+		
+									<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
+		
+								</h:commandLink>
+							</h:panelGroup>
+							
+	
+					</h:panelGroup>
+					
+					<!-- Manifestação Anônima -->
+					<h:commandLink styleClass="btnAnon inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
+						<f:setPropertyActionListener value="#{true}" target="#{solicitacao.manifestacaoAnon}" />
+						<f:setPropertyActionListener value="2" target="#{solicitacao.sigilo}" />
+<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone2.png']}" width="100px"/> -->
+						<i class="fa fa-user-secret fa-3x"/>
+						
+						<h:panelGroup styleClass="column">
+							<h:outputText styleClass="tituloAnon" value="Manifestação Anônima" style="font-size:35px; padding: 2% 0; color:"/>
+<!-- 							<h:outputText styleClass="subTitulo" value="Realizar manifestação anônima" /> -->
+						</h:panelGroup>
+					</h:commandLink>
+				
+<!-- 				====== MENU LOGOFF ====== -->
+<!-- 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}"> -->
+<!-- 					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/> -->
+<!-- 				</h:panelGroup> -->
+<!-- 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}"> -->
+
+<!-- 					<h:outputText value="Sistema em construção" styleClass="tituloBox" style="margin: 0 0 0 15px"/> -->
+					
+<!-- 				</h:panelGroup> -->
+
+
+				<!-- ====== MENU RESPONSÁVEL ====== -->
+				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}" >
+					<h:panelGroup styleClass="dashboard inline">
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Total" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasPorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Atendidas" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaPorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Sem Resposta" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramitePorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Em Trâmite" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="panel column">
+							<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasPorResponsavel()}" />
+							<p:separator />
+							<h:outputText value="Não Visualizadas" />
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
+<!-- 						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" /> -->
+						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
+						<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+<!-- 				(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3') -->
+<!-- 				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')  -->
+				
+				
+				<!-- ====== MENU ADMINISTRADOR ====== -->
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
+				
+					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(17)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
+					
+					<h:panelGroup id="dashboardPanel" styleClass="inline">
+					
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em">
+							<h:panelGroup styleClass="dashboardSmallPannel inline">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #1295db">
+										<i class="fa fa-info" />
+										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Informação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Informação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Informação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Informação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Informação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #f0ce14;">
+										<i class="fa fa-comments" />
+										<p style="margin: 0; margin-left: .5em">Sugestões</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Sugestão')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #2b9c1f;">
+										<i class="fa fa-hand-o-up" />
+										<p style="margin: 0; margin-left: .5em">Solicitações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Solicitação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Solicitação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Solicitação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Solicitação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Solicitação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+								
+							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e69914;">
+										<i class="fa fa-thumbs-o-down" />
+										<p style="margin: 0; margin-left: .5em">Reclamações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Reclamação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Reclamação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Reclamação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Reclamação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Reclamação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e0299d;">
+										<i class="fa fa-thumbs-o-up" />
+										<p style="margin: 0; margin-left: .5em">Elogios</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Elogio')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+									
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #dd1717;">
+										<i class="fa fa-exclamation-circle" />
+										<p style="margin: 0; margin-left: .5em">Denúncias</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorTipo('Denúncia')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorTipo('Denúncia')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorTipo('Denúncia')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorTipo('Denúncia')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorTipo('Denúncia')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+						</h:panelGroup>
+							
+					</h:panelGroup>
+				
+				</h:panelGroup>
+				
+				<!-- ====== MENU GESTOR ====== -->
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
+				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.gestorAtivo())
+						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}">
+				
+					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
+					 
+					<h:panelGroup id="dashboardPanel2" styleClass="inline">
+					
+						<h:panelGroup styleClass="dashboardSmallPannel column" style="padding: 1em">
+							<h:panelGroup styleClass="dashboardSmallPannel inline">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #1295db">
+										<i class="fa fa-info" />
+										<p style="margin: 0; margin-left: .5em">Pedidos de Informação</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Informação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Informação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Informação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Informação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Informação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #f0ce14;">
+										<i class="fa fa-comments" />
+										<p style="margin: 0; margin-left: .5em">Sugestões</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Sugestão')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #2b9c1f;">
+										<i class="fa fa-hand-o-up" />
+										<p style="margin: 0; margin-left: .5em">Solicitações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Solicitação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Solicitação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Solicitação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Solicitação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Solicitação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+								
+							<h:panelGroup styleClass="dashboardSmallPannel inline" style="margin-top: 1.5em;">
+							
+								<h:panelGroup styleClass="menuDashboardSmall column"  style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e69914;">
+										<i class="fa fa-thumbs-o-down" />
+										<p style="margin: 0; margin-left: .5em">Reclamações</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Reclamação')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Reclamação')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Reclamação')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Reclamação')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Reclamação')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="menuDashboardSmall column" style="margin-right:1em">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #e0299d;">
+										<i class="fa fa-thumbs-o-up" />
+										<p style="margin: 0; margin-left: .5em">Elogios</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Elogio')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+									
+								<h:panelGroup styleClass="menuDashboardSmall column">
+									<h:panelGroup styleClass="dashBoardHeader inline" style="background: #dd1717;">
+										<i class="fa fa-exclamation-circle" />
+										<p style="margin: 0; margin-left: .5em">Denúncias</p>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="dashboardSmall inline">
+										<h:panelGroup styleClass="panel column" style="margin-right: 1em">
+											<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorEntidade('Denúncia')}" />
+											<p:separator />
+											<h:outputText value="Total" />
+										</h:panelGroup>
+										<h:panelGroup styleClass="panel column" style="margin-right:1em">
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarAtendidasPorEntidade('Denúncia')}" />
+												<h:outputText value="Atendidas" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarSemRespostaPorEntidade('Denúncia')}" />
+												<h:outputText value="Sem Resposta" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarEmTramitePorEntidade('Denúncia')}" />
+												<h:outputText value="Em Trâmite" style="margin-left: .5em" />
+											</h:panelGroup>
+											<p:separator />
+											<h:panelGroup styleClass="panel inline">
+												<h:outputText value="#{solicitacao.contarNaoVisualizadasPorEntidade('Denúncia')}" />
+												<h:outputText value="Não Visualizadas" style="margin-left: .5em" />
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+						</h:panelGroup>
+							
+					</h:panelGroup>
+				
+				</h:panelGroup>
+				
+				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.consultarSolicitacao}" rendered="false">
 					<p:graphicImage styleClass="icone"
 						value="#{resource['img/icon/search.png']}" width="100px" />
 
 					<h:panelGroup styleClass="column">
 						<h:outputText styleClass="titulo" value="Consulta" />
 						<h:outputText styleClass="subTitulo"
-							value="Acompanhar andamento da manifestação realizada" />
+							value="Acompanhar andamento das manifestações" />
 					</h:panelGroup>
 				</h:commandLink>
-
-
-				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '1'}">
-
-					<!-- LAI -->
-<!-- 					<h:panelGroup class="botao"> -->
-<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
-<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
-<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
-<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado	de Sergipe</p> -->
-<!-- 						</a> -->
-<!-- 					</h:panelGroup> -->
-
-					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao"
-						rendered="#{usuario.usuario.perfil eq '0'}">
-						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="70%" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro" />
-
-							<p>Registrar usuário</p>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<!-- Continuar Cadastro Cidadão -->
-					<h:panelGroup class="botao" layout="block"
-						rendered="#{usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/contract.png']}" width="70%" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro Cidadão" />
-
-							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<!-- Continuar Cadastro Responsável -->
-					<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
-					<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
-					<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="70%" /> -->
-
-					<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
-
-					<!-- 						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p> -->
-					<!-- 					</h:commandLink> -->
-					<!-- 				</h:panelGroup> -->
-
-					<!-- Manifestação -->
-					<h:panelGroup class="botao"
-						rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-						<h:commandLink styleClass="link"
-							action="#{solicitacao.verificaCidadaoSolicitacao}">
-
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/hand.png']}" width="70%" />
-
-							<h:outputText styleClass="tituloMenu" value="Manifestação" />
-
-							<p>Realizar pedido de informação, solicitação, denuncia, elogio, sugestão ou reclamação a orgãos do governo do Estado de Sergipe</p>
-
-						</h:commandLink>
-					</h:panelGroup>
-
-				</h:panelGroup>
 				
-				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}">
-					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/>
-				</h:panelGroup>
-				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}">
-
-					<h:outputText value="Sistema em construção" styleClass="tituloBox" style="margin: 0 0 0 15px"/>
-					
-				</h:panelGroup>
-
-
-				<!-- ====== MENU REPRESENTANTE ====== -->
 				<h:panelGroup class="menuBtn"
-					rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and usuario.responsavel.ativo) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-
-					<!-- LAI -->
-<!-- 					<h:panelGroup class="botao"> -->
-<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
-<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
-<!-- 								width="70%" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
-<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado -->
-<!-- 								de Sergipe</p> -->
-<!-- 						</a> -->
-<!-- 					</h:panelGroup> -->
-
-<!-- 					Cadastro de usuário -->
-<!-- 					<h:panelGroup class="botao" -->
-<!-- 						rendered="#{(usuario.usuario.perfil eq '2' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"> -->
-<!-- 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario"> -->
-<!-- 							<p:graphicImage styleClass="icone" -->
-<!-- 								value="#{resource['img/icon/clipboard.png']}" width="70%" /> -->
-
-<!-- 							<h:outputText styleClass="tituloMenu" value="Cadastro" /> -->
-
-<!-- 							<p>Registrar usuário</p> -->
-<!-- 						</h:commandLink> -->
-<!-- 					</h:panelGroup> -->
-
+				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
+					or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())
+					or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
 
 					<!-- Consulta (Representante) -->
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link"
 							action="#{solicitacao.consultarSolicitacao}">
-							<f:setPropertyActionListener value="0"
-								target="#{solicitacao.idEntidades}" />
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/monitor.png']}" width="70%" />
+							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
 
-							<h:outputText styleClass="tituloMenu" value="Solicitações" />
-							<p>Acompanhamento de solicitações</p>
+							<h:outputText styleClass="tituloMenu" value="Consulta" />
+							<p>Acompanhamento das manifestações</p>
 						</h:commandLink>
 					</h:panelGroup>
-
+					
 					<!-- Consulta órgão/entidade -->
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/office.png']}" width="70%" />
+								value="#{resource['img/icon/office.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Entidades" />
 							<p>Gerir entidades ou ógrãos</p>
@@ -284,7 +753,7 @@
 					<h:panelGroup class="botao">
 						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/businessman.png']}" width="70%" />
+								value="#{resource['img/icon/businessman.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Responsáveis" />
 
@@ -293,51 +762,77 @@
 					</h:panelGroup>
 
 					<!-- Gerir de ação -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/exchange.png']}" width="70%" />
+								value="#{resource['img/icon/house.png']}" width="150px" />
 
-							<h:outputText styleClass="tituloMenu" value="Ações" />
+							<h:outputText styleClass="tituloMenu" value="Funções do Estado" />
 
-							<p>Gerir ações</p>
+							<p>Gerir lista de funções desempenhadas pelo estado</p>
 						</h:commandLink>
 					</h:panelGroup>
 					
 					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'  or usuario.isResponsavelOGE()}">
 						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="70%" />
+								value="#{resource['img/icon/clipboard.png']}" width="150px" />
 
 							<h:outputText styleClass="tituloMenu" value="Cadastro" />
 
 							<p>Registrar usuário</p>
 						</h:commandLink>
 					</h:panelGroup>
-
+					
 				</h:panelGroup>
-
+				
+				
 		    </h:panelGroup>
 			
 			<h:panelGroup styleClass="legendaPanel">
 			
-				 <button id="showBtn" onclick="$('#legenda').toggle()" class="legendaButton" type="button">
+				<h:commandLink id="showBtn" disabled="true" class="legendaButton">
 			    	<i class="fa fa-question fa-2x" />
-			    </button>
+			    </h:commandLink>
 			    
-			    <div id="legenda" class="legendaBox" style="display: none;">
+			    <p:tooltip id="toolTipContent" styleClass="legendaTooltip" for="showBtn" position="bottom">
 			    	<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao Cidadão) permite que qualquer pessoa, física ou jurídica,
 			    	encaminhe pedidos de acesso a informação pública para os órgãos e entidades do Poder Executivo Estadual.</p>
 		
 					<p>Por meio do sistema, além de fazer o pedido, é possível acompanhar o prazo e receber a resposta da solicitação por e-mail; entrar com recursos e consultar as respostas recebidas.</p>
 					
 					<p>Antes de solicitar uma informação, leia o Manual do Usuário e conheça os procedimentos que devem ser adotados para fazer sua solicitação.</p>
-			    </div>
+			    </p:tooltip>
 		    
 		    </h:panelGroup>
 
 		</h:form>
+		
+		<!-- JAVASCRIPT -->
+		<script>
+			function bigPieExt() {
+				this.cfg.grid = {             
+					background: 'transparent',
+					gridLineColor: '#303030',
+					drawBorder: false,
+					shadow: false
+				};
+				this.cfg.legend= {
+		        	show: false,
+			    };
+				this.cfg.seriesDefaults = {
+			        renderer: $.jqplot.PieRenderer,
+			        shadow: false,
+			        lineWidth: 1,
+			        markerOptions: {
+			            shadow: false,
+			            size: 7,
+			            style: 'circle'
+			        }
+			    }
+			}
+		</script>
 		
 	</ui:composition>
 

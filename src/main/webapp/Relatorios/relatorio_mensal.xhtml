@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/templateSemMenu.xhtml">
+
+		<ui:define name="content">
+		
+			
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form id="form" style="padding: 1.5vw 15vw">
+
+				<h:panelGroup styleClass="column">
+
+					<h1 style="margin-bottom: 0;">Relatórios Estatísticos - #{relatorios.mesAtual} de #{relatorios.anoAtual}</h1>
+
+					<p:separator styleClass="separator"/>
+										
+					<h:panelGroup styleClass="inline" >
+					    <h:commandLink onclick="exportAllCharts()" rendered="#{relatorios.idEntidade eq '0'}" actionListener="#{chartExport.gerarRelatorio(1)}" styleClass="botaoLink" style="margin-bottom: 3em">
+					    	<h:inputHidden id="ch1" value="#{chartExport.chartGeral}" />
+					    	<h:inputHidden id="ch2" value="#{chartExport.chartMensal}" />
+					    	<h:inputHidden id="ch3" value="#{chartExport.chartAnual}" />
+					    	<h:inputHidden id="ch4" value="#{chartExport.chartAnualAcu}" />
+					    	<h:inputHidden id="ch5" value="#{chartExport.chartOrgao}" />
+					    	<h:inputHidden id="ch6" value="#{chartExport.chartEntidade}" />
+					    	<h:inputHidden id="ch7" value="#{chartExport.chartAssunto}" />
+					    	<h:inputHidden id="ch8" value="#{chartExport.chartPessoa}" />
+					    	<h:inputHidden id="ch9" value="#{chartExport.chartEstado}" />
+					    	<p:fileDownload value="#{chartExport.file}" />
+					    	<h:outputText value="Gerar Relatório Estatístico" />
+					        <i class="fa fa-file-pdf-o" style="margin-left: .5em"/>
+					    </h:commandLink>
+					    
+					    <h:commandLink onclick="exportAllCharts2()" rendered="#{relatorios.idEntidade ne '0'}" actionListener="#{chartExport.gerarRelatorio(2)}" styleClass="botaoLink" style="margin-bottom: 3em">
+					    	<h:inputHidden id="ch10" value="#{chartExport.chartGeral}" />
+					    	<h:inputHidden id="ch11" value="#{chartExport.chartMensal}" />
+					    	<h:inputHidden id="ch12" value="#{chartExport.chartAnual}" />
+					    	<h:inputHidden id="ch13" value="#{chartExport.chartAnualAcu}" />
+					    	<h:inputHidden id="ch14" value="#{chartExport.chartAssunto}" />
+					    	<h:inputHidden id="ch15" value="#{chartExport.chartPessoa}" />
+					    	<h:inputHidden id="ch16" value="#{chartExport.chartEstado}" />
+					    	<p:fileDownload value="#{chartExport.file}" />
+					    	<h:outputText value="Gerar Relatório Estatístico" />
+					        <i class="fa fa-file-pdf-o" style="margin-left: .5em"/>
+					    </h:commandLink>
+				    </h:panelGroup>
+					
+					<p:outputLabel value="Órgão / Entidade: " for="orgao" rendered="true"  /> 
+					<p:selectOneMenu id="orgao" value="#{relatorios.idEntidade}" required="true" filter="true" filterMatchMode="contains" style="margin-bottom: 2em">
+						 <f:selectItem itemLabel="Todos" itemValue="0" />
+						 <f:selectItems value="#{entidades.todasEntidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Data: " rendered="true"  /> 
+				    <h:panelGroup styleClass="inline">
+				    
+						<p:selectOneMenu id="anoFinal" value="#{relatorios.anoFinal}" required="true" style="margin: 0 .5em 0 0; width: 70px" >
+							<f:selectItems value="#{relatorios.anos}" var="ano" itemLabel="#{ano}" itemValue="#{ano}"/>
+						</p:selectOneMenu>
+						
+						<p:selectOneMenu id="mesFinal" value="#{relatorios.mesFinal}" required="true" style="margin: 0 1em 0 .5em; width: 100px">
+							<f:selectItem itemLabel="Janeiro" itemValue="1"/>
+						 	<f:selectItem itemLabel="Fevereiro" itemValue="2"/>
+							<f:selectItem itemLabel="Março" itemValue="3"/>
+							<f:selectItem itemLabel="Abril" itemValue="4"/>
+							<f:selectItem itemLabel="Maio" itemValue="5"/>
+							<f:selectItem itemLabel="Junho" itemValue="6"/>
+							<f:selectItem itemLabel="Julho" itemValue="7"/>
+							<f:selectItem itemLabel="Agosto" itemValue="8"/>
+							<f:selectItem itemLabel="Setembro" itemValue="9"/>
+							<f:selectItem itemLabel="Outubro" itemValue="10"/>
+							<f:selectItem itemLabel="Novembro" itemValue="11"/>
+							<f:selectItem itemLabel="Dezembro" itemValue="12"/>
+						</p:selectOneMenu>
+					 </h:panelGroup>
+					 
+					<p:commandLink id="okBtn" value="OK" styleClass="botaoLink" update="@all" action="#{relatorios.gerarPeriodo}"
+						style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
+					</p:commandLink>
+					
+					<p:blockUI block=":pageFull" trigger="okBtn">
+						<h:graphicImage value="#{resource['img/loading.gif']}" height="150" />
+					</p:blockUI>
+					
+					<h:panelGroup id="chartPanel" rendered="#{relatorios.idEntidade eq '0'}">
+					
+						<h:inputHidden id="b64" value="#{chartExport.base64Str}" />
+						<h:commandLink onclick="exportChartBean('chartGeral')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(1)}" widgetVar="chartGeral" responsive="true" style="witdh:80%"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean('chartMensal')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(2)}" widgetVar="chartMensal" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+
+						<h:commandLink onclick="exportChartBean('chartAnual')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(3)}" widgetVar="chartAnual" responsive="true" style="height:300px" />
+						<p:separator styleClass="separator2"/>
+
+						<h:commandLink onclick="exportChartBean('chartAnualAcumulado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(4)}" widgetVar="chartAnualAcumulado" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean('chartOrgao')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(5)}" widgetVar="chartOrgao" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+
+						<h:commandLink onclick="exportChartBean('chartEntidade')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(6)}" widgetVar="chartEntidade" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean('chartAssunto')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(7)}" widgetVar="chartAssunto"  responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean('chartTipoPessoa')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(8)}" widgetVar="chartTipoPessoa"  responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean('chartEstado')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+							<p:fileDownload value="#{chartExport.file}" />
+							<i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(9)}" widgetVar="chartEstado" responsive="true"/>
+					
+					</h:panelGroup>
+					
+					<h:panelGroup id="chartPanel2" rendered="#{relatorios.idEntidade ne '0'}">
+						
+						<h:inputHidden id="b64_2" value="#{chartExport.base64Str}" />
+						<h:commandLink onclick="exportChartBean2('chartGeral2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(10)}" widgetVar="chartGeral2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean2('chartMensal2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(11)}" widgetVar="chartMensal2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean2('chartAnual2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(12)}" widgetVar="chartAnual2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+					
+						<h:commandLink onclick="exportChartBean2('chartAnualAcumulado2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="bar" model="#{relatorios.desenharBarChart(13)}" widgetVar="chartAnualAcumulado2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean2('chartAssunto2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(14)}" widgetVar="chartAssunto2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean2('chartTipoPessoa2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+					        <p:fileDownload value="#{chartExport.file}" />
+					        <i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(15)}" widgetVar="chartTipoPessoa2" responsive="true"/>
+						<p:separator styleClass="separator2"/>
+						
+						<h:commandLink onclick="exportChartBean2('chartEstado2')" styleClass="botaoLinkIcon" actionListener="#{chartExport.submittedBase64Str}" style="margin-left: 10px">
+							<p:fileDownload value="#{chartExport.file}" />
+							<i class="fa fa-download" />
+					    </h:commandLink>
+						<p:chart type="pie" model="#{relatorios.desenharPieChart(16)}" widgetVar="chartEstado2" responsive="true"/>
+						
+					</h:panelGroup>
+					
+				</h:panelGroup>
+				
+
+	<script type="text/javascript">
+	
+	function exportChart(chart) {
+	    //export image
+	    $('#form\\:output').empty().append(PF(chart).exportAsImage());
+	 
+	    //show the dialog
+	    PF('dlg').show();
+	}
+
+	function exportChartBean(chart) {
+        // exportAsImage() will return a base64 png encoded string
+        document.getElementById('form:b64').value = PF(chart).exportAsImage().src;
+    }
+    
+	function exportChartBean2(chart) {
+        // exportAsImage() will return a base64 png encoded string
+        document.getElementById('form:b64_2').value = PF(chart).exportAsImage().src;
+    }
+
+	function exportAllCharts() {
+        // exportAsImage() will return a base64 png encoded string
+		document.getElementById('form:ch1').value = PF('chartGeral').exportAsImage().src;
+        document.getElementById('form:ch2').value = PF('chartMensal').exportAsImage().src;
+        document.getElementById('form:ch3').value = PF('chartAnual').exportAsImage().src;
+        document.getElementById('form:ch4').value = PF('chartAnualAcumulado').exportAsImage().src;
+        document.getElementById('form:ch5').value = PF('chartOrgao').exportAsImage().src;
+        document.getElementById('form:ch6').value = PF('chartEntidade').exportAsImage().src;
+        document.getElementById('form:ch7').value = PF('chartAssunto').exportAsImage().src;
+        document.getElementById('form:ch8').value = PF('chartTipoPessoa').exportAsImage().src;
+        document.getElementById('form:ch9').value = PF('chartEstado').exportAsImage().src;
+    }
+    
+	function exportAllCharts2() {
+        // exportAsImage() will return a base64 png encoded string
+        document.getElementById('form:ch10').value = PF('chartGeral2').exportAsImage().src;
+        document.getElementById('form:ch11').value = PF('chartMensal2').exportAsImage().src;
+        document.getElementById('form:ch12').value = PF('chartAnual2').exportAsImage().src;
+        document.getElementById('form:ch13').value = PF('chartAnualAcumulado2').exportAsImage().src;
+        document.getElementById('form:ch14').value = PF('chartAssunto2').exportAsImage().src;
+        document.getElementById('form:ch15').value = PF('chartTipoPessoa2').exportAsImage().src;
+        document.getElementById('form:ch16').value = PF('chartEstado2').exportAsImage().src;
+    }
+    
+	function ext() {
+	  this.cfg.seriesDefaults.rendererOptions.varyBarColor = true;
+	  this.cfg.legend = {
+	          show: false
+	     };
+	}
+	</script>
+			</h:form>
+
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

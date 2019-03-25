@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form>
+
+				<h:panelGroup style="padding: 1.5vw 15vw" styleClass="column">
+
+					<h1 style="margin-bottom: 0;">Relatórios</h1>
+					<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
+					
+					<h:panelGroup styleClass="inline">
+						<h:commandLink styleClass="botaoFoot column" action="/Relatorios/relatorio_mensal"
+						style="width:200px; height:200px; text-decoration: none; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center;" >
+							<p class="titulo" style="color: #1a5699; width: -moz-max-content; width: -webkit-max-content; width: max-content;">Geral</p>
+							<p:graphicImage value="#{resource['img/icon/computer.png']}" width="100"  />
+						</h:commandLink>
+					</h:panelGroup>
+
+				</h:panelGroup>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

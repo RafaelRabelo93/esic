@@ -1,9 +1,11 @@
 package br.gov.se.lai.Bean;
 
 import java.util.List;
+import java.util.Set;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -16,6 +18,7 @@ import br.gov.se.lai.DAO.UsuarioDAO;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Usuario;
 import br.gov.se.lai.utils.HibernateUtil;
+import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "cidadao")
@@ -42,10 +45,11 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	private String estado;
 	private String cidade;
 	private String cep;
-	private String tel;
 	private UsuarioBean usuarioBean;
 	private int renda;
 	private String numero;
+	private String telefone;
+	private String celular;
 	private String mensagemErro;
 	private String mensagemErro2;
 
@@ -61,9 +65,16 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		
+		System.out.println("Dados salvos");
+		System.out.println("E-mail cid: " + usuarioBean.getEmailCid());
+		System.out.println("Dados cadastrados");
+		System.out.println("CPF: " + cpf + " RG: " + rg + " E-mail: " + email);
+		
 		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
 			
 			this.usuario = usuarioBean.getUsuario();
+			
 			
 			if (this.cidadao == null) {
 				cidadao = new Cidadao();
@@ -71,6 +82,24 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 			
 			cidadao.setCpf(cpf);
 			cidadao.setRg(rg);
+//			cidadao.setTelefone(telefone);
+//			cidadao.setCelular(celular);
+			
+			try {
+				if (!getTelefone().isEmpty()) {
+					cidadao.setTelefone(telefone);
+				}
+			} catch (NullPointerException e) {
+				cidadao.setTelefone(null);
+			}
+			
+			try {
+				if (!getCelular().isEmpty()) {
+					cidadao.setCelular(celular);
+				}
+			} catch (NullPointerException e) {
+				cidadao.setCelular(null);
+			}
 			
 			try {
 				if (!getNumero().isEmpty()) {
@@ -83,6 +112,9 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 			cidadao.setUsuario(this.usuario);
 			
 			if (CidadaoDAO.saveOrUpdate(cidadao)) {
+				Set<Cidadao> cidadaos = new HashSet<Cidadao>();
+				cidadaos.add(cidadao);
+				usuario.setCidadaos(cidadaos);
 				usuarioBean.setEmail(cidadao.getEmail());
 				// usuario.getCidadaos().add(cidadao);
 				if (ehRepresentanteCidadao(usuario)) {
@@ -91,6 +123,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 					this.usuario.setPerfil((short) 3);
 				}
 				UsuarioDAO.saveOrUpdate(this.usuario);
+				usuarioBean.loadEmail(this.usuario);
+				NotificacaoEmail.enviarEmailCadastroCid(cidadao);
 				return "/index";
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -215,16 +249,16 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * @return - redireciona para a página principal.
 	 * 
 	 */
-	public String edit() {
+	public String edit(Cidadao cidadao) {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		if (verificaPermissao()) {
+//		if (verificaPermissao()) {
 			this.usuario = usuarioBean.getUsuario();
 			cidadao.setUsuario(this.usuario);
 			CidadaoDAO.saveOrUpdate(cidadao);
 			return "/index";
-		} else {
-			return null;
-		}
+//		} else {
+//			return null;
+//		}
 	}
 
 	@Override
@@ -239,7 +273,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	/**
 	 * Função limparCidadaoBean
 	 * 
-	 * Limpa o objeto.
+	 * Limpa o objeto preenchendo todos os seus campos com null.
 	 */
 	public void limparCidadaoBean() {
 		setEmail(null);
@@ -250,6 +284,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		setEndereco(null);
 		setEstado(null);
 		setNumero(null);
+		setTelefone(null);
+		setCelular(null);
 	}
 
 	// GETTERS E SETTERS
@@ -367,14 +403,6 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		this.cep = cep;
 	}
 
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
 	public int getRenda() {
 		return renda;
 	}
@@ -421,6 +449,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 
 	void setMensagemErro2(String mensagemErro2) {
 		this.mensagemErro2 = mensagemErro2;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	

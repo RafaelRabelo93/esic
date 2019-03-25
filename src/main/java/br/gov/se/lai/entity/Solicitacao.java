@@ -30,7 +30,7 @@ public class Solicitacao implements java.io.Serializable {
 	private short instancia;
 	private Cidadao cidadao;
 	private Entidades entidades;
-	private Acoes acoes;
+	private Competencias competencias;
 	private Date dataIni;
 	private String status;
 	private Date datafim;
@@ -39,9 +39,12 @@ public class Solicitacao implements java.io.Serializable {
 	private String protocolo;
 	private String tipo;
 	private Set<Mensagem> mensagems = new HashSet<Mensagem>(0);
-	private short prazoTipo;
 	private boolean encaminhada;
+	private boolean visualizada;
+	private short sigilo;
 	private Integer formaRecebimento;
+	private Integer avaliacao;
+	private boolean liberaDenuncia;
 
 	public Solicitacao() {
 	}
@@ -52,10 +55,10 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	public Solicitacao(Cidadao cidadao, Entidades entidades,Acoes acoes, Date dataIni, Date dataLimite, String status, Date datafim, String titulo,
-			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento) {
+			String protocolo,short instancia, short prazoTipo, String tipo, Set<Mensagem> mensagems, Integer formaRecebimento, boolean visualizada, short sigilo, boolean liberaDenuncia) {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
-		this.acoes = acoes;
+//		this.competencias = competencias;
 		this.dataIni = dataIni;
 		this.dataIni = dataLimite;
 		this.status = status;
@@ -65,8 +68,10 @@ public class Solicitacao implements java.io.Serializable {
 		this.instancia = instancia;
 		this.tipo = tipo;
 		this.mensagems = mensagems;
-		this.prazoTipo = prazoTipo;
 		this.formaRecebimento = formaRecebimento;
+		this.visualizada = visualizada;
+		this.sigilo = sigilo;
+		this.liberaDenuncia = liberaDenuncia;
 	}
 
 	@Id
@@ -177,13 +182,13 @@ public class Solicitacao implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idAcoes", nullable = false)
-	public Acoes getAcoes() {
-		return acoes;
+	@JoinColumn(name = "idCompetencias", nullable = false)
+	public Competencias getCompetencias() {
+		return competencias;
 	}
 
-	public void setAcoes(Acoes acoes) {
-		this.acoes = acoes;
+	public void setCompetencias(Competencias competencias) {
+		this.competencias = competencias;
 	}
 
 	@Column(name = "instancia", length = 1)
@@ -195,14 +200,6 @@ public class Solicitacao implements java.io.Serializable {
 		this.instancia = instancia;
 	}
 
-	@Column(name = "prazoTipo", length = 1)
-	public short getPrazoTipo() {
-		return prazoTipo;
-	}
-
-	public void setPrazoTipo(short prazoTipo) {
-		this.prazoTipo = prazoTipo;
-	}
 
 	@Column(name = "encaminhada", length = 1)
 	public boolean isEncaminhada() {
@@ -221,7 +218,40 @@ public class Solicitacao implements java.io.Serializable {
 	public void setFormaRecebimento(Integer formaRecebimento) {
 		this.formaRecebimento = formaRecebimento;
 	}
-	
+
+	@Column(name = "visualizada", length = 1)
+	public boolean isVisualizada() {
+		return visualizada;
+	}
+
+	public void setVisualizada(boolean visualizada) {
+		this.visualizada = visualizada;
+	}
+
+	public Integer getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Integer avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	@Column(name = "sigilo", length = 1)
+	public short getSigilo() {
+		return sigilo;
+	}
+
+	public void setSigilo(short sigilo) {
+		this.sigilo = sigilo;
+	}
+
+	public boolean isLiberaDenuncia() {
+		return liberaDenuncia;
+	}
+
+	public void setLiberaDenuncia(boolean liberaDenuncia) {
+		this.liberaDenuncia = liberaDenuncia;
+	}
 	
 
 }

@@ -28,11 +28,13 @@ public class Mensagem implements java.io.Serializable {
 	private static final long serialVersionUID = -4273056639466954495L;
 	private Integer idMensagem;
 	private Solicitacao solicitacao;
+	private int idSolicitacao;
 	private Usuario usuario;
 	private String texto;
 	private Date data;
 	private short tipo;
-	private Set<Anexo> anexos = new HashSet<Anexo>(0);
+	private Integer nota;
+//	private Set<Anexo> anexos = new HashSet<Anexo>(0);
 
 	public Mensagem() {
 	}
@@ -42,13 +44,13 @@ public class Mensagem implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, Date data, short tipo, Set<Anexo> anexos) {
+	public Mensagem(Solicitacao solicitacao, Usuario usuario, String texto, Date data, short tipo) {
 		this.solicitacao = solicitacao;
 		this.usuario = usuario;
 		this.texto = texto;
 		this.data = data;
 		this.tipo = tipo;
-		this.anexos = anexos;
+//		this.anexos = anexos;
 	}
 
 	@Id
@@ -111,14 +113,32 @@ public class Mensagem implements java.io.Serializable {
 		this.tipo = tipo;
 	}
 
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
-	public Set<Anexo> getAnexos() {
-		return this.anexos;
+	
+	@Column(name = "nota")
+	public Integer getNota() {
+		return nota;
 	}
 
-	public void setAnexos(Set<Anexo> anexos) {
-		this.anexos = anexos;
+	public void setNota(Integer nota) {
+		this.nota = nota;
 	}
+	
+//	@Column(name = "idSolicitacao", unique = true, nullable = false, insertable=false, updatable=false)
+//	public int getIdSolicitacao() {
+//		return idSolicitacao;
+//	}
+//
+//	public void setIdSolicitacao(int idSolicitacao) {
+//		this.idSolicitacao = idSolicitacao;
+//	}
+
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensagem")
+//	public Set<Anexo> getAnexos() {
+//		return this.anexos;
+//	}
+//
+//	public void setAnexos(Set<Anexo> anexos) {
+//		this.anexos = anexos;
+//	}
 
 }

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ import javax.swing.text.DateFormatter;
 import org.apache.commons.mail.EmailException;
 import org.hibernate.id.UUIDGenerationStrategy;
 import org.quartz.CronScheduleBuilder;
+import org.quartz.DateBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -33,6 +35,7 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
@@ -73,9 +76,11 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	private static String sessionId;
-	private boolean perfilAlterarCidadaoResponsavel;
+	public List<Usuario> filteredGestores;
+	public static boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
+	private boolean acessoMigrado;
 
 	/*
 	 * Instanciar objeto, iniciar verificação constante dos status de solicitações
@@ -88,13 +93,32 @@ public class UsuarioBean implements Serializable {
 		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
 		try {
-			Scheduler scheduler = shedFact.getScheduler();
-			scheduler.start();
-			JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-					.withIdentity("verificarStatusSolicitacao", "grupo01").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("validadorTRIGGER", "grupo01")
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 * * ?")).build();
-			scheduler.scheduleJob(job, trigger);
+			
+			Scheduler sched = shedFact.getScheduler();
+			sched.start();
+			
+			  JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+			      .withIdentity("myJob", "group1") // name "myJob", group "group1"
+			      .build();
+
+			  Trigger trigger = TriggerBuilder.newTrigger()
+			      .withIdentity("myTrigger", "group1")
+			      .withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *"))           
+			      .build();
+			  
+			  sched.scheduleJob(job, trigger);
+			  
+				JobDetail job2 = JobBuilder.newJob(verificarStatusSolicitacao.class)
+					.withIdentity("myJob2", "group1") // name "myJob", group "group1"
+					.build();
+			  
+				Trigger trigger2 = TriggerBuilder.newTrigger()
+						.withIdentity("runtimeTrigger", "group1")
+						.startNow()
+						.build();
+				
+			  sched.scheduleJob(job2, trigger2);
+			
 		} catch (SchedulerException e) {
 			System.out.println(e.getMessage());
 		}
@@ -113,8 +137,8 @@ public class UsuarioBean implements Serializable {
 	}
 
 	/**
-	 *Função save 
-	 * Salvar novo usuário edit() - edita valores do usuário 
+	 * save() - Salvar novo usuário 
+	 * edit() - edita valores do usuário 
 	 * delete() - apagar usuario 
 	 * gerarNick() - Sugerir nick para o usuário na hora de preencher o cadastro de usuário 
 	 * verificaExistenciaNick(String nick) - Verifica se o nick digitado/sugerido já existe, retorno booleano.
@@ -152,6 +176,26 @@ public class UsuarioBean implements Serializable {
 			return null;
 		}
 
+	}
+	
+	public String saveGestorSistema() {
+		if(verificaAdmin() || verificaGestor()) {
+			usuarioNovo = UsuarioDAO.buscarUsuario(usuarioNovo.getNick());
+			usuarioNovo.setPerfil((short)5);
+			
+			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Cadastro realizado com sucesso.", " "));
+			}else{;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Não é possível cadastrar usuário.", "Um erro inesperado ocorreu, tente novamente mais tarde."));
+			}
+			return "/Consulta/consulta_responsavel.xhtml";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Não é possível cadastrar gestor.", "O usuário não possui permissão."));
+			return null;
+		}
 	}
 	
 	/**
@@ -258,6 +302,10 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	public void limparUsuarioNovo() {
+		usuarioNovo = new Usuario();
+	}
+	
 
 //	public String delete() {
 //		UsuarioDAO.delete(usuario);
@@ -269,17 +317,20 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String edit() {
-		this.usuario =  ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+//		this.usuario = ((UsuarioBean)  HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		
-		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
-			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
-			UsuarioDAO.saveOrUpdate(this.usuario);
-
+//		if (Criptografia.Comparar(Criptografia.Criptografar(senha), this.usuario.getSenha())) {
+			
+//		System.out.println(usuario.getPerfil());
+		
 			if (usuario.getPerfil() != 1) {
 
-				if (usuario.getPerfil() == 3) {
+				if (usuario.getPerfil() == 3 || (usuario.getPerfil() == 4 && !UsuarioBean.perfilAlterarCidadaoResponsavel)) {
 					CidadaoBean cidadao = new CidadaoBean();
-					cidadao.save();
+					Set<Cidadao> cidadao2 = this.usuario.getCidadaos();
+					Cidadao cidadao3 = cidadao2.iterator().next();
+//					cidadao.save();
+					cidadao.edit(cidadao3);
 				} else {
 					ResponsavelBean responsavel = new ResponsavelBean();
 					responsavel.save();
@@ -299,12 +350,47 @@ public class UsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização concluída.", "Sucesso."));
 			return "/index.xhtml?faces-redirect=true";
+//		} else {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
+//			return null;
+//		}
+
+	}
+	
+	public String editarSenha() {
+		if (Criptografia.Comparar(Criptografia.Criptografar(senhaAtual), this.usuario.getSenha())) {
+			this.usuario.setSenha(Criptografia.Criptografar(novaSenha));
+			UsuarioDAO.saveOrUpdate(this.usuario);
+			return "/index.xhtml?faces-redirect=true";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na validação.", "Tente novamente."));
+			new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senha incorreta.", "Tente novamente."));
 			return null;
 		}
-
+	}
+	
+	public void editarGestor() {	
+		if(usuario.getPerfil() == (short)6  ) {
+			if(!verificaSeVazio(senha)) {
+			usuarioNovo.setSenha(Criptografia.Criptografar(senha));
+			if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização concluída.", "Sucesso."));
+			}else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro na atualização.", "Tente novamente mais tarde."));
+			}
+			
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro na atualização.", "Campo senha não pode ser vazio."));
+			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro na atualização.", "Usuário sem permissão."));
+		}
+		
+		senha = "";
 	}
 
 	/**
@@ -386,10 +472,16 @@ public class UsuarioBean implements Serializable {
 					return null;
 					
 				}else {
-					loadEmail();
+					loadEmail(this.usuario);
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
+					if((usuario.getLastLogged() == null || Criptografia.Comparar("8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92", usuario.getSenha())) && usuario.isMigrado()) {
+						acessoMigrado = true;
+//						FacesContext.getCurrentInstance().addMessage(null,
+//								new FacesMessage(FacesMessage.SEVERITY_INFO, "Primeiro login", "Esse é seu primeiro login!"));
+					} else acessoMigrado = false;
 					acessoUsuario(this.usuario);
+					SolicitacaoBean.calcularQuantitativoSolicitacao();
 					nomeCompleto(usuario.getNome());
 					return "/index?faces-redirect=true";
 				}
@@ -397,6 +489,13 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
+	/*
+	 * Esta função foi criada unicamente com o intuito de permitir apenas usuarios com permissão privilegiada pudessem logar.
+	 * Essa situação foi colocada apenas como um paliativo para a versão em produção, pois a versão que está em produção ainda
+	 * não está aberta para o público logo só quem tem permissão pode entrar. Quando for lançada a versão definitiva do Esic 
+	 * esta função deve ser excluída e os logins devem ser direcionados para a função login() vista acima. 
+	 * @return
+	 */
 	public String loginSistema() {
 		String retorno = "";
 		this.usuario = UsuarioDAO.buscarUsuario(this.nick);
@@ -411,7 +510,7 @@ public class UsuarioBean implements Serializable {
 				logout();
 			} else {
 //				if(verificaAdmin() || verificaPermissaoPrivilegiada()) {
-//					loadEmail();
+//					loadEmail(this.usuario);
 //					FacesContext.getCurrentInstance().addMessage(null,
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 //					acessoUsuario(this.usuario);
@@ -422,10 +521,12 @@ public class UsuarioBean implements Serializable {
 //							new FacesMessage(FacesMessage.SEVERITY_INFO, "Acesso negado.", "Você não possui permissão para acesso."));
 //				}
 				
-				loadEmail();
+				loadEmail(this.usuario);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 				acessoUsuario(this.usuario);
+				SolicitacaoBean.calcularQuantitativoSolicitacao();
+
 				nomeCompleto(usuario.getNome());
 				retorno = "/index.xhtml?faces-redirect=true";
 
@@ -437,7 +538,8 @@ public class UsuarioBean implements Serializable {
 	}
 	
 	public boolean verificaPermissaoPrivilegiada() {
-		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado") || this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
+		return (this.nick.equals("michael.mendonca") || this.nick.equals("mayara.machado")
+				|| this.nick.equals("francyelle.mascarenhas") || this.nick.equals("rafael.oliveira") );
 	}
 	
 	/**
@@ -467,7 +569,7 @@ public class UsuarioBean implements Serializable {
 	 *
 	 *Busca o email daquele usuario, retorna string.
 	 */
-	public void loadEmail() {
+	public void loadEmail(Usuario usuario) {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
 			setEmailCid(listCidadao.get(0).getEmail());
@@ -494,7 +596,7 @@ public class UsuarioBean implements Serializable {
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		session.invalidate();
 		this.usuario = null;
-		return "/loginAdmin";
+		return "/index.xhtml?faces-redirect=true";
 	}
 
 	public static String generateSessionId() {
@@ -594,7 +696,7 @@ public class UsuarioBean implements Serializable {
 	 */
 	public String alterarDadosUsuario() {
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
-			return "Alterar/alterar_usuario";
+			return "/Alterar/alterar_usuario";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Usuário básico.", "Por favor complete seu cadastro."));
@@ -635,7 +737,8 @@ public class UsuarioBean implements Serializable {
 				if (!resp.equals(null)) {
 					acessoUsuario(resp.getUsuario());
 					String accessKey = resp.getUsuario().getSessionId();
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
+					String nomeUser = resp.getUsuario().getNick();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect, nomeUser);
 					usuario = new Usuario();
 					valor = true;
 				}
@@ -645,7 +748,8 @@ public class UsuarioBean implements Serializable {
 				if (!cid.equals(null)) {
 					acessoUsuario(cid.getUsuario());
 					String accessKey = cid.getUsuario().getSessionId();
-					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect);
+					String nomeUser = cid.getUsuario().getNick();
+					NotificacaoEmail.enviarEmailRedefinicaoSenha(accessKey, emailRedirect, nomeUser);
 					usuario = new Usuario();
 					valor = true;
 				}
@@ -668,8 +772,7 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public String pegarParamURL() {
-		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("access_key");
+		codigoRedefSenha = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("access_key");
 		// codigoURLTemporaria =
 		// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 		// .get("access_expire_date");
@@ -728,21 +831,20 @@ public class UsuarioBean implements Serializable {
 			Responsavel resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			if (!resp.equals(null)) {
 				this.usuario = resp.getUsuario();
-				NotificacaoEmail.enviarEmail(resp.getEmail(), "Alteração de Email",
-						"Sua senha para o login no E-SIC foi alterada.");
+				NotificacaoEmail.enviarEmailHTML(resp.getEmail(), "Alteração de Senha", "Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
 		} else {
 			Cidadao cid = CidadaoDAO.findCidadaoUsuario(usuario.getIdUsuario());
 			if (!cid.equals(null)) {
 				this.usuario = cid.getUsuario();
-				NotificacaoEmail.enviarEmail(cid.getEmail(), "Alteração de Email",
-						"Sua senha para o login no E-SIC foi alterada.");
+				NotificacaoEmail.enviarEmailHTML(cid.getEmail(), "Alteração de Senha", "Sua senha para o login no E-SIC foi alterada.");
 			}
 			;
 		}
 
 	}
+	
 
 	/**
 	 * Função getGeneroString
@@ -830,24 +932,73 @@ public class UsuarioBean implements Serializable {
 		return nicks;
 	}
 
+	public static List<String> completeNickSemGestor (String prefix) {
+		List<String> nicks = UsuarioDAO.completeNickNoGestor(prefix);
+		return nicks;
+	}
+	
+	public static List<String> completeNickUsuario (String prefix) {
+		List<String> nicks = UsuarioDAO.completeNickUser(prefix);
+		return nicks;
+	}
+	
 	public boolean verificaAdmin() {
-		return usuario.getPerfil()==(short)6;
+		if (usuario.getPerfil()==(short)6) return true;
+		else return false;
 	}
 	public boolean verificaGestor() {
-		return usuario.getPerfil()==(short)5;
+		if (usuario.getPerfil()==(short)5) return true;
+		else return false;
 	}
 	public boolean verificaResponsavelCidadaoPerfil() {
-		return usuario.getPerfil()==(short)4;
+		if (usuario.getPerfil()==(short)4) return true;
+		else return false;
 	}
 	public boolean verificaResponsavel() {
-		return usuario.getPerfil()==(short)2;
+		if (usuario.getPerfil()==(short)2) return true;
+		else return false;
 	}
 	
 	public String redirecionarIndex() {
 		SolicitacaoBean t = new SolicitacaoBean();
 		t.finalizarSolicitacao();
-		return "/index.xhtml?faces-redirect=true";                          
+		return "../../esic/index.xhtml";
 	}
+
+	public List<Usuario> listarGestores(){
+		return UsuarioDAO.listarGestoresSistema();
+	}
+	
+	public boolean isResponsavelOGE() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		Usuario usuario = u.getUsuario();
+		
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : u.getUsuario().getResponsavels()) {
+				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+					return true;
+				}
+			}
+			return false;
+		} else return false;
+	}
+	
+	public boolean gestorAtivo() {
+		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
+		Usuario usuario = u.getUsuario();
+		
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : u.getUsuario().getResponsavels()) {
+				if (resp.getNivel() == (short)4) {
+					return true;
+				}
+			}
+			return false;
+			
+		}  else return false;
+		
+	}
+	
 
 	// GETTERS E SETTERS
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -984,6 +1135,7 @@ public class UsuarioBean implements Serializable {
 
 	public void setPerfilAlterarCidadaoResponsavel(boolean perfilAlterarCidadaoResponsavelNovo) {
 		perfilAlterarCidadaoResponsavel = perfilAlterarCidadaoResponsavelNovo;
+		SolicitacaoBean.calcularQuantitativoSolicitacao();
 	}
 
 	public String getSigla() {
@@ -1017,6 +1169,30 @@ public class UsuarioBean implements Serializable {
 
 	public void setSenhaAtual(String senhaAtual) {
 		this.senhaAtual = senhaAtual;
+	}
+
+	public List<Usuario> getFilteredGestores() {
+		return filteredGestores;
+	}
+
+	public void setFilteredGestores(List<Usuario> filteredGestore) {
+		this.filteredGestores = filteredGestore;
+	}
+
+	public boolean isAcessoMigrado() {
+		return acessoMigrado;
+	}
+
+	public void setAcessoMigrado(boolean acessoMigrado) {
+		this.acessoMigrado = acessoMigrado;
+	}
+
+	public void setTipoString(String tipoString) {
+		this.tipoString = tipoString;
+	}
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 	
 	

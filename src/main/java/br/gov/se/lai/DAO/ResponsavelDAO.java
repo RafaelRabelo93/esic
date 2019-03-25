@@ -102,18 +102,24 @@ public class  ResponsavelDAO {
     }
 
     @SuppressWarnings("unchecked")
-	public static List<Responsavel> listEntidadePossuemGestores() {		
-        return em.createNativeQuery("SELECT idEntidades FROM Responsavel as resp  WHERE resp.nivel = 3", Responsavel.class).getResultList();
+	public static List<Entidades> listEntidadePossuemGestores() {		
+        String hql = "SELECT responsavel.entidades FROM Responsavel as responsavel "
+        		+ "JOIN  responsavel.entidades as entidades "
+        		+ "WHERE responsavel.nivel = 3 AND responsavel.ativo = true "
+        		+ "AND responsavel.entidades.idEntidades = entidades.idEntidades";
+    	return (List<Entidades>) Consultas.buscaPersonalizada(hql, em); 
 	
     }    
 
     @SuppressWarnings("unchecked")
     public static List<Responsavel> list() {		
     	Query query = em.createQuery("FROM Responsavel as resp WHERE resp.ativo = 1 OR resp.ativo = 0");
-    	
     	List<Responsavel> results = query.getResultList();
     	return results;    	
-    }   
+    } 
+   
+    
+    
     
     @SuppressWarnings("unchecked")
     public static List<Responsavel> listar(){

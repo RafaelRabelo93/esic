@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true"
+				redisplay="false" life="5000" severity="info,warn,error" />
+			<h:form>
+
+				<h:panelGroup style="margin: 0 1.5vw" styleClass="column">
+
+					<h1 style="margin-bottom: 0;">
+						Relatórios Estatísticos: <span><h:outputText value="#{relatorioDinamico.ent.sigla} - #{relatorioDinamico.ent.nome}" /></span>
+					</h1>
+					<p:separator styleClass="separator" />
+
+<!-- 					<p>Relatórios estatisticos do sistema bla bla bla descrição da página.</p> -->
+
+					<h:panelGroup id="parametrosObrigatorios" styleClass="inline"
+						style="width: 100%; margin-bottom: 1em">
+						<h:panelGroup styleClass="column">
+							<p:outputLabel value="Tipo de Solicitação" for="tipoSolicitacao" />
+							<p:selectOneMenu id="tipoSolicitacao"
+								value="#{relatorioDinamico.tipoSolicitacao}" required="true">
+								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+								<f:selectItem itemLabel="Pedido de Informação"
+									itemValue="Informação" />
+								<f:selectItem itemLabel="Solicitacao" itemValue="Solicitação" />
+								<f:selectItem itemLabel="Elogio" itemValue="Elogio" />
+								<f:selectItem itemLabel="Sugestão" itemValue="Sugestão" />
+								<f:selectItem itemLabel="Reclamação" itemValue="Reclamação" />
+								<f:selectItem itemLabel="Denúncia" itemValue="Denúncia"  />
+								<f:selectItem itemLabel="Todos" itemValue="Todos" />
+
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="column" style="margin-left: 3vw">
+							<p:outputLabel value="Medida de tempo" for="tempo" />
+							<p:selectOneMenu id="tempo" value="#{relatorioDinamico.tempo}"
+								required="true">
+								<f:selectItem itemLabel="Selecione" noSelectionOption="true"  />
+								<f:selectItem itemLabel="Mês" itemValue="mes" />
+								<f:selectItem itemLabel="Ano" itemValue="ano" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<!-- 						<h:panelGroup styleClass="column" style="margin-left: 3vw"> -->
+						<!-- 							<p:outputLabel value="Status da Solicitação" for="status" /> -->
+						<!-- 							<p:selectOneMenu id="status" value="#{relatorioDinamico.status}" required="true"> -->
+						<!-- 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" /> -->
+						<!-- 								<f:selectItem itemLabel="Realizados" itemValue="Realizados" /> -->
+						<!-- 								<f:selectItem itemLabel="Pendente" itemValue="Pendente" /> -->
+						<!-- 								<f:selectItem itemLabel="Aberta" itemValue="Aberta" /> -->
+						<!-- 								<f:selectItem itemLabel="Recurso" itemValue="Recurso" /> -->
+						<!-- 								<f:selectItem itemLabel="Atendida" itemValue="Atendida" /> -->
+						<!-- 								<f:selectItem itemLabel="Negada" itemValue="Negada" /> -->
+						<!-- 								<f:selectItem itemLabel="Finalizada" itemValue="Finalizada" /> -->
+						<!-- 							</p:selectOneMenu> -->
+						<!-- 						</h:panelGroup> -->
+
+					</h:panelGroup>
+
+
+
+					<h:panelGroup rendered="true" id="parametros" styleClass="inline"
+						style="width: 100%; margin-bottom: 1em">
+
+
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="inline">
+						<h:panelGroup id="especificacaoPanel"
+							style="width:300px; margin-right: 1.5vw; -ms-flex-item-align: start; align-self: flex-start;"
+							styleClass="column box">
+
+							<p:commandButton id="filterBtn" value="Filtros"
+								icon="fa fa-filter" iconPos="right" styleClass="inline"
+								type="button"
+								style="border: 1px solid silver; border-radius: 3px; padding: 5px; border-bottom: 3px solid #3272bd" />
+
+							<p:overlayPanel id="filterOptions" for="filterBtn"
+								hideEffect="fade" my="right" at="left">
+								<p:selectManyCheckbox id="basic"
+									value="#{relatorioDinamico.metricas}">
+									<p:ajax listener="#{relatorioDinamico.verificarBool()}"
+										update="filterParametros" />
+									<!-- 						//	<f:selectItem itemLabel="Data" itemValue="1" /> -->
+									<f:selectItem itemLabel="Meses" itemValue="2" />
+									<f:selectItem itemLabel="Anos" itemValue="3" />
+									<f:selectItem itemLabel="Óegãos" itemValue="4" />
+									<f:selectItem itemLabel="Entidades" itemValue="5" />
+									<f:selectItem itemLabel="Estados" itemValue="6" />
+									<f:selectItem itemLabel="Assunto" itemValue="7" />
+									<f:selectItem itemLabel="Tipo de Pessoa" itemValue="8" />
+								</p:selectManyCheckbox>
+							</p:overlayPanel>
+
+							<h:panelGroup id="filterParametros" styleClass="column">
+								<!-- 						TEMPO -->
+								<!-- 					Ajeitarei depois -->
+								<!-- 						<h:panelGroup styleClass="inline" -->
+								<!-- 							rendered="#{relatorioDinamico.dataBool}"> -->
+								<!-- 							<h:panelGroup styleClass="column" > -->
+								<!-- 								<p:outputLabel value="Data Inicial " for="dataIni" /> -->
+								<!-- 								<p:calendar styleClass="date" id="dataIni" mindate="1/1/12" -->
+								<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
+								<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
+								<!-- 									mask="true" timeInput="false" value="#{relatorioDinamico.periodoIni}"> -->
+								<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+								<!-- 								</p:calendar> -->
+								<!-- 							</h:panelGroup> -->
+
+								<!-- 							<h:panelGroup styleClass="column" > -->
+								<!-- 								<p:outputLabel value="Data Final " for="dataFim" /> -->
+								<!-- 								<p:calendar styleClass="date" id="dataFim" mindate="1/1/12" -->
+								<!-- 									yearRange="2012:c" showOn="button" locale="pt_BR" -->
+								<!-- 									effect="slideDown" navigator="true" pattern="dd/MM/yyyy" -->
+								<!-- 									mask="true" timeInput="false" value="#{relatorioDinamico.periodoFim}"> -->
+								<!-- 									<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+								<!-- 								</p:calendar> -->
+								<!-- 							</h:panelGroup> -->
+								<!-- 						</h:panelGroup> -->
+
+								<!-- Anos -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.anosBool}">
+									<p:outputLabel value="Ano" for="anos" style="margin-top: 0" />
+									<p:selectCheckboxMenu id="anos"
+										value="#{relatorioDinamico.anosSelecionados}" label="Anos">
+										<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+										<f:selectItems value="#{relatorioDinamico.anos}" var="anos"
+											itemLabel="#{anos}" itemValue="#{anos.toString()}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Meses -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.mesesBool}">
+									<p:outputLabel value="Mês" for="meses" />
+									<p:selectCheckboxMenu id="meses"
+										value="#{relatorioDinamico.meses}" label="Meses">
+										<f:selectItem itemLabel="Janeiro" itemValue="1" />
+										<f:selectItem itemLabel="Fevereiro" itemValue="2" />
+										<f:selectItem itemLabel="Março" itemValue="3" />
+										<f:selectItem itemLabel="Abril" itemValue="4" />
+										<f:selectItem itemLabel="Maio" itemValue="5" />
+										<f:selectItem itemLabel="Junho" itemValue="6" />
+										<f:selectItem itemLabel="Julho" itemValue="7" />
+										<f:selectItem itemLabel="Agosto" itemValue="8" />
+										<f:selectItem itemLabel="Setembro" itemValue="9" />
+										<f:selectItem itemLabel="Outubro" itemValue="10" />
+										<f:selectItem itemLabel="Novembro" itemValue="11" />
+										<f:selectItem itemLabel="Dezembro" itemValue="12" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Estado -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.estadosBool}">
+									<p:outputLabel value="Estado: " for="uf" />
+									<p:selectCheckboxMenu id="uf"
+										value="#{relatorioDinamico.estado}" widgetVar="estado">
+										<f:selectItem itemLabel="Selecionar" itemValue="" />
+										<f:selectItem itemLabel="Acre" itemValue="AC" />
+										<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+										<f:selectItem itemLabel="Amapá" itemValue="AP" />
+										<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+										<f:selectItem itemLabel="Bahia" itemValue="BA" />
+										<f:selectItem itemLabel="Ceará" itemValue="CE" />
+										<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+										<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+										<f:selectItem itemLabel="Goiás" itemValue="GO" />
+										<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+										<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+										<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+										<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+										<f:selectItem itemLabel="Pará" itemValue="PA" />
+										<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+										<f:selectItem itemLabel="Paraná" itemValue="PR" />
+										<f:selectItem itemLabel="Piauí" itemValue="PI" />
+										<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+										<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+										<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+										<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+										<f:selectItem itemLabel="Roraima" itemValue="RR" />
+										<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+										<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+										<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Assunto -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.assuntoBool}">
+									<p:outputLabel value="Assuntos" />
+									<p:selectCheckboxMenu id="ass"
+										value="#{relatorioDinamico.assuntos}" label="Assuntos">
+										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+										<f:selectItems value="#{acoes.acoesVinculadas}" var="ac"
+											itemLabel="#{ac.titulo}" itemValue="#{ac.idAcoes}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Órgão -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.orgaoBool}">
+									<p:outputLabel value="Orgaos" />
+									<p:selectCheckboxMenu id="org"
+										value="#{relatorioDinamico.orgaos}" label="Órgãos">
+										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.listOrgaosAtivos}" var="orgao"
+											itemLabel="#{orgao.sigla} - #{orgao.nome}" itemValue="#{orgao.idEntidades}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+								<!-- Entidade -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.entidadeBool}">
+									<p:outputLabel value="Entidades" />
+									<p:selectCheckboxMenu id="ents"
+										value="#{relatorioDinamico.entidades}" label="Entidades">
+										<f:selectItem itemLabel="Todos" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.todasEntidades}" var="ent"
+											itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}" />
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+
+
+								<!-- Tipo Pessoa -->
+								<h:panelGroup styleClass="column" style="width: 100%"
+									rendered="#{relatorioDinamico.tipoPessoaBool}">
+									<p:outputLabel value="Tipo de Pessoa" for="tipoPessoa" />
+									<p:selectOneMenu id="tipoPessoa"
+										value="#{relatorioDinamico.tipoPessoa}" label="Tipo de Pessoa">
+										<f:selectItem itemLabel="Física" itemValue="F" />
+										<f:selectItem itemLabel="Física Feminino" itemValue="FF" />
+										<f:selectItem itemLabel="Física Masculino" itemValue="FM" />
+										<f:selectItem itemLabel="Jurídica" itemValue="J" />
+										<f:selectItem itemLabel="Jurídica Feminino" itemValue="JF" />
+										<f:selectItem itemLabel="Jurídica Masculino" itemValue="JM" />
+										<f:selectItem itemLabel="Todos" itemValue="Todos" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+
+								<p:commandLink value="OK" styleClass="botaoLink" update="@all"
+									action="#{relatorioDinamico.desenharBarChartModel()}"
+									style="width: 50px; height: 14px; margin-top: 1vh; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
+								</p:commandLink>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<h:panelGroup style="width:100%" styleClass="column">
+							<p:chart type="bar" id="barChartId"
+								model="#{relatorioDinamico.barModel}"
+								rendered="#{relatorioDinamico.barModel ne null}" />
+
+							<!-- 							<p:chart type="bar" id="barChartId2"  model="#{relatorioDinamico.hBarModel}" -->
+							<!-- 								rendered="#{relatorioDinamico.hBarModel ne null}"/> -->
+
+							<h:commandLink>
+								<p:graphicImage name="/demo/images/excel.png" width="24" />
+								<p:dataExporter type="xls" target="barChartId" fileName="cars" />
+							</h:commandLink>
+
+						</h:panelGroup>
+
+					</h:panelGroup>
+
+				</h:panelGroup>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

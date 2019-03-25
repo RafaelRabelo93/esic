@@ -8,7 +8,7 @@
 
 <h:body>
 
-	<ui:composition template="/templates/templateSemMenu.xhtml">
+	<ui:composition template="/templates/template.xhtml">
 
 		<ui:define name="content">
 
@@ -16,11 +16,12 @@
 			<p:growl id="growl" showDetail="true" autoUpdate="true"
 				redisplay="false" life="5000" severity="info,warn,error" />
 
-			<h:form style="justify-content: center; display: flex;">
+			<h:form style="padding: 1.5vw 15vw">
+			
+<!-- 				<h:panelGroup styleClass="column sobre"> -->
 
-				<h:panelGroup styleClass="column sobre">
-
-					<h1 style="margin-top: 0" >Sobre</h1>
+					<h1 style="margin-bottom: 0;">Sobre</h1>
+					<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
 
 					<p>O e-SIC (Sistema Eletrônico do Serviço de Informações ao
 						Cidadão) permite que qualquer pessoa, física ou jurídica,
@@ -86,10 +87,14 @@
 						atribuições do órgão ou entidade da Administração Pública
 						Estadual.</p>
 
-				</h:panelGroup>
+					<h1 style="margin-bottom: 0;">Créditos</h1>
+					<div class="inline">
+						<p style="margin:0 .5em 0 0">Ícones fornecidos por </p><a href="www.flaticon.com " style="color: #1a568c; font-weight: bold;">FlatIcon</a>
+					</div>
+<!-- 				</h:panelGroup> -->
 
 			</h:form>
-
+			
 		</ui:define>
 
 	</ui:composition>

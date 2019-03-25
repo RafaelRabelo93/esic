@@ -33,6 +33,7 @@ import org.primefaces.model.UploadedFile;
 import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
+import br.gov.se.lai.entity.Solicitacao;
 
 @ManagedBean(name = "anexo")
 @SessionScoped
@@ -127,23 +128,33 @@ public class AnexoBean  implements Serializable {
 
 	}
 	
+	public boolean verificaExistencia(Mensagem msg) {
+		return !msg.getAnexos().isEmpty();
+	}
 
 	
 	/**
 	 * Função de download de arquivo.
 	 * @param msg
+	 * @return 
 	 */
 	
 	
-	public void downloadArquivo(Mensagem msg) {	
+	public StreamedContent downloadArquivo(Mensagem msg) {	
 		try {
 			File file = downloadAnexo(msg);
-			InputStream in = new FileInputStream(file);
-			String contentType = Files.probeContentType(file.toPath());
-			String[] extensao =contentType.split("/")[1].split("-");
-			fileDownload =  new DefaultStreamedContent(in, contentType, "download."+extensao[extensao.length-1]);
+			if (file != null) {
+				InputStream in = new FileInputStream(file);
+				String contentType = Files.probeContentType(file.toPath());
+				String[] extensao = contentType.split("/")[1].split("-");
+				fileDownload = new DefaultStreamedContent(in, contentType, "download." + extensao[extensao.length - 1]);
+				return fileDownload;
+			}else {
+				return null;
+			}
 		} catch (IOException e) {
 			System.out.println("Erro:"+ e.getMessage());
+			return null;
 		}
     }
 

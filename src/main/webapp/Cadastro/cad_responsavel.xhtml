@@ -15,8 +15,10 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_responsavel" styleClass="cad_form"  rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
-
+			<h:form id="cad_responsavel" styleClass="cad_form"  rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{responsavel.pegarParamURL()}" />
+				</f:metadata>
 				<div class="ficha">
 				
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
@@ -26,8 +28,8 @@
 						
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Nick: " for="nick" /> 
-								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNick}"
+								<p:outputLabel value="Usuário: " for="nick" /> 
+								<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNickSemGestor}" required="true"
 									itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="30"/>
 							</h:panelGroup>
 							
@@ -39,8 +41,8 @@
 							</h:panelGroup>
 						</h:panelGroup>
 					 	
-						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
-						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
+						 <p:outputLabel value="Órgão / Entidade: " for="orgao" rendered="true"  /> 
+						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains" style="width: -webkit-fill-available;width: -moz-available;width: fill-available;">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
@@ -51,17 +53,15 @@
 							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
 							<f:selectItem itemLabel="Gestor" itemValue="3" />
 							<f:selectItem itemLabel="Comissão Mista" itemValue="4"  />
-							<f:selectItem itemLabel="Gestor do Sistema" itemValue="5" itemDisabled="#{usuario.usuario.perfil eq '2' and usuario.responsavel.nivel lt '5'}"/>
 						</p:selectOneRadio> 
 					</h:panelGroup>
 					
 					 
-					<p:commandLink class="botaoLink" action="#{responsavel.save}" id="novoResponsavel" update="cad_responsavel dataPanel nick orgao" 
-									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoResponsavel').click();}">
+					<p:commandLink  id="novoResponsavel" class="botaoLink" action="#{responsavel.save}" update="cad_responsavel dataPanel nick orgao">
 						<h:outputText value="Cadastrar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
 					</p:commandLink>
-
+					
 				</div>
 
 			</h:form>

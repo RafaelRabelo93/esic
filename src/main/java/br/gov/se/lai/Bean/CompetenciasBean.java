@@ -2,6 +2,7 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,10 +32,12 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	private Competencias competencias;
 	private List<Entidades> entidades;
 	public static List<Entidades> listEntidades;
-	public static List<Competencias> listCompetencias;
+	public List<Competencias> listCompetencias;
+	public List<Competencias> listCompetencias2;
 	private List<Competencias> listCompetenciasExcluir;
 	private List<Acoes> acoes;
 	public static int idAcoes;
+	public static int idCompetencias;
 	public static int idEntidade;
 	private Entidades ent;
 	private String novaAcao;
@@ -45,7 +48,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		this.competencias = new Competencias();
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
-		listCompetencias= new ArrayList<Competencias>();
+		listCompetencias= new ArrayList<Competencias>(CompetenciasDAO.list());
+		listCompetencias2= new ArrayList<Competencias>();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 	}
 	
@@ -57,10 +61,15 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 */
 	public String save() {
 		if(verificaPermissao()) {
-			for (Competencias comp : listCompetencias) {
+			for (Competencias comp : listCompetencias2) {
 				CompetenciasDAO.saveOrUpdate(comp);
+				if(comp.getAcoes().getStatus().equalsIgnoreCase("Não-Vinculada")) {
+					comp.getAcoes().setStatus("Vinculada");
+					AcoesDAO.saveOrUpdate(comp.getAcoes());
+				}
 			}	
 		}
+		
 		return "/Alterar/alterar_competencias";
 	}
 	
@@ -73,8 +82,10 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 */
 	//Alterar, utilizar metodo com entidade vindo no parâmetro
 	public String consultarCompetencias() {
-		listCompetencias = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
-		return "/Alterar/alterar_competencias" ;
+		listCompetencias2 = CompetenciasDAO.filtrarCompetenciaPorEntidade(ent.getIdEntidades());
+		listCompetencias = listCompetencias2;
+//		System.out.println("Executei");
+		return "/Alterar/alterar_competencias.xhtml?faces-redirect=true" ;
 	}
 
 	/**
@@ -113,6 +124,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	 * @param e - método é chamado a partir de um evento Ajax.
 	 */
 	public void filtraEntidades(AjaxBehaviorEvent e){
+		competencias = CompetenciasDAO.findCompetencias(idCompetencias);
+		idEntidade = competencias.getEntidades().getIdEntidades();
 		if(idEntidade != 0) {
 			listEntidades = EntidadesDAO.listPersonalizada(idEntidade);
 		}else {
@@ -130,7 +143,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	public void addLista() {
 		competencias.setEntidades(ent);
 		competencias.setAcoes(AcoesDAO.findAcoes(idAcoes));
-		listCompetencias.add(competencias);
+		listCompetencias2.add(competencias);
 		save();
 		listaAcoesUpdate();
 		competencias = new Competencias();
@@ -154,7 +167,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	
+	/**
+	 * Itera a lista de competências e adiciona a ação ligada a compentencia selecionada na lista de ações e remove esta competência do campo de escolha.
+	 */
 	public void listaCompetenciasUpdate(){
 		Iterator<Competencias> c = listCompetencias.iterator();
 		while(c.hasNext()) {
@@ -168,6 +183,10 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		competencias = new Competencias();
 	}
 	
+	/**
+	 * Remove ações que já estão ligadas a entidade selecionada da lista de ações apresentada 
+	 * @return String que representa a view de redirecionamento
+	 */
 	public String filtrarAcoesEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.ent.getCompetenciases());
 		Iterator<Acoes> a = AcoesBean.acoes.iterator();
@@ -184,7 +203,9 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	
+	/**
+	 * Deleta competências inseridos na lista de exclusão
+	 */
 	public void delete() {
 		if(verificaPermissao()) {
 			for (Competencias comp : listCompetenciasExcluir) {
@@ -196,13 +217,19 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 2 || user.getPerfil() == 4 || user.getPerfil() == 5 ) {
+		if(user.getPerfil() == 2 || user.getPerfil() == 4 || user.getPerfil() == 5 || user.getPerfil() == 6) {
 			return true;
 		}else {
 			return false;
 		}	
 	}
 
+	/**
+	 * Limpa objeto competência da sessão
+	 */
+	public void limparCompetencia() {
+		competencias = new Competencias();
+	}
 	
 
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -211,7 +238,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		return competencias;
 	}
 
-	public void setCompetencia(Competencias competencias) {
+	public void setCompetencias(Competencias competencias) {
 		this.competencias = competencias;
 	}
 	
@@ -268,17 +295,23 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		idAcoes = NovaIdAcoes;
 	}
 
-	public List<Competencias> getListCompetencias() {
-		return listCompetencias;
-	}
-
 	public void setListCompetencias(List<Competencias> NovalistCompetencias) {
 		listCompetencias = NovalistCompetencias;
 	}
 
-	public void setCompetencias(Competencias competencias) {
-		this.competencias = competencias;
+	public  List<Competencias> getListCompetencias() {
+		return listCompetencias;
 	}
+
+	
+	public List<Competencias> getListCompetencias2() {
+		return listCompetencias2;
+	}
+
+	public void setListCompetencias2(List<Competencias> listCompetencias2) {
+		this.listCompetencias2 = listCompetencias2;
+	}
+
 
 	public Entidades getEnt() {
 		return ent;
@@ -321,6 +354,14 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 
 	public void setListEntidades(List<Entidades> NovalistEntidades) {
 		listEntidades = NovalistEntidades;
+	}
+
+	public int getIdCompetencias() {
+		return idCompetencias;
+	}
+
+	public  void setIdCompetencias(int novoIdCompetencias) {
+		idCompetencias = novoIdCompetencias;
 	}
 	
 	

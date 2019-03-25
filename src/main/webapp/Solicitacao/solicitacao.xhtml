@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{solicitacao.modoAnonimo}">
+<h:body >
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -14,41 +14,41 @@
 		
 			<!-- Mensagem de Erro -->
 			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+				
+			<h:form id="solicitacao" styleClass="cad_form" prependId="false" enctype="multipart/form-data" onsubmit="return Validate(this);" rendered="#{usuario.usuario.perfil eq '3' or usuario.usuario.perfil eq '4' or solicitacao.manifestacaoAnon eq true}" >
 
-			<h:form id="solicitacao" styleClass="cad_form" prependId="false"
-				rendered="#{usuario.usuario.perfil eq '3'  or usuario.usuario.perfil eq '4'  or solicitacao.solicitacao.tipo eq 'Denúncia'}"
-				enctype="multipart/form-data" >
 
 				<div class="ficha">
-					<p:steps activeIndex="2" styleClass="custom tres" readonly="false">
-						<p:menuitem value="Tipo de solicitação" url="/index.xhtml"/> 
-						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario2.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
-						<p:menuitem value="Realizar Solicitação" url="#" />
+					<p:steps activeIndex="3" styleClass="custom" readonly="false">
+						<p:menuitem value="Tipo de manifestação" url="/index.xhtml"/>
+						<p:menuitem value="Identificação" url="#" />
+						<p:menuitem value="Determinar órgão / Entidade" url="/Solicitacao/questionario3.xhtml?faces-redirect=true" disabled="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"/>
+						<p:menuitem value="Realizar Manifestação" url="#" />
 					</p:steps>
 
 					<h:panelGroup styleClass="box" style="margin-top: 1em">
-
-						<h:outputText value="Realizar Solicitação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
 						
-						<p:outputLabel value="Orgão:" for="orgao" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"/>
-						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.nome}" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia'}" style="color:#a8a8a8;" />
+<!-- 						<p>#{solicitacao.sigilo}</p> -->
+						
+						<h:outputText value="Realizar #{solicitacao.solicitacao.tipo}" rendered="#{solicitacao.solicitacao.tipo ne 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						<h:outputText value="Realizar Pedido de Informação" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						
+						<h:panelGroup id="panelTexto" style="margin: 1em; padding: 1em; background: #dae3f6; color: #0081c2; border-radius: 3px; max-width: 700px;" rendered="#{solicitacao.sigilo eq '2'}">
+							<h:outputText value="As manifestações registradas de maneira anônima são consideradas &quot;Comunicações&quot; e não é possível o seu acompanhamento. Caso deseje acompanhar o andamento da sua manifestação e receber uma resposta do órgão ou entidade, por favor identifique-se." />
+						</h:panelGroup>
+						
+						<p:outputLabel value="Órgão:" for="orgao"/>
+						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />
 
-						<p:outputLabel value="Assunto:" />
-						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.acoes.titulo}" rendered="#{solicitacao.solicitacao.acoes ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
-						<p:selectOneMenu id="assDen" value="#{solicitacao.idAcao}"
-							disabled="#{solicitacao.solicitacao.tipo ne 'Denúncia'}"
-							rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia'}"  >
-							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-							<f:selectItems value="#{acoes.acoes}" var="acoesDen"
-								itemLabel="#{acoesDen.titulo}"
-								itemValue="#{acoesDen.idAcoes}" />
-						</p:selectOneMenu>
+						<p:outputLabel value="Tema:" />
+						<h:outputText id="tema" value="#{solicitacao.solicitacao.competencias.acoes.titulo}" style="color:#a8a8a8;" />
+						
+						<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	/>
+						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.competencias.descricao}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
 
-						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação'}">
+						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' and !solicitacao.manifestacaoAnon}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />
-							<p:selectOneMenu id="recResp" 
-								value="#{solicitacao.solicitacao.formaRecebimento}"
-								rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
+							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 								<f:selectItem itemLabel="Email" itemValue="2" />
@@ -223,20 +223,19 @@
 						</h:panelGroup>
 						</h:panelGroup>
 
-						<h:panelGroup styleClass="inline" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and usuario.usuario.nick ne 'null'}">
-							<h:outputLabel value="Realizar denúncia anonimamente: " />
-							<p:selectBooleanCheckbox value="#{solicitacao.modoAnonimo}"
-								disabled="#{usuario.usuario.nick eq null}">
-							</p:selectBooleanCheckbox>
-						</h:panelGroup>
-
 						<p:outputLabel value="Título:" for="titulo" />
-						<p:inputText id="titulo" size="78" value="#{solicitacao.solicitacao.titulo}" />
+						<p:inputText id="titulo" size="78" maxlength="100" value="#{solicitacao.solicitacao.titulo}" />
 
 						<p:outputLabel value="Mensagem:" for="mensagem" />
 						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
+						
+                        <p:fileUpload id="fileUpload" value="#{solicitacao.file}" mode="simple" skinSimple="true" label="Adicionar Anexo" style="margin-top: 1em" />
 
-						<p:fileUpload value="#{solicitacao.file}" mode="simple" auto="true"  />
+<!-- 						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="1000000" skinSimple="true" -->
+<!-- 							allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
+<!-- 							fileLimit="1" style="margin-top: 1em" auto="false" -->
+<!-- 							invalidSizeMessage="Arquivo muito grande." invalidFileMessage="Formato não suportado."/> -->
+							
 					</h:panelGroup>
 
 					<p:commandLink class="botaoLink" ajax="false" action="#{solicitacao.save}" update="mainMenu">
@@ -316,6 +315,44 @@
                 }
             });
         });
+
+
+		function Validate(oForm) {
+			var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png", ".docx", ".pdf", ".xlsx", ".ods", ".mp3", ".wav", ".AAC", ".FLAC", ".ALAC", ".ALE", ".FLV", ".mp4", ".avi", ".WMV", ".MOV", ".zip", ".rar", ".7z"];    
+			var arrInputs = oForm.getElementsByTagName("input");
+			var oFile = document.getElementById("fileUpload_input").files[0];
+
+		    for (var i = 0; i &lt; arrInputs.length; i++) {
+		        var oInput = arrInputs[i];
+		        if (oInput.type == "file") {
+		            var sFileName = oInput.value;
+		            if (sFileName.length > 0) {
+		                var blnValid = false;
+						if (oFile.size &lt; 15 * (1024 * 1024)) {
+
+			                for (var j = 0; j &lt; _validFileExtensions.length; j++) {
+			                    var sCurExtension = _validFileExtensions[j];
+			                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+			                        blnValid = true;
+			                        break;
+			                    }
+			                }
+							
+			                if (!blnValid) {
+			                    alert("Formato inválido. São aceitos apenas: " + _validFileExtensions.join(", "));
+			                    return false;
+			                }
+			                
+						} 
+						else {
+							alert("Tamanho do arquivo excedeu o limite de 15 MB aceitos");
+		                    return false;
+						}
+		                
+		            }
+		        }
+		    }
+		}
 
 	</script>
 

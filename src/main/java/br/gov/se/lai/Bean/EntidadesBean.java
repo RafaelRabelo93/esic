@@ -2,6 +2,8 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +25,7 @@ import br.gov.se.lai.utils.PermissaoUsuario;
 
 @ManagedBean(name = "entidades")
 @SessionScoped
-public class EntidadesBean implements Serializable, PermissaoUsuario{
+public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable<Entidades>{
 	
 	/**
 	 * 
@@ -39,6 +41,8 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	private boolean forOrgao = true;
 	private List<Entidades> listEntidades;
 	private List<Entidades> listOrgao;
+	private List<Entidades> listOrgaoRelatorios;
+	private List<Entidades> listOrgaosAtivos;
 	private List<Entidades> todasEntidades;
 	private List<Entidades> todasEntidadesAtivas;
 	private List<Entidades> entidadesFiltradas;
@@ -48,10 +52,16 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	public void init() {
 		entidades = new Entidades();
 		todasEntidades = EntidadesDAO.list();
-		todasEntidadesAtivas = EntidadesDAO.listAtivas();
+//		todasEntidades.sort(Comparator.comparing(Entidades::getSigla));
+		todasEntidadesAtivas = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		listOrgaosAtivos = EntidadesDAO.listOrgaos();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
 	
+	/**
+	 * Salva instância de Entidade criada configurando como default que a entidade está ativa 
+	 * @return
+	 */
 	public String save() {
 		if(verificaPermissao()) {
 			if(verificaUnicidadeNome()) {
@@ -62,7 +72,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 					EntidadesDAO.saveOrUpdate(entidades);
 					serEntidadeOrgao(entidades);
 					entidades =  new Entidades();
-					return "cad_competencias2";
+					return "/Alterar/alterar_competencias.xhtml?faces-redirect=true";
 					
 				}else {
 					FacesContext.getCurrentInstance().addMessage(null,
@@ -82,14 +92,22 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		
 	}
 	
+	/**
+	 * Exclui permanentemente o objeto Entidade do banco de dados 
+	 */
 	public void delete() {
 		if(verificaPermissao() ) {
 			entidades = EntidadesDAO.find(idEntidades);
-			//EntidadesDAO.delete(entidades);
+			EntidadesDAO.delete(entidades);
 			entidades.setAtiva(false);
 		}	
 	}
 	
+	/**
+	 * Edita o objeto Entidade 
+	 * @param entidade
+	 * @return
+	 */
 	public String edit(Entidades entidade) {
 		if(verificaPermissao()) {
 			EntidadesDAO.saveOrUpdate(entidade);
@@ -100,8 +118,11 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 
 
-
-	public void listarOrgaos(AjaxBehaviorEvent e) {
+	/**
+	 * Lista todos os órgãos ativos
+	 * @param ajaxBehaviorEvent
+	 */
+	public void listarOrgaos(AjaxBehaviorEvent ajaxBehaviorEvent) {
 		if(forOrgao) {
 			this.listOrgao = null;
 		}else {
@@ -110,6 +131,9 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	}
 	
+	/**
+	 * Chama o método filtrarAcoes da classe Acoes para disponibilizar ações que não estão vincualadas a entidade
+	 */
 	public void verificaCompetenciasEntidade(){
 		List<Competencias> compEnt = new ArrayList<Competencias>(this.entidades.getCompetenciases());
 		AcoesBean acaobean = new AcoesBean();
@@ -118,13 +142,18 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	
 	@Override
 	public boolean verificaPermissao() {
-		if(user.getPerfil() == 5 || user.getPerfil() == 6) {
+		UsuarioBean u = new UsuarioBean();
+		if(user.getPerfil() == 5 || user.getPerfil() == 6 || u.isResponsavelOGE()) {
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
+	/**
+	 * Lista entidades passíveis de receber uma solicitação no modo encaminhamento, remove da lista entidade do responsável vinculado a sessão.
+	 * @return
+	 */
 	public List<Entidades> exibirEntidadesEncaminhamento(){
 		List<Entidades> listaAuxiliar = todasEntidades;
 		List<Responsavel> resps = new ArrayList<>(user.getResponsavels());
@@ -135,6 +164,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		return listaAuxiliar;
 	}
 	
+	/**
+	 * Verifica se existe alguma Entidade cadastrada com nome inserida
+	 * @return
+	 */
 	public boolean verificaUnicidadeNome() {
 		if(!EntidadesDAO.existeNome(entidades.getNome())) {
 			return true;
@@ -142,7 +175,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Verifica se há alguma Entidade cadastrada com a sigla inserida
+	 */
 	public boolean verificaUnicidadeSigla() {
 		if(!EntidadesDAO.existeSigla(entidades.getSigla())) {
 			return true;
@@ -152,6 +188,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
+	/**
+	 * Sinaliza a Entidade como um Órgão apontando o campo idOrgao para si mesma.
+	 * @param entidade
+	 */
 	public void serEntidadeOrgao(Entidades entidade) {
 		if(entidade.isOrgao()) {
 			entidade.setIdOrgaos(entidade.getIdEntidades());
@@ -169,6 +209,9 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 		entidades = new Entidades();
 		return  "/Cadastro/cad_entidades.xhtml?faces-redirect=true";
 	}
+	
+
+
 //GETTERS E SETTERS ==============================================	
 	
 	
@@ -272,6 +315,19 @@ public class EntidadesBean implements Serializable, PermissaoUsuario{
 
 	public void setEntidadesFiltradas(List<Entidades> entidadesFiltradas) {
 		this.entidadesFiltradas = entidadesFiltradas;
+	}
+
+	public List<Entidades> getListOrgaosAtivos() {
+		return listOrgaosAtivos;
+	}
+
+	public void setListOrgaosAtivos(List<Entidades> listOrgaosAtivos) {
+		this.listOrgaosAtivos = listOrgaosAtivos;
+	}
+
+	@Override
+	public int compareTo(Entidades e1) {
+		return this.entidades.getSigla().compareTo(e1.getSigla());
 	}
 	
 	

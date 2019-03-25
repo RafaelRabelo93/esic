@@ -19,10 +19,13 @@
 
 				<div class="ficha">
 	
-					<h:outputText value="Órgãos / Entidades" styleClass="tituloBox" />
+					<h:panelGroup styleClass="column" style="width:100%">
+							<h:outputText value="Órgãos / Entidades" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
+							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
+						</h:panelGroup>
 						
 						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade" styleClass="botaoLink"
-							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" style="margin-bottom: 10px"
+							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" style="margin-bottom: 10px"
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaEntidade').click();}">
 							<i class="fa fa-plus" style="color: white; padding-right: 7px;" />
 							<h:outputText value="Nova Entidade" />
@@ -61,7 +64,7 @@
 							<p:column headerText="Competências" width="110" style="text-align: center" rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }">
 								<p:commandLink class="botaoLinkIcon" id="consComp"
 									action="#{competencias.consultarCompetencias}" style="margin:5px"
-									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}"
+									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades) or usuario.isResponsavelOGE())}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consComp').click();}">
 									<i class="fa fa-refresh"/>
 									<f:setPropertyActionListener value="#{orgaos}" target="#{competencias.ent}" />
@@ -70,20 +73,37 @@
 	
 							<p:column headerText="Editar" width="45"  rendered="#{usuario.usuario.perfil ne '3' or usuario.responsavel.nivel ne '1' }" sortBy="#{usuario.responsavel.entidades}" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="editComp" update="dialog" onclick="PF('editDialog').show();"
-									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}"
+									disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades) or usuario.isResponsavelOGE())}"
 									onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editComp').click();}">
 									<i class="fa fa-pencil-square-o" />
-									<f:setPropertyActionListener value="#{orgaos}"
-										target="#{entidades.entidades}" />
+									<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
 								</p:commandLink>
 							</p:column>
 	
 							<p:column headerText="Solicitações" width="90" style="text-align: center">
 								<p:commandLink class="botaoLinkIcon" id="consSol" action="#{solicitacao.consultarSolicitacaoEspecifica(orgaos.idEntidades)}"
-										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades))}"
+										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades) or usuario.isResponsavelOGE())}"
 										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
 									<i class="fa fa-list" />
 									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{solicitacao.idEntidades}" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column headerText="Estatistica" width="90" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" id="consEst" action="#{relatorioDinamico.redirecionarRelatorioPorEntidade()}" 
+										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades) or usuario.isResponsavelOGE())}"
+										onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('consSol').click();}">
+									<i class="fa fa-bar-chart" />
+									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{relatorios.idEntidade}" />
+								</p:commandLink>
+							</p:column>
+							
+							<p:column headerText="Avaliação" width="90" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" action="#{avaliacao.redirecionarAvaliacao()}" 
+										disabled="#{!(usuario.usuario.perfil eq '6' or usuario.usuario.perfil eq '5' or responsavel.permissaoDeAcessoEntidades(orgaos.idOrgaos, orgaos.idEntidades) or usuario.isResponsavelOGE())}">
+									<i class="fa fa-star" />
+									<f:setPropertyActionListener value="#{orgaos}" target="#{entidades.entidades}" />
+									<f:setPropertyActionListener value="#{orgaos.idEntidades}" target="#{avaliacao.idEntidade}" />
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>

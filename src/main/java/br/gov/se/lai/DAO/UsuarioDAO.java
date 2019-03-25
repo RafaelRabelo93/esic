@@ -135,4 +135,28 @@ public class UsuarioDAO {
     		return results;
     	}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> completeNickNoGestor (String prefix) {
+		Query query = em.createQuery("SELECT nick FROM Usuario as usu WHERE usu.nick LIKE '%"+prefix+"%' AND usu.perfil != 5 AND usu.perfil != 6 ORDER BY usu.nick");
+		List<String> results = query.getResultList();
+		
+		if (results.isEmpty()) {
+			return null;
+		}else {    		
+			return results;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> completeNickUser (String prefix) {
+		Query query = em.createQuery("SELECT nick FROM Usuario as usu WHERE usu.nick LIKE '%"+prefix+"%' AND usu.perfil = 1 ORDER BY usu.nick");
+		List<String> results = query.getResultList();
+		
+		if (results.isEmpty()) {
+			return null;
+		}else {    		
+			return results;
+		}
+	}
 }

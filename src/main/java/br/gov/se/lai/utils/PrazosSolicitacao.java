@@ -7,37 +7,38 @@ import java.util.Date;
 import br.gov.se.lai.entity.Solicitacao;
 
 public class PrazosSolicitacao {
+	
+	private static int prazoResposta = 5; // Produção: 20
+	private static int prazoProrrogada = 2; // Produção: 10
+	private static int prazoRecurso = 2; // Produção: 10
+	private static int prazoEncaminhamento = 1; // Produção: 5
+	
 
 	public static int prazoResposta(String status) {
 		switch (status) {
 		case "Aberta":
-			return 4;
-//			return constanteAdicionalTempo;
+			return prazoResposta;
 		case "Prorrogada":
-			return 2;
-//			return constanteAdicionalTempo;
-		case "Respondida":
-			return 2;
-//			return constanteAdicionalTempo;
+			return prazoProrrogada;
+		case "Atendida":
+			return prazoRecurso;
 		case "Recurso":
-			return 2;
-//			return 5;
+			return prazoRecurso;
 		default:
-			return 4;
-//			return constanteTempo;
+			return prazoResposta;
 		}
 	}
 	
 	
 	
 	@SuppressWarnings({ "finally", "unused" })
-	public static boolean verificaSe24Horas(Solicitacao solicitacao) {
+	public static boolean verificaSeEncaminhavel(Solicitacao solicitacao) {
 		boolean retorno = false;
 		try {
 			Calendar hoje = Calendar.getInstance();
 			Calendar limite = Calendar.getInstance();
 			limite.setTime(solicitacao.getDataIni());
-			limite.add(Calendar.DATE, +1);
+			limite.add(Calendar.DATE, +prazoEncaminhamento);
 			if (hoje.before(limite)) {
 				retorno = true;
 			}
@@ -46,12 +47,14 @@ public class PrazosSolicitacao {
 			return retorno;
 		}
 	}
-
+	
 	/**
 	 * Função contarDiasUteis
 	 * 
 	 * Essa função retorna o número que deve ser acrescido na data limite da solicitação 
 	 * para que sejam considerados apenas os dias uteis.
+	 * 
+	 * @deprecated
 	 * 
 	 * @return
 	 */
@@ -70,29 +73,73 @@ public class PrazosSolicitacao {
 	}
 	
 	/**
-	 * Função diaUtilDataLimite
+	 * Função gerarPrazoDiasUteis
 	 * 
-	 * Essa função verifica se a data limite cai em um final de semana. Caso verdade, é acrescido 
-	 * 1 ou 2 dias ao prazo final. 
+	 * Esta função gera uma data limite a partir de um prazo considerando apenas dias úteis a partir da data estabelecida.
 	 * 
-	 * @param status - para recuperar quantidade de dias de prazo variante do tipo de solicitação.
-	 * @return
+	 * @deprecated
+	 * 
+	 * @param data - Data inicial que será acrescida a quantida de dias úteis.
+	 * @param prazo - Número que representa a quantidade de dias úteis que devem ser acrescidos.
+	 * @return Data final após contagem de dias úteis.
 	 */
 	
-	public static Date diaUtilDataLimite(String status) {
+	public static Date gerarPrazoDiasUteis(Date data, int prazo) {
 		
-		Calendar limite = Calendar.getInstance();
-		int limiteDia = limite.get(Calendar.DAY_OF_WEEK);
-		limite.setTime(java.sql.Date.valueOf(LocalDate.now().plusDays(
-				limiteDia == Calendar.FRIDAY ? prazoResposta(status) +3 : prazoResposta(status)
-				)));
+		Calendar dataInicial = Calendar.getInstance();
+		dataInicial.setTime(data);
 		
-		
-		
-		if( (limiteDia == Calendar.SUNDAY) || (limiteDia == Calendar.SATURDAY)) {
-			limite.add(Calendar.DATE, +Calendar.DAY_OF_WEEK);
+		while(prazo > 0) {
+			dataInicial.add(Calendar.DAY_OF_MONTH, 1);
+			int diaDaSemana = dataInicial.get(Calendar.DAY_OF_WEEK);
+			
+			if (diaDaSemana != Calendar.SATURDAY && diaDaSemana != Calendar.SUNDAY) {
+				--prazo;
+			}
+			
 		}
 		
-		return limite.getTime();
+		return dataInicial.getTime();
 	}
+	
+	/**
+	 * Função gerarPrazoDiaUtilLimite
+	 * 
+	 * Essa função verifica se a data inicial ou limite cai em um final de semana. Caso verdade, é acrescido 
+	 * 1 ou 2 dias ao prazo final. 
+	 * 
+	 * @param data - Data inicial que será acrescida a quantida de dias úteis.
+	 * @param prazo - Número que representa a quantidade de dias úteis que devem ser acrescidos.
+	 * @return Data final após contagem de dias úteis.
+	 */
+	
+	public static Date gerarPrazoDiaUtilLimite(Date data, int prazo) {
+		
+		Calendar dataInicial = Calendar.getInstance();
+		dataInicial.setTime(data);
+		
+		dataInicial.add(Calendar.DAY_OF_MONTH, +1);
+		
+		pularFimDeSemana(dataInicial);
+		
+		dataInicial.add(Calendar.DAY_OF_MONTH, prazo);
+		
+		pularFimDeSemana(dataInicial);
+		
+		return dataInicial.getTime();
+	}
+	
+	public static Calendar pularFimDeSemana(Calendar data) {
+		
+		if (data.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			data.add(Calendar.DAY_OF_MONTH, +2);
+		} else if (data.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			data.add(Calendar.DAY_OF_MONTH, +1);
+		}
+		
+		return data;
+	}
+	
+	
+	
 }

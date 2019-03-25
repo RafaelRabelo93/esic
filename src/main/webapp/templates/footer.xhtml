@@ -10,40 +10,41 @@
 
 	<ui:composition>
 	
+	<h:form>
 	<div class="footer">
 	
 <!-- 		<p style="display:flex; color:white; align-items:center; justify-content: center; margin: 0; padding:0">Conteúdo do rodapé padrão</p> -->
 	
 		<h:panelGroup styleClass="column">
 	
-			<h:panelGroup styleClass="inline">
+			<h:panelGroup styleClass="inline" style="padding: 0 10px">
 			
 				<h:outputLink value="http://www.cge.se.gov.br/" styleClass="inline" style="text-decoration: none">
 					<h:graphicImage value="#{resource['img/brasao_governo_sergipe.png']}" style="padding: 5px" height="80" />
 					<h:panelGroup styleClass="column">
-						<h2>Controladoria-Geral do Estado</h2>
+						<h2>Secretatira de Estado da Transparência e Controle</h2>
 						<p>Governo do Estado de Sergipe</p>
 					</h:panelGroup>
 				</h:outputLink>
 				
-				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
-					<h:outputLink value="http://lai.se.gov.br/wp-content/uploads/2018/02/Decreto-30.947_2018-Regulamenta-a-Lei-de-Acesso-%C3%A0-Informa%C3%A7%C3%A3o.pdf" styleClass="inline footerLink" style="margin-bottom: .5em">
+				<h:panelGroup styleClass="inline" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
+					<h:commandLink action="/Menu/legislacao" styleClass="inline footerLink" style="margin-bottom: .5em; align-self: ;">
 						<p>Legislação</p>
-					</h:outputLink>
-					
-					<h:outputLink value="http://www.transparenciasergipe.se.gov.br/TRS/" styleClass="inline footerLink">
-						<p>Portal da Transparência de Sergipe</p>
-					</h:outputLink>
-				</h:panelGroup>
+					</h:commandLink>
 				
-				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
-					<h:outputLink value="http://www.acessoainformacao.gov.br/acessoainformacaogov/" styleClass="inline footerLink" style="margin-bottom: .5em">
-						<p>Acesso à informação CGU</p>
-					</h:outputLink>
-					
-					<h:outputLink value="http://transparencia.gov.br/" styleClass="inline footerLink">
-						<p>Portal da Transparência Brasil</p>
-					</h:outputLink>
+					<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
+						<h:outputLink value="http://www.acessoainformacao.gov.br/acessoainformacaogov/" styleClass="inline footerLink" style="margin-bottom: .5em">
+							<p>Acesso à Informação Brasil</p>
+						</h:outputLink>
+						
+						<h:outputLink value="http://transparencia.gov.br/" styleClass="inline footerLink" style="margin-bottom: .5em">
+							<p>Portal da Transparência Brasil</p>
+						</h:outputLink>
+						
+						<h:outputLink value="http://www.transparenciasergipe.se.gov.br/TRS/" styleClass="inline footerLink">
+							<p>Portal da Transparência de Sergipe</p>
+						</h:outputLink>
+					</h:panelGroup>
 				</h:panelGroup>
 				
 			</h:panelGroup>
@@ -54,12 +55,23 @@
 				<p>13 de Julho - CEP 49020-150</p>
 				<p>Aracaju - Sergipe</p>
 				
-				<p style="margin-top: 2em">Governo do Estado de Sergipe © - 2018</p>
+				
 			</h:panelGroup>
+			
 			
 		</h:panelGroup>
 	
+			<h:panelGroup styleClass="notice column">
+				<h:panelGroup styleClass="inline">
+					<p>Este sistema é melhor visualizado nos navegadores</p>
+					<i class="fa fa-firefox" style="margin: 0 5px 0 10px;color: #6384ab"/> <p>Firefox e</p>
+					<i class="fa fa-chrome" style="margin: 0 5px 0 10px;color: #6384ab"/> <p>Chrome.</p>
+				</h:panelGroup>
+				<p style="font-size:12px">Governo do Estado de Sergipe © - 2018</p>
+			</h:panelGroup>
+			
 	</div>
+	</h:form>
 	
 	</ui:composition>
 

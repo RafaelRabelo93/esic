@@ -3,10 +3,10 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
-	<display-name>SICC</display-name>
+	<display-name>SE-Ouv</display-name>
 	<description>Sistema Eletrônico de Informação ao Cidadão</description>
 	<welcome-file-list>
-		<welcome-file>loginAdmin.xhtml</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -26,10 +26,10 @@
 			<param-name>thresholdSize</param-name>
 			<param-value>10240</param-value>
 		</init-param>
-		<init-param>
-			<param-name>uploadDirectory</param-name>
-			<param-value>/resource/arquivos</param-value>
-		</init-param>
+<!-- 		<init-param> -->
+<!-- 			<param-name>uploadDirectory</param-name> -->
+<!-- 			<param-value>/resource/arquivos</param-value> -->
+<!-- 		</init-param> -->
 	</filter>
 
 	<filter-mapping>
@@ -39,5 +39,13 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
+	<session-config>
+	    <session-timeout>30</session-timeout>
+	</session-config>
+	
+	<error-page>
+    	<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+   		<location>/Menu/timeOut.xhtml?faces-redirect=true</location>
+	</error-page>
 
 </web-app>

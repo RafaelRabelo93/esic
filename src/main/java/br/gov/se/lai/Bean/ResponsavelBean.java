@@ -53,7 +53,7 @@ public class ResponsavelBean implements Serializable{
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
 		this.responsavel = new Responsavel();
-		perfilGestorGeral();
+		popularListaCorrepondenteAPerfil();
 		pegarParamURL();
 		todosResponsaveis = new ArrayList<>(ResponsavelDAO.list());
 		listRespDaEntidade = new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()));
@@ -82,6 +82,8 @@ public class ResponsavelBean implements Serializable{
 					ResponsavelDAO.saveOrUpdate(responsavel);
 					UsuarioDAO.saveOrUpdate(usuario);	
 //					todosResponsaveis.add(responsavel);
+					NotificacaoEmail.enviarEmailCadastroResp(responsavel);
+					todosResponsaveis.add(responsavel);
 					responsavel = new Responsavel();
 					idEntidade = 0;
 					nick = null;
@@ -100,6 +102,8 @@ public class ResponsavelBean implements Serializable{
 			return null;
 		}
 	}
+	
+
 	
 	public void delete() {
 		//Será deletado a instancia de responsável? Ou apenas colocar como status inativo?
@@ -144,6 +148,12 @@ public class ResponsavelBean implements Serializable{
 		return "/index";
 	}
 	
+	/**
+	 * Retorna o valor booleano referente ao status de ligação entre o usuario e a Entidade passadas como parâmentro
+	 * @param usuario
+	 * @param idEntidadeEntrada
+	 * @return
+	 */
 	public boolean verificaExistenciaResponsavelNaEntidade(Usuario usuario, int idEntidadeEntrada) {
 		boolean retorno = false;
 		if(verificaExistenciaResponsavel(usuario)) {
@@ -165,6 +175,10 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	/**
+	 * Altera o usuário vinculado ao responsável
+	 * @return
+	 */
 	public String alterarVinculo() {
 		if(verificaAcesso()) {
 			this.usuario = UsuarioDAO.buscarUsuario(nick);
@@ -181,6 +195,10 @@ public class ResponsavelBean implements Serializable{
 		this.responsavel =  resp.get(0);		
 	}
 	
+	/**
+	 * Altera entidade do responsável para entidade pré-selecionada na sessão
+	 * @return
+	 */
 	public String alterarDadosUsuario() {
 		if(verificaExistenciaGestorSistema(usuarioBean.getUsuario()) || verificaAcesso()) {
 			responsavel.setEntidades(EntidadesDAO.find(idEntidade));
@@ -233,6 +251,12 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	/**
+	 * Verifica qual o proximo usuário na linha de permissões existe para a aquela sessão
+	 * @param instancia
+	 * @param entidadeId
+	 * @return
+	 */
 	public static int responsavelDisponivel(int instancia, int entidadeId) {
 		boolean busca = false;
 		Responsavel respBusca =  new Responsavel();
@@ -264,6 +288,7 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+
 	public String cadResponsavel() {
 		List<Responsavel> resp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
 		String retorno = "";
@@ -296,7 +321,11 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 
-	public void perfilGestorGeral() {
+	/**
+	 * Popula lista segundo o tipo de perfil de acesso do usuário. 
+	 * Perfil de administrador e de gestor do sistema tem acesso de todas as entidades ativas, e perfis de responsável tem acesso a(s) sua(s) entidade(s) correspondente(s). 
+	 */
+	public void popularListaCorrepondenteAPerfil() {
 		if(usuarioBean.getUsuario().getPerfil() == 6) {
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
@@ -328,6 +357,11 @@ public class ResponsavelBean implements Serializable{
 		return "/Cadastro/cad_responsavel.xhtml?faces-redirect=true";
 	}
 	
+	public String redirectCadastroGestor() {
+		usuario = new Usuario();
+		return "/Cadastro/cad_gestor.xhtml?faces-redirect=true";
+	}
+	
 	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
 		for (Responsavel respo : listRespDaEntidade) {
@@ -343,8 +377,14 @@ public class ResponsavelBean implements Serializable{
 		return retorno;
 	}
 	
+	/**
+	 * Retorna a lista de Entidades a quais o responsável que realizará cadastro tem acesso.
+	 * O administrador e gestor do sistema tem acesso a todas as entidades ativas.
+	 * Os gestores do órgão/entidade tem acesso somente aos seus órgãos/entidades.
+	 * @return
+	 */
 	public List<Entidades> possivelCadastrarResponsavelDasEntidades(){
-		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6) {
+		if(usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.getUsuario().getPerfil() == (short)6 || usuarioBean.isResponsavelOGE()) {
 			List<Entidades> entidadesPossiveisDeCadastro = new ArrayList<>(EntidadesDAO.listAtivas());
 			return entidadesPossiveisDeCadastro;
 		}else {
@@ -362,7 +402,7 @@ public class ResponsavelBean implements Serializable{
 	public boolean possivelEditarResponsavelDasEntidades(int idOrgao){
 		boolean retorno = false;
 		for (Responsavel resp : listRespDaEntidade) {
-			if(resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) {
+			if((resp.getNivel().equals((short)3) && resp.getEntidades().getIdOrgaos() == idOrgao) || resp.getEntidades().getSigla().equals("OGE")) {
 				retorno =  true;
 				break;
 			}
@@ -383,34 +423,42 @@ public class ResponsavelBean implements Serializable{
 		return entidade;
 	}
 	
+	/**
+	 * Método para requisitar cadastro de responsável. 
+	 * Este método procura qual o responsável mais apto a receber o pedido de cadastro de responsável, 
+	 * isto é, procura o gestor do órgão/entidade e então chama uma função que envia o email para o gestor 
+	 * @return
+	 */
 	public String requisitarCadastroResponsavel() {
-		Entidades ent = pegarEntidade();
-		String hashcode=UsuarioBean.generateSessionId();
-		String mensagem = "O usuário "+ usuarioBean.getUsuario().getNome()+" está requisitando acesso como representante no e-SIC."
-						  + "\n\n >> Dados do usuário:"
-						  + "\n\n Usuario: "+usuario.getNome()
-						  + "\n\n Nick: "+getNick()
-						  +"\n Email: "+getEmail()
-						  +"\n Entidade:" + ent.getNome() + " - "+ent.getSigla()
-						  + "\n\n Clique aqui: ";
-		int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
-		if(idDestinatario != -1) {
-			String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-			NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode, destinatario, mensagem);
-			return "/index.xhtml?faces-redirect=true";
-		}else {
-			idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+		if(UsuarioBean.tratarEmail(email)) {
+			Entidades ent = pegarEntidade();
+			String hashcode=UsuarioBean.generateSessionId();
+			int idDestinatario= responsavelDisponivel(3, ent.getIdEntidades());
 			if(idDestinatario != -1) {
-				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
-				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode, destinatario, mensagem);
+//				String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+				NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(),getEmail(), hashcode);
 				return "/index.xhtml?faces-redirect=true";
 			}else {
-				//Busca
-				return "/index.xhtml?faces-redirect=true";
+				idDestinatario= responsavelDisponivel(3, ent.getIdOrgaos());
+				if(idDestinatario != -1) {
+//					String destinatario = ResponsavelDAO.findResponsavel(idDestinatario).getEmail();
+					NotificacaoEmail.enviarEmailRequisicaoResponsavel(usuario, ent, usuario.getIdUsuario(), getIdEntidade(), getEmail(), hashcode);
+					return "/index.xhtml?faces-redirect=true";
+				}else {
+					//Busca
+					return "/index.xhtml?faces-redirect=true";
+				}
 			}
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Utilize o email institucional.", "Por favor não utilize seu email pessoal em um perfil de responsável."));
+			return null;
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void pegarParamURL() {
 		if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("access-key") != null ) {
@@ -425,9 +473,9 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
-	public List<Entidades> entidadesSolicitacaoResponsavel(){
+	public Set entidadesSolicitacaoResponsavel(){
 		Set ids = new HashSet<>(ResponsavelDAO.listEntidadePossuemGestores());
-		return EntidadesDAO.listAtivas();
+		return ids;
 	}
 	
 	
@@ -450,6 +498,8 @@ public class ResponsavelBean implements Serializable{
 		}
 		return siglaRetorno;
 	}
+	
+	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
 	public Usuario getUsuario() {

@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:body onload="#{responsavel.perfilCGE()}">
+<h:body>
 
 	<ui:composition template="/templates/template.xhtml">
 
@@ -21,10 +21,10 @@
 				
 					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório."	style="font-size:14px; color:gray" />
 
-					<h:panelGroup id="dataPanel" styleClass="box column" rendered="#{usuario.usuario.perfil eq '1'}">
+					<h:panelGroup id="dataPanel" styleClass="box column">
 						<h:outputText value="Solicitação de Cadastro como Responsável" style="color:#1a568c; font-size:25px; align-self: center; margin-bottom: 1em" />
 						
-						<p:outputLabel value="Nick: " for="nick" /> 
+						<p:outputLabel value="Usuário: " for="nick" /> 
 						<h:outputText id="nick" required="true" value="#{usuario.usuario.nick}"/> 
 							
 						<p:outputLabel value="Email: " for="email" /> 
@@ -33,7 +33,7 @@
 					 	</p:inputText> 
 					 	
 						 <p:outputLabel value="Orgão/Entidade: " for="orgao" rendered="true"  /> 
-						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true">
+						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains">
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.entidadesSolicitacaoResponsavel()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu> 

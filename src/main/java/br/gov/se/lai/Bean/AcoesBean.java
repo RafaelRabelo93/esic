@@ -33,6 +33,10 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	private List<Acoes>  acoesPendentes;
 	private List<Acoes>  acoesNaoVinculadas;
 	private List<Acoes>  acoesVinculadas;
+	private List<Acoes>  acoesPendentesFilter;
+	private List<Acoes>  acoesNaoVinculadasFilter;
+	private List<Acoes>  acoesVinculadasFilter;
+	private List<Acoes> acoesCadastradas;
 	
 	
 	@PostConstruct
@@ -42,6 +46,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
 		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
 		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+		acoesCadastradas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada", "Não-Vinculada"));
 		acoes = new ArrayList<Acoes>(acoesVinculadas);
 		acoes.addAll(acoesNaoVinculadas);		
 	}
@@ -80,21 +85,22 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 *	Caso seja cidadão não salva a ação e joga aviso de usuário sem permissão.
 	 */
 	public void save() {
-		if(verificaPermissao() ) {
-			if(usuarioBean.verificaGestor()) {
-				acao.setStatus("Não-vinculada");
-				AcoesDAO.saveOrUpdate(acao);
-				getAcoesNaoVinculadas().add(acao);
-				getAcoes().add(acao);
-			}else if(usuarioBean.verificaResponsavel() || usuarioBean.verificaResponsavelCidadaoPerfil() ){
-				acao.setStatus("Pendente");
-				AcoesDAO.saveOrUpdate(acao);
-				getAcoesPendentes().add(acao);
-			}
-		}else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
+//		if(verificaPermissao() ) {
+		if(usuarioBean.getUsuario().getPerfil() == (short)6 || usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.isResponsavelOGE()) {
+			acao.setStatus("Não-vinculada");
+			AcoesDAO.saveOrUpdate(acao);
+			getAcoesNaoVinculadas().add(acao);
+			getAcoes().add(acao);
+            getAcoesCadastradas().add(acao);
+		} else if(usuarioBean.getUsuario().getPerfil() == (short)4 || usuarioBean.getUsuario().getPerfil() == (short)2 ){
+			acao.setStatus("Pendente");
+			AcoesDAO.saveOrUpdate(acao);
+			getAcoesPendentes().add(acao);
 		}
+//		}else {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
+//		}
 		acao = new Acoes();
 	}
 	
@@ -210,7 +216,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 */
 	
 	public void autenticaAcao(Acoes acao) {
-		if(usuarioBean.verificaGestor()) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaAdmin()) {
 			acao.setStatus("Não-vinculada");
 			AcoesDAO.saveOrUpdate(acao);
 			getAcoesPendentes().remove(acao);
@@ -222,7 +228,7 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 	@Override
 	public boolean verificaPermissao() {
-		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil()) {
+		if(usuarioBean.verificaGestor() || usuarioBean.verificaResponsavel()|| usuarioBean.verificaResponsavelCidadaoPerfil() || usuarioBean.verificaAdmin()) {
 			return true;
 		}else {
 			return false;
@@ -239,7 +245,11 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	}
 	
 	
-	
+	public void refreshAcoes() {
+		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));
+		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
+		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
+	}
 	
 	//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	
@@ -302,6 +312,38 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 
 		public void setAcoesVinculadas(List<Acoes> acoesVinculadas) {
 			this.acoesVinculadas = acoesVinculadas;
+		}
+
+		public List<Acoes> getAcoesPendentesFilter() {
+			return acoesPendentesFilter;
+		}
+
+		public void setAcoesPendentesFilter(List<Acoes> acoesPendentesFilter) {
+			this.acoesPendentesFilter = acoesPendentesFilter;
+		}
+
+		public List<Acoes> getAcoesNaoVinculadasFilter() {
+			return acoesNaoVinculadasFilter;
+		}
+
+		public void setAcoesNaoVinculadasFilter(List<Acoes> acoesNaoVinculadasFilter) {
+			this.acoesNaoVinculadasFilter = acoesNaoVinculadasFilter;
+		}
+
+		public List<Acoes> getAcoesVinculadasFilter() {
+			return acoesVinculadasFilter;
+		}
+
+		public void setAcoesVinculadasFilter(List<Acoes> acoesVinculadasFilter) {
+			this.acoesVinculadasFilter = acoesVinculadasFilter;
+		}
+
+		public List<Acoes> getAcoesCadastradas() {
+			return acoesCadastradas;
+		}
+
+		public void setAcoesCadastradas(List<Acoes> acoesCadastradas) {
+			this.acoesCadastradas = acoesCadastradas;
 		}
 
 		

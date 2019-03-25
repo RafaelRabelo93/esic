@@ -42,7 +42,7 @@ public class MensagemDAO {
 				em.getTransaction().begin();
 				em.remove(msg);
 	            em.getTransaction().commit();
-	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Mensagem  exclu√≠da com sucesso!"));
+	            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Mensagem  exclui≠da com sucesso!"));
 			}            
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -63,17 +63,23 @@ public class MensagemDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Mensagem> listMensagensSolicitacao(int idSolicitacao){
-		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 1 OR msg.tipo = 2)";
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 1 OR msg.tipo = 2) ORDER BY msg.data ASC";
 		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
 	}
 	@SuppressWarnings("unchecked")
 	public static List<Mensagem> listMensagensHistorico(int idSolicitacao){
-		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 3 OR msg.tipo = 4)";
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 3 OR msg.tipo = 4) ORDER BY msg.data ASC";
 		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
 	}
 	@SuppressWarnings("unchecked")
 	public static List<Mensagem> listMensagensTramiteInterno(int idSolicitacao){
-		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 5)";
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = 5) ORDER BY msg.data ASC";
+		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Mensagem> listMensagensTipo(int idSolicitacao, short tipo){
+		String query = "From Mensagem as msg WHERE msg.solicitacao.idSolicitacao = "+idSolicitacao+" AND (msg.tipo = "+tipo+")";
 		return (List<Mensagem>) Consultas.buscaPersonalizada(query, em);
 	}
 	

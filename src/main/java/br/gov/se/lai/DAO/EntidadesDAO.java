@@ -87,18 +87,28 @@ public class  EntidadesDAO {
     public static List<Entidades> listOrgaos() {		
     	return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.orgao = "+1,em));
     }
+    @SuppressWarnings("unchecked")
+    public static List<Entidades> listEntidades() {		
+    	return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.orgao = "+0,em));
+    }
     
     
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> list() {		
-        return em.createNativeQuery("SELECT * FROM esic.entidades", Entidades.class).getResultList();
+        return em.createNativeQuery("SELECT * FROM esic.entidades ORDER BY entidades.sigla ASC", Entidades.class).getResultList();
+//        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent ORDER BY ent.sigla ASC",em));
     }  
 	
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listAtivas() {		
-        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1,em));
+        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1+" ORDER BY ent.sigla ASC",em));
     }
-
+	
+	@SuppressWarnings("unchecked")
+	public static List<Entidades>  FindSigla(String sigla) {		
+		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.sigla = '"+sigla+"'",em));
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listPersonalizada(int idEntidades) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idEntidades = "+idEntidades,em)); 
@@ -108,4 +118,37 @@ public class  EntidadesDAO {
 	public static List<Entidades> listOrgaoEntidade(int idOrgao) {
 		return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.idOrgaos = "+idOrgao,em)); 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<String> getSigla(int idOrgao) {
+		String HQL = "SELECT ent.sigla " +
+					"FROM Entidades as ent " +
+					"WHERE ent.idEntidades = " +idOrgao;
+		
+		return (List<String>) (Consultas.buscaPersonalizada(HQL,em));
+	}
+	
+	@SuppressWarnings("unchecked")
+  public static List<Entidades> listOrgaosComSolicitacoes(String dataInicial, String dataFinal) {
+		String HQL = "SELECT DISTINCT ent " + 
+				"FROM Entidades as ent " + 
+				"INNER JOIN Solicitacao as slt " + 
+				"ON slt.entidades.idEntidades = ent.idEntidades " + 
+				"WHERE ent.orgao = 1" +
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " +
+				"ORDER BY ent.sigla ASC";
+    	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
+    }
+	  
+    @SuppressWarnings("unchecked")
+    public static List<Entidades> listEntidadesComSolicitacoes(String dataInicial, String dataFinal) {		
+    	String HQL = "SELECT DISTINCT ent " + 
+				"FROM Entidades as ent " + 
+				"INNER JOIN Solicitacao as slt " + 
+				"ON slt.entidades.idEntidades = ent.idEntidades " + 
+				"WHERE ent.orgao = 0" +
+				"AND slt.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' " +
+				"ORDER BY ent.sigla ASC";
+    	return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
+    }
 }
