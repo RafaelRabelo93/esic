@@ -138,7 +138,7 @@ public class SolicitacaoBean implements Serializable {
 	public String save() {
 
 		String page = null;
-		gerarDataLimite();
+//		gerarDataLimite();
 //		gerarDataFim(); // caso seja Elogio/Sugestão
 //		if (solicitacao.getTipo().equals("Denúncia")) {
 //			settarCidadaoDenuncia(); // Caso específico para Denuncia
@@ -1125,7 +1125,7 @@ public class SolicitacaoBean implements Serializable {
 	public void respostaReformulacao() {
 		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		
-		gerarDataLimite();
+//		gerarDataLimite();
 		
 		// Reformulação
 		this.mensagem.setSolicitacao(solicitacao);

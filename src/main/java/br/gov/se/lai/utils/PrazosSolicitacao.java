@@ -8,10 +8,10 @@ import br.gov.se.lai.entity.Solicitacao;
 
 public class PrazosSolicitacao {
 	
-	private static int prazoResposta = 5; // Produção: 20
-	private static int prazoProrrogada = 2; // Produção: 10
-	private static int prazoRecurso = 2; // Produção: 10
-	private static int prazoEncaminhamento = 1; // Produção: 5
+	private static int prazoResposta = 20; // Produção: 20
+	private static int prazoProrrogada = 10; // Produção: 10
+	private static int prazoRecurso = 10; // Produção: 10
+	private static int prazoEncaminhamento = 5; // Produção: 5
 	
 
 	public static int prazoResposta(String status) {
