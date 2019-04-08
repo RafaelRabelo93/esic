@@ -972,15 +972,19 @@ public class UsuarioBean implements Serializable {
 	public boolean isResponsavelOGE() {
 		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
 		Usuario usuario = u.getUsuario();
-		
-		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
-			for (Responsavel resp : u.getUsuario().getResponsavels()) {
-				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
-					return true;
+		try {
+			if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && u.isPerfilAlterarCidadaoResponsavel())) {
+				for (Responsavel resp : u.getUsuario().getResponsavels()) {
+					if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+						return true;
+					}
 				}
-			}
+				return false;
+			} else return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
-		} else return false;
+		}
 	}
 	
 	public boolean gestorAtivo() {

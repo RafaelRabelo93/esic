@@ -74,12 +74,11 @@
 				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
 					
 					<h:panelGroup class="container">
-						<h:commandLink id="btnInfo" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+						<h:commandLink id="btnInfo" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/acessInfo.png']}" width="150px" />
-								<h:outputText styleClass="tituloMenu" value="Informação (e-SIC)" />
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/acessInfo.png']}" width="150px" />
+								<h:outputText styleClass="tituloMenu" value="Informação" />
+								<h:outputText styleClass="tituloMenu" value="()e-SIC)" style="font-size:1em"/>
 								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
@@ -89,12 +88,10 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container">
-						<h:commandLink id="btnSol" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+					<h:panelGroup class="container disabled">
+						<h:commandLink id="btnSol" styleClass="link card" onclick="PF('dlgAviso').show(); return false;" >
 							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/chat.png']}" width="150px" />
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/chat.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
 								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.tipo}" />
 							</div>
@@ -106,12 +103,10 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container">
-						<h:commandLink id="btnSugestao" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+					<h:panelGroup class="container disabled">
+						<h:commandLink id="btnSugestao" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
 							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/sugestion.png']}" width="150px" />
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/sugestion.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
 								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.tipo}" />
 							</div>
@@ -124,12 +119,10 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container">
-						<h:commandLink id="btnReclama" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+					<h:panelGroup class="container disabled">
+						<h:commandLink id="btnReclama" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
 							<div class="face front link">
-								<p:graphicImage styleClass="icone"
-									value="#{resource['img/icon/dislike.png']}" width="150px" />
+								<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
 								<f:setPropertyActionListener value="Reclamação"	target="#{solicitacao.tipo}" />
 							</div>
@@ -140,9 +133,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container">
-						<h:commandLink id="btnElogio" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+					<h:panelGroup class="container disabled">
+						<h:commandLink id="btnElogio" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Elogio" />
@@ -156,9 +148,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<h:panelGroup class="container">
-						<h:commandLink id="btnDenuncia" styleClass="link card"
-							action="#{solicitacao.iniciarSolicitacao()}">
+					<h:panelGroup class="container disabled">
+						<h:commandLink id="btnDenuncia" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/megaphone.png']}" width="150px" />
@@ -172,7 +163,31 @@
 							</div>
 						</h:commandLink>
 					</h:panelGroup>
-
+					
+					<p:dialog widgetVar="dlgAviso" minHeight="40" modal="true" resizable="false" showEffect="fade" hideEffect="fade">
+						<h:outputText value="PREZADO CIDADÃO" styleClass="titulo" style="align-self: center;margin-bottom: 1em;font-size: 1.5em;color: #1a568c;" />
+						<p style="max-width: 600px;">Estamos em fase de implantação do Sistema SE-Ouv e, momentanemente, disponibilizaremos apenas o acesso ao E-SIC, o Sistema de Informações ao Cidadão. Em poucos dias o acesso será completo e contará também com as opções de Ouvidoria.</p>
+						<p>Você poderá usar os seguintes Canais de Atendimento para as demais manifestações:</p>
+						<h:panelGroup styleClass="inline">
+							<p style="margin: 0;" class="subTitulo">E-MAIL:</p>
+							<p style="margin: 0;">ouvidoriageral@setc.se.gov.br</p>
+						</h:panelGroup>
+						<h:panelGroup styleClass="inline">
+							<p style="margin: 0;" class="subTitulo">VIA POSTAL:</p>
+							<p style="margin: 0;">Ouvidoria Geral do Estado</p>
+						</h:panelGroup>
+							<p style="margin: 0;">Rua Vila Cristina, 1051, bairro 13 de julho</p>
+							<p style="margin: 0;">Aracaju , Cep: 49.020-150</p>
+						<h:panelGroup styleClass="inline" style="margin-bottom: .5em">
+							<p style="margin: 0;" class="subTitulo">TEL:</p>
+							<p style="margin: 0;">(79) 3179-4997</p>
+						</h:panelGroup>
+						<p style="margin: 0;">Pedimos desculpas. </p>
+						<p>Estamos trabalhando com o intuito de melhor lhe servir!</p>
+						<h:outputText value="Ouvidoria Geral do Estado de Sergipe - OGE" styleClass="subTitulo" style="align-self: center;font-size:16px"/>
+						<h:outputText value="Secretaria de Estado da Transparência e Controle - SETC" styleClass="subTitulo" style="align-self: center;font-size:16px"/>
+					</p:dialog>
+					
 				</h:panelGroup>
 
 

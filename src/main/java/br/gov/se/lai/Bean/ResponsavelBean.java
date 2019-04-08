@@ -36,7 +36,7 @@ public class ResponsavelBean implements Serializable{
 	private static final long serialVersionUID = -534835121161473086L;
 	private Responsavel responsavel;
 	private List<Entidades> entidades;
-	private UsuarioBean usuarioBean ;
+	private static UsuarioBean usuarioBean ;
 	private Usuario usuario;
 	private int idEntidade;
 	private int nivel;
@@ -364,14 +364,14 @@ public class ResponsavelBean implements Serializable{
 	
 	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
-		for (Responsavel respo : listRespDaEntidade) {
+		for (Responsavel respo : new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()))) {
+			System.out.println(respo.getUsuario().getNome());
 			if(respo.getEntidades().getIdOrgaos() == idOrgao) {
 				if(respo.getEntidades().getIdEntidades().equals(idEntidade)) {
 					retorno =  true;
-				}else if(responsavelDisponivel(1, idEntidade) == -1 ){
-					retorno =  true;
+//				}else if(responsavelDisponivel(1, idEntidade) == -1 ){
+//					retorno =  true;
 				}
-//				break;
 			}
 		}
 		return retorno;

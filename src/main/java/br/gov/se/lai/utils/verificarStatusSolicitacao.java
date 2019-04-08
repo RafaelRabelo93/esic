@@ -124,7 +124,8 @@ public class verificarStatusSolicitacao implements Job {
 								|| solicitacao.getStatus().equals("Reencaminhada")) {
 							MensagemBean.salvarStatus(solicitacao, "Sem Resposta", null, null, 0);
 							solicitacao.setStatus("Sem Resposta");
-							solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
+							// ATIVAR DATA PRAZO
+							//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
 							SolicitacaoDAO.saveOrUpdate(solicitacao);
 							System.out.println("Manifestação '" + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() +  "' Sem Resposta");
 

@@ -138,7 +138,7 @@ public class SolicitacaoBean implements Serializable {
 	public String save() {
 
 		String page = null;
-//		gerarDataLimite();
+		gerarDataLimite();
 //		gerarDataFim(); // caso seja Elogio/Sugestão
 //		if (solicitacao.getTipo().equals("Denúncia")) {
 //			settarCidadaoDenuncia(); // Caso específico para Denuncia
@@ -271,7 +271,7 @@ public class SolicitacaoBean implements Serializable {
 //			this.solicitacao.setStatus("Finalizada");
 //
 //		} else {
-			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
+//			this.solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Aberta")));
 			this.solicitacao.setStatus("Aberta");
 //		}
 	}
@@ -436,12 +436,12 @@ public class SolicitacaoBean implements Serializable {
 		finalizarSolicitacao();
 		solicitacao.setTipo(this.tipo);
 		if (!estaUsuarioLogado()) {
-//			System.out.println("Modo anônimo ativado");
-//			setManifestacaoAnon(true);
 			solicitacao.setSigilo((short) 2);
-//			setModoAnonimo(true);
-//			setModoSigilo(false);
-//			setModoIdentificavel(false);
+	//			System.out.println("Modo anônimo ativado");
+	//			setManifestacaoAnon(true);
+	//			setModoAnonimo(true);
+	//			setModoSigilo(false);
+	//			setModoIdentificavel(false);
 		}
 		CompetenciasBean competencias = new CompetenciasBean();
 		competencias.listCompetencias = new ArrayList<Competencias>();
@@ -582,8 +582,7 @@ public class SolicitacaoBean implements Serializable {
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
 			return "/Consulta/consulta";
 		} else {
-			if (ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos(),
-					getIdEntidades())) {
+			if (ResponsavelBean.permissaoDeAcessoEntidades(EntidadesDAO.find(getIdEntidades()).getIdOrgaos(), getIdEntidades())) {
 				this.filteredSolicitacoes = SolicitacaoDAO.listarPorEntidade(getIdEntidades());
 				return "/Consulta/consulta";
 			} else {
@@ -868,9 +867,11 @@ public class SolicitacaoBean implements Serializable {
 		if (solicitacao != null) {
 			solicitacao.setStatus(status);
 			if (solicitacao.getStatus().equals("Prorrogar")) {
-				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
+				// ATIVAR DATA PRAZO
+				//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(status)));
 			} else {
-				solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta(status)));
+				// ATIVAR DATA PRAZO
+				//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta(status)));
 			}
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
 			MensagemBean.salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
@@ -1125,7 +1126,7 @@ public class SolicitacaoBean implements Serializable {
 	public void respostaReformulacao() {
 		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 		
-//		gerarDataLimite();
+		gerarDataLimite();
 		
 		// Reformulação
 		this.mensagem.setSolicitacao(solicitacao);
@@ -1446,13 +1447,15 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	public boolean disProrrogar() {
-		try {
-			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Recurso")) {
-				return false;
-			} else return true;
-		} catch (Exception e) {
-			return true;
-		}
+		// ATIVAR DATA PRAZO
+		return true;
+//		try {
+//			if (solicitacao.getStatus().equals("Aberta") || solicitacao.getStatus().equals("Recurso")) {
+//				return false;
+//			} else return true;
+//		} catch (Exception e) {
+//			return true;
+//		}
 	}
 	
 	public boolean disRecurso() {

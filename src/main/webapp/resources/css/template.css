@@ -425,7 +425,7 @@
 .ui-steps.custom {
 	margin-top: 0;
     margin-bottom: 5vw;
-    width: 100%;
+/*     width: 100%; */
 }
  
 .ui-steps.custom .ui-steps-item .ui-menuitem-link {

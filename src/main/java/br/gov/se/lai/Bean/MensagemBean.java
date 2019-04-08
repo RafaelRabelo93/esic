@@ -139,7 +139,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	public void verificaMensagem() {
 		if(solicitacao.getStatus() != "Atendida") {
 			solicitacao.setStatus("Atendida");
-			solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
+			// ATIVAR DATA PRAZO
+			//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 			}
@@ -162,7 +163,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem.setData(new Date(System.currentTimeMillis()));
 		mensagem.setSolicitacao(solicitacao);
 		mensagem.setTipo((short)7);
-		solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
+		// ATIVAR DATA PRAZO
+		//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(new Date(System.currentTimeMillis()), PrazosSolicitacao.prazoResposta("Recurso")));
 		
 		if(MensagemDAO.saveOrUpdate(mensagem)) {
 			mensagensSolicitacao.add(mensagem);

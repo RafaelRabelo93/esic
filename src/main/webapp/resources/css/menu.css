@@ -465,6 +465,12 @@
    -ms-transition: 0.5s;
    -o-transition: 0.5s;
    transition: 0.5s;
+   
+}
+
+.disabled {
+   -webkit-filter: grayscale(90%) contrast(30%) brightness(1.5);
+   filter: grayscale(90%) contrast(30%) brightness(1.5);
 }
 
 .container:hover .card {
