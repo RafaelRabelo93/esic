@@ -24,6 +24,7 @@ public class Competencias implements java.io.Serializable {
 	private Acoes acoes;
 	private Entidades entidades;
 	private String descricao;
+	private boolean ativa;
 
 	public Competencias() {
 	}
@@ -73,6 +74,15 @@ public class Competencias implements java.io.Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	@Column(name = "ativa", nullable = false)
+	public boolean isAtiva() {
+		return this.ativa;
+	}
+
+	public void setAtiva(boolean ativa) {
+		this.ativa = ativa;
 	}
 
 }

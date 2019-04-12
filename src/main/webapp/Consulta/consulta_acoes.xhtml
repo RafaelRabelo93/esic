@@ -19,7 +19,7 @@
 				<h:form id="form" styleClass="ficha" style="padding-top: 0;" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }">
 
 					<h:panelGroup styleClass="column" style="margin-top:1em;width:100%">
-						<h:outputText value="Funções do Estado" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
+						<h:outputText value="Temas" styleClass="tituloBox" style="align-self:flex-start; margin:0; margin-left:5vw;" />
 						<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 					</h:panelGroup>
 
@@ -27,13 +27,13 @@
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaAcao').click();}"
 						rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 						<i class="fa fa-plus" style="color: white; padding-right: 7px" />
-						<h:outputText value="Nova Função" />
+						<h:outputText value="Novo Tema" />
 					</p:commandLink>
 					
 				<p:accordionPanel id="tab" activeIndex="0">
 					
-					<p:tab title="Funções Cadastradas" >
-						<p:dataTable id="acoes" emptyMessage="Funções não encontradas." var="ac" widgetVar="acoes" filteredValue="#{acoes.acoesVinculadasFilter}" value="#{acoes.acoesCadastradas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
+					<p:tab title="Temas Cadastradas" >
+						<p:dataTable id="acoes" emptyMessage="Temas não encontrados." var="ac" widgetVar="acoes" filteredValue="#{acoes.acoesVinculadasFilter}" value="#{acoes.acoesCadastradas}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" style="margin-bottom: 3vh" rows="10" rowsPerPageTemplate="10,15,30,50"
 						currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 							
 							<f:facet name="header">
@@ -65,8 +65,8 @@
 						</p:dataTable>
 					</p:tab>
 					
-					<p:tab title="Funções Solicitadas" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'   and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" >
-						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de funções." var="ac" widgetVar="novasAcoes" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
+					<p:tab title="Temas Solicitados" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" >
+						<p:dataTable id="novasAcoes" emptyMessage="Não há novas solicitações de temas." var="ac" widgetVar="novasAcoes" filteredValue="#{acoes.acoesPendentesFilter}" value="#{acoes.acoesPendentes}" rowKey="#{acoes.idAcao}" sortBy="#{ac.titulo}" paginator="true" rows="10" rowsPerPageTemplate="10,15,30,50"
 						 currentPageReportTemplate="(Página {currentPage} de {totalPages})" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="margin-bottom: 3vh">
 							
 							<f:facet name="header">
@@ -117,7 +117,7 @@
 							<p:panelGrid id="info" columns="1"
 								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Editar Função" styleClass="tituloBox"
+									<h:outputText value="Editar Tema" styleClass="tituloBox"
 										style="padding-bottom: 2vw;" />
 								</f:facet>
 
@@ -150,7 +150,7 @@
 							<p:panelGrid id="info2" columns="1"
 								style="border: none; width: 100%;">
 								<f:facet name="header">
-									<h:outputText value="Cadastro de Função" styleClass="tituloBox"
+									<h:outputText value="Cadastro de Tema" styleClass="tituloBox"
 										style="padding-bottom: 2vw;" />
 								</f:facet>
 
@@ -175,7 +175,7 @@
 					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
                          <h:panelGroup styleClass="column" style="align-items: center;; padding: 1em;">
                             <i class="fa fa-exclamation-triangle fa-3x" style="margin-bottom: 5px; color: crimson"/>
-                            <p style="margin: 0">Tem certeza que deseja deletar esta Função?</p>
+                            <p style="margin: 0">Tem certeza que deseja deletar este Tema?</p>
                             <p style="margin: 0; font-weight:bold">Esse processo é irreversível.</p>
                         </h:panelGroup>
                         <h:panelGroup styleClass="inline" style="justify-content: center; border-top: 1px solid gray">

@@ -50,21 +50,29 @@
 		
 		<div class="menuAcesso">
 			<h:panelGroup styleClass="inline">
-					<h:commandLink href="#manual" styleClass="botaoFoot">
-						<div id="titulo">
-							<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/>
-							<h:outputText value="Manual" style="padding-left:5%"/>
-						</div>
-						<p style="font-size:17px; color:#333">Visualizar manual do usuário</p>
-					</h:commandLink>
+<!-- 					<h:commandLink href="#manual" styleClass="botaoFoot"> -->
+<!-- 						<div id="titulo"> -->
+<!-- 							<p:graphicImage value="#{resource['img/icon/bookmark.png']}" width="20%" height="20%"/> -->
+<!-- 							<h:outputText value="Manual" style="padding-left:5%"/> -->
+<!-- 						</div> -->
+<!-- 						<p style="font-size:17px; color:#333">Visualizar manual do usuário</p> -->
+<!-- 					</h:commandLink> -->
 				
 				<h:outputLink value="http://lai.se.gov.br/" styleClass="botaoFoot">
 						<div id="titulo">
-						<p:graphicImage value="#{resource['img/icon/information.png']}" width="20%" height="20%"/>
+						<p:graphicImage value="#{resource['img/icon/acessoLogo.png']}" width="20%" height="2s0%"/>
 						<h:outputText value="LAI" style="padding-left:5%"/>
 					</div>
 						<p style="font-size:17px; color:#333">Acesso ao LAI</p>
 				</h:outputLink>
+				
+				<h:commandLink action="/Menu/formulariosSIC" styleClass="botaoFoot">
+					<div id="titulo">
+						<p:graphicImage value="#{resource['img/icon/form.png']}" width="20%" height="20%"/>
+						<h:outputText value="Formulários SIC" style="padding-left:5%; font-size: 90%;"/>
+					</div>
+						<p style="font-size:17px; color:#333">Formulários relacionados à Lei de Acesso à Informação</p>
+				</h:commandLink>
 			</h:panelGroup>
 			
 			<h:panelGroup styleClass="inline">

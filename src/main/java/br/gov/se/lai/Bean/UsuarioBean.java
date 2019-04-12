@@ -250,7 +250,8 @@ public class UsuarioBean implements Serializable {
 			usuarioNovo.setPerfil((short) 1);
 			if (!verificaExistenciaNick(usuarioNovo.getNick())) {
 				if(UsuarioDAO.saveOrUpdate(usuarioNovo)) {
-					return "/index.xhtml?faces-redirect=true";
+//					return "/index.xhtml?faces-redirect=true";
+					return null;
 				}else {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
 							"Não é possível cadastrar usuário.", "Preencha os campos vazios."));

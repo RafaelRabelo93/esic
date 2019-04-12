@@ -21,43 +21,63 @@
             
 			<h:form id="alterar_competencias" styleClass="ficha" rendered="#{usuario.usuario.perfil ne '0' and usuario.usuario.perfil ne '1' and usuario.usuario.perfil ne '3'}">
 					
-				<h:outputText value="Competências" styleClass="tituloBox" />
+				<h:outputText value="Competências #{competencias.competencias.entidades.sigla}" styleClass="tituloBox" />
 				
 				    <p:commandLink rendered="false" class="botaoLink" id="compSave" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('compSave').click();}"
-						action="#{competencias.save}" update="alterar_competencias:competencias_panel">
+						action="#{competencias.save}" update="alterar_competencias:table">
 				        <h:outputText value="Salvar Alterações" style="margin-right: 5px" />
 				        <i class="fa fa-pencil" />
 				    </p:commandLink>
 				
 				    <p:commandLink class="botaoLink" id="novaComp" onclick="PF('dlg').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' }"
 				    	onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaComp').click();}" style="margin-bottom: 1vh">
-				        <h:outputText value="Nova Competencia" style="margin-right: 5px" />
+				        <h:outputText value="Nova Compêtencia" style="margin-right: 5px" />
 				        <i class="fa fa-plus" />
 				    </p:commandLink>
 				
 					<h:panelGroup id="competencias_panel">
 
-						<p:dataTable id="table" var="comp" value="#{competencias.listCompetencias2}" rowKey="#{comp.idCompetencias}">
+						<p:dataTable id="table" var="comp" value="#{competencias.listComptAtivas}" rowKey="#{comp.idCompetencias}">
 
 							<f:facet name="header">
-							  <h:outputText value="Competências #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+							  <h:outputText value="Competências Vinculadas" style="font-size:20px; padding-bottom: 2vw;"/>
 							</f:facet>
 							
-							<p:column headerText="Funções">
-							    <h:panelGroup styleClass="column box" style="align-items: flex-start; border: none; margin: 0; padding: 0">
-								    <h:outputText value="#{comp.acoes.titulo}" style="font-weight: bold" />
-						            
-<!-- 						            <h:outputLabel value="Descrição da Ação:" for="acaoDesc" /> -->
-<!-- 						            <h:outputText id="acaoDesc" value="#{comp.acoes.descricao}" /> -->
-						            
-						            <h:outputLabel value="Descrição da competência:" for="compDesc" />
-					                <h:outputText id="compDesc" value="#{comp.descricao}" />
-					            </h:panelGroup>
+							<p:column headerText="Temas" sortBy="#{comp.acoes.titulo}">
+							    <h:outputText value="#{comp.acoes.titulo}" style="font-weight: bold" />
 							</p:column>
 							
-	                        <p:column headerText="Editar" width="50" style="text-align: center">
-								<p:commandLink class="botaoLinkIcon" update="editDialog:info" onclick="PF('editDialog').show();" >
-									<i class="fa fa-pencil-square-o"/>
+							<p:column headerText="Status" sortBy="#{comp.ativa}" width="80">
+								<h:outputText value="Ativo" rendered="#{comp.ativa}"/>
+								<h:outputText value="Inativo" rendered="#{!comp.ativa}"/>
+							</p:column>
+							
+					 		<p:column headerText="Desvincular" width="100" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" update="inativaDialog:inativaComp" onclick="PF('inativaDialog').show();">
+									<i class="fa fa-times"/>
+									<f:setPropertyActionListener value="#{comp}" target="#{competencias.competencias}"/>
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						
+						<p:dataTable id="table2" var="comp" value="#{competencias.listComptInativas}" rowKey="#{comp.idCompetencias}" style="margin-top: 1.5em">
+
+							<f:facet name="header">
+							  <h:outputText value="Competências Inativas" style="font-size:20px; padding-bottom: 2vw;"/>
+							</f:facet>
+							
+							<p:column headerText="Temas" sortBy="#{comp.acoes.titulo}">
+							    <h:outputText value="#{comp.acoes.titulo}" style="font-weight: bold" />
+							</p:column>
+							
+							<p:column headerText="Status" sortBy="#{comp.ativa}" width="80">
+								<h:outputText value="Ativo" rendered="#{comp.ativa}"/>
+								<h:outputText value="Inativo" rendered="#{!comp.ativa}"/>
+							</p:column>
+							
+					 		<p:column headerText="Reativar" width="100" style="text-align: center">
+								<p:commandLink class="botaoLinkIcon" update="ativaDialog:ativaComp" onclick="PF('ativaDialog').show();">
+									<i class="fa fa-check"/>
 									<f:setPropertyActionListener value="#{comp}" target="#{competencias.competencias}"/>
 								</p:commandLink>
 							</p:column>
@@ -66,27 +86,59 @@
 				
 			</h:form>
 			
-			<!-- Dialog Editar Competênncia -->
-			<p:dialog widgetVar="editDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
-				<h:form id="editDialog">
-					<p:outputPanel id="acaoEdit" styleClass="column">
-						<h:panelGroup id="info" styleClass="box" style="border: none; padding: 0;">
-							<h:outputText value="Editar Competência" styleClass="tituloBox" style="margin-bottom: 0"/>
-	
-							<p:outputLabel value="Função:" for="acao" />
-							<h:outputText id="acao" value="#{competencias.competencias.acoes.titulo}" />
-	
-							<p:outputLabel value="Descrição:" for="descricao" />
-							<p:inputTextarea id="descricao" rows="10" cols="62"	autoResize="true" required="true" value="#{competencias.competencias.descricao}"/>
-	
-							<h:outputText value="Os campos marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
+			<!-- Dialog Inativar Competência -->
+			<p:dialog widgetVar="inativaDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="inativaDialog">
+					<p:outputPanel id="inativaComp" styleClass="column">
+						<h:panelGroup styleClass="inline">
+							<h:outputText value="Deseja inativar o Tema " />
+							<h:outputText style="font-weight:bold; margin: 0 .1em; color: #1a568c;" value="#{competencias.competencias.acoes.titulo}" />
+							<h:outputText style="margin: 0 .5em" value=" da " />
+							<h:outputText style="font-weight:bold; margin: 0 .1em; color: #1a568c;" value="#{competencias.competencias.entidades.nome}" />
+							<h:outputText style="margin: 0 .5em" value=" ?" />
 						</h:panelGroup>
 						
-						<p:commandLink class="botaoLink" action="#{competencias.save}" id="editarComp" oncomplete="PF('editDialog').hide();" update="alterar_competencias:table"
-							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarComp').click();}">
-							<h:outputText value="Salvar" />
-							<i class="fa fa-check" style="color: white; padding-left: 3px" />
-						</p:commandLink>
+						<h:panelGroup styleClass="inline" style="-webkit-box-pack: space-evenly;-ms-flex-pack: space-evenly;justify-content: space-evenly;">
+							<p:commandLink class="botaoLink" action="#{competencias.edit(competencias.competencias)}" id="confirmInat" update="alterar_competencias:table alterar_competencias:table2" oncomplete="PF('inativaDialog').hide();" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarComp').click();}" style="margin-top: 1em; background: #40933b !important;">
+								<h:outputText value="Sim" />
+								<f:setPropertyActionListener value="#{false}" target="#{competencias.competencias.ativa}" />
+								<i class="fa fa-check" style="color: white; padding-left: 3px" />
+							</p:commandLink>
+							
+							<p:commandLink class="botaoLink" id="cancelInat" oncomplete="PF('inativaDialog').hide();" style="margin-top: 1em; background: #d52f2f !important;">
+								<h:outputText value="Não" />
+								<i class="fa fa-times" style="color: white; padding-left: 3px" />
+							</p:commandLink>
+						</h:panelGroup>
+						
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+			
+			<!-- Dialog Reativar Competência -->
+			<p:dialog widgetVar="ativaDialog" modal="true" showHeader="true" fitViewport="true" showEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<h:form id="ativaDialog">
+					<p:outputPanel id="ativaComp" styleClass="column">
+						<h:panelGroup styleClass="inline">
+							<h:outputText value="Deseja reativar o Tema " />
+							<h:outputText style="font-weight:bold; margin: 0 .1em; color: #1a568c;" value="#{competencias.competencias.acoes.titulo}" />
+							<h:outputText style="margin: 0 .5em" value=" da " />
+							<h:outputText style="font-weight:bold; margin: 0 .1em; color: #1a568c;" value="#{competencias.competencias.entidades.nome}" />
+							<h:outputText style="margin: 0 .5em" value=" ?" />
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="inline" style="-webkit-box-pack: space-evenly;-ms-flex-pack: space-evenly;justify-content: space-evenly;">
+							<p:commandLink class="botaoLink" action="#{competencias.edit(competencias.competencias)}" id="confirmInat" update="alterar_competencias:table alterar_competencias:table2" oncomplete="PF('ativaDialog').hide();" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('editarComp').click();}" style="margin-top: 1em; background: #40933b !important;">
+								<h:outputText value="Sim" />
+								<f:setPropertyActionListener value="#{true}" target="#{competencias.competencias.ativa}" />
+								<i class="fa fa-check" style="color: white; padding-left: 3px" />
+							</p:commandLink>
+							
+							<p:commandLink class="botaoLink" id="cancelInat" oncomplete="PF('ativaDialog').hide();" style="margin-top: 1em; background: #d52f2f !important;">
+								<h:outputText value="Não" />
+								<i class="fa fa-times" style="color: white; padding-left: 3px" />
+							</p:commandLink>
+						</h:panelGroup>
 						
 					</p:outputPanel>
 				</h:form>
@@ -94,16 +146,16 @@
 		
 		<!-- Dialog Nova Competência -->
 			<p:dialog widgetVar="dlg" modal="true" showHeader="true" fitViewport="true" showEffect="fade" 
-			hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onShow="#{competencias.limparCompetencia()}">
+			resizable="false" maximizable="false" draggable="false" closeOnEscape="true" onShow="#{competencias.limparCompetencia()}">
 				<h:form id="dialog">
 				<p:outputPanel id="dlg2" style="max-width: 700px; border:none">
 					<h:panelGroup styleClass="box" style="padding: 0; border: none; background: none">
 						<h:outputText value="Adicionar Competência" styleClass="tituloBox" />
 					
 						<h:outputLabel value="Órgão/Entidade:" /> 
-						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
+						<h:outputText id="redirect2" value="#{competencias.competencias.entidades.sigla} - #{competencias.competencias.entidades.nome}" style="font-size:20px; padding-bottom: 2vw;"/>
 						
-						<h:outputLabel value="Funções: " for="acoes" />
+						<h:outputLabel value="Temas: " for="acoes" />
 						<h:panelGroup styleClass="inline" style="width: 100%; justify-content: space-between;">
 							<p:selectOneMenu id="acoes" value="#{competencias.idAcoes}" filter="true" filterMatchMode="contains" styleClass="field selectField" style="min-width: 200px !important;">
 								<f:selectItem itemLabel="Selecione" itemValue="0" />
@@ -112,23 +164,23 @@
 	
 							<h:outputLabel value="Ou" style="margin: 0 5em" />
 							
-							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg3').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+							<p:commandLink class="botaoLink" onclick="PF('dlg3').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova Função" />
+								<h:outputText value="Novo Tema" />
 							</p:commandLink>
 							
-							<p:commandLink class="botaoLink" update="alterar_competencias" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
+							<p:commandLink class="botaoLink" onclick="PF('dlg2').show();" rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
-								<h:outputText value=" Nova Função" />
+								<h:outputText value="Novo Tema" />
 							</p:commandLink>
 						</h:panelGroup>
 						
-						<h:outputLabel value="Descrição: " for="descricao" />
-						<p:inputTextarea id="descricao" cols="60" rows="4" counter="display" value="#{competencias.competencias.descricao}"  maxlength="200"
-							counterTemplate="{0} caracteres restantes." style="width: 98%; resize: vertical;"/>
-						<h:outputText id="display" />
+<!-- 						<h:outputLabel value="Descrição: " for="descricao" /> -->
+<!-- 						<p:inputTextarea id="descricao" cols="60" rows="4" counter="display" value="#{competencias.competencias.descricao}"  maxlength="200" -->
+<!-- 							counterTemplate="{0} caracteres restantes." style="width: 98%; resize: vertical;"/> -->
+<!-- 						<h:outputText id="display" /> -->
 					
-					<p:commandLink styleClass="botaoLink" action="#{competencias.addLista}" update="alterar_competencias dialog:dlg2 " type="button" oncomplete="PF('dlg2').hide();" style="margin: 0;">
+					<p:commandLink styleClass="botaoLink" action="#{competencias.save}" update="alterar_competencias:table dialog:acoes " type="button" oncomplete="PF('dlg').hide();" style="margin-top: 1em">
 						<h:outputText value="Salvar"  />
 						<i class="fa fa-plus" style="margin-left: 5px"/>
 					</p:commandLink>
@@ -140,7 +192,7 @@
 				</p:dialog>
 				
 			<!-- Sub Dialog Nova Ação -->
-				<p:dialog header="Cadastrar Nova Função" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<p:dialog header="Cadastrar Novo Tema" widgetVar="dlg2" modal="true" showHeader="true" fitViewport="true" showEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog2">
 
 						<p:outputPanel id="dlg2" style="max-width: 700px">
@@ -156,8 +208,7 @@
 	
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" 
-							type="submit" oncomplete="PF('dlg2').hide();" update="dialog:dlg2">
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;" type="submit" oncomplete="PF('dlg2').hide();" update="dialog:acoes">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
 							</p:commandLink>
@@ -168,7 +219,7 @@
 				</p:dialog>
 				
 			<!-- Sub Dialog Solicitar Nova Ação -->
-				<p:dialog header="Solicitar Nova Função" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" hideEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
+				<p:dialog header="Solicitar Novo Tema" widgetVar="dlg3" modal="true" showHeader="true" fitViewport="true" showEffect="fade" resizable="false" maximizable="false" draggable="false" closeOnEscape="true">
 					<h:form id="dialog3">
 
 						<p:outputPanel id="dlg3" style="max-width: 700px">
@@ -183,7 +234,7 @@
 <!-- 								<h:outputText id="display" /> -->
 							</p:panelGrid>
 	
-							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:dlg2">
+							<p:commandLink class="botaoLink" action="#{acoes.save()}" style="margin: 0 .7vw 1vh 0; justify-self: flex-end;"  type="submit" oncomplete="PF('dlg3').hide();" update="dialog:acoes">
 								<h:outputText value="Salvar" style="margin-right: 5px"/>
 								<i class="fa fa-check" />
 							</p:commandLink>

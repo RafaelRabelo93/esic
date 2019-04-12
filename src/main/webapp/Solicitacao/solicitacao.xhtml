@@ -41,11 +41,8 @@
 						<h:outputText id="orgao" value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" style="color:#a8a8a8;" />
 
 						<p:outputLabel value="Tema:" />
-						<h:outputText id="tema" value="#{solicitacao.solicitacao.competencias.acoes.titulo}" style="color:#a8a8a8;" />
+						<h:outputText id="tema" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" />
 						
-						<p:outputLabel value="Assunto:" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	/>
-						<h:outputText id="assunto2" value="#{solicitacao.solicitacao.competencias.descricao}" rendered="#{solicitacao.solicitacao.competencias ne null and solicitacao.solicitacao.tipo ne 'Denúncia'}"	style="color:#a8a8a8;" />
-
 						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' and !solicitacao.manifestacaoAnon}">
 							<p:outputLabel value="Forma de recebimento da resposta:" />
 							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
@@ -223,7 +220,7 @@
 						</h:panelGroup>
 						</h:panelGroup>
 
-						<p:outputLabel value="Título:" for="titulo" />
+						<p:outputLabel value="Assunto:" for="titulo" />
 						<p:inputText id="titulo" size="78" maxlength="100" value="#{solicitacao.solicitacao.titulo}" />
 
 						<p:outputLabel value="Mensagem:" for="mensagem" />

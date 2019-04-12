@@ -78,7 +78,8 @@
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/acessInfo.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Informação" />
-								<h:outputText styleClass="tituloMenu" value="()e-SIC)" style="font-size:1em"/>
+								<br/>
+								<h:outputText styleClass="tituloMenu" value="(e-SIC)" style="font-size:1em"/>
 								<f:setPropertyActionListener value="Informação"	target="#{solicitacao.tipo}" />
 							</div>
 
@@ -164,28 +165,40 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<p:dialog widgetVar="dlgAviso" minHeight="40" modal="true" resizable="false" showEffect="fade" hideEffect="fade">
-						<h:outputText value="PREZADO CIDADÃO" styleClass="titulo" style="align-self: center;margin-bottom: 1em;font-size: 1.5em;color: #1a568c;" />
-						<p style="max-width: 600px;">Estamos em fase de implantação do Sistema SE-Ouv e, momentanemente, disponibilizaremos apenas o acesso ao E-SIC, o Sistema de Informações ao Cidadão. Em poucos dias o acesso será completo e contará também com as opções de Ouvidoria.</p>
+					<p:dialog widgetVar="dlgAviso" minHeight="40" modal="true" resizable="false" showEffect="fade" hideEffect="fade" showHeader="false" minWidth="600">
+						<h1 style="margin-bottom:.7em; text-align: center">Prezado Cidadão</h1>
+						<p:separator style="margin-top: 0; border-color: #5188E4; padding:0" styleClass="ui-separator"/>
+						
+						<p style="max-width: 600px;">Estamos em fase de implantação do Sistema SE-Ouv e, momentanemente, disponibilizaremos apenas o acesso ao E-SIC, o Sistema Eletrônico de Informações ao Cidadão. Em breve o acesso será completo e contará também com as opções de Ouvidoria.</p>
 						<p>Você poderá usar os seguintes Canais de Atendimento para as demais manifestações:</p>
-						<h:panelGroup styleClass="inline">
-							<p style="margin: 0;" class="subTitulo">E-MAIL:</p>
-							<p style="margin: 0;">ouvidoriageral@setc.se.gov.br</p>
+						
+						<h:panelGroup styleClass="column" style="justify-content:center; margin-bottom:1em">
+							<h:panelGroup styleClass="column">
+								<h3 style="margin-bottom:0; text-align: center">E-MAIL:</h3>
+								<p style="margin: 0; text-align: center">ouvidoriageral@setc.se.gov.br</p>
+							</h:panelGroup>
+							<h:panelGroup styleClass="column">
+								<h3 style="margin-bottom:0; text-align: center">VIA POSTAL:</h3>
+								<p style="margin: 0;text-align: center">Ouvidoria Geral do Estado</p>
+								<p style="margin: 0;text-align: center">Rua Vila Cristina, 1051, bairro 13 de julho</p>
+								<p style="margin: 0;text-align: center">Aracaju , Cep: 49.020-150</p>
+							</h:panelGroup>
+							<h:panelGroup styleClass="column" style="margin-bottom: .5em">
+								<h3 style="margin-bottom:0; text-align: center">TELEFONE:</h3>
+								<p style="margin: 0;text-align: center">(79) 3179-4997</p>
+								<p style="margin: 0;text-align: center">Atendimento: 7h às 13h</p>
+							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup styleClass="inline">
-							<p style="margin: 0;" class="subTitulo">VIA POSTAL:</p>
-							<p style="margin: 0;">Ouvidoria Geral do Estado</p>
-						</h:panelGroup>
-							<p style="margin: 0;">Rua Vila Cristina, 1051, bairro 13 de julho</p>
-							<p style="margin: 0;">Aracaju , Cep: 49.020-150</p>
-						<h:panelGroup styleClass="inline" style="margin-bottom: .5em">
-							<p style="margin: 0;" class="subTitulo">TEL:</p>
-							<p style="margin: 0;">(79) 3179-4997</p>
-						</h:panelGroup>
+						
 						<p style="margin: 0;">Pedimos desculpas. </p>
 						<p>Estamos trabalhando com o intuito de melhor lhe servir!</p>
 						<h:outputText value="Ouvidoria Geral do Estado de Sergipe - OGE" styleClass="subTitulo" style="align-self: center;font-size:16px"/>
 						<h:outputText value="Secretaria de Estado da Transparência e Controle - SETC" styleClass="subTitulo" style="align-self: center;font-size:16px"/>
+						
+						<p:commandLink class="botaoLink" id="closeDlg" oncomplete="PF('dlgAviso').hide();" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('closeDlg').click();}" style="margin-top: 1em">
+							<h:outputText value="Ok" />
+							<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						</p:commandLink>
 					</p:dialog>
 					
 				</h:panelGroup>
@@ -780,11 +793,11 @@
 					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
 							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/house.png']}" width="150px" />
+								value="#{resource['img/icon/checklist.png']}" width="150px" />
 
-							<h:outputText styleClass="tituloMenu" value="Funções do Estado" />
+							<h:outputText styleClass="tituloMenu" value="Temas" />
 
-							<p>Gerir lista de funções desempenhadas pelo estado</p>
+							<p>Gerir lista de temas tratados nas manifestações</p>
 						</h:commandLink>
 					</h:panelGroup>
 					

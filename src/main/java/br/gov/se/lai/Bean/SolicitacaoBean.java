@@ -158,7 +158,8 @@ public class SolicitacaoBean implements Serializable {
 		// Setar cidadão por sigilo
 		if (sigilo == 0 || sigilo == 1) {
 			settarCidadao();
-			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+			this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 		} else if (sigilo == 2) {
 			try {
 				solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
@@ -850,13 +851,14 @@ public class SolicitacaoBean implements Serializable {
 	// +++++++++++++++++++++++++++ Redirecionamento de paginas
 
 	public String questionarioParaSolicitacao() {
-		if (idCompetencias == 0 || idEntidades == 0) {
+		if (idAcao == 0 || idEntidades == 0) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não permite campos vazios.", "Preencha os campos."));
 			return null;
 		} else {
 			solicitacao.setEntidades(EntidadesDAO.find(idEntidades));
-			solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+//			solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
+			solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 			return "/Solicitacao/solicitacao.xhtml";
 		}
 	}

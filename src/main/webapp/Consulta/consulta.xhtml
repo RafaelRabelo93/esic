@@ -137,9 +137,7 @@
 								<h:outputText value="#{slt.protocolo}" />
 							</p:column>
 
-							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" visible="#{solicitacao.list[2]}"
-								filterBy="#{slt.tipo}" filterMatchMode="contains"
-								filterable="false">
+							<p:column headerText="Tipo" width="85" sortBy="#{slt.tipo}" visible="#{solicitacao.list[2]}" filterBy="#{slt.tipo}" filterMatchMode="contains" filterable="false">
 								<h:outputText value="#{slt.tipo}" />
 							</p:column>
 							
@@ -150,13 +148,13 @@
 								<h:outputText value="#{slt.entidades.sigla}" />
 							</p:column>
 
-							<p:column headerText="Assunto" width="120" sortBy="#{slt.tipo}" visible="#{solicitacao.list[4]}"
-								filterBy="#{slt.competencias.acoes.titulo}" filterMatchMode="contains"
+							<p:column headerText="Tema" width="120" sortBy="#{slt.tipo}" visible="#{solicitacao.list[4]}"
+								filterBy="#{slt.acoes.titulo}" filterMatchMode="contains"
 								filterable="false">
-								<h:outputText value="#{slt.competencias.acoes.titulo}" />
+								<h:outputText value="#{slt.acoes.titulo}" />
 							</p:column>
 							
-							<p:column headerText="Título" sortBy="#{slt.titulo}" width="150" visible="#{solicitacao.list[5]}"
+							<p:column headerText="Assunto" sortBy="#{slt.titulo}" width="150" visible="#{solicitacao.list[5]}"
 								filterBy="#{slt.titulo}" filterMatchMode="contains"	filterable="false">
 								<h:outputText value="#{slt.titulo}" />
 							</p:column>
@@ -284,15 +282,11 @@
 								<h:outputText value="(Sigilo)" rendered="#{solicitacao.solicitacao.sigilo eq '1'}" style="margin-left:.5em; font-weight:bold; color:#c02222"/>
 							</h:panelGroup>
 							
-							
-							<h:outputText value="Título:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.titulo}" />
-							
 							<h:outputText value="Tema:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.competencias.acoes.titulo}" />
-
+							<h:outputText value="#{solicitacao.solicitacao.acoes.titulo}" />
+							
 							<h:outputText value="Assunto:" style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.competencias.descricao}" />
+							<h:outputText value="#{solicitacao.solicitacao.titulo}" />
 
 							<h:outputText value="Órgão / Entidade:"	style="color:#1a568c; font-size:18px" />
 							<h:outputText value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
@@ -304,14 +298,15 @@
 						
 						<p:panelGrid columns="2" layout="grid"	style="border: none; width: 50%;">
 
-							<h:outputText value="Tipo de solicitacao:"
+							<h:outputText value="Tipo de manifestação:"
 								style="color:#1a568c; font-size:18px" />
-							<h:outputText value="#{solicitacao.solicitacao.tipo}" rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2')}"/>
+							<h:outputText value="#{solicitacao.solicitacao.tipo}" rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2') and solicitacao.solicitacao.tipo ne 'Informação'}"/>
+							<h:outputText value="Informação (e-SIC)" rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}"/>
 							<h:outputText value="Denúncia Sigilosa" rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2'}" />
 							
 
 							<h:outputText value="Status:" style="color:#1a568c; font-size:18px"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
-							<h:outputText value="#{solicitacao.solicitacao.status}"	rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
+							<h:outputText value="#{solicitacao.solicitacao.status}"/>
 
 							<h:outputText value="Instancia:" style="color:#1a568c; font-size:18px" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
 							<h:outputText value="#{solicitacao.solicitacao.instancia}ª instância" rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />

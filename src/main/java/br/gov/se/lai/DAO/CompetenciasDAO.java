@@ -71,17 +71,36 @@ public class  CompetenciasDAO {
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> list() {
 		return em.createNativeQuery("SELECT * FROM esic.competencias", Competencias.class).getResultList();
-    }  
+    }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> listAtivas() {
+		return em.createNativeQuery("SELECT * FROM esic.competencias WHERE competencias.ativa = 1", Competencias.class).getResultList();
+    }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> listInativas() {
+		return em.createNativeQuery("SELECT * FROM esic.competencias WHERE competencias.ativa = 0", Competencias.class).getResultList();
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> filtrarCompetencias(int idAcao) {
 		return (List<Competencias>) (Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.acoes.idAcoes = "+idAcao+" ORDER BY acoes.titulo ASC",em));
     }
 
-	
-	
 	@SuppressWarnings("unchecked")
 	public static List<Competencias> filtrarCompetenciaPorEntidade(int idEntidade) {
 		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.entidades.idEntidades = "+idEntidade,em);
     }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> filtrarCompetenciaAtivaPorEntidade(int idEntidade) {
+		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.entidades.idEntidades = "+idEntidade+" AND competencias.ativa = 1",em);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Competencias> filtrarCompetenciaInativaPorEntidade(int idEntidade) {
+		return (List<Competencias>) Consultas.buscaPersonalizada("FROM Competencias as competencias WHERE competencias.entidades.idEntidades = "+idEntidade+" AND competencias.ativa = 0",em);
+	}
 }

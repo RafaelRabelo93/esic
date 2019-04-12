@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error" />
+
+			<h:form style="padding: 1.5vw 15vw">
+			
+				<h1 style="margin-bottom: 0;">Formulários SIC</h1>
+				<p:separator style="margin-top: 0; margin-bottom: 2em; border-color: #5188E4;"/>
+				
+				<p>Esta seção reúne formulários relacionados à Lei de Acesso à Informação.</p>
+				<p>Os arquivos estão disponíveis em formato DOC (Microsoft Word) e em formato aberto ODT (OpenDocument.org) e podem ser baixados ao clicar na extensão desejada.</p>
+				
+				<h2>Formulários para Pedido de acesso à informação</h2>
+				
+				<h:panelGroup styleClass=" inline">
+					<h:panelGroup styleClass="column" style="background:white; border: 1px solid silver; padding: .5em; width: -webkit-fit-content;width: -moz-fit-content;width: fit-content;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center">
+						<h3>Pessoa Natural</h3>
+						
+						<h:panelGroup styleClass="inline">
+							<h:outputLink value="http://www.acessoainformacao.gov.br/lai-para-sic/sic-apoio-orientacoes/formularios/form-pedido_pn.doc" >
+								<p>DOC</p>
+							</h:outputLink>
+							<p> | </p>
+							<h:outputLink value="http://www.acessoainformacao.gov.br/lai-para-sic/sic-apoio-orientacoes/formularios/form-pedido_pn.odt" >
+								<p>ODT</p>
+							</h:outputLink>
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					<h:panelGroup styleClass="column" style="margin-left: 1em;background:white; border: 1px solid silver; padding: .5em; width: -webkit-fit-content;width: -moz-fit-content;width: fit-content;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center">
+						<h3>Pessoa Jurídica</h3>
+						
+						<h:panelGroup styleClass="inline">
+							<h:outputLink value="http://www.acessoainformacao.gov.br/lai-para-sic/sic-apoio-orientacoes/formularios/form-pedido_pj.doc" >
+								<p>DOC</p>
+							</h:outputLink>
+							<p> | </p>
+							<h:outputLink value="http://www.acessoainformacao.gov.br/lai-para-sic/sic-apoio-orientacoes/formularios/form-pedido_pj.odt" >
+								<p>ODT</p>
+							</h:outputLink>
+						</h:panelGroup>
+					</h:panelGroup>
+				  </h:panelGroup>
+
+			</h:form>
+			
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>
