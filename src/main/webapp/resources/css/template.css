@@ -812,6 +812,12 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .consultaDatalist .ui-datalist-data {
+	max-height: 50vh;
+	overflow: auto;
+	margin: 0;
+}
+
+.consultaDatalist .ui-datalist-data {
 /* 	background: red !important; */
 }
 
@@ -1139,7 +1145,7 @@ td.prazo.branco {
 
 .ui-tabs .ui-tabs-panel {
 	padding: 0 .7em !important;
-	border: 1px solid silver;
+	border: 1px solid silver !important;
 	border-top: none !important;
 	border-radius: 0;
 	padding: 0 0 0 .7em;

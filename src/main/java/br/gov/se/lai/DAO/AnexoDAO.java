@@ -51,13 +51,13 @@ public class AnexoDAO {
     	return em.find(Anexo.class, idAnexo) ;
     }
     
-
-	public static List<Anexo> list() {
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static List<Anexo> listarAnexoMensagem(int idMensagem){
+	public static List<Anexo> list(int idMensagem) {
 		return (List<Anexo>) Consultas.buscaPersonalizada("FROM Anexo as anx WHERE anx.mensagem.idMensagem = "+idMensagem,em);
 	}
+	
+	public static int temAnexo(int idMensagem) {
+		String HQL = "SELECT COUNT(anx.idAnexo) FROM Anexo as anx WHERE anx.mensagem.idMensagem = " + idMensagem;
+		return Consultas.contadorSQL(HQL, em);
+	}
+	
 }

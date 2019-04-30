@@ -1,5 +1,6 @@
 package br.gov.se.lai.Bean;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,12 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -30,7 +33,10 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
+import com.sun.mail.iap.ByteArray;
+
 import br.gov.se.lai.DAO.AnexoDAO;
+import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Solicitacao;
@@ -39,177 +45,61 @@ import br.gov.se.lai.entity.Solicitacao;
 @SessionScoped
 public class AnexoBean  implements Serializable {
 
-	private static final long serialVersionUID = 106779207846313149L;
+	private static final long serialVersionUID = -60333894898290094L;
 	private Anexo anexo;
-	private final String descricaoPadrao = "Anexo relacionado ao tema ";
-	private UploadedFile file;
-	private File arquivoEntrada;
-	private String descricao;
-	private String nomeView;
-	private StreamedContent fileDownload;
-	private static List<File> filesInFolder;
-	private static final String filesPath = "\\resources\\arquivos";
-
+//	private Mensagem mensagem;
+	private String nome;
+	private String tipo;
+	private Integer tamanho;
+	private Blob conteudo;
+	
 	@PostConstruct
 	public void init() {
-		anexo = new Anexo();
+		this.anexo = new Anexo();
 	}
 	
-	/**
-	 * Função save()
-	 * 
-	 * Função para salvar anexos.
-	 * Define diretório para armazenamento do arquivo. Recupera a extensão do arquivo, 
-	 * define nome e salva.
-	 * 
-	 * @param anexo - objeto para ser salvo.
-	 * @param mensagem - mensagem a qual o anexo será vinculado.
-	 * @param file - a mídia do anexo.
-	 * @throws IOException - caso dê erro na hora de escrever o arquivo.
-	 * @throws NullPointerException -  caso o objeto não tenha sido devidamente inicializado.
-	 */
-
-	public void save(Anexo anexo, Mensagem mensagem, UploadedFile file) throws IOException, NullPointerException{
-//		Path folder = Paths.get(filesPath);
-		Path folder = Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath );   
-		try (InputStream input = file.getInputstream()) {
-			if (!file.getFileName().equals("")) {
-				String[] infoExtensao = file.getContentType().split("/")[1].split("-");
-				String extensao = "." + infoExtensao[infoExtensao.length-1];
-				String anexoNome = mensagem.getSolicitacao().getIdSolicitacao().toString()+"_"+mensagem.getIdMensagem()+ "_anexo";
-				
-				Path filePath = Files.createTempFile(folder,anexoNome,extensao);
-				Files.copy(input, filePath, StandardCopyOption.REPLACE_EXISTING);
-				
-				anexo.setNome(anexoNome);
-				anexo.setFile(anexoNome+extensao);
-				anexo.setMensagem(mensagem);
-				if (anexo.getDescricao() == null) {
-					anexo.setDescricao("Anexo referente a " +mensagem.getSolicitacao().getTitulo() + "e mensagem do código "
-							+ mensagem.getIdMensagem().toString());
-				}
-			} else {
-				this.anexo.setNome("anexopadrao.png");
-			}
+	public void save(UploadedFile file, Mensagem mensagem) throws IOException{
+		try {
+			
+			anexo.setNome(file.getFileName());
+			anexo.setMensagem(mensagem);
+			anexo.setTamanho(file.getSize());
+			anexo.setTipo(file.getContentType());
+			anexo.setConteudo(file.getContents());
+			
 			AnexoDAO.saveOrUpdate(anexo);
-		} 
-	}
-	
-	/**
-	 * Função que recebe uma mensagem e retorna anexos ligados a ela.
-	 * Ainda está dando erro
-	 */
-	
-	public File downloadAnexo(Mensagem mensagem) {
-//		int msgKey = 0;
-//		for (Mensagem msg : mensagem.getSolicitacao().getMensagems()) {
-//			if(msg != mensagem) {
-//				msgKey++;
-//			}else {
-//				break;
-//			}
-//		}
-		listarFiles();
-		String retorno = null;
-//		String msgKeyStr = ""+msgKey;
-		for (File file : filesInFolder) {
-			String[] anexoNome = file.getName().split("_",4);
-			String solicitacaoNum = anexoNome[0];
-			String mensagemNum = anexoNome[1];
-			if(solicitacaoNum.equals(mensagem.getSolicitacao().getIdSolicitacao().toString()) && mensagemNum.equals(mensagem.getIdMensagem().toString())) {
-//				retorno = (Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath +"//"+file.getName())).toString();
-				arquivoEntrada = file;
-				nomeView = file.getName();
-				break;
-			}
-		}
-		
-		return arquivoEntrada;
-
-	}
-	
-	public boolean verificaExistencia(Mensagem msg) {
-		return !msg.getAnexos().isEmpty();
-	}
-
-	
-	/**
-	 * Função de download de arquivo.
-	 * @param msg
-	 * @return 
-	 */
-	
-	
-	public StreamedContent downloadArquivo(Mensagem msg) {	
-		try {
-			File file = downloadAnexo(msg);
-			if (file != null) {
-				InputStream in = new FileInputStream(file);
-				String contentType = Files.probeContentType(file.toPath());
-				String[] extensao = contentType.split("/")[1].split("-");
-				fileDownload = new DefaultStreamedContent(in, contentType, "download." + extensao[extensao.length - 1]);
-				return fileDownload;
-			}else {
-				return null;
-			}
-		} catch (IOException e) {
-			System.out.println("Erro:"+ e.getMessage());
-			return null;
-		}
-    }
-
-	/**
-	 * Função listarFiles
-	 * Lista todos os arquivos armazenados no diretório pré-definido.
-	 */
-	public static void listarFiles() {
-		try {
-			filesInFolder = (List<File>) Files.walk(Paths.get(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") + filesPath ))
-					.filter(Files::isRegularFile)
-					.map(Path::toFile)
-					.collect(Collectors.toList());
-		} catch (IOException e) {
+			
+		} catch (Exception e) {
 			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
 		}
 	}
 	
-	 /**
-	  * 
-	  * Função listarAnexos
-	  * Lista todos os anexos ligados a uma mensagem.
-	  *  
-	  * @param mensagem
-	  * @return
-	  */
-	public List<Anexo> listarAnexos(Mensagem mensagem){
-		return (List<Anexo>)AnexoDAO.listarAnexoMensagem(mensagem.getIdMensagem());
+	public boolean temAnexo(int idMensagem) {
+		int qtdAnexo = AnexoDAO.temAnexo(idMensagem);
+		if (qtdAnexo > 0) return true;
+		else return false;
 	}
 	
-	void goGet(HttpServletRequest request, HttpServletResponse response) {
-		File arquivo = new File("C:\\Users\\msmachado\\Pictures\\profile_github.png");
-		int tamanho = (int) arquivo.length();
+	public StreamedContent download(int idMensagem) throws IOException {
+		StreamedContent file;
 		
-		HttpServletResponse response1 = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		List<Anexo> anexoList = AnexoDAO.list(idMensagem);
+		Anexo anx = anexoList.get(0);
 		
-		response1.setContentType("image/png");
-		response1.setContentLength(tamanho);
-		response1.setHeader("Content-Disposition", "attachment); filename=profile.png");
+		byte[] buf = anx.getConteudo();
 		
-		OutputStream output;
-		try {
-			output = response1.getOutputStream();
-			Files.copy(arquivo.toPath(), output);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		InputStream inputStream = new ByteArrayInputStream(buf);
+        
+        file = new DefaultStreamedContent(inputStream, anx.getTipo(), anx.getNome());
+        
+        inputStream.close();
+    
+        return file;
 	}
 	
+//GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	// GETTERS E SETTERS
-	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
-	
-
 	public Anexo getAnexo() {
 		return anexo;
 	}
@@ -218,37 +108,44 @@ public class AnexoBean  implements Serializable {
 		this.anexo = anexo;
 	}
 
-	public UploadedFile getFile() {
-		return file;
+//	public Mensagem getMensagem() {
+//		return mensagem;
+//	}
+//
+//	public void setMensagem(Mensagem mensagem) {
+//		this.mensagem = mensagem;
+//	}
+
+	public String getNome() {
+		return nome;
 	}
 
-	public void setFile(UploadedFile file) {
-		this.file = file;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
-	public StreamedContent getFileDownload() {
-		return fileDownload;
+	public Integer getTamanho() {
+		return tamanho;
 	}
 
-	public void setFileDownload(StreamedContent fileDownload) {
-		this.fileDownload = fileDownload;
+	public void setTamanho(Integer tamanho) {
+		this.tamanho = tamanho;
 	}
 
-	public String getNomeView() {
-		return nomeView;
+	public Blob getConteudo() {
+		return conteudo;
 	}
 
-	public void setNomeView(String nomeView) {
-		this.nomeView = nomeView;
+	public void setConteudo(Blob conteudo) {
+		this.conteudo = conteudo;
 	}
-
 	
 }

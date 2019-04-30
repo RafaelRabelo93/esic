@@ -1,5 +1,4 @@
 package br.gov.se.lai.entity;
-// Generated 18/09/2017 08:12:36 by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -74,7 +73,8 @@ public class Acoes implements java.io.Serializable {
 	public void setCompetenciases(Set<Competencias> competenciases) {
 		this.competenciases = competenciases;
 	}
-
+	
+	@Column(name = "status", length = 45)
 	public String getStatus() {
 		return status;
 	}

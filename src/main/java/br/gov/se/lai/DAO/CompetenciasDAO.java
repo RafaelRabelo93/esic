@@ -22,7 +22,7 @@ public class  CompetenciasDAO {
     			em.merge(competencias);
     		}
             em.getTransaction().commit();
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Competencias  salvo(a) com sucesso!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Competencias  salvo(a) com sucesso!"));
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar competencia "));
         	System.out.println(e);

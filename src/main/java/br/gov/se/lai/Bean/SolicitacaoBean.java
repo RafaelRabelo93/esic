@@ -42,6 +42,7 @@ import org.primefaces.model.Visibility;
 import com.mchange.v1.util.ListUtils;
 
 import br.gov.se.lai.DAO.AcoesDAO;
+import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.CidadaoDAO;
 import br.gov.se.lai.DAO.CompetenciasDAO;
 import br.gov.se.lai.DAO.EntidadesDAO;
@@ -49,8 +50,8 @@ import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.ResponsavelDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
-import br.gov.se.lai.anexos.UploadFile;
 import br.gov.se.lai.entity.Acoes;
+import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Cidadao;
 import br.gov.se.lai.entity.Competencias;
 import br.gov.se.lai.entity.Entidades;
@@ -115,6 +116,7 @@ public class SolicitacaoBean implements Serializable {
 	private List<Boolean> list = Arrays.asList(true, true, true, true, true, true, true, true, false, false, true, true);
 	private String tipoMudar;
 	public boolean manifestacaoAnon;
+	private Anexo anexo;
 	
 	@PostConstruct
 	public void init() {
@@ -128,6 +130,7 @@ public class SolicitacaoBean implements Serializable {
 		this.entidades = new ArrayList<Entidades>(EntidadesDAO.list());
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		this.anexo = new Anexo();
 	}
 
 	/**
@@ -139,14 +142,6 @@ public class SolicitacaoBean implements Serializable {
 
 		String page = null;
 		gerarDataLimite();
-//		gerarDataFim(); // caso seja Elogio/Sugestão
-//		if (solicitacao.getTipo().equals("Denúncia")) {
-//			settarCidadaoDenuncia(); // Caso específico para Denuncia
-//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
-//		} else {
-//			settarCidadao();
-//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
-//		}
 
 		// Salvar Solicitação
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
@@ -175,11 +170,6 @@ public class SolicitacaoBean implements Serializable {
 				dadosRecebimentoSolicitacao(solicitacao);
 			}
 			
-//		if (solicitacao.getTipo().equals("Denúncia")) {
-//			this.mensagem.setUsuario(UsuarioDAO.findUsuario(0));
-//		} else	{
-//			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
-//		}
 		
 		if (sigilo == 0 || sigilo == 1) {
 			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
@@ -196,21 +186,21 @@ public class SolicitacaoBean implements Serializable {
 		
 		if (!(file.getContents().length == 0)) {
 			try {
-				UploadFile upload = new UploadFile();
-				upload.upload(file, mensagem.getIdMensagem());
+//				UploadFile upload = new UploadFile();
+//				upload.upload(file, mensagem.getIdMensagem());
+//				AnexoBean anexo = new AnexoBean();
+//				System.out.println("1 - " + file.getFileName());
+				this.anexo.setMensagem(mensagem);
+				this.anexo.setNome(file.getFileName());
+				this.anexo.setTamanho(file.getSize());
+				this.anexo.setTipo(file.getContentType());
+				this.anexo.setConteudo(file.getContents());
+				AnexoDAO.saveOrUpdate(anexo);
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
 			}
 		}
-			
-//			if (!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo") || !solicitacao.getTipo().equals("Sugestão") || !solicitacao.getTipo().equals("Reclamação")) {
-//				addQuantidadeSolicitacaoTotal();
-//				addQuantidadeSolicitacaoPendente();
-//			} else if (solicitacao.getTipo().equals("Sugestão") || solicitacao.getTipo().equals("Reclamação")) {
-//				addQuantidadeSolicitacaoTotal();
-//				addQuantidadeSolicitacaoFinalizada();
-//			}
 			
 			if(!solicitacao.getCidadao().getUsuario().getNick().contains("anonimo")) {
 				NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
@@ -227,7 +217,7 @@ public class SolicitacaoBean implements Serializable {
 		} finally {
 			solicitacao = new Solicitacao();
 			setManifestacaoAnon(false);
-			System.out.println("Setou");
+//			System.out.println("Setou");
 			finalizarSolicitacao();
 			return page;
 		}
@@ -547,20 +537,27 @@ public class SolicitacaoBean implements Serializable {
 		}
 //		
 		List<Solicitacao> tempList = new ArrayList<Solicitacao>();
+		
+		int idEntidade;
+				
 		for (Responsavel resp : userBean.getUsuario().getResponsavels()) {
+			
+			idEntidade = resp.getEntidades().getIdEntidades();
 			
 			if (resp.isAtivo()) {
 				if (tempList.isEmpty()) {
-					tempList = SolicitacaoDAO.listarPorEntidade(resp.getEntidades().getIdEntidades());
+					tempList = SolicitacaoDAO.listarPorEntidade(idEntidade);
+//					System.out.println("1. Adicionei " + idEntidade);
 				}
 				else {
-					tempList.addAll(SolicitacaoDAO.listarPorEntidade(resp.getEntidades().getIdEntidades()));
+					tempList.addAll(SolicitacaoDAO.listarPorEntidade(idEntidade));
+//					System.out.println("2. Adicionei " + idEntidade);
 				}
-			}
-			
+			}	
 		}
+		
 		this.filteredSolicitacoes = tempList;
-
+		
 		if (userBean.getUsuario().getPerfil() == (short) 5 || userBean.getUsuario().getPerfil() == (short) 6) {
 //			this.filteredSolicitacoes.addAll(new ArrayList<Solicitacao>(SolicitacaoDAO.listPorStatus("Denúncia")));
 			this.filteredSolicitacoes = SolicitacaoDAO.list();
@@ -956,8 +953,8 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 		MensagemBean.attMensagemSolicitacao(mensagem);
 		NotificacaoEmail.enviarEmailNotificacaoRecurso(solicitacao);
-		addQuantidadeSolicitacaoPendente();
-		rmvQuantidadeSolicitacaoRespondida();
+		//addQuantidadeSolicitacaoPendente();
+		//rmvQuantidadeSolicitacaoRespondida();
 		mensagem = new Mensagem();
 	}
 	
@@ -1462,7 +1459,7 @@ public class SolicitacaoBean implements Serializable {
 	
 	public boolean disRecurso() {
 		try {
-			if (!recursoLiberado() || solicitacao.getStatus().equals("Finalizada") || !solicitacao.getDatafim().equals(null)) {
+			if (!recursoLiberado() || solicitacao.getStatus().equals("Finalizada")) {
 				return true;
 			} else return false;
 		} catch (Exception e) {

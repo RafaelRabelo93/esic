@@ -80,12 +80,10 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 *  Salva uma nova ação. Verifica o perfil do usuário que está salvando.
 	 * 	Caso seja um gestor do sistema salva com status de não-vinculada
 	 * 	visto que ainda não está vinculada a uma entidade/órgao.
-	 * 	Caso seja um responsável salva como pendente e ainda fica indisponível para
-	 * 	uso no sistema.
+	 * 	Caso seja um responsável salva como pendente e ainda fica indisponível para	uso no sistema.
 	 *	Caso seja cidadão não salva a ação e joga aviso de usuário sem permissão.
 	 */
 	public void save() {
-//		if(verificaPermissao() ) {
 		if(usuarioBean.getUsuario().getPerfil() == (short)6 || usuarioBean.getUsuario().getPerfil() == (short)5 || usuarioBean.isResponsavelOGE()) {
 			acao.setStatus("Não-vinculada");
 			AcoesDAO.saveOrUpdate(acao);
@@ -96,11 +94,11 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 			acao.setStatus("Pendente");
 			AcoesDAO.saveOrUpdate(acao);
 			getAcoesPendentes().add(acao);
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
 		}
-//		}else {
-//			FacesContext.getCurrentInstance().addMessage(null,
-//					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ação não efetuada.", "Usuário sem permissão."));
-//		}
+		
 		acao = new Acoes();
 	}
 	
@@ -243,7 +241,6 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acao = new Acoes();
 		return "/Cadastro/cad_acoes.xhtml?faces-redirect=true";
 	}
-	
 	
 	public void refreshAcoes() {
 		acoesPendentes = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Pendente"));

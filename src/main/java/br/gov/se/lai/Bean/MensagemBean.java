@@ -24,10 +24,11 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.UploadedFile;
 
+import br.gov.se.lai.DAO.AnexoDAO;
 import br.gov.se.lai.DAO.MensagemDAO;
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.DAO.UsuarioDAO;
-import br.gov.se.lai.anexos.UploadFile;
+import br.gov.se.lai.entity.Anexo;
 //import br.gov.se.lai.entity.Anexo;
 import br.gov.se.lai.entity.Mensagem;
 import br.gov.se.lai.entity.Solicitacao;
@@ -37,6 +38,7 @@ import br.gov.se.lai.utils.HibernateUtil;
 import br.gov.se.lai.utils.NotificacaoEmail;
 import br.gov.se.lai.utils.PermissaoUsuario;
 import br.gov.se.lai.utils.PrazosSolicitacao;
+import javassist.expr.NewArray;
 
 
 
@@ -59,6 +61,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private Usuario usuario;
 	private UploadedFile file;
 	private int nota;
+	private Anexo anexo;
 
  
 	@PostConstruct
@@ -68,6 +71,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 //		AnexoBean.listarFiles();
 		carregaMensagens();
+		this.anexo = new Anexo();
 	}
 
 	public String save() {
@@ -85,22 +89,23 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem.setNota(0);
 			if(MensagemDAO.saveOrUpdate(mensagem)) {
 				mensagensSolicitacao.add(mensagem);
+				MensagemDAO.saveOrUpdate(mensagem);
 				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 				try {
-					if ((file.getContents().length != 0 && !file.equals(null))) {
-//						System.out.println(anexo.toString());
-//						AnexoBean anx = new AnexoBean();
-//						anx.save(anexo, mensagem, file);
-//						Set<Anexo> setAnexo = new HashSet<>();
-//						setAnexo.add(anx.getAnexo());
-//						mensagem.setAnexos(setAnexo);
-						UploadFile upload = new UploadFile();
-						upload.upload(file, mensagem.getIdMensagem());
-						MensagemDAO.saveOrUpdate(mensagem);
+					if (!(file.getContents().length == 0)) {
+						System.out.println(file.getFileName());
+						this.anexo.setMensagem(mensagem);
+						this.anexo.setNome(file.getFileName());
+						this.anexo.setTamanho(file.getSize());
+						this.anexo.setTipo(file.getContentType());
+						this.anexo.setConteudo(file.getContents());
+						AnexoDAO.saveOrUpdate(anexo);
 					}
-				}catch (Exception e) {
-					e.getMessage();
+				} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
 				}
+				
 				verificaMensagem();
 				
 			}
@@ -144,8 +149,8 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
 				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
 			}
-			SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
-			SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
+			//SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
+			//SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
 		}
 		mensagem.setTipo((short)2);
 	}

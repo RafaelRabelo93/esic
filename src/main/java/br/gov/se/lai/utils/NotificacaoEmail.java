@@ -162,7 +162,7 @@ public abstract class NotificacaoEmail implements Job{
 				"			<table>" + 
 				"				<tr>" + 
 				"				<td><h4 style=\"margin: 0\">Data limite: </h4></td>" + 
-				"				<td><p style=\"margin: 0\">" + DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(solicitacao.getDataLimite()) + "</p></td>" + 
+//				"				<td><p style=\"margin: 0\">" + DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(solicitacao.getDataLimite()) + "</p></td>" + 
 				"				</tr>" + 
 				"			</table>" + 
 				"			<h5>Por favor, aguarde a resposta do órgão competente dentro do prazo estipulado</h5>" + 
@@ -322,7 +322,7 @@ public abstract class NotificacaoEmail implements Job{
 				"			<table>" + 
 				"				<tr>" + 
 				"				<td><h4 style=\"margin: 0\">Data limite: </h4></td>" + 
-				"				<td><p style=\"margin: 0\">" + DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(solicitacao.getDataLimite()) + "</p></td>" + 
+//				"				<td><p style=\"margin: 0\">" + DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(solicitacao.getDataLimite()) + "</p></td>" + 
 				"				</tr>" + 
 				"			</table>" +
 				"			<table>" + 

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -21,27 +22,27 @@ import org.primefaces.model.UploadedFile;
 @Table(name = "anexo", catalog = "esic")
 public class Anexo implements java.io.Serializable {
 
-
-	private static final long serialVersionUID = -6317533517362848771L;
+	private static final long serialVersionUID = 359937344229720347L;
 	private Integer idAnexo;
 	private Mensagem mensagem;
-	private String file;
-	private String descricao;
 	private String nome;
+	private String tipo;
+	private Long tamanho;
+	private byte[] conteudo;
 
 	public Anexo() {
 	}
 
-	public Anexo(Mensagem mensagem, String file) {
+	public Anexo(Mensagem mensagem) {
 		this.mensagem = mensagem;
-		this.file = file;
 	}
 
-	public Anexo(Mensagem mensagem, String file, String descricao, String nome) {
+	public Anexo(Mensagem mensagem, String nome, String tipo, Long tamanho, byte[] conteudo) {
 		this.mensagem = mensagem;
-		this.file = file;
-		this.descricao = descricao;
 		this.nome = nome;
+		this.setTipo(tipo);
+		this.setTamanho(tamanho);
+		this.setConteudo(conteudo);
 	}
 
 	@Id
@@ -66,32 +67,41 @@ public class Anexo implements java.io.Serializable {
 		this.mensagem = mensagem;
 	}
 
-	@Lob
-	@Column(name = "file", nullable = false)
-	public String getFile() {
-		return this.file;
-	}
-
-	public void setFile(String file2) {
-		this.file = file2;
-	}
-
-	@Column(name = "descricao", length = 200)
-	public String getDescricao() {
-		return this.descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	@Column(name = "nome", length = 45)
+	@Column(name = "nome", length = 100)
 	public String getNome() {
 		return this.nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@Column(name = "tipo", length = 800)
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
+	@Column(name = "tamanho")
+	public Long getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(Long tamanho) {
+		this.tamanho = tamanho;
+	}
+	
+	@Column(name = "conteudo")
+	//@Lob
+	public byte[] getConteudo() {
+		return conteudo;
+	}
+
+	public void setConteudo(byte[] input) {
+		this.conteudo = input;
 	}
 
 }
