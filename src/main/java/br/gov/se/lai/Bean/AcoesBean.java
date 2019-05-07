@@ -2,8 +2,10 @@ package br.gov.se.lai.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -47,8 +49,9 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 		acoesNaoVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Não-Vinculada"));
 		acoesVinculadas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada"));
 		acoesCadastradas = new ArrayList<Acoes>(AcoesDAO.listPorStatus("Vinculada", "Não-Vinculada"));
-		acoes = new ArrayList<Acoes>(acoesVinculadas);
-		acoes.addAll(acoesNaoVinculadas);		
+		acoes = new ArrayList<Acoes>(AcoesDAO.list());
+//		acoes = new ArrayList<Acoes>(acoesVinculadas);
+//		acoes.addAll(acoesNaoVinculadas);
 	}
 	
 	/**
@@ -185,23 +188,38 @@ public class AcoesBean implements Serializable, PermissaoUsuario{
 	 * @return uma lista somente de ações que estão vinculadas a entidades ativas. 
 	 */
 	public List<Acoes> acaoLigadaEntidadeAtiva() {
-
-		Iterator<Acoes> a = acoes.iterator();
-		while (a.hasNext()) {
-			Acoes acao = a.next();
-			List<Competencias> comp = CompetenciasDAO.filtrarCompetencias(acao.getIdAcoes());
-			if(comp.isEmpty() ) {
-				a.remove();
-			}else {
-				for (Competencias competencias : comp) {
-					if (!competencias.getEntidades().isAtiva()) {
-						a.remove();
-						break;
-					}
+		List<Acoes> acoesVinc = this.acoesVinculadas;
+		Set<Acoes> acoesEntAtivas = new HashSet<Acoes>(0);
+		
+		for (Acoes a : acoesVinc) {
+			Set<Competencias> comp = a.getCompetenciases();
+			for (Competencias c : comp) {
+				if (c.getEntidades().isAtiva()) {
+					acoesEntAtivas.add(a);
+					break;
 				}
 			}
+			
 		}
-		return acoes;
+		
+		return new ArrayList<Acoes>(acoesEntAtivas);
+		
+//		Iterator<Acoes> a = acoes.iterator();
+//		while (a.hasNext()) {
+//			Acoes acao = a.next();
+//			List<Competencias> comp = CompetenciasDAO.filtrarCompetencias(acao.getIdAcoes());
+//			if(comp.isEmpty()) {
+//				a.remove();
+//			}else {
+//				for (Competencias competencias : comp) {
+//					if (!competencias.getEntidades().isAtiva()) {
+//						a.remove();
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		return acoes;
 	}
 	
 	/**
