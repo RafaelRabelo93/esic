@@ -27,7 +27,7 @@
 
 						<p:outputLabel value="Tipo Pessoa: " for="tipo" style="color:#1a568c; font-size:25px; margin-top: 0"/>
 						<h:panelGroup styleClass="column" style="margin-top: 1em">
-							<p:selectOneRadio id="tipo" value="#{usuario.cidadao.tipo}" layout="pageDirection">
+							<p:selectOneRadio id="tipo" value="#{cidadao.cidadao.tipo}" layout="pageDirection">
 								<f:selectItem itemLabel="Física" itemValue="true" />
 								<f:selectItem itemLabel="Jurídica" itemValue="false" />
 								<p:ajax update="panel" event="change"/>
@@ -36,17 +36,17 @@
 						
 						<p:separator />
 						
-						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{usuario.cidadao.tipo}"/>
-						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!usuario.cidadao.tipo}"/>
+						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{cidadao.cidadao.tipo}"/>
+						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!cidadao.cidadao.tipo}"/>
 
 						
 						<h:panelGroup id="panel" styleClass="column">
 						
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
-								<p:outputLabel value="Nome completo: " for="nome" rendered="#{usuario.cidadao.tipo}"/>
-								<p:outputLabel value="Razão Social: " for="nome" rendered="#{!usuario.cidadao.tipo}"/>
-								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+								<p:outputLabel value="Nome completo: " for="nome" rendered="#{cidadao.cidadao.tipo}"/>
+								<p:outputLabel value="Razão Social: " for="nome" rendered="#{!cidadao.cidadao.tipo}"/>
+								<p:inputText id="nome" value="#{cidadao.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
 									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
@@ -57,32 +57,32 @@
 						<h:panelGroup styleClass="inline" style="align-items: flex-start;">
 							<h:panelGroup styleClass="column" >
 								<p:outputLabel value="E-mail: " for="email" />
-								<p:inputText id="email" value="#{usuario.cidadao.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
+								<p:inputText id="email" value="#{cidadao.cidAlt.email}" size="35" maxlength="100" validatorMessage="E-mail inválido" required="true" requiredMessage="Email não pode ser vazio">
 									<f:validateLength minimum="5" maximum="100" />
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
 							</h:panelGroup>
 							
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!cidadao.cidadao.tipo}">
 								<p:outputLabel value="CNPJ:" for="cnpj"/>
-								<p:inputMask id="cnpj" value="#{usuario.cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{usuario.cidadao.tipo}">
+								<p:inputMask id="cnpj" value="#{cidadao.cidAlt.cpf}" mask="99.999.999/9999-99" disabled="#{cidadao.cidadao.tipo}">
 									<f:validator validatorId="StellaCNPJValidator" />
 								</p:inputMask>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Data de Nascimento: " for="datanasc" />
-								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c" disabled="#{!usuario.cidadao.tipo}"
-									showOn="button" value="#{usuario.cidadao.datanasc}"
+								<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c" disabled="#{!cidadao.cidadao.tipo}"
+									showOn="button" value="#{cidadao.cidAlt.datanasc}"
 									locale="pt_BR" effect="slideDown" navigator="true"
 									pattern="dd/MM/yyyy" mask="true" timeInput="false">
 									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</p:calendar>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{usuario.cidadao.sexo}"	layout="pageDirection" disabled="#{!usuario.cidadao.tipo}">
+								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"	layout="pageDirection" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 									<f:selectItem itemLabel="Outro" itemValue="O" />
@@ -91,28 +91,28 @@
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
-							<h:panelGroup styleClass="column" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{usuario.cidadao.cpf}" mask="999.999.999-99" disabled="#{!usuario.cidadao.tipo}" size="11">
+								<p:inputMask id="cpf" value="#{cidadao.cidAlt.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}" size="11">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
 							
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{cidadao.rg}" mask="?9999999999999999" disabled="#{!usuario.cidadao.tipo}" size="15"/>
+								<p:inputMask id="rg" value="#{cidadao.cidAlt.rg}" mask="?9999999999999999" disabled="#{!cidadao.cidadao.tipo}" size="15"/>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Órgão Expedidor: " for="orgao" />
-								<p:inputText id="orgao" value="#{usuario.cidadao.orgaexp}" size="15" disabled="#{!usuario.cidadao.tipo}">
+								<p:inputText id="orgao" value="#{cidadao.cidAlt.orgaexp}" size="15" disabled="#{!cidadao.cidadao.tipo}">
 									<f:validateLength maximum="45" />
 								</p:inputText>
 							</h:panelGroup>
 
-							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{usuario.cidadao.tipo}">
+							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Renda:" for="renda" />
-								<p:selectOneMenu id="renda" value="#{usuario.cidadao.renda}" disabled="#{!usuario.cidadao.tipo}">
+								<p:selectOneMenu id="renda" value="#{cidadao.cidAlt.renda}" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Sem renda" itemValue="0" />
 									<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
@@ -125,10 +125,10 @@
 							</h:panelGroup>
 						</h:panelGroup>
 
-						<h:panelGroup styleClass="inline" style="align-items: flex-start;" rendered="#{usuario.cidadao.tipo}">
+						<h:panelGroup styleClass="inline" style="align-items: flex-start;" rendered="#{cidadao.cidadao.tipo}">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Escolaridade: " for="escolaridade" />
-								<p:selectOneMenu id="escolaridade" value="#{usuario.cidadao.escolaridade}" disabled="#{!usuario.cidadao.tipo}">
+								<p:selectOneMenu id="escolaridade" value="#{cidadao.cidAlt.escolaridade}" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Analfabeto" itemValue="1" />
 									<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
@@ -144,24 +144,24 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Telefone:" for="tel"/>
-								<p:inputMask id="tel" value="#{usuario.cidadao.telefone}" mask="(99) 9 9999-9999" size="12" disabled="#{!usuario.cidadao.tipo}"/>
+								<p:inputMask id="tel" value="#{cidadao.cidAlt.telefone}" mask="(99) 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Celular:" for="cel"/>
-								<p:inputMask id="cel" value="#{usuario.cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{!usuario.cidadao.tipo}"/>
+								<p:inputMask id="cel" value="#{cidadao.cidAlt.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						
-						<h:panelGroup styleClass="inline" rendered="#{!usuario.cidadao.tipo}">
+						<h:panelGroup styleClass="inline" rendered="#{!cidadao.cidadao.tipo}">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Telefone:" for="tel2"/>
-								<p:inputMask id="tel2" value="#{usuario.cidadao.telefone}" mask="(99) 9 9999-9999" size="12" disabled="#{usuario.cidadao.tipo}"/>
+								<p:inputMask id="tel2" value="#{cidadao.cidAlt.telefone}" mask="(99) 9999-9999" size="12" disabled="#{cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Celular:" for="cel2"/>
-								<p:inputMask id="cel2" value="#{usuario.cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{usuario.cidadao.tipo}"/>
+								<p:inputMask id="cel2" value="#{cidadao.cidAlt.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						</h:panelGroup>
@@ -173,19 +173,19 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="CEP:" />
-								<p:inputMask id="cep" value="#{usuario.cidadao.cep}" mask="99999-999" />
+								<p:inputMask id="cep" value="#{cidadao.cidAlt.cep}" mask="99999-999" />
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Cidade:" />
-								<p:inputText id="cidade" value="#{usuario.cidadao.cidade}" maxlength="45">
+								<p:inputText id="cidade" value="#{cidadao.cidAlt.cidade}" maxlength="45">
 									<f:validateLength maximum="45"/>
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Estado: " for="uf" />
-								<p:selectOneMenu id="uf" value="#{usuario.cidadao.estado}" widgetVar="estado">
+								<p:selectOneMenu id="uf" value="#{cidadao.cidAlt.estado}" widgetVar="estado">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
 									<f:selectItem itemLabel="Acre" itemValue="AC" />
 									<f:selectItem itemLabel="Alagoas" itemValue="AL" />
@@ -220,14 +220,14 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Logradouro:" />
-								<p:inputText id="rua" value="#{usuario.cidadao.endereco}" size="40" maxlength="100">
+								<p:inputText id="rua" value="#{cidadao.cidAlt.endereco}" size="40" maxlength="100">
 									<f:validateLength maximum="100" />
 								</p:inputText>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Bairro:" />
-								<p:inputText id="bairro" value="#{usuario.cidadao.bairro}" size="29" maxlength="45">
+								<p:inputText id="bairro" value="#{cidadao.cidAlt.bairro}" size="29" maxlength="45">
 									<f:validateLength maximum="45"/>
 								</p:inputText>
 							</h:panelGroup>
@@ -236,7 +236,7 @@
 						<h:panelGroup styleClass="inline">
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Número:" for="numero" />
-								<p:inputText id="numero" value="#{usuario.cidadao.numero}"
+								<p:inputText id="numero" value="#{cidadao.cidAlt.numero}"
 									size="10" maxlength="5">
 									<f:validateLength maximum="5" />
 								</p:inputText>
@@ -246,7 +246,7 @@
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Complemento: " for="complemento" />
 								<p:inputText id="complemento"
-									value="#{usuario.cidadao.complemento}" maxlength="200" size="59">
+									value="#{cidadao.cidAlt.complemento}" maxlength="200" size="59">
 									<f:validateLength maximum="200" />
 								</p:inputText>
 							</h:panelGroup>
@@ -259,15 +259,9 @@
 <!-- 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" /> -->
 <!-- 					</p:commandLink> -->
 
-					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{usuario.edit}">
+					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{cidadao.edit}">
 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
-						
-						<f:setPropertyActionListener value="#{usuario.cidadao.email}" target="#{cidadao.email}" /> 
-						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
-						
-<!-- 						<f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" />  -->
-<!-- 						<f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" /> -->
 					</p:commandLink>
 
 				</div>
@@ -285,14 +279,6 @@
 								<h:outputText value="Confirmar" />
 								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 	
-								 <f:setPropertyActionListener value="#{usuario.email}" target="#{cidadao.email}" /> 
-								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{cidadao.usuario}" /> 
-								 
-								 <f:setPropertyActionListener value="#{usuario.email}" target="#{responsavel.email}" /> 
-								 <f:setPropertyActionListener value="#{usuario.usuario}" target="#{responsavel.usuario}" />
-								 
-								 <f:setPropertyActionListener value="#{usuario.cidadao}" target="#{cidadao.cidadao}" />
-
 							</p:commandLink>
 
 					</p:outputPanel>

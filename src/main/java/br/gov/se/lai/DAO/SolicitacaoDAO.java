@@ -237,11 +237,8 @@ public class SolicitacaoDAO {
 
 	@SuppressWarnings("unchecked")
 	public static List<String> listarAssuntos(String tipo, String dataInicial, String dataFinal) {
-		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
-				"JOIN  Competencias as competencias "+
-				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
-				"JOIN  Acoes as acoes  "+
-				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
+		String HQL= "Select acoes.titulo from Acoes as acoes " +
+				"INNER JOIN Solicitacao as solicitacao on solicitacao.acoes.idAcoes = acoes.idAcoes " +
 				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
 				"AND solicitacao.tipo = '"+tipo+"'";
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
@@ -292,7 +289,6 @@ public class SolicitacaoDAO {
 		return Consultas.contadorSQL(HQL, em);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static int listarSemRespostaPorPeriodo(String dataInicial, String dataFinal) {
 		String HQL= "SELECT COUNT(DISTINCT slt.idSolicitacao) " + 
 				"FROM Solicitacao as slt " + 
@@ -426,13 +422,10 @@ public class SolicitacaoDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static List<String> listarAssuntosPorEntidade(String tipo, int idEntidade, String dataInicial, String dataFinal ) {
-		String HQL= "SELECT solicitacao.competencias.acoes.titulo FROM Solicitacao as solicitacao "+
-				"JOIN  Competencias as competencias "+
-				"ON solicitacao.competencias.idCompetencias = competencias.idCompetencias "+
-				"JOIN  Acoes as acoes  "+
-				"ON  solicitacao.competencias.acoes.idAcoes = acoes.idAcoes "+
+		String HQL= "Select acoes.titulo from Acoes as acoes " +
+				"INNER JOIN Solicitacao as solicitacao on solicitacao.acoes.idAcoes = acoes.idAcoes " +
 				"WHERE solicitacao.dataIni BETWEEN '" + dataInicial +  "' and '" + dataFinal + " 23:59:59' "+
-				"AND solicitacao.tipo = '"+tipo+"'" +
+				"AND solicitacao.tipo = '"+tipo+"' " +
 				"AND solicitacao.entidades.idEntidades = " + idEntidade;
 		return (List<String>) Consultas.buscaPersonalizada(HQL, em); 
 	}
@@ -850,6 +843,12 @@ public class SolicitacaoDAO {
 				return Consultas.contadorSQL(HQL, em);
 			}
 			return 0;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static List<Solicitacao> listPorProtocolo(String protocolo) {
+			String HQL = "FROM Solicitacao as slt where replace(replace(slt.protocolo,'-',''),'/','') like replace(replace('%"+ protocolo +"','-',''),'/','') and slt.sigilo = 2";
+			return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL,em);
 		}
 	
 }

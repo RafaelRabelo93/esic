@@ -60,6 +60,7 @@ public class Solicitacao implements java.io.Serializable {
 		this.cidadao = cidadao;
 		this.entidades = entidades;
 //		this.competencias = competencias;
+		this.acoes = acoes;
 		this.dataIni = dataIni;
 		this.dataIni = dataLimite;
 		this.status = status;

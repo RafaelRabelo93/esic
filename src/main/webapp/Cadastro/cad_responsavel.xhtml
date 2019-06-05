@@ -15,7 +15,7 @@
 		<!-- Mensagem de Erro -->
 		<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
 
-			<h:form id="cad_responsavel" styleClass="cad_form"  rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
+			<h:form id="cad_responsavel" styleClass="cad_form"  rendered="#{((usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq true)) and usuario.responsavel.ativo and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
 				<f:metadata>
 					<f:event type="preRenderView" listener="#{responsavel.pegarParamURL()}" />
 				</f:metadata>
@@ -31,7 +31,7 @@
 								<p:outputLabel value="Usuário: " for="nick" /> 
 								<h:panelGroup styleClass="inline">
 									<p:autoComplete id="nick" value="#{responsavel.nick}" completeMethod="#{usuario.completeNickSemGestor}" required="true"	itemLabel="#{usuario.nick}" itemValue="#{usuario}" forceSelection="true" size="20"/>
-									<p:commandLink class="botaoLinkIcon" onclick="PF('novoUserDlg').show(); return false;" style="margin-left: .5em">
+									<p:commandLink class="botaoLinkIcon" action="#{usuario.limparUsuarioNovo()}" onclick="PF('novoUserDlg').show(); return false;"  rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" style="margin-left: .5em">
 										<i class="fa fa-plus"/>
 									</p:commandLink>
 								</h:panelGroup>
@@ -50,13 +50,25 @@
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
+						
+						<h:panelGroup styleClass="inline" style="width:100%; -webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Telefone: " for="telefone1" /> 
+								<p:inputMask id="telefone1" value="#{responsavel.responsavel.telefone1}" mask="(99) 99999999?9"/>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="column">
+								<p:outputLabel value="Telefone: " for="telefone2" /> 
+								<p:inputMask id="telefone2" value="#{responsavel.responsavel.telefone2}" mask="(99) 99999999?9"/>
+							</h:panelGroup>
+						</h:panelGroup>
 
 						 <p:outputLabel value="Nível:" for="nivel" /> 
 						 <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">
-							<f:selectItem itemLabel="Representante" itemValue="1" />
-							<f:selectItem itemLabel="Autoridade 1" itemValue="2" />
+							<f:selectItem itemLabel="Ouvidor Setorial" itemValue="1" />
+<!-- 							<f:selectItem itemLabel="Autoridade 1" itemValue="2" /> -->
 							<f:selectItem itemLabel="Gestor" itemValue="3" />
-							<f:selectItem itemLabel="Comissão Mista" itemValue="4"  />
+<!-- 							<f:selectItem itemLabel="Comissão Mista" itemValue="4"  /> -->
 						</p:selectOneRadio> 
 					</h:panelGroup>
 					
@@ -75,41 +87,35 @@
 						<h:outputText value="Novo Usuário" styleClass="tituloBox" />
 								
 						<p:outputLabel value="Nome completo: " for="nome" />
-						<p:inputText rendered="#{usuario.usuario.perfil eq '0'}" id="nome" required="true" value="#{usuario.usuario.nome}"  maxlength="65" size="55">
-							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuario.nome)}" update="nick" />
-							<f:validateLength maximum="65" />
-							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
-						</p:inputText>
-						<p:inputText rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') 
-										or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" id="nomeNovo" required="true" value="#{usuario.usuarioNovo.nome}"  maxlength="65" size="55">
+						<p:inputText id="nome" required="true" value="#{usuario.usuarioNovo.nome}"  maxlength="65" size="55">
 							<p:ajax event="blur" listener="#{usuario.gerarNick(usuario.usuarioNovo.nome)}" update="nick2" />
 							<f:validateLength maximum="65"/>
 							<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 						</p:inputText>
 						<p:message for="nome" display="text"/>
 						
-						<p:outputLabel value="Nome de usuário: " for="nick" />
-						<h:outputText id="nick" required="true" readonly="true" value="#{usuario.usuario.nick}" maxlength="50" rendered="#{usuario.usuario.perfil eq '0'}" style="font-weight:bold"/>
-						<h:outputText id="nick2" required="true" readonly="true" value="#{usuario.usuarioNovo.nick}" maxlength="50" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" />
-						<p:message for="nick" display="text"/>
+						<p:outputLabel value="Nome de usuário: " for="nick2" />
+						<h:outputText id="nick2" required="true" readonly="true" value="#{usuario.usuarioNovo.nick}" maxlength="50" />
+						<p:message for="nick2" display="text"/>
 						
 						<p:outputLabel value="Senha:" for="senha3" />
 						
-						<p:password id="senha3" match="senha4" placeholder="Digite sua senha" required="true" value="#{usuario.usuarioNovo.senha}" maxlength="20" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" promptLabel="Insira uma senha" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
+						<p:password id="senha3" match="senha4" placeholder="Digite sua senha" required="true" value="#{usuario.usuarioNovo.senha}" maxlength="20" feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte">
 							<f:validateLength minimum="6" maximum="64" />
 						</p:password>
 						<p style="font-size:.9em; color:gray; margin:0">A senha deve conter pelo menos 6 caracteres.</p>
 
 						<p:outputLabel value="Confirme sua senha:" for="senha4" />
-						<p:password id="senha4" placeholder="Repita sua senha" required="true" rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3') or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/>
+						<p:password id="senha4" placeholder="Repita sua senha" required="true"/>
 
 					</h:panelGroup>
 
 					<p:commandLink action="#{usuario.criarNovoUsuarioPorGestor()}" id="novoUsuarioGestor" class="botaoLink" update="cad_responsavel:nick" oncomplete="PF('novoUserDlg').hide();"
-							rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3')  or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}" 
+							rendered="#{((usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and usuario.responsavel.nivel eq '3')  or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.responsavelOGE}" 
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoUsuarioGestor').click();}">
 						<h:outputText value="Salvar" />
 						<i class="fa fa-check" style="color: white; padding-left: 3px" />
+						<f:setPropertyActionListener value="#{usuario.usuarioNovo.nick}" target="#{responsavel.nick}" />
 					</p:commandLink>
 				</h:form>
 			</p:dialog>

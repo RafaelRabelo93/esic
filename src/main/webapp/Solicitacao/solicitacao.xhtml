@@ -44,8 +44,8 @@
 						<h:outputText id="tema" value="#{solicitacao.solicitacao.acoes.titulo}" style="color:#a8a8a8;" />
 						
 						<h:panelGroup rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' and !solicitacao.manifestacaoAnon}">
-							<p:outputLabel value="Forma de recebimento da resposta:" />
-							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
+							<p:outputLabel value="Forma de recebimento da resposta:" for="recResp"/>
+							<p:selectOneMenu id="recResp" value="#{solicitacao.solicitacao.formaRecebimento}" required="true" requiredMessage="Por favor, informe a forma de recebimento de resposta desejada." rendered="#{solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Informação'}">
 								<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 								<f:selectItem itemLabel="Correspondência" itemValue="1"/>
 								<f:selectItem itemLabel="Email" itemValue="2" />
@@ -240,6 +240,7 @@
 						<i class="fa fa-share-square-o"	style="color: white; padding-left: 3px" />
 						<f:param name="tipo" value="#{solicitacao.solicitacao.tipo}" />
 						<f:setPropertyActionListener value="#{cidadao}" target="#{solicitacao.cidadaoBean}" />
+						<f:setPropertyActionListener value="#{solicitacao.solicitacao}" target="#{solicitacao.sltShow}" />
 					</p:commandLink>
 
 				</div>

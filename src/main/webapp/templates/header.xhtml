@@ -73,7 +73,10 @@
 								<h:outputText value="#{usuario.nomeCompleto}" />
 								<br/>
 								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Responsável" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Ouvidor Setorial" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 1 and !usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Gestor Setorial" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 3 and !usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Ouvidor OGE" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 1 and usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Gestor OGE" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 3 and usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Gestor do Sistema" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 							</p:commandLink>
@@ -96,7 +99,7 @@
 					
 					<p:overlayPanel id="userInfoPanel" for="userInfo" hideEffect="fade">
 						<h:panelGroup styleClass="column">
-							<h:outputLabel value="Nick:" style="margin-top: 1em" />
+							<h:outputLabel value="Nome de usuário:" style="margin-top: 1em" />
 							<h:outputText value="#{usuario.usuario.nick}" style="margin-left: 1em" />
 							
 							<h:outputLabel value="E-mail:" style="color:#1a568c; margin-top: 1em" rendered="#{!(usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' )}"/>
@@ -128,14 +131,14 @@
 								</h:panelGroup>
 							</h:panelGroup>
 							
-							<h:commandLink styleClass="botaoLink perfilBtn" action="Cadastro/cad_cidadao" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
+							<h:commandLink styleClass="botaoLink perfilBtn" action="#{cidadao.loadUsuario()}" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
 								<h:outputText value="Criar Perfil" />
 								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
 								<h:outputText value="Cidadão" />
 							</h:commandLink>
 							
 							<h:panelGroup styleClass="inline" style="margin-top: .5em; justify-content: space-between; width: 100%;">
-								<p:commandLink styleClass="botaoLink" action="#{usuario.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
+								<p:commandLink styleClass="botaoLink" action="#{cidadao.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
 									<h:outputText value="Visualizar Perfil" />
 									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 								</p:commandLink>

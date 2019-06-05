@@ -67,6 +67,7 @@ public class UsuarioBean implements Serializable {
 	private String email;
 	private String emailCid;
 	private String sigla;
+	private String cpf;
 	private String emailRedirect;
 	private String tipoString;
 	private int veioDeSolicitacao;
@@ -304,7 +305,7 @@ public class UsuarioBean implements Serializable {
 	}
 	
 	public void limparUsuarioNovo() {
-		usuarioNovo = new Usuario();
+		this.usuarioNovo = new Usuario();
 	}
 	
 
@@ -341,11 +342,13 @@ public class UsuarioBean implements Serializable {
 			if (usuario.getPerfil() != 1) {
 				if (usuario.getPerfil() == 3) {
 					List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
+					Cidadao cid = listCidadao.get(0);
+					System.out.println(cid.getUsuario().getNome() + " - " + cid.getEmail());
+					cid.setCpf(this.getCpf());
 					listCidadao.get(0).setEmail(email);
 				} else {
 					List<Responsavel> listResponsavel = new ArrayList<Responsavel>(usuario.getResponsavels());
 					listResponsavel.get(0).setEmail(email);
-					;
 				}
 			}
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -466,7 +469,7 @@ public class UsuarioBean implements Serializable {
 				logout();
 				return null;
 			} else {
-				if(!usuarioInativo()) {
+				if(usuarioInativo()) {
 					FacesContext.getCurrentInstance().addMessage(null, 
 							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário inativo.", "Solicite ativação ao gestor da sua entidade."));
 					logout();
@@ -549,17 +552,14 @@ public class UsuarioBean implements Serializable {
 	 * @return
 	 */
 	public boolean usuarioInativo() {
-		boolean retorno = false;
-		if(this.usuario.getPerfil() == (short)2 ) {
+		boolean retorno = true;
+		if(this.usuario.getPerfil() == (short) 2 || this.usuario.getPerfil() == (short) 4  ) {
 			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
-				retorno = true;
+				retorno = false;
 			}
-		}else if(this.usuario.getPerfil() == (short)1 || this.usuario.getPerfil() == (short)3 ||this.usuario.getPerfil() == (short)4 
-				|| this.usuario.getPerfil() == (short) 6 || this.usuario.getPerfil() == (short) 5 ) {
-//			if(ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario()).size() > 0) {
-//				retorno = true;
-//			}
-			retorno = true;
+		} else if(this.usuario.getPerfil() == (short) 1 || this.usuario.getPerfil() == (short) 3 ||
+				this.usuario.getPerfil() == (short) 5 || this.usuario.getPerfil() == (short) 6 ) {
+				retorno = false;
 		}
 		
 		return retorno;
@@ -573,17 +573,24 @@ public class UsuarioBean implements Serializable {
 	public void loadEmail(Usuario usuario) {
 		if (usuario.getPerfil() == 3 && !usuario.getCidadaos().isEmpty()) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			setEmailCid(listCidadao.get(0).getEmail());
+			this.emailCid = listCidadao.get(0).getEmail();
+//			setEmailCid(listCidadao.get(0).getEmail());
 		} else if (usuario.getPerfil() == 2 && !usuario.getResponsavels().isEmpty()) {
-				setEmail(ResponsavelBean.retornaListaEmail(usuario));
-				setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+			this.email = ResponsavelBean.retornaListaEmail(usuario);
+			this.sigla = ResponsavelBean.retornaListaEntidadeSiglas(usuario);
+//			setEmail(ResponsavelBean.retornaListaEmail(usuario));
+//			setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
 		}else if ( usuario.getPerfil() == 4) {
 			List<Cidadao> listCidadao = new ArrayList<Cidadao>(usuario.getCidadaos());
-			setEmailCid(listCidadao.get(0).getEmail());
-			setEmail(ResponsavelBean.retornaListaEmail(usuario));
-			setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
+			this.emailCid = listCidadao.get(0).getEmail();
+			this.email = ResponsavelBean.retornaListaEmail(usuario);
+//			setEmailCid(listCidadao.get(0).getEmail());
+			this.sigla = ResponsavelBean.retornaListaEntidadeSiglas(usuario);
+//			setEmail(ResponsavelBean.retornaListaEmail(usuario));
+//			setSigla(ResponsavelBean.retornaListaEntidadeSiglas(usuario)); 
 		}else {
-			setEmail("Não cadastrado");
+//			setEmail("Não cadastrado");
+			this.email = "Não cadastrado";
 		}
 	}
 
@@ -700,7 +707,7 @@ public class UsuarioBean implements Serializable {
 			return "/Alterar/alterar_usuario";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Usuário básico.", "Por favor complete seu cadastro."));
+					"Cidadão não cadastrado.", "Por favor complete seu cadastro."));
 			return null;
 		}
 	}
@@ -970,6 +977,7 @@ public class UsuarioBean implements Serializable {
 		return UsuarioDAO.listarGestoresSistema();
 	}
 	
+//	Verifica se usuário logado é responsável da OGE
 	public boolean isResponsavelOGE() {
 		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
 		Usuario usuario = u.getUsuario();
@@ -1198,6 +1206,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setNomeCompleto(String nomeCompleto) {
 		this.nomeCompleto = nomeCompleto;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 	
 	

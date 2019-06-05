@@ -17,7 +17,7 @@ public class  ResponsavelDAO {
 	
 	private static EntityManager em = HibernateUtil.geteEntityManagerFactory().createEntityManager();
 	
-    public static void saveOrUpdate(Responsavel responsavel) {     	        
+    public static boolean saveOrUpdate(Responsavel responsavel) {     	        
         try {
         	if(!em.getTransaction().isActive()) em.getTransaction().begin();
         	if(responsavel.getIdResponsavel() ==  null) {
@@ -27,10 +27,12 @@ public class  ResponsavelDAO {
     		}
             em.getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Responsavel  salvo(a) com sucesso!"));
+            return true;
         } catch (Exception e) {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Erro ao cadastrar responsavel "));
         	System.out.println(e);
             em.getTransaction().rollback();
+            return false;
         }
     }
     public static void delete(Responsavel responsavel) {        

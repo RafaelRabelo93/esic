@@ -117,6 +117,9 @@ public class SolicitacaoBean implements Serializable {
 	private String tipoMudar;
 	public boolean manifestacaoAnon;
 	private Anexo anexo;
+	private String protocoloBusca;
+	private List<Solicitacao> buscaSolicitacoes;
+	private Solicitacao sltShow;
 	
 	@PostConstruct
 	public void init() {
@@ -248,7 +251,7 @@ public class SolicitacaoBean implements Serializable {
 	
 	public void resetManifestacaoAnon() {
 		setManifestacaoAnon(false);
-		System.out.println("Resetou");
+		//System.out.println("Resetou");
 	}
 
 	/**
@@ -1042,7 +1045,7 @@ public class SolicitacaoBean implements Serializable {
 		if(usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6 ) {
 			resp = new Responsavel();
 			resp.setUsuario(usuario);
-			resp.setEmail("admin_esic@cge.se.gov.br");
+			resp.setEmail("admin_seouv@setc.se.gov.br");
 		}else {
 			resp = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 		}
@@ -1091,12 +1094,6 @@ public class SolicitacaoBean implements Serializable {
 		this.mensagem.setUsuario(usuario);
 		this.mensagem.setData(new Date(System.currentTimeMillis()));
 		
-		if (MensagemDAO.saveOrUpdate(mensagem)) {
-			MensagemBean.attMensagemSolicitacao(mensagem);
-//			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
-		}
-		
-		mensagem = new Mensagem();
 		
 		Mensagem msgTramite = new Mensagem();
 		msgTramite.setSolicitacao(solicitacao);
@@ -1113,8 +1110,18 @@ public class SolicitacaoBean implements Serializable {
 			solicitacao.setStatus("Reformulação");
 		}
 		
+		if (MensagemDAO.saveOrUpdate(this.mensagem)) {
+			MensagemBean.attMensagemSolicitacao(this.mensagem);
+			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+		}
+		
+		Set<Mensagem> msgSet = this.solicitacao.getMensagems();
+		msgSet.add(this.mensagem);
+		this.solicitacao.setMensagems(msgSet);
+		
 		try {
 			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			this.mensagem = new Mensagem();
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
@@ -1135,7 +1142,7 @@ public class SolicitacaoBean implements Serializable {
 		
 		if (MensagemDAO.saveOrUpdate(mensagem)) {
 			MensagemBean.attMensagemSolicitacao(mensagem);
-//			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 		}
 		
 		mensagem = new Mensagem();
@@ -1172,7 +1179,7 @@ public class SolicitacaoBean implements Serializable {
 			if(usuario.getPerfil() == (short)5 || usuario.getPerfil() == (short)6 ) {
 				respRemetente = new Responsavel();
 				respRemetente.setUsuario(usuario);
-				respRemetente.setEmail("admin_esic@cge.se.gov.br");
+				respRemetente.setEmail("admin_seouv@setc.se.gov.br");
 			}else {
 				respRemetente = ResponsavelDAO.findResponsavelUsuario(usuario.getIdUsuario()).get(0);
 			}
@@ -1485,6 +1492,10 @@ public class SolicitacaoBean implements Serializable {
 		} catch (Exception e) {
 			return true;
 		}
+	}
+	
+	public void buscaPorProtocolo() {
+		this.buscaSolicitacoes = SolicitacaoDAO.listPorProtocolo(this.protocoloBusca);
 	}
 	
 	
@@ -1826,6 +1837,30 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setManifestacaoAnon(boolean manifestacaoAnon) {
 		this.manifestacaoAnon = manifestacaoAnon;
+	}
+
+	public String getProtocoloBusca() {
+		return protocoloBusca;
+	}
+
+	public void setProtocoloBusca(String protocoloBusca) {
+		this.protocoloBusca = protocoloBusca;
+	}
+
+	public List<Solicitacao> getBuscaSolicitacoes() {
+		return buscaSolicitacoes;
+	}
+
+	public void setBuscaSolicitacoes(List<Solicitacao> buscaSolicitacoes) {
+		this.buscaSolicitacoes = buscaSolicitacoes;
+	}
+
+	public Solicitacao getSltShow() {
+		return sltShow;
+	}
+
+	public void setSltShow(Solicitacao sltShow) {
+		this.sltShow = sltShow;
 	}
 
 }

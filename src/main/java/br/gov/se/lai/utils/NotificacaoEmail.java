@@ -65,7 +65,7 @@ public abstract class NotificacaoEmail implements Job{
 	
 	public static void enviarEmailTramites(Solicitacao solicitacao, String texto, Responsavel respRemetente, Responsavel respDestinatario) {
 		String destinatario = respDestinatario.getEmail();
-		String titulo = "esic-SE - Nova manifestação encaminhada para " + solicitacao.getEntidades().getSigla();
+		String titulo = "SE-Ouv - Nova manifestação encaminhada para " + solicitacao.getEntidades().getSigla();
 		
 		String tipoSol1;
 		if (solicitacao.getTipo().equals("Informação")) tipoSol1 = "Pedido de Informação";
@@ -125,7 +125,7 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailNovaSolicitacaoCidadao(Solicitacao solicitacao, Usuario usuario) {
 		String[] envio = destinatarioEmail(usuario, solicitacao);
 		String destinatario = envio[0];
-		String titulo = "esic-SE - Manifestação realizada com sucesso";
+		String titulo = "SE-Ouv - Manifestação realizada com sucesso";
 		
 		String tipoSol;
 		if (solicitacao.getTipo().equals("Informação")) tipoSol = "Seu Pedido de Informação foi realizado com sucesso!";
@@ -180,7 +180,7 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailNovaSolicitacaoResp(Solicitacao solicitacao) {
 		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), (short) 1);
 		
-		String titulo = "esic-SE - Nova manifestação para " + solicitacao.getEntidades().getSigla();
+		String titulo = "SE-Ouv - Nova manifestação para " + solicitacao.getEntidades().getSigla();
 		
 		String tipoSol1;
 		if (solicitacao.getTipo().equals("Informação")) tipoSol1 = "Pedido de Informação";
@@ -232,7 +232,7 @@ public abstract class NotificacaoEmail implements Job{
 
 	public static void enviarEmailNotificacaoCidadao(Solicitacao solicitacao, Mensagem mensagem) {
 		String destinatario = solicitacao.getCidadao().getEmail();
-		String titulo = "esic-SE - Atualização na manifestação "+ solicitacao.getProtocolo();
+		String titulo = "SE-Ouv - Atualização na manifestação "+ solicitacao.getProtocolo();
 		
 		String msg = 	"<h4>Nova atualização na manifestação " + solicitacao.getProtocolo() + " - " + solicitacao.getTitulo() + ".</h4>" +
 						"<table>" +
@@ -288,7 +288,7 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailNotificacaoRecurso(Solicitacao solicitacao) {
 		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), (short) 1);
 		
-		String titulo = "esic-SE - Manifestação para " + solicitacao.getEntidades().getSigla() + " entrou em recurso.";
+		String titulo = "SE-Ouv - Manifestação para " + solicitacao.getEntidades().getSigla() + " entrou em recurso.";
 		
 		String tipoSol1;
 		if (solicitacao.getTipo().equals("Informação")) tipoSol1 = "Pedido de Informação";
@@ -352,7 +352,7 @@ public abstract class NotificacaoEmail implements Job{
 																+"&identidade="+idEntidade
 																+"&"+hashcode.substring(hashcode.length()/2, hashcode.length())
 																+"&mail="+emailUser;
-		String titulo = "esic-SE - Nova requisição de responsável";
+		String titulo = "SE-Ouv - Nova requisição de responsável";
 		
 		String msg = "<h4>Foi solicitada uma nova requisição de cadastro como responsável por:</h4>" +
 					"	<table>" +
@@ -402,7 +402,7 @@ public abstract class NotificacaoEmail implements Job{
 	
 	public static void enviarEmailRedefinicaoSenha(String hashcodeUser, String destinatario, String nomeUser) {
 		String link = DadosAutenticacao.getEndereco()+"Alterar/redefinir_senha.xhtml?access_key="+hashcodeUser;
-		String titulo = "esic-SE - Redefinição de senha";
+		String titulo = "SE-Ouv - Redefinição de senha";
 		
 		String msg = "<h4 style=\"margin-bottom:50px\">Se você esqueceu sua senha ou deseja redefini-la, utilize o botão abaixo para fazê-lo.</p>" + 
 				"	<table align=\"center\">" + 
@@ -430,7 +430,7 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailPrazo(Solicitacao solicitacao, String mensagem, Short nivel) {
 		ArrayList<String> destinatarios = destinatarioResp(solicitacao.getEntidades(), nivel);
 				
-		String titulo = "esic-SE - Notificação de prazo da manifestação " + solicitacao.getProtocolo();
+		String titulo = "SE-Ouv - Notificação de prazo da manifestação " + solicitacao.getProtocolo();
 		
 		String tipoSol1;
 		if (solicitacao.getTipo().equals("Informação")) tipoSol1 = "Pedido de Informação";
@@ -484,10 +484,10 @@ public abstract class NotificacaoEmail implements Job{
 	public static void enviarEmailCadastroCid (Cidadao cidadao) {
 		String destinatario = cidadao.getEmail();
 		
-		String titulo = "esic-SE - Bem vindo ao esic-SE";
+		String titulo = "SE-Ouv - Bem vindo ao SE-Ouv";
 		
 		String msg = 	"<p style=\"font-size: 30px; margin-top: 0\">Olá, " + cidadao.getUsuario().getNome() + "</p>" + 
-						"			<h4>Bem vindo ao esic-SE</h4>" + 
+						"			<h4>Bem vindo ao SE-Ouv</h4>" + 
 						"			<br/>" +
 						"			<h3>Lembre-se do seu nome de usuário (" + cidadao.getUsuario().getNick() + ") e senha para acessar o sistema.</h3>" +
 						"			<h3 style=\"margin:0\">Acesse o sistema para realizar e visualizar manifestações:</h3>" + 
@@ -504,11 +504,19 @@ public abstract class NotificacaoEmail implements Job{
 	
 	public static void enviarEmailCadastroResp (Responsavel responsavel) {
 		String destinatario = responsavel.getEmail();
+		String nivel;
 		
-		String titulo = "esic-SE - Cadastro como responsável";
+		if (responsavel.getNivel() == 1)
+			nivel = "Ouvidor Setorial";
+		else if (responsavel.getNivel() == 3)
+			nivel = "Gestor";
+		else 
+			nivel = "responsável";
+		
+		String titulo = "SE-Ouv - Cadastro como responsável";
 		
 		String msg = 	"<p style=\"font-size: 30px; margin-top: 0\">Olá, " + responsavel.getUsuario().getNome() + "</p>" + 
-				"			<h2>Você foi cadastrado no sistema como responsável do órgão " + responsavel.getEntidades().getSigla() + " - " + responsavel.getEntidades().getNome() + ".</h2>" + 
+				"			<h2>Você foi cadastrado no sistema como + "+ nivel +" do órgão " + responsavel.getEntidades().getSigla() + " - " + responsavel.getEntidades().getNome() + ".</h2>" + 
 				"			<h3>Lembre-se do seu nome de usuário (" + responsavel.getUsuario().getNick() + ") e senha para acessar o sistema.</h3>" +
 				"			<h3 style=\"margin:0\">Acesse o sistema para visualizar e responder manifestações:</h3>" + 
 				"			<a style=\"font-size: 15px\" href=\"" + DadosAutenticacao.getEndereco() + "\">" + DadosAutenticacao.getEndereco() + "</a>";
@@ -524,76 +532,77 @@ public abstract class NotificacaoEmail implements Job{
 	
 	//+++++++++++++++++++ Email HTML Template
 	public static void enviarEmailHTML(String destinatario, String titulo, String mensagem) throws EmailException {
-		
-		// Create the email message
-		ImageHtmlEmail emailHtml = new ImageHtmlEmail();
-		emailHtml.setDebug(true);
-		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
-		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
-		emailHtml.addTo(destinatario);
-		emailHtml.setFrom("no_reply@cge.se.gov.br"); //será passado o email que você fará a autenticação
-		emailHtml.setSubject(titulo);
-		
-		StringBuffer msg = new StringBuffer();
-		msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-		msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
-		msg.append("<head>");
-		msg.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-		msg.append("<title>" + titulo + "</title>");
-		msg.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-		msg.append("<style>");
-		msg.append("html, body {height:100%}");
-		msg.append("a:hover {text-decoration: none !important; color: #2196F3 !important}");
-		msg.append("</style>");
-		msg.append("</head>");
-		msg.append("<body style=\"padding: 0; margin: 0; font-family: lato, Sans-serif; font-weight: normal;\">");
-		msg.append("	<table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; height:100%; background-color: #F2F2F2; padding: 20px\">");
-		msg.append("		<tr>");
-		msg.append("		<td style=\"padding:10px; border:none\">");
-		msg.append("	<table align=\"center\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: none; background: white; border-collapse: collapse;\">");
-		msg.append("		<tr  style=\"color:white; border: none; background: rgb(8, 72, 130); background: -webkit-gradient(linear, left top, right top, from(rgba(10,46,78,1)), color-stop(24%, rgba(27,99,158,0.9)), color-stop(50%, rgba(27,99,158,0.8)), to(rgba(27,99,158,0)));background: -webkit-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: -o-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: linear-gradient(to right, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);\">");
-		msg.append("			<td style=\"padding:10px; border:none\">");
-		msg.append("				<p style=\"font-size: 28px; font-weight: bold; margin: 0\">e-SIC - SE</p>");
-		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">SERVIÇO DE</p>");
-		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">INFORMAÇÃO AO CIDADÃO</p>");
-		msg.append("			</td>");
-		msg.append("		</tr>");
-		msg.append("		<tr>");
-		
-		msg.append("			<td bgcolor=\"#ffffff\" style=\"padding: 40px; text-align: left; border: none; color: #606060\">");
-		
-		msg.append(mensagem);
-		
-		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">Em caso de dúvida, entre em contato através do email controladoria@cge.se.gov.br ou telefone (79) 3179-3777</h5>");
-		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">E-mail automático, favor não responder.</h5>");
-		msg.append("			</td>");
-		
-		msg.append("		</tr>");
-		msg.append("		<tr>");
-		msg.append("			<td style=\"padding: 20px; border: none; text-align: center; font-size: 12px; color: #757575;\">");
-		msg.append("				<p style=\"margin: 0\">Ouvidoria Geral do Estado - 2018</p>");
-		msg.append("			</td>");
-		msg.append("		</tr>");
-		msg.append("	</table>");
-		msg.append("		</td>");
-		msg.append("		</tr>");
-		msg.append("	</table>");
-		msg.append("</body>");
-		msg.append("</html>");
-		
-		// set the html message
-		emailHtml.setHtmlMsg(msg.toString());
-		
-		// set the alternative message
-		emailHtml.setTextMsg("Seu provedor de email não suporta este tipo de mensagens.");
-		
-		emailHtml.setDebug(false);
-		
-		// send the email
-		emailHtml.send();
-		
-		System.out.println("Email enviado para: " + destinatario + "	Em: " + emailHtml.getSentDate());
-		System.out.println("Título: " + titulo);
+//		
+//		// Create the email message
+//		ImageHtmlEmail emailHtml = new ImageHtmlEmail();
+//		emailHtml.setDebug(true);
+//		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
+//		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
+//		emailHtml.addTo(destinatario);
+//		emailHtml.setFrom("no_reply@setc.se.gov.br"); //será passado o email que você fará a autenticação
+//		emailHtml.setSubject(titulo);
+//		
+//		StringBuffer msg = new StringBuffer();
+//		msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+//		msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
+//		msg.append("<head>");
+//		msg.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+//		msg.append("<title>" + titulo + "</title>");
+//		msg.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
+//		msg.append("<style>");
+//		msg.append("html, body {height:100%}");
+//		msg.append("a:hover {text-decoration: none !important; color: #2196F3 !important}");
+//		msg.append("</style>");
+//		msg.append("</head>");
+//		msg.append("<body style=\"padding: 0; margin: 0; font-family: lato, Sans-serif; font-weight: normal;\">");
+//		msg.append("	<table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; height:100%; background-color: #F2F2F2; padding: 20px\">");
+//		msg.append("		<tr>");
+//		msg.append("		<td style=\"padding:10px; border:none\">");
+//		msg.append("	<table align=\"center\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: none; background: white; border-collapse: collapse;\">");
+//		msg.append("		<tr  style=\"color:white; border: none; background: rgb(8, 72, 130); background: -webkit-gradient(linear, left top, right top, from(rgba(10,46,78,1)), color-stop(24%, rgba(27,99,158,0.9)), color-stop(50%, rgba(27,99,158,0.8)), to(rgba(27,99,158,0)));background: -webkit-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: -o-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: linear-gradient(to right, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);\">");
+//		msg.append("			<td style=\"padding:10px; border:none\">");
+//		msg.append("				<p style=\"font-size: 28px; font-weight: bold; margin: 0\">SE-Ouv</p>");
+//		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">SISTEMA DE OUVIDORIAS</p>");
+//		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">DO ESTADO DE SERGIPE</p>");
+//		msg.append("			</td>");
+//		msg.append("		</tr>");
+//		msg.append("		<tr>");
+//		
+//		msg.append("			<td bgcolor=\"#ffffff\" style=\"padding: 40px; text-align: left; border: none; color: #606060\">");
+//		
+//		msg.append(mensagem);
+//		
+//		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">Em caso de dúvida, entre em contato através do email ouvidoriageral@setc.se.gov.br ou telefone (79) 3179-4997</h5>");
+//		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">E-mail automático, favor não responder.</h5>");
+//		msg.append("			</td>");
+//		
+//		msg.append("		</tr>");
+//		msg.append("		<tr>");
+//		msg.append("			<td style=\"padding: 20px; border: none; text-align: center; font-size: 12px; color: #757575;\">");
+//		msg.append("				<p style=\"margin: 0\">OGE - Ouvidoria Geral do Estado</p>");
+//		msg.append("				<p style=\"margin: 0\">SETC - Secretaria do Estado da Transparência e Controle</p>");
+//		msg.append("			</td>");
+//		msg.append("		</tr>");
+//		msg.append("	</table>");
+//		msg.append("		</td>");
+//		msg.append("		</tr>");
+//		msg.append("	</table>");
+//		msg.append("</body>");
+//		msg.append("</html>");
+//		
+//		// set the html message
+//		emailHtml.setHtmlMsg(msg.toString());
+//		
+//		// set the alternative message
+//		emailHtml.setTextMsg("Seu provedor de email não suporta este tipo de mensagens.");
+//		
+//		emailHtml.setDebug(false);
+//		
+//		// send the email
+//		emailHtml.send();
+//		
+//		System.out.println("Email enviado para: " + destinatario + "	Em: " + emailHtml.getSentDate());
+//		System.out.println("Título: " + titulo);
 	}
 	
 	//+++++++++++++++++++ Email simples

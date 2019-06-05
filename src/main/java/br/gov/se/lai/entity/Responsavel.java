@@ -25,6 +25,8 @@ public class Responsavel implements java.io.Serializable {
 	private Usuario usuario;
 	private Short nivel;
 	private String email;
+	private String telefone1;
+	private String telefone2;
 	private boolean ativo;
 
 	public Responsavel() {
@@ -37,12 +39,14 @@ public class Responsavel implements java.io.Serializable {
 		this.ativo = ativo;
 	}
 
-	public Responsavel(Entidades entidades, boolean ativo, Usuario usuario, Short nivel, String email) {
+	public Responsavel(Entidades entidades, boolean ativo, Usuario usuario, Short nivel, String email, String telefone1, String telefone2) {
 		this.entidades = entidades;
 		this.usuario = usuario;
 		this.nivel = nivel;
 		this.email = email;
 		this.ativo = ativo;
+		this.telefone1 = telefone1;
+		this.telefone2 = telefone2;
 	}
 
 	@Id
@@ -102,6 +106,42 @@ public class Responsavel implements java.io.Serializable {
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	@Column(name = "telefone1", nullable = false, length = 20)
+	public String getTelefone1() {
+		return telefone1;
+	}
+
+	public void setTelefone1(String telefone1) {
+//		String x = telefone1;
+//		if (x.length() == 14) {
+//			x = x.substring(0, x.length()-4) + "-" + x.substring(x.length()-4);
+//			x = x.substring(0, x.length()-9) + " " + x.substring(x.length()-9);
+//			this.telefone1 = x;
+//		} else if (x.length() == 13) {
+//			x = x.substring(0, x.length()-4) + "-" + x.substring(x.length()-4);
+//			this.telefone1 = x;
+//		} else
+			this.telefone1 = telefone1;
+	}
+	
+	@Column(name = "telefone2", nullable = false, length = 20)
+	public String getTelefone2() {
+		return telefone2;
+	}
+
+	public void setTelefone2(String telefone2) {
+//		String x = telefone2;
+//		if (x.length() == 14) {
+//			x = x.substring(0, x.length()-4) + "-" + x.substring(x.length()-4);
+//			x = x.substring(0, x.length()-9) + " " + x.substring(x.length()-9);
+//			this.telefone2 = x;
+//		} else if (x.length() == 13) {
+//			x = x.substring(0, x.length()-4) + "-" + x.substring(x.length()-4);
+//			this.telefone2 = x;
+//		} else
+			this.telefone2 = telefone2;
 	}
 
 	

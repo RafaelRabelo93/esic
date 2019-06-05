@@ -187,7 +187,35 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		mensagem = new Mensagem();	
 		return "/Consulta/consulta?faces-redirect=true";
 	}
-
+	
+	public void reformular() {
+//		Usuario usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
+		
+		// Justificativa
+		mensagem.setSolicitacao(solicitacao);
+		mensagem.setTipo((short) 7);
+		mensagem.setUsuario(usuario);
+		mensagem.setData(new Date(System.currentTimeMillis()));
+		
+		if (MensagemDAO.saveOrUpdate(mensagem)) {
+			mensagensSolicitacao.add(mensagem);
+			MensagemDAO.saveOrUpdate(mensagem);
+			NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
+		}
+		
+		solicitacao.setStatus("Reformulação");
+		
+		try {
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+			MensagemBean.salvarStatus(solicitacao, "Reformulação", null, null, nota);
+			mensagem = new Mensagem();
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+		}
+		
+	}
+	
 	/**
 	 * Cria uma nova mensagem aviso de sistema referente a status da ultima movimentação da solicitação
 	 * @param solicitacao
@@ -289,6 +317,12 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			System.out.println(mensagem.getTexto());
 			break;
 			
+		case "Reformulação":
+			tipoAux = 4;
+			mensagem.setTexto("Pedido de reformulação de manifestação realizado por "+ ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getNomeCompleto());
+			System.out.println(mensagem.getTexto());
+			break;
+			
 		default:
 			mensagem.setTexto("Nova solicitacao no sistema.");
 			break;
@@ -384,14 +418,6 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			carregaMensagens();
 		}
 	}
-
-//	public Anexo getAnexo() {
-//		return anexo;
-//	}
-//
-//	public void setAnexo(Anexo anexo) {
-//		this.anexo = anexo;
-//	}
 
 	public UploadedFile getFile() {
 		return file;

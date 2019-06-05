@@ -79,12 +79,19 @@ public class ResponsavelBean implements Serializable{
 						this.usuario.setPerfil((short)2);
 					}
 					this.responsavel.setUsuario(this.usuario);
-					ResponsavelDAO.saveOrUpdate(responsavel);
-					UsuarioDAO.saveOrUpdate(usuario);	
-//					todosResponsaveis.add(responsavel);
-					NotificacaoEmail.enviarEmailCadastroResp(responsavel);
-					todosResponsaveis.add(responsavel);
-					responsavel = new Responsavel();
+					
+					Set<Responsavel> respSet = this.usuario.getResponsavels();
+					respSet.add(this.responsavel);
+					this.usuario.setResponsavels(respSet);
+						
+					if (ResponsavelDAO.saveOrUpdate(this.responsavel) && UsuarioDAO.saveOrUpdate(this.usuario)) {
+						todosResponsaveis.add(responsavel);
+						ResponsavelDAO.saveOrUpdate(this.responsavel);
+						UsuarioDAO.saveOrUpdate(this.usuario);	
+						NotificacaoEmail.enviarEmailCadastroResp(responsavel);
+					}
+
+					this.responsavel = new Responsavel();
 					idEntidade = 0;
 					nick = null;
 					return "/Consulta/consulta_responsavel.xhtml?faces-redirect=true";
@@ -211,7 +218,7 @@ public class ResponsavelBean implements Serializable{
 	}
 	
 	public boolean verificaAcesso() {
-		if(verificaGestor() || verificaAdmin()) {
+		if(verificaGestor() || verificaAdmin() || verificaOGE()) {
 			return true;
 		}else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
@@ -233,6 +240,19 @@ public class ResponsavelBean implements Serializable{
 		}else {
 			return false;
 		}
+	}
+	
+	public static boolean verificaOGE() {
+		Usuario usuario = usuarioBean.getUsuario();
+		
+		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel())) {
+			for (Responsavel resp : usuarioBean.getUsuario().getResponsavels()) {
+				if (resp.getEntidades().getSigla().equals("OGE") && resp.isAtivo()) {
+					return true;
+				}
+			}
+			return false;
+		} else return false;
 	}
 		
 	public boolean verificaExistenciaResponsavel(Usuario usuario) {
@@ -365,7 +385,7 @@ public class ResponsavelBean implements Serializable{
 	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
 		for (Responsavel respo : new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()))) {
-			System.out.println(respo.getUsuario().getNome());
+			//System.out.println(respo.getUsuario().getNome());
 			if(respo.getEntidades().getIdOrgaos() == idOrgao) {
 				if(respo.getEntidades().getIdEntidades().equals(idEntidade)) {
 					retorno =  true;
@@ -478,6 +498,11 @@ public class ResponsavelBean implements Serializable{
 		return ids;
 	}
 	
+	public String limparResponsavel() {
+		this.responsavel = new Responsavel();
+		return "/Cadastro/cad_responsavel";
+		
+	}
 	
 	public boolean temPerfilAtivo() {
 		return (ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()).size() > 0) ;

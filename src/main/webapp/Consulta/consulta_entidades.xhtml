@@ -24,7 +24,7 @@
 							<p:separator styleClass="separator2" style="align-self:flex-start;margin-left:5vw;"/>
 						</h:panelGroup>
 						
-						<h:commandLink action="/Cadastro/cad_entidades" id="novaEntidade" styleClass="botaoLink"
+						<h:commandLink action="#{entidades.redirecionarCadastroEntidade()}" id="novaEntidade" styleClass="botaoLink"
 							rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}" style="margin-bottom: 10px"
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novaEntidade').click();}">
 							<i class="fa fa-plus" style="color: white; padding-right: 7px;" />

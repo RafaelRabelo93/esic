@@ -9,7 +9,7 @@
 <h:body >
 
 	<ui:composition>
-
+		
 		<h:form class="form mainMenuPanel" id="mainMenu">
 		
 <!-- 			 <f:event type="preRenderView" listener="#{solicitacao.resetManifestacaoAnon()}"/> -->
@@ -29,7 +29,7 @@
 				</p:commandLink>
 			
 			 </h:panelGroup>
-			
+
 
 			<p id="title" style="max-width: 700px;">Sistema de Ouvidorias do Estado de Sergipe</p>
 			
@@ -89,8 +89,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container disabled">
-						<h:commandLink id="btnSol" styleClass="link card" onclick="PF('dlgAviso').show(); return false;" >
+					<h:panelGroup class="container">
+						<h:commandLink id="btnSol" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/chat.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Solicitação" />
@@ -104,8 +104,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container disabled">
-						<h:commandLink id="btnSugestao" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
+					<h:panelGroup class="container">
+						<h:commandLink id="btnSugestao" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}" >
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/sugestion.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Sugestão" />
@@ -120,8 +120,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container disabled">
-						<h:commandLink id="btnReclama" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
+					<h:panelGroup class="container">
+						<h:commandLink id="btnReclama" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/dislike.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Reclamação" />
@@ -134,8 +134,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 
-					<h:panelGroup class="container disabled">
-						<h:commandLink id="btnElogio" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
+					<h:panelGroup class="container">
+						<h:commandLink id="btnElogio" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}" >
 							<div class="face front link">
 								<p:graphicImage styleClass="icone" value="#{resource['img/icon/like.png']}" width="150px" />
 								<h:outputText styleClass="tituloMenu" value="Elogio" />
@@ -149,8 +149,8 @@
 						</h:commandLink>
 					</h:panelGroup>
 					
-					<h:panelGroup class="container disabled">
-						<h:commandLink id="btnDenuncia" styleClass="link card" onclick="PF('dlgAviso').show(); return false;">
+					<h:panelGroup class="container">
+						<h:commandLink id="btnDenuncia" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}">
 							<div class="face front link">
 								<p:graphicImage styleClass="icone"
 									value="#{resource['img/icon/megaphone.png']}" width="150px" />
@@ -230,7 +230,7 @@
 		
 							<!-- Continuar Cadastro Cidadão -->
 							<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
-								<h:commandLink styleClass="link" action="Cadastro/cad_cidadao">
+								<h:commandLink styleClass="link" action="#{cidadao.loadUsuario}">
 									<p:graphicImage styleClass="icone"
 										value="#{resource['img/icon/contract.png']}" width="150px" />
 		
@@ -255,13 +255,22 @@
 							<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
 								<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
 		
-									<p:graphicImage styleClass="icone"
-										value="#{resource['img/icon/hand.png']}" width="150px" />
+									<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
 		
 									<h:outputText styleClass="tituloMenu" value="Manifestação" />
 		
 									<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
 		
+								</h:commandLink>
+							</h:panelGroup>
+							
+							<!-- Manifestação -->
+							<h:panelGroup class="botao" rendered="false">
+								<h:commandLink styleClass="link" action="/Consulta/consulta_protocolo">
+									<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
+		
+									<h:outputText styleClass="tituloMenu" value="Consulta" />
+									<p>Buscar manifestações anônimas por número de protocolo</p>
 								</h:commandLink>
 							</h:panelGroup>
 							

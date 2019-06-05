@@ -72,17 +72,24 @@ public class CidadaoDAO {
    
   	 	
     @SuppressWarnings("unchecked")
-    public static List<Cidadao> findCPFs() {
+    public static List<String> findCPFs() {
     	Query query = em.createQuery("SELECT cid.cpf FROM Cidadao as cid ");
-    	List<Cidadao> results = query.getResultList();
+    	List<String> results = query.getResultList();
   	 	return results;
      }
     
     
     @SuppressWarnings("unchecked")
-    public static List<Cidadao> findRGs() {
+    public static List<String> findRGs() {
     	Query query = em.createQuery("SELECT cid.rg FROM Cidadao as cid ");
-    	List<Cidadao> results = query.getResultList();
+    	List<String> results = query.getResultList();
+    	return results;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static List<String> findEmails() {
+    	Query query = em.createQuery("SELECT cid.email FROM Cidadao as cid ");
+    	List<String> results = query.getResultList();
     	return results;
     }
 

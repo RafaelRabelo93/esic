@@ -83,7 +83,38 @@ public class Cidadao implements java.io.Serializable {
 		this.telefone = telefone;
 		this.celular = celular;
 	}
-
+	
+	@Override
+	public Object clone() {
+	    try {
+	        Cidadao cid = (Cidadao) super.clone();
+	        cid.setSolicitacaos(new HashSet<Solicitacao>(0));
+	        return cid;
+	    } catch (CloneNotSupportedException e) {
+	        return new Cidadao(
+		        this.usuario,
+		        this.email, 
+				this.cpf,
+				this.tipo,
+				this.rg,
+				this.orgaexp,
+				this.datanasc,
+				this.sexo,
+				this.escolaridade,
+				this.profissao,
+				this.endereco,
+				this.estado,
+				this.cidade,
+				this.cep,
+				this.renda,
+				this.solicitacaos,
+				this.numero,
+				this.telefone,
+				this.celular
+			);
+	    }
+	}
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 

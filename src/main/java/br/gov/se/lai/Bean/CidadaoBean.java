@@ -30,10 +30,12 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	private static final long serialVersionUID = 6367328853853098867L;
 	private Cidadao cidadao;
+	private Cidadao cidAlt;
+	private Cidadao cidCad = new Cidadao();
 	private Usuario usuario;
 	private String email;
-	private String cpf;
-	private String rg;
+//	private String cpf;
+//	private String rg;
 	private String orgaoexp;
 	private String bairro;
 	private String complemento;
@@ -56,6 +58,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	@PostConstruct
 	public void init() {
 		cidadao = new Cidadao();
+		cidCad = new Cidadao();
 	}
 
 	/**
@@ -65,80 +68,126 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 */
 	public String save() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		this.usuario = usuarioBean.getUsuario();
 		
-		System.out.println("Dados salvos");
-		System.out.println("E-mail cid: " + usuarioBean.getEmailCid());
-		System.out.println("Dados cadastrados");
-		System.out.println("CPF: " + cpf + " RG: " + rg + " E-mail: " + email);
-		
-		if (!cpfCadastrado(cpf) && !rgCadastrado(rg) && !emailCadastrado(cidadao.getEmail()) && emailPessoal(cidadao.getEmail())) {
+		if (!cpfCadastrado(this.cidadao.getCpf()) && !rgCadastrado(this.cidadao.getRg()) && !emailCadastrado(this.cidadao.getEmail())) {
 			
-			this.usuario = usuarioBean.getUsuario();
+			this.cidadao.setUsuario(this.usuario);
 			
-			
-			if (this.cidadao == null) {
-				cidadao = new Cidadao();
+			if(this.cidadao.getNumero().isEmpty()) {
+				this.cidadao.setNumero(null);
 			}
 			
-			cidadao.setCpf(cpf);
-			cidadao.setRg(rg);
-//			cidadao.setTelefone(telefone);
-//			cidadao.setCelular(celular);
+			Set<Cidadao> cidSet = new HashSet<Cidadao>();
+			cidSet.add(this.cidadao);
+			System.out.println("Set solto: "+ cidSet);
+			this.usuario.setCidadaos(cidSet);
 			
-			try {
-				if (!getTelefone().isEmpty()) {
-					cidadao.setTelefone(telefone);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setTelefone(null);
-			}
 			
-			try {
-				if (!getCelular().isEmpty()) {
-					cidadao.setCelular(celular);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setCelular(null);
-			}
+			System.out.println("Set salvo: "+ this.usuario.getCidadaos());
 			
-			try {
-				if (!getNumero().isEmpty()) {
-					cidadao.setNumero(numero);
-				}
-			} catch (NullPointerException e) {
-				cidadao.setNumero(null);
-			}
-			
-			cidadao.setUsuario(this.usuario);
-			
-			if (CidadaoDAO.saveOrUpdate(cidadao)) {
-				Set<Cidadao> cidadaos = new HashSet<Cidadao>();
-				cidadaos.add(cidadao);
-				usuario.setCidadaos(cidadaos);
-				usuarioBean.setEmail(cidadao.getEmail());
-				// usuario.getCidadaos().add(cidadao);
-				if (ehRepresentanteCidadao(usuario)) {
-					this.usuario.setPerfil((short) 4);
-				} else {
-					this.usuario.setPerfil((short) 3);
-				}
+			if (CidadaoDAO.saveOrUpdate(this.cidadao) && UsuarioDAO.saveOrUpdate(this.usuario)) {
+				CidadaoDAO.saveOrUpdate(this.cidadao);
+				if(ehRepresentanteCidadao(this.usuario)) 
+					this.usuario.setPerfil((short)4);
+				else
+					this.usuario.setPerfil((short)3);
 				UsuarioDAO.saveOrUpdate(this.usuario);
-				usuarioBean.loadEmail(this.usuario);
+				
+				
 				NotificacaoEmail.enviarEmailCadastroCid(cidadao);
-				return "/index";
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cidadão cadastrado com sucesso."));
+				return "/index?faces-redirect=true";
 			} else {
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN, "Ocorreu um erro ao realizar cadastro.", "Por favor tente, novamente."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Ocorreu um erro ao realizar cadastro.", "Por favor tente, novamente."));
 				return null;
 			}
-			
+		
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN, mensagemErro, mensagemErro2));
 			return null;
 		}
 	}
+	
+	
+	public String edit() {
+		if (!cpfCadastrado(this.cidAlt.getCpf()) && !rgCadastrado(this.cidAlt.getRg()) && !emailCadastrado(this.cidAlt.getEmail())) {
+			
+			if (this.cidadao == null) {
+				this.cidadao = new Cidadao();
+			}
+			
+			this.cidadao.setEmail(this.cidAlt.getEmail());
+			this.cidadao.setCpf(this.cidAlt.getCpf());
+			this.cidadao.setTipo(this.cidAlt.getTipo());
+			this.cidadao.setRg(this.cidAlt.getRg());
+			this.cidadao.setOrgaexp(this.cidAlt.getOrgaexp());
+			this.cidadao.setDatanasc(this.cidAlt.getDatanasc());
+			this.cidadao.setSexo(this.cidAlt.getSexo());
+			this.cidadao.setEscolaridade(this.cidAlt.getEscolaridade());
+			this.cidadao.setProfissao(this.cidAlt.getProfissao());
+			this.cidadao.setEndereco(this.cidAlt.getEndereco());
+			this.cidadao.setEstado(this.cidAlt.getEstado());
+			this.cidadao.setCidade(this.cidAlt.getCidade());
+			this.cidadao.setCep(this.cidAlt.getCep());
+			this.cidadao.setRenda(this.cidAlt.getRenda());
+			this.cidadao.setSolicitacaos(this.cidAlt.getSolicitacaos());
+			this.cidadao.setNumero(this.cidAlt.getNumero());
+			this.cidadao.setTelefone(this.cidAlt.getTelefone());
+			this.cidadao.setCelular(this.cidAlt.getCelular());
+			
+			if(this.cidadao.getNumero().isEmpty()) {
+				this.cidadao.setNumero(null);
+			}
+			
+			this.cidadao.setUsuario(this.usuario);
+			
+			
+			if (CidadaoDAO.saveOrUpdate(this.cidadao) && UsuarioDAO.saveOrUpdate(this.usuario)) {
+				CidadaoDAO.saveOrUpdate(this.cidadao);
+				UsuarioDAO.saveOrUpdate(this.usuario);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Dados alterados com sucesso."));
+				return "/index";
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Ocorreu um erro ao realizar cadastro.", "Por favor tente, novamente."));
+				return null;
+			}
+			
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, mensagemErro, mensagemErro2));
+			return null;
+		}
+	}
 
+	
+	public String loadUsuario() {
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		this.usuario = usuarioBean.getUsuario();
+		this.cidadao = new Cidadao();
+		this.cidadao.setTipo(true);
+		
+		return "/Cadastro/cad_cidadao?faces-redirect=true";
+	}
+	
+	/**
+	 * Redireciona para página alterar dados caso seja necessário
+	 */
+	public String alterarDadosUsuario() {
+		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+		this.usuario = usuarioBean.getUsuario();
+		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
+			this.cidadao = CidadaoDAO.findCidadaoUsuario(usuario.getIdUsuario());
+			this.cidAlt = (Cidadao) this.cidadao.clone();
+			return "/Alterar/alterar_usuario";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Cidadão não cadastrado.", "Por favor complete seu cadastro."));
+			return null;
+		}
+	}
+	
+	
 	/**
 	 * Função de cpfCadastrado Verifica se o cpf inserido pelo usuário já consta no
 	 * banco de dados.
@@ -151,9 +200,20 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		boolean retorno = false;
 		try {
 			if (!cpf.equals("")) {
-				List<Cidadao> cpfLista = new ArrayList<Cidadao>(CidadaoDAO.findCPFs());
+				List<String> cpfLista = new ArrayList<String>(CidadaoDAO.findCPFs());
+				
+//				System.out.println("\n\n CPF comparado: " + cpf);
+//				System.out.println("\n Lista original CPFs:");
+//				for(String c : cpfLista) System.out.println(c);
+//				System.out.println("\n CPF removido: " + this.cidadao.getCpf());
+				
+				cpfLista.remove(this.cidadao.getCpf());
+				
+//				System.out.println("\n Lista alterada CPFs:");
+//				for(String c : cpfLista) System.out.println(c);
+				
 				if (cpfLista.contains(cpf)) {
-					mensagemErro = "CPF já existente no sistema.";
+					mensagemErro = "CPF "+ cpf + " já cadastrado no sistema.";
 					mensagemErro2= "";
 					retorno =  true;
 				}
@@ -175,9 +235,10 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 		boolean retorno = false;
 		try {
 			if (!rg.equals("")) {
-				List<Cidadao> rgLista = new ArrayList<Cidadao>(CidadaoDAO.findRGs());
-				if (rgLista.contains(rg) && !rg.equals("")) {
-					mensagemErro = "RG já existente no sistema.";
+				List<String> rgLista = new ArrayList<String>(CidadaoDAO.findRGs());
+				rgLista.remove(this.cidadao.getRg());
+				if (rgLista.contains(rg)) {
+					mensagemErro = "RG "+ rg + " já existente no sistema.";
 					mensagemErro2= "";
 					retorno = true;
 				}
@@ -198,10 +259,14 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	public boolean emailCadastrado(String email) {
 		boolean retorno = false;
 		try {
-			if(!CidadaoDAO.findCidadaoEmail(email).equals(null) ) {
-				retorno = true;
-				mensagemErro= "Email já consta como cadastrado.";
-				mensagemErro2= "";
+			if (!email.equals("")) {
+				List<String> emailLista = new ArrayList<String>(CidadaoDAO.findEmails());
+				emailLista.remove(this.cidadao.getEmail());
+				if (emailLista.contains(email)) {
+					mensagemErro = "Email "+ email + " já cadastrado no sistema.";
+					mensagemErro2= "";
+					retorno = true;
+				}
 			}
 		}catch (IndexOutOfBoundsException e) {
 		}
@@ -276,7 +341,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * Limpa o objeto preenchendo todos os seus campos com null.
 	 */
 	public void limparCidadaoBean() {
-		setEmail(null);
+//		setEmail(null);
 		setBairro(null);
 		setCep(null);
 		setComplemento(null);
@@ -314,22 +379,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getRg() {
-		return rg;
-	}
-
-	public void setRg(String rg) {
-		this.rg = rg;
-	}
+//
+//	public String getCpf() {
+//		return cpf;
+//	}
+//
+//	public void setCpf(String cpf) {
+//		this.cpf = cpf;
+//	}
+//
+//	public String getRg() {
+//		return rg;
+//	}
+//
+//	public void setRg(String rg) {
+//		this.rg = rg;
+//	}
 
 	public String getOrgaoexp() {
 		return orgaoexp;
@@ -465,6 +530,22 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 
 	public void setCelular(String celular) {
 		this.celular = celular;
+	}
+
+	public Cidadao getCidAlt() {
+		return cidAlt;
+	}
+
+	public void setCidAlt(Cidadao cidAlt) {
+		this.cidAlt = cidAlt;
+	}
+
+	public Cidadao getCidCad() {
+		return cidCad;
+	}
+
+	public void setCidCad(Cidadao cidCad) {
+		this.cidCad = cidCad;
 	}
 
 	

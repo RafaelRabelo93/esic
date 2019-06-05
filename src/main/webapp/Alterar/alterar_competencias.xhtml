@@ -164,7 +164,7 @@
 	
 							<h:outputLabel value="Ou" style="margin: 0 5em" />
 							
-							<p:commandLink class="botaoLink" onclick="PF('dlg3').show();" rendered="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4'}">
+							<p:commandLink class="botaoLink" onclick="PF('dlg3').show();" rendered="#{(usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '4') and !usuario.isResponsavelOGE()}">
 								<i class="fa fa-plus-square" style="margin-right: 5px" />
 								<h:outputText value="Novo Tema" />
 							</p:commandLink>

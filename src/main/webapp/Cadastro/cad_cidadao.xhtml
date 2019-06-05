@@ -50,7 +50,7 @@
 							<h:panelGroup styleClass="column">
 								<p:outputLabel value="Nome completo: " for="nome" rendered="#{cidadao.cidadao.tipo}"/>
 								<p:outputLabel value="Razão Social: " for="nome" rendered="#{!cidadao.cidadao.tipo}"/>
-								<p:inputText id="nome" value="#{usuario.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
+								<p:inputText id="nome" value="#{cidadao.usuario.nome}" size="60" maxlength="65" required="true" requiredMessage="Nome não pode ser vazio">
 									<f:validateLength minimum="5" maximum="65" />
 									<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
 								</p:inputText>
@@ -86,7 +86,7 @@
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="Gênero: " for="sexo" />
-								<p:selectOneRadio id="sexo" value="#{cidadao.sexo}"	layout="pageDirection" disabled="#{!cidadao.cidadao.tipo}">
+								<p:selectOneRadio id="sexo" value="#{cidadao.cidadao.sexo}"	layout="pageDirection" disabled="#{!cidadao.cidadao.tipo}">
 									<f:selectItem itemLabel="Masculino" itemValue="M" />
 									<f:selectItem itemLabel="Feminino" itemValue="F" />
 									<f:selectItem itemLabel="Outro" itemValue="O" />
@@ -100,14 +100,14 @@
 						<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
 							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}" size="11">
+								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}" size="11">
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="RG: " for="rg" />
-								<p:inputMask id="rg" value="#{cidadao.rg}" mask="?9999999999999999" disabled="#{!cidadao.cidadao.tipo}" size="15"/>
+								<p:inputMask id="rg" value="#{cidadao.cidadao.rg}" mask="?9999999999999999" disabled="#{!cidadao.cidadao.tipo}" size="15"/>
 							</h:panelGroup>
 
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{cidadao.cidadao.tipo}">
@@ -149,12 +149,12 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Telefone:" for="tel"/>
-								<p:inputMask id="tel" value="#{cidadao.telefone}" mask="(99) 9 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
+								<p:inputMask id="tel" value="#{cidadao.cidadao.telefone}" mask="(99) 9 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Celular:" for="cel"/>
-								<p:inputMask id="cel" value="#{cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
+								<p:inputMask id="cel" value="#{cidadao.cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{!cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						
@@ -166,7 +166,7 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw">
 								<p:outputLabel value="Celular:" for="cel2"/>
-								<p:inputMask id="cel2" value="#{cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{cidadao.cidadao.tipo}"/>
+								<p:inputMask id="cel2" value="#{cidadao.cidadao.celular}" mask="(99) 9 9999-9999" size="12" disabled="#{cidadao.cidadao.tipo}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						
