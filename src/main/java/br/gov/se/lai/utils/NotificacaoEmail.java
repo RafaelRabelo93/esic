@@ -532,77 +532,82 @@ public abstract class NotificacaoEmail implements Job{
 	
 	//+++++++++++++++++++ Email HTML Template
 	public static void enviarEmailHTML(String destinatario, String titulo, String mensagem) throws EmailException {
-//		
-//		// Create the email message
-//		ImageHtmlEmail emailHtml = new ImageHtmlEmail();
-//		emailHtml.setDebug(true);
-//		emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
-//		emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
-//		emailHtml.addTo(destinatario);
-//		emailHtml.setFrom("no_reply@setc.se.gov.br"); //será passado o email que você fará a autenticação
-//		emailHtml.setSubject(titulo);
-//		
-//		StringBuffer msg = new StringBuffer();
-//		msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-//		msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
-//		msg.append("<head>");
-//		msg.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-//		msg.append("<title>" + titulo + "</title>");
-//		msg.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
-//		msg.append("<style>");
-//		msg.append("html, body {height:100%}");
-//		msg.append("a:hover {text-decoration: none !important; color: #2196F3 !important}");
-//		msg.append("</style>");
-//		msg.append("</head>");
-//		msg.append("<body style=\"padding: 0; margin: 0; font-family: lato, Sans-serif; font-weight: normal;\">");
-//		msg.append("	<table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; height:100%; background-color: #F2F2F2; padding: 20px\">");
-//		msg.append("		<tr>");
-//		msg.append("		<td style=\"padding:10px; border:none\">");
-//		msg.append("	<table align=\"center\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: none; background: white; border-collapse: collapse;\">");
-//		msg.append("		<tr  style=\"color:white; border: none; background: rgb(8, 72, 130); background: -webkit-gradient(linear, left top, right top, from(rgba(10,46,78,1)), color-stop(24%, rgba(27,99,158,0.9)), color-stop(50%, rgba(27,99,158,0.8)), to(rgba(27,99,158,0)));background: -webkit-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: -o-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: linear-gradient(to right, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);\">");
-//		msg.append("			<td style=\"padding:10px; border:none\">");
-//		msg.append("				<p style=\"font-size: 28px; font-weight: bold; margin: 0\">SE-Ouv</p>");
-//		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">SISTEMA DE OUVIDORIAS</p>");
-//		msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">DO ESTADO DE SERGIPE</p>");
-//		msg.append("			</td>");
-//		msg.append("		</tr>");
-//		msg.append("		<tr>");
-//		
-//		msg.append("			<td bgcolor=\"#ffffff\" style=\"padding: 40px; text-align: left; border: none; color: #606060\">");
-//		
-//		msg.append(mensagem);
-//		
-//		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">Em caso de dúvida, entre em contato através do email ouvidoriageral@setc.se.gov.br ou telefone (79) 3179-4997</h5>");
-//		msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">E-mail automático, favor não responder.</h5>");
-//		msg.append("			</td>");
-//		
-//		msg.append("		</tr>");
-//		msg.append("		<tr>");
-//		msg.append("			<td style=\"padding: 20px; border: none; text-align: center; font-size: 12px; color: #757575;\">");
-//		msg.append("				<p style=\"margin: 0\">OGE - Ouvidoria Geral do Estado</p>");
-//		msg.append("				<p style=\"margin: 0\">SETC - Secretaria do Estado da Transparência e Controle</p>");
-//		msg.append("			</td>");
-//		msg.append("		</tr>");
-//		msg.append("	</table>");
-//		msg.append("		</td>");
-//		msg.append("		</tr>");
-//		msg.append("	</table>");
-//		msg.append("</body>");
-//		msg.append("</html>");
-//		
-//		// set the html message
-//		emailHtml.setHtmlMsg(msg.toString());
-//		
-//		// set the alternative message
-//		emailHtml.setTextMsg("Seu provedor de email não suporta este tipo de mensagens.");
-//		
-//		emailHtml.setDebug(false);
-//		
-//		// send the email
-//		emailHtml.send();
-//		
-//		System.out.println("Email enviado para: " + destinatario + "	Em: " + emailHtml.getSentDate());
-//		System.out.println("Título: " + titulo);
+		boolean envioAtivo = true;
+		
+		if (envioAtivo) {
+			// Create the email message
+			ImageHtmlEmail emailHtml = new ImageHtmlEmail();
+			emailHtml.setDebug(true);
+			emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
+			emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
+			emailHtml.addTo(destinatario);
+			emailHtml.setFrom("no_reply@setc.se.gov.br"); //será passado o email que você fará a autenticação
+			emailHtml.setSubject(titulo);
+			
+			StringBuffer msg = new StringBuffer();
+			msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+			msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
+			msg.append("<head>");
+			msg.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+			msg.append("<title>" + titulo + "</title>");
+			msg.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
+			msg.append("<style>");
+			msg.append("html, body {height:100%}");
+			msg.append("a:hover {text-decoration: none !important; color: #2196F3 !important}");
+			msg.append("</style>");
+			msg.append("</head>");
+			msg.append("<body style=\"padding: 0; margin: 0; font-family: lato, Sans-serif; font-weight: normal;\">");
+			msg.append("	<table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; height:100%; background-color: #F2F2F2; padding: 20px\">");
+			msg.append("		<tr>");
+			msg.append("		<td style=\"padding:10px; border:none\">");
+			msg.append("	<table align=\"center\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: none; background: white; border-collapse: collapse;\">");
+			msg.append("		<tr  style=\"color:white; border: none; background: rgb(8, 72, 130); background: -webkit-gradient(linear, left top, right top, from(rgba(10,46,78,1)), color-stop(24%, rgba(27,99,158,0.9)), color-stop(50%, rgba(27,99,158,0.8)), to(rgba(27,99,158,0)));background: -webkit-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: -o-linear-gradient(left, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);background: linear-gradient(to right, rgba(10,46,78,1) 0%, rgba(27,99,158,0.9) 24%, rgba(27,99,158,0.8) 50%, rgba(27,99,158,0) 100%);\">");
+			msg.append("			<td style=\"padding:10px; border:none\">");
+			msg.append("				<p style=\"font-size: 28px; font-weight: bold; margin: 0\">SE-Ouv</p>");
+			msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">SISTEMA DE OUVIDORIAS</p>");
+			msg.append("				<p style=\"font-size: 12px; font-weight: bold;  margin: 0\">DO ESTADO DE SERGIPE</p>");
+			msg.append("			</td>");
+			msg.append("		</tr>");
+			msg.append("		<tr>");
+			
+			msg.append("			<td bgcolor=\"#ffffff\" style=\"padding: 40px; text-align: left; border: none; color: #606060\">");
+			
+			msg.append(mensagem);
+			
+			msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">Em caso de dúvida, entre em contato através do email ouvidoriageral@setc.se.gov.br ou telefone (79) 3179-4997</h5>");
+			msg.append("			<h5 style=\"margin-bottom: 0; font-weight: normal\">E-mail automático, favor não responder.</h5>");
+			msg.append("			</td>");
+			
+			msg.append("		</tr>");
+			msg.append("		<tr>");
+			msg.append("			<td style=\"padding: 20px; border: none; text-align: center; font-size: 12px; color: #757575;\">");
+			msg.append("				<p style=\"margin: 0\">OGE - Ouvidoria Geral do Estado</p>");
+			msg.append("				<p style=\"margin: 0\">SETC - Secretaria do Estado da Transparência e Controle</p>");
+			msg.append("			</td>");
+			msg.append("		</tr>");
+			msg.append("	</table>");
+			msg.append("		</td>");
+			msg.append("		</tr>");
+			msg.append("	</table>");
+			msg.append("</body>");
+			msg.append("</html>");
+			
+			// set the html message
+			emailHtml.setHtmlMsg(msg.toString());
+			
+			// set the alternative message
+			emailHtml.setTextMsg("Seu provedor de email não suporta este tipo de mensagens.");
+			
+			emailHtml.setDebug(false);
+			
+			// send the email
+			emailHtml.send();
+			
+			System.out.println("Email enviado para: " + destinatario + "	Em: " + emailHtml.getSentDate());
+			System.out.println("Título: " + titulo);
+		} else {
+			System.out.println("Envio de email desativado. Mensagem para " + destinatario + " não enviada." );
+		}
 	}
 	
 	//+++++++++++++++++++ Email simples

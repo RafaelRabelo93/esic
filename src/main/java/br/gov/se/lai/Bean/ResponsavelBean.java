@@ -29,14 +29,12 @@ import br.gov.se.lai.utils.NotificacaoEmail;
 @SessionScoped
 public class ResponsavelBean implements Serializable{
 	
-	/**
-	 * 
-	 */
-	
 	private static final long serialVersionUID = -534835121161473086L;
+	private static UsuarioBean usuarioBean ; // CORRIGIR
+	private static List<Responsavel> listRespDaEntidade ; // CORRIGIR
+	
 	private Responsavel responsavel;
 	private List<Entidades> entidades;
-	private static UsuarioBean usuarioBean ;
 	private Usuario usuario;
 	private int idEntidade;
 	private int nivel;
@@ -45,7 +43,6 @@ public class ResponsavelBean implements Serializable{
 	private boolean ativo;
 	private boolean permissao;
 	private List<Responsavel> todosResponsaveis;
-	private static List<Responsavel> listRespDaEntidade ;
 	private List<Responsavel> responsaveisFiltrados;
 
 	

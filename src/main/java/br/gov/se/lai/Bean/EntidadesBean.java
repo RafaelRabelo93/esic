@@ -45,8 +45,10 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	private List<Entidades> listOrgaosAtivos;
 	private List<Entidades> todasEntidades;
 	private List<Entidades> todasEntidadesAtivas;
+	private List<Entidades> entAtivasComComp;
 	private List<Entidades> entidadesFiltradas;
-	
+	private List<Entidades> entidadesDisponiveis;
+//	private Usuario.usuario;
 	
 	@PostConstruct
 	public void init() {
@@ -54,6 +56,7 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 		todasEntidades = EntidadesDAO.list();
 //		todasEntidades.sort(Comparator.comparing(Entidades::getSigla));
 		todasEntidadesAtivas = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
+		entAtivasComComp = new ArrayList<Entidades>(EntidadesDAO.listAtivasComComp());
 		listOrgaosAtivos = EntidadesDAO.listOrgaos();
 		user = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();	
 	}
@@ -201,7 +204,27 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	
 
 	public String consultarEntidades() {
-		todasEntidades = EntidadesDAO.list();
+		this.todasEntidades = new ArrayList<Entidades>();
+		Entidades tempEnt = new Entidades();
+		Usuario usuario = this.user;
+		
+		if (usuario.getPerfil() == 6 || usuario.getPerfil() == 5) {
+			this.todasEntidades = EntidadesDAO.list();
+		} else {
+			
+			for (Responsavel resp : usuario.getResponsavels()) {
+				tempEnt = resp.getEntidades();
+				if (resp.isAtivo()) {
+					System.out.println(tempEnt.getSigla());
+					if (tempEnt.getSigla().equals("OGE")) {
+						this.todasEntidades = EntidadesDAO.list();
+						return "/Consulta/consulta_entidades";
+					} else {
+						todasEntidades.add(tempEnt);
+					}
+				}
+			}
+		}
 		return "/Consulta/consulta_entidades";
 	}
 	
@@ -328,6 +351,22 @@ public class EntidadesBean implements Serializable, PermissaoUsuario, Comparable
 	@Override
 	public int compareTo(Entidades e1) {
 		return this.entidades.getSigla().compareTo(e1.getSigla());
+	}
+
+	public List<Entidades> getEntAtivasComComp() {
+		return entAtivasComComp;
+	}
+
+	public void setEntAtivasComComp(List<Entidades> entAtivasComComp) {
+		this.entAtivasComComp = entAtivasComComp;
+	}
+
+	public List<Entidades> getEntidadesDisponiveis() {
+		return entidadesDisponiveis;
+	}
+
+	public void setEntidadesDisponiveis(List<Entidades> entidadesDisponiveis) {
+		this.entidadesDisponiveis = entidadesDisponiveis;
 	}
 	
 	

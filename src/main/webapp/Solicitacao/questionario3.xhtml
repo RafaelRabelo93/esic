@@ -46,7 +46,7 @@
 						
 							<p:outputLabel value="Tema:" for="tema" />
 	        				<p:selectOneMenu id="tema" value="#{competencias.idAcoes}" disabled="#{solicitacao.form}" styleClass="field buscaField">
-								 <p:ajax event="change" listener="#{competencias.filtraEntidadades2}" update="orgao" />
+								 <p:ajax event="change" listener="#{competencias.filtraEntidades2}" update="orgao" />
 								 <f:selectItem itemLabel="Selecione" itemValue="0"/>
 								 <f:selectItems value="#{acoes.acaoLigadaEntidadeAtiva()}" var="acoes" itemLabel="#{acoes.titulo}" itemValue="#{acoes.idAcoes}"/>
 							</p:selectOneMenu>
@@ -64,9 +64,8 @@
 							<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao2"  style="font-weight: bold" />
    				            <p:selectOneMenu id="orgao2" value="#{competencias.idEntidade}" disabled="#{!(solicitacao.form)}" styleClass="field selectField" filter="true" filterMatchMode="contains">
                                 <p:ajax event="change" listener="#{competencias.filtrarAcoesEntidade2}" update = "select_orgao" />
-<!--                                 <p:ajax listener="#{solicitacao.definirEntidadeDeSolicitacao}"/> -->
 								<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
-								<f:selectItems value="#{entidades.todasEntidadesAtivas}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
+								<f:selectItems value="#{entidades.entAtivasComComp}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
 							</p:selectOneMenu>
 							
 							<p:outputLabel value="Tema:" for="tema2" />

@@ -21,7 +21,7 @@ public class HibernateUtil {
     }
 
 	public static EntityManagerFactory geteEntityManagerFactory() {
-	         return entityManagerFactory;
+		return entityManagerFactory;
 	}
 
 	public static void SalvarNaSessao(String key, Object obj) {

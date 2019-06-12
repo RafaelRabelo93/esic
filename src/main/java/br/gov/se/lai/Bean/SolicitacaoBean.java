@@ -145,6 +145,7 @@ public class SolicitacaoBean implements Serializable {
 
 		String page = null;
 		gerarDataLimite();
+		System.out.println("Entrou em salvar manifestação");
 
 		// Salvar Solicitação
 		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
@@ -209,7 +210,9 @@ public class SolicitacaoBean implements Serializable {
 				NotificacaoEmail.enviarEmailNovaSolicitacaoCidadao(solicitacao, ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario());
 			}
 			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);
-
+			
+			System.out.println("Salvou manifestação " + this.solicitacao.getProtocolo());
+			
 			page = "/Solicitacao/confirmacao.xhtml?faces-redirect=true";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -222,6 +225,7 @@ public class SolicitacaoBean implements Serializable {
 			setManifestacaoAnon(false);
 //			System.out.println("Setou");
 			finalizarSolicitacao();
+			System.out.println("Finalizou salvar manifestação");
 			return page;
 		}
 

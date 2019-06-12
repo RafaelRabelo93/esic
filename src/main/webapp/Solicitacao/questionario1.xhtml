@@ -42,7 +42,7 @@
 							<p:tooltip id="tooltipInfo" for="btnInfo" value="Pedido de informação ou documentos com base na Lei de Acesso à Informação (Lei nº 12.527/2011)" showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnSol" styleClass="link" action="questionario2" shape="circle">
+							<h:commandLink id="btnSol" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/chat.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Solicitação" style="font-size:30px; padding: 2% 0;" />
@@ -51,7 +51,7 @@
 							<p:tooltip id="tooltipSol" for="btnSol" value="Requerimento de adoção de providência por parte da administração pública estadual" showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnSugestao" styleClass="link" action="questionario2" shape="circle">
+							<h:commandLink id="btnSugestao" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/sugestion.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Sugestão" style="font-size:30px; padding: 2% 0;" />
@@ -60,7 +60,7 @@
 							<p:tooltip id="tooltipSugestao" for="btnSugestao" value="Proposição de ideia ou formulação de proposta de aprimoramento de políticas e serviços prestados pela Administração Pública Estadual." showEffect="clip" hideEffect="clip" position="bottom"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnReclama" styleClass="link" action="questionario2" shape="circle">
+							<h:commandLink id="btnReclama" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/dislike.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Reclamação" style="font-size:30px; padding: 2% 0;" />
@@ -69,7 +69,7 @@
 							<p:tooltip id="tooltipReclama" for="btnReclama" value="Demonstração de insatisfação relativa ao serviço público." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnElogio" styleClass="link" action="questionario2" shape="circle">
+							<h:commandLink id="btnElogio" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/like.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Elogio" style="font-size:30px; padding: 2% 0;" />
@@ -78,7 +78,7 @@
 							<p:tooltip id="tooltipElogio" for="btnElogio" value="Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnDenuncia" styleClass="link" action="questionario2" shape="circle">
+							<h:commandLink id="btnDenuncia" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/megaphone.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />
@@ -101,7 +101,7 @@
 							<p:tooltip id="tooltipInfo2" for="btnInfo2" value="Pedido de informação ou documentos com base na Lei de Acesso à Informação (Lei nº 12.527/2011)" showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnSol2" styleClass="link" action="questionario3" shape="circle">
+							<h:commandLink id="btnSol2" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/chat.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Solicitação" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Solicitação" style="font-size:30px; padding: 2% 0;" />
@@ -110,7 +110,7 @@
 							<p:tooltip id="tooltipSol2" for="btnSol2" value="Requerimento de adoção de providência por parte da administração pública estadual" showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnSugestao2" styleClass="link" action="questionario3" shape="circle">
+							<h:commandLink id="btnSugestao2" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/sugestion.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Sugestão" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Sugestão" style="font-size:30px; padding: 2% 0;" />
@@ -119,7 +119,7 @@
 							<p:tooltip id="tooltipSugestao2" for="btnSugestao2" value="Proposição de ideia ou formulação de proposta de aprimoramento de políticas e serviços prestados pela Administração Pública Estadual." showEffect="clip" hideEffect="clip" position="bottom"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnReclama2" styleClass="link" action="questionario3" shape="circle">
+							<h:commandLink id="btnReclama2" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/dislike.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Reclamação" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Reclamação" style="font-size:30px; padding: 2% 0;" />
@@ -128,7 +128,7 @@
 							<p:tooltip id="tooltipReclama2" for="btnReclama2" value="Demonstração de insatisfação relativa ao serviço público." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnElogio2" styleClass="link" action="questionario3" shape="circle">
+							<h:commandLink id="btnElogio2" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/like.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Elogio" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Elogio" style="font-size:30px; padding: 2% 0;" />
@@ -137,7 +137,7 @@
 							<p:tooltip id="tooltipElogio2" for="btnElogio2" value="Demonstração, reconhecimento ou satisfação sobre o serviço oferecido ou atendimento recebido." showEffect="clip" hideEffect="clip" position="bottom" styleClass="tooltipQuest"/>
 							
 							<div class="botao" style="width: 150px; margin: 0 2vw 0 0; padding: 0">
-							<h:commandLink id="btnDenuncia2" styleClass="link" action="questionario3" shape="circle">
+							<h:commandLink id="btnDenuncia2" styleClass="link disabled" onclick="PF('dlgAviso').show(); return false;" shape="circle">
 								<p:graphicImage value="#{resource['img/icon/megaphone.png']}" width="80vh" />
 								<f:setPropertyActionListener value="Denúncia" target="#{solicitacao.solicitacao.tipo}" />
 								<h:outputText styleClass="titulo" value="Denúncia" style="font-size:30px; padding: 2% 0;" />

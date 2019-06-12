@@ -128,7 +128,8 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		List<Acoes> acoesTemp = new ArrayList<Acoes>();
 		
 		for (Competencias cmpt : compEnt) {
-			acoesTemp.add(cmpt.getAcoes());
+			if (cmpt.isAtiva())
+				acoesTemp.add(cmpt.getAcoes());
 		}
 		
 		setListAcoes(acoesTemp);	
@@ -168,7 +169,7 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 		}
 	}
 	
-	public void filtraEntidadades2(AjaxBehaviorEvent e) {
+	public void filtraEntidades2(AjaxBehaviorEvent e) {
 		System.out.println("Entrou em filtro");
 		
 		if(idAcoes != 0) {
@@ -179,15 +180,17 @@ public class CompetenciasBean implements Serializable, PermissaoUsuario{
 			List<Entidades> tempList = new ArrayList<Entidades>();
 			
 			for(Competencias compt : listCompetencias) {
-				comp = CompetenciasDAO.findCompetencias(compt.getIdCompetencias());
-				
-				Entidade = comp.getEntidades().getIdEntidades();
-				
-				if(Entidade != 0) {
-					if (tempList.isEmpty()) 
-						tempList = EntidadesDAO.listPersonalizada(Entidade);
-					else 
-						tempList.addAll(EntidadesDAO.listPersonalizada(Entidade));
+				if (compt.isAtiva()) {
+					comp = CompetenciasDAO.findCompetencias(compt.getIdCompetencias());
+					
+					Entidade = comp.getEntidades().getIdEntidades();
+					
+					if(Entidade != 0) {
+						if (tempList.isEmpty()) 
+							tempList = EntidadesDAO.listPersonalizada(Entidade);
+						else 
+							tempList.addAll(EntidadesDAO.listPersonalizada(Entidade));
+					}
 				}
 			}
 			

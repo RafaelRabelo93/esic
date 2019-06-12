@@ -95,13 +95,23 @@ public class  EntidadesDAO {
     
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> list() {		
-        return em.createNativeQuery("SELECT * FROM esic.entidades ORDER BY entidades.sigla ASC", Entidades.class).getResultList();
-//        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent ORDER BY ent.sigla ASC",em));
+//        return em.createNativeQuery("SELECTC * FROM esic.entidades ORDER BY entidades.sigla ASC", Entidades.class).getResultList();
+        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent ORDER BY ent.sigla ASC",em));
     }  
 	
 	@SuppressWarnings("unchecked")
 	public static List<Entidades> listAtivas() {		
-        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1+" ORDER BY ent.sigla ASC",em));
+        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = 1 ORDER BY ent.sigla ASC",em));
+    }
+	
+	@SuppressWarnings("unchecked")
+	public static List<Entidades> listAtivasComComp() {
+		String HQL = "SELECT DISTINCT ent FROM Entidades as ent " +
+					 "INNER JOIN Competencias as comp on ent.idEntidades = comp.entidades.idEntidades " +
+					 "where ent.ativa = 1 " +
+					 "order by ent.sigla ASC";
+		return (List<Entidades>) (Consultas.buscaPersonalizada(HQL,em));
+//        return (List<Entidades>) (Consultas.buscaPersonalizada("FROM Entidades as ent WHERE ent.ativa = "+1+" ORDER BY ent.sigla ASC",em));
     }
 	
 	@SuppressWarnings("unchecked")

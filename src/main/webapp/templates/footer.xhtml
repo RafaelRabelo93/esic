@@ -56,10 +56,15 @@
 				
 			</h:panelGroup>
 			
-			<h:panelGroup styleClass="inline" style="margin: 0 1em; border-left: 1px solid white;">
-				<h:commandLink action="/Menu/legislacao" styleClass="inline footerLink" style="margin-bottom: .5em; margin-left: .5em;">
-					<p>Legislação</p>
-				</h:commandLink>
+			<h:panelGroup styleClass="inline">
+				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
+					<h:commandLink action="/Menu/legislacao" styleClass="inline footerLink" style="margin-bottom: .5em">
+						<p>Legislação</p>
+					</h:commandLink>
+					<h:outputLink value="https://sistema.ouvidorias.gov.br/publico/Manifestacao/RegistrarManifestacao.aspx" styleClass="inline footerLink" style="margin-bottom: .5em">
+						<p>e-OUV</p>
+					</h:outputLink>
+				</h:panelGroup>
 			
 				<h:panelGroup styleClass="column" style="margin: 0 1em; padding: 0 1em; border-left: 1px solid white;">
 					<h:outputLink value="http://www.acessoainformacao.gov.br/acessoainformacaogov/" styleClass="inline footerLink" style="margin-bottom: .5em">
@@ -83,7 +88,7 @@
 					<p>Este sistema é melhor visualizado nos navegadores</p>
 					<i class="fa fa-firefox" style="margin: 0 5px 0 10px;color: #6384ab"/> <p>Firefox e</p>
 					<i class="fa fa-chrome" style="margin: 0 5px 0 10px;color: #6384ab"/> <p>Chrome.</p>
-					<p> - Versão 1.0</p>
+					<p> - Versão 1.1</p>
 				</h:panelGroup>
 				<p style="font-size:12px">Governo do Estado de Sergipe © - 2018</p>
 			</h:panelGroup>

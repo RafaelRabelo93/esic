@@ -56,6 +56,9 @@ import br.gov.se.lai.utils.verificarStatusSolicitacao;
 public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 4098925984824190470L;
+	private static String sessionId;
+	public static boolean perfilAlterarCidadaoResponsavel; // CORRIGIR
+	
 	private Usuario usuario;
 	private Usuario usuarioNovo;
 	private String senha;
@@ -76,9 +79,7 @@ public class UsuarioBean implements Serializable {
 	public boolean alterarSenha = false;
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
-	private static String sessionId;
 	public List<Usuario> filteredGestores;
-	public static boolean perfilAlterarCidadaoResponsavel;
 	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
 			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
 	private boolean acessoMigrado;
@@ -93,36 +94,36 @@ public class UsuarioBean implements Serializable {
 		usuarioNovo = new Usuario();
 		perfilAlterarCidadaoResponsavel = false;
 		SchedulerFactory shedFact = new StdSchedulerFactory();
-		try {
-			
-			Scheduler sched = shedFact.getScheduler();
-			sched.start();
-			
-			  JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
-			      .withIdentity("myJob", "group1") // name "myJob", group "group1"
-			      .build();
-
-			  Trigger trigger = TriggerBuilder.newTrigger()
-			      .withIdentity("myTrigger", "group1")
-			      .withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *"))           
-			      .build();
-			  
-			  sched.scheduleJob(job, trigger);
-			  
-				JobDetail job2 = JobBuilder.newJob(verificarStatusSolicitacao.class)
-					.withIdentity("myJob2", "group1") // name "myJob", group "group1"
-					.build();
-			  
-				Trigger trigger2 = TriggerBuilder.newTrigger()
-						.withIdentity("runtimeTrigger", "group1")
-						.startNow()
-						.build();
-				
-			  sched.scheduleJob(job2, trigger2);
-			
-		} catch (SchedulerException e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			
+//			Scheduler sched = shedFact.getScheduler();
+//			sched.start();
+//			
+//			  JobDetail job = JobBuilder.newJob(verificarStatusSolicitacao.class)
+//			      .withIdentity("myJob", "group1") // name "myJob", group "group1"
+//			      .build();
+//
+//			  Trigger trigger = TriggerBuilder.newTrigger()
+//			      .withIdentity("myTrigger", "group1")
+//			      .withSchedule(CronScheduleBuilder.cronSchedule("0 1 0 ? * *"))           
+//			      .build();
+//			  
+//			  sched.scheduleJob(job, trigger);
+//			  
+//				JobDetail job2 = JobBuilder.newJob(verificarStatusSolicitacao.class)
+//					.withIdentity("myJob2", "group1") // name "myJob", group "group1"
+//					.build();
+//			  
+//				Trigger trigger2 = TriggerBuilder.newTrigger()
+//						.withIdentity("runtimeTrigger", "group1")
+//						.startNow()
+//						.build();
+//				
+//			  sched.scheduleJob(job2, trigger2);
+//			
+//		} catch (SchedulerException e) {
+//			System.out.println(e.getMessage());
+//		}
 	}
 
 	public void redirectPages(String pageUrl) throws IOException {
