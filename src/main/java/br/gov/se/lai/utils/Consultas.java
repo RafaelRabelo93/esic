@@ -34,6 +34,18 @@ public class Consultas {
     	
     }
     
+    public static int valorSQL(String query, EntityManager em) {        
+    	int in = 0;
+    	try {        	
+    		//em.clear();
+    		in = (int) em.createQuery(query).getSingleResult();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return in;
+    	
+    }
+    
     
     public static List<?> buscaSQL(String query, EntityManager em) {        
         List<?> list = null;        

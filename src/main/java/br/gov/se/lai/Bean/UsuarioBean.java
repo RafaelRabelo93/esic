@@ -159,11 +159,11 @@ public class UsuarioBean implements Serializable {
 				if (veioDeSolicitacao == 0) {
 					nick = usuario.getNick();
 					login();
-					return "/Cadastro/confirmacao?faces-redirect=true";
+					return "/Cadastro/cad_cidadao";
 				} else {
 					nick = usuario.getNick();
 					login();
-					return "/Cadastro/confirmacao?faces-redirect=true";
+					return "/Cadastro/cad_cidadao";
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -486,7 +486,7 @@ public class UsuarioBean implements Serializable {
 //								new FacesMessage(FacesMessage.SEVERITY_INFO, "Primeiro login", "Esse é seu primeiro login!"));
 					} else acessoMigrado = false;
 					acessoUsuario(this.usuario);
-					SolicitacaoBean.calcularQuantitativoSolicitacao();
+//					SolicitacaoBean.calcularQuantitativoSolicitacao();
 					nomeCompleto(usuario.getNome());
 					return "/index?faces-redirect=true";
 				}

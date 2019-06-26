@@ -47,7 +47,7 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	private String estado;
 	private String cidade;
 	private String cep;
-	private UsuarioBean usuarioBean;
+//	private UsuarioBean usuarioBean;
 	private int renda;
 	private String numero;
 	private String telefone;
@@ -67,8 +67,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * @return
 	 */
 	public String save() {
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		this.usuario = usuarioBean.getUsuario();
+//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+//		this.usuario = usuarioBean.getUsuario();
 		
 		if (!cpfCadastrado(this.cidadao.getCpf()) && !rgCadastrado(this.cidadao.getRg()) && !emailCadastrado(this.cidadao.getEmail())) {
 			
@@ -162,8 +162,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 
 	
 	public String loadUsuario() {
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		this.usuario = usuarioBean.getUsuario();
+//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+//		this.usuario = usuarioBean.getUsuario();
 		this.cidadao = new Cidadao();
 		this.cidadao.setTipo(true);
 		
@@ -174,8 +174,8 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * Redireciona para página alterar dados caso seja necessário
 	 */
 	public String alterarDadosUsuario() {
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-		this.usuario = usuarioBean.getUsuario();
+//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+//		this.usuario = usuarioBean.getUsuario();
 		if (usuario.getPerfil() == (short) 3 || usuario.getPerfil() == (short) 4) {
 			this.cidadao = CidadaoDAO.findCidadaoUsuario(usuario.getIdUsuario());
 			this.cidAlt = (Cidadao) this.cidadao.clone();
@@ -315,20 +315,16 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * 
 	 */
 	public String edit(Cidadao cidadao) {
-		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
-//		if (verificaPermissao()) {
-			this.usuario = usuarioBean.getUsuario();
-			cidadao.setUsuario(this.usuario);
-			CidadaoDAO.saveOrUpdate(cidadao);
-			return "/index";
-//		} else {
-//			return null;
-//		}
+//		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+//		this.usuario = usuarioBean.getUsuario();
+		cidadao.setUsuario(this.usuario);
+		CidadaoDAO.saveOrUpdate(cidadao);
+		return "/index";
 	}
 
 	@Override
 	public boolean verificaPermissao() {
-		if (usuarioBean.getUsuario().getPerfil() == 1) {
+		if (this.usuario.getPerfil() == 1) {
 			return true;
 		} else {
 			return false;
@@ -341,7 +337,6 @@ public class CidadaoBean implements Serializable, PermissaoUsuario {
 	 * Limpa o objeto preenchendo todos os seus campos com null.
 	 */
 	public void limparCidadaoBean() {
-//		setEmail(null);
 		setBairro(null);
 		setCep(null);
 		setComplemento(null);

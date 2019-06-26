@@ -1078,6 +1078,7 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 	background: linear-gradient(to bottom right, #3d6ea9, #377cbb);
     border: 1px solid #135186;
 	color: white;
+	min-height: 35px;
 }
 
 /* Accordion */
@@ -2035,6 +2036,10 @@ h1, h2, h3 {
 
 .rating-2x > .ui-rating-cancel-hover a {
 	background-position: 0 -50px !important;
+}
+
+.ui-fileupload-content {
+	display: none;
 }
 
 /* ========================== */

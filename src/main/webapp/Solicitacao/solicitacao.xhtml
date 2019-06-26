@@ -26,7 +26,7 @@
 						<p:menuitem value="Realizar Manifestação" url="#" />
 					</p:steps>
 
-					<h:panelGroup styleClass="box" style="margin-top: 1em">
+					<h:panelGroup styleClass="box" style="margin-top: 1em; max-width:50%">
 						
 <!-- 						<p>#{solicitacao.sigilo}</p> -->
 						
@@ -221,21 +221,34 @@
 						</h:panelGroup>
 
 						<p:outputLabel value="Assunto:" for="titulo" />
-						<p:inputText id="titulo" size="78" maxlength="100" value="#{solicitacao.solicitacao.titulo}" />
+						<p:inputText id="titulo" maxlength="100" style="width:100%" value="#{solicitacao.solicitacao.titulo}" />
 
 						<p:outputLabel value="Mensagem:" for="mensagem" />
-						<p:inputTextarea id="mensagem" rows="10" cols="80" autoResize="true" value="#{solicitacao.mensagem.texto}" />
+						<p:inputTextarea id="mensagem" rows="10" style="width:100%" autoResize="true" value="#{solicitacao.mensagem.texto}" />
 						
-                        <p:fileUpload id="fileUpload" value="#{solicitacao.file}" mode="simple" skinSimple="true" label="Adicionar Anexo" style="margin-top: 1em" />
+						<p:dataTable id="anexoTable" var="anx" value="#{solicitacao.anexoList}" emptyMessage="Não há arquivos anexados" style="width:100%; margin-top:1em">
+							<p:column headerText="Arquivo">
+								<h:outputText value="#{anx.nome}" />
+							</p:column>
+							<p:column headerText="Tamanho" width="150">
+								<h:outputText value="#{anexo.anexoSizeMB(anx.tamanho)} MB" />
+							</p:column>
+							<p:column width="50">
+								<p:commandLink class="botaoLinkIcon" update="anexoTable" actionListener="#{anexo.removerAnexo(anx)}">
+									<i class="fa fa-trash" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						
+						<p:fileUpload label="Adicionar arquivo" value="#{anexo.file}" mode="advanced" auto="true" fileUploadListener="#{anexo.fileUploadListener}" update="anexoTable" onstart="loadProperty()"/>
+						
+						<p:remoteCommand name="loadProperty">
+							<f:setPropertyActionListener for="idLoader" value="#{anexo.anexoList}" target="#{solicitacao.anexoList}" />
+						</p:remoteCommand>
 
-<!-- 						<p:fileUpload value="#{solicitacao.file}" label="Adicionar Anexo" mode="advanced" sizeLimit="1000000" skinSimple="true" -->
-<!-- 							allowTypes="(\.|\/)(gif|jpe?g|png|docx?|pdf|xlsx?|ods|mp3|wav|AAC|FLAC|ALAC|ALE|FLV|mp4|avi|WMV|MOV)$" -->
-<!-- 							fileLimit="1" style="margin-top: 1em" auto="false" -->
-<!-- 							invalidSizeMessage="Arquivo muito grande." invalidFileMessage="Formato não suportado."/> -->
-							
 					</h:panelGroup>
 
-					<p:commandLink class="botaoLink" ajax="false" action="#{solicitacao.save}" update="mainMenu">
+					<p:commandLink class="botaoLink" action="#{solicitacao.save}">
 						<h:outputText value="Enviar" />
 						<i class="fa fa-share-square-o"	style="color: white; padding-left: 3px" />
 						<f:param name="tipo" value="#{solicitacao.solicitacao.tipo}" />

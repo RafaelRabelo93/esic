@@ -130,6 +130,7 @@
 							</h:panelGroup>
 							
 							<h:commandLink styleClass="botaoLink perfilBtn" action="#{cidadao.loadUsuario()}" type="button" rendered="#{usuario.usuario.perfil eq '2'}" style="width: 100% !important;">
+								<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
 								<h:outputText value="Criar Perfil" />
 								<p:graphicImage value="#{resource['img/icon/network.png']}" height="50px" width="50px"/>
 								<h:outputText value="Cidadão" />
@@ -137,6 +138,7 @@
 							
 							<h:panelGroup styleClass="inline" style="margin-top: .5em; justify-content: space-between; width: 100%;">
 								<p:commandLink styleClass="botaoLink" action="#{cidadao.alterarDadosUsuario()}" update="@all" type="button" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="margin-right: .5em">
+									<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
 									<h:outputText value="Visualizar Perfil" />
 									<i class="fa fa-address-card" style="color: white; padding-left: 5px" />
 								</p:commandLink>

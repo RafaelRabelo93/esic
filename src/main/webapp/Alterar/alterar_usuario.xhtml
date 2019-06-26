@@ -260,6 +260,7 @@
 <!-- 					</p:commandLink> -->
 
 					<p:commandLink class="botaoLink" id="altUsuario" actionListener="#{cidadao.edit}">
+						<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
 						<h:outputText value="Salvar alterações" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('altUsuario').click();}" />
 						<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 					</p:commandLink>
@@ -276,6 +277,7 @@
 
 							<p:commandLink class="botaoLink" id="confSenha" actionListener="#{usuario.edit}" style="margin-top: 10px; margin-bottom: 0;"  oncomplete="PF('dlg2').hide();" 
 								onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('confSenha').click();}" update="@all">
+								<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
 								<h:outputText value="Confirmar" />
 								<i class="fa fa-check-square-o" style="color: white; padding-left: 3px" />
 	

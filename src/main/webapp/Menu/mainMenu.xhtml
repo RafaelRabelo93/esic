@@ -231,6 +231,7 @@
 							<!-- Continuar Cadastro Cidadão -->
 							<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
 								<h:commandLink styleClass="link" action="#{cidadao.loadUsuario}">
+									<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
 									<p:graphicImage styleClass="icone"
 										value="#{resource['img/icon/contract.png']}" width="150px" />
 		
@@ -264,13 +265,13 @@
 								</h:commandLink>
 							</h:panelGroup>
 							
-							<!-- Manifestação -->
+							<!-- Consulta por protocolo -->
 							<h:panelGroup class="botao" rendered="false">
 								<h:commandLink styleClass="link" action="/Consulta/consulta_protocolo">
 									<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
 		
 									<h:outputText styleClass="tituloMenu" value="Consulta" />
-									<p>Buscar manifestações anônimas por número de protocolo</p>
+									<p>Acompanhamento de manifestações por número de protocolo</p>
 								</h:commandLink>
 							</h:panelGroup>
 							
@@ -333,7 +334,6 @@
 					</h:panelGroup>
 					
 					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
-<!-- 						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" /> -->
 						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
 						<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
 					</h:commandLink>

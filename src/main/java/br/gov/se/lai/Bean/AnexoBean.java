@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -47,11 +48,12 @@ public class AnexoBean  implements Serializable {
 
 	private static final long serialVersionUID = -60333894898290094L;
 	private Anexo anexo;
-//	private Mensagem mensagem;
 	private String nome;
 	private String tipo;
 	private Integer tamanho;
 	private Blob conteudo;
+	private UploadedFile file;
+	private List<Anexo> anexoList = new ArrayList<Anexo>();
 	
 	@PostConstruct
 	public void init() {
@@ -81,11 +83,12 @@ public class AnexoBean  implements Serializable {
 		else return false;
 	}
 	
-	public StreamedContent download(int idMensagem) throws IOException {
+	public StreamedContent download(int idAnexo) throws IOException {
+//		System.out.println("Entrou em download e anexo...");
 		StreamedContent file;
 		
-		List<Anexo> anexoList = AnexoDAO.list(idMensagem);
-		Anexo anx = anexoList.get(0);
+		Anexo anx = AnexoDAO.findAnexo(idAnexo);
+//		System.out.println("Anexo selecionado: " + anx.getNome());
 		
 		byte[] buf = anx.getConteudo();
 		
@@ -95,7 +98,56 @@ public class AnexoBean  implements Serializable {
         
         inputStream.close();
     
+//        System.out.println("Download preparado com sucesso!");
         return file;
+	}
+	
+	public List<Anexo> listaAnexos(int idMensagem) {
+		return AnexoDAO.list(idMensagem);
+	}
+	
+	public String anexoSizeMB(String size) {
+		Double tamanho = (Double.parseDouble(size) / (1024 * 1024));
+		return String.format("%.2f", tamanho);
+	}
+	
+	public void fileUploadListener(FileUploadEvent e){
+		List<Anexo> fileList = this.anexoList;
+		UploadedFile arqv;
+		arqv = e.getFile();
+		if (arqv.getSize() < 14680064) {
+			try {
+				Anexo novoAnexo = new Anexo();
+				
+				novoAnexo.setNome(arqv.getFileName());
+				novoAnexo.setTamanho(arqv.getSize());
+				novoAnexo.setTipo(arqv.getContentType());
+				novoAnexo.setConteudo(arqv.getContents());
+				
+				
+				fileList.add(novoAnexo);
+				this.anexoList = fileList;
+				System.out.println(":: Arquivo anexado: "+ arqv.getFileName() +" | Tamanho : "+ arqv.getSize());
+			} catch (NullPointerException ex) {
+				System.out.println(":: Arquivo não registrado para gerar anexo");
+			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anexo excede limite de 15 MB", ""));
+			return;
+		}
+	}
+	
+	public void removerAnexo(Anexo rmvFile) {
+		List<Anexo> fileList = this.anexoList;
+		
+		System.out.println(": Removendo arquivo da lista: " + rmvFile.getNome());
+		
+		fileList.remove(rmvFile);
+		
+		this.anexoList = fileList;
+		
+		System.out.println(":: Arquivo removido com sucesso ");
+		
 	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -146,6 +198,22 @@ public class AnexoBean  implements Serializable {
 
 	public void setConteudo(Blob conteudo) {
 		this.conteudo = conteudo;
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	public List<Anexo> getAnexoList() {
+		return anexoList;
+	}
+
+	public void setAnexoList(ArrayList<Anexo> anexoList) {
+		this.anexoList = anexoList;
 	}
 	
 }

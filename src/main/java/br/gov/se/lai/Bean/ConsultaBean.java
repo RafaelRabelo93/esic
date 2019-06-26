@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 
 import br.gov.se.lai.DAO.SolicitacaoDAO;
 import br.gov.se.lai.entity.Solicitacao;
+import br.gov.se.lai.utils.HibernateUtil;
  
 @ManagedBean(name = "consultas")
 @SessionScoped
@@ -24,7 +25,8 @@ public class ConsultaBean implements Serializable{
          
 	@PostConstruct
     public void init() {
-		this.solicitacoes = new ArrayList<Solicitacao>(SolicitacaoDAO.list());
+		System.out.println("Init ConsultasBean");
+		this.solicitacoes = new ArrayList<Solicitacao>(SolicitacaoDAO.list((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")));
 		this.solicitacao = new Solicitacao();
     }
 	

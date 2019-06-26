@@ -27,7 +27,13 @@
 						<p:separator styleClass="separator2" style="align-self:flex-start;"/>
 					</h:panelGroup>
 					
-					<h:panelGroup styleClass="box">
+					<h:outputText value="O preenchimento de dados não obrigatórios, como endereço e gênero, auxilia o Governo a coletar informações que serão utilizadas para melhorar 
+					o sistema e as políticas de transparência pública. A identificação das pessoas a que essas informações se referirem não será divulgada." style="font-size: 14px;color: gray;max-width: 700px;text-align: justify;
+    margin-bottom: 1em;" />
+					
+					<h:outputText value="Os campos abaixo marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
+					
+					<h:panelGroup styleClass="box" style="width: -webkit-fit-content;width: -moz-fit-content;width: fit-content;">
 
 						<p:outputLabel value="Tipo Pessoa: " for="tipo" style="color:#1a568c; font-size:25px; margin-top: 0"/>
 						<h:panelGroup styleClass="column" style="margin-top: 1em">
@@ -43,7 +49,6 @@
 						<h:outputText value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{cidadao.cidadao.tipo}"/>
 						<h:outputText value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!cidadao.cidadao.tipo}"/>
 
-						
 						<h:panelGroup id="panel" styleClass="column">
 						
 						<h:panelGroup styleClass="inline">
@@ -69,7 +74,7 @@
 							
 							<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!cidadao.cidadao.tipo}">
 								<p:outputLabel value="CNPJ:" for="cnpj"/>
-								<p:inputMask id="cnpj" value="#{cidadao.cidadao.cpf}" mask="99.999.999/9999-99" disabled="#{cidadao.cidadao.tipo}">
+								<p:inputMask id="cnpj" value="#{cidadao.cidadao.cpf}" mask="99.999.999/9999-99" size="18" disabled="#{cidadao.cidadao.tipo}">
 									<f:validator validatorId="StellaCNPJValidator" />
 								</p:inputMask>
 							</h:panelGroup>
@@ -100,7 +105,7 @@
 						<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
 							<h:panelGroup styleClass="column" rendered="#{cidadao.cidadao.tipo}">
 								<p:outputLabel value="CPF:" for="cpf"/>
-								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" disabled="#{!cidadao.cidadao.tipo}" size="11">
+								<p:inputMask id="cpf" value="#{cidadao.cidadao.cpf}" mask="999.999.999-99" size="15" disabled="#{!cidadao.cidadao.tipo}" >
 									<f:validator validatorId="StellaCPFValidator" />
 								</p:inputMask>
 							</h:panelGroup>
@@ -259,8 +264,6 @@
 
 					</h:panelGroup>
 					
-					<h:outputText value="Os campos acima marcados com * são de preenchimento obrigatório." style="font-size:14px; color:gray" />
-
 					<p:commandLink class="botaoLink" action="#{cidadao.save}" id="novoCidadao"
 						onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('novoCidadao').click();}">
 						<h:outputText value="Cadastrar" />

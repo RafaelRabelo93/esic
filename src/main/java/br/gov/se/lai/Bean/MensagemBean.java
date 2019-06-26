@@ -61,7 +61,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 	private Usuario usuario;
 	private UploadedFile file;
 	private int nota;
-	private Anexo anexo;
+	private List<Anexo> anexoList;
 
  
 	@PostConstruct
@@ -71,7 +71,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 		usuario = ((UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario")).getUsuario();
 //		AnexoBean.listarFiles();
 		carregaMensagens();
-		this.anexo = new Anexo();
+		this.setAnexoList(new ArrayList<Anexo>());
 	}
 
 	public String save() {
@@ -92,14 +92,17 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 				MensagemDAO.saveOrUpdate(mensagem);
 				NotificacaoEmail.enviarEmailNotificacaoCidadao(solicitacao, mensagem);
 				try {
-					if (!(file.getContents().length == 0)) {
-						System.out.println(file.getFileName());
-						this.anexo.setMensagem(mensagem);
-						this.anexo.setNome(file.getFileName());
-						this.anexo.setTamanho(file.getSize());
-						this.anexo.setTipo(file.getContentType());
-						this.anexo.setConteudo(file.getContents());
-						AnexoDAO.saveOrUpdate(anexo);
+					if (!this.getAnexoList().isEmpty()) {
+						try {
+							
+							for (Anexo anx : this.getAnexoList()) {
+								anx.setMensagem(mensagem);
+								AnexoDAO.saveOrUpdate(anx);
+							}
+							
+						} catch (Exception e) {
+							FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
+						}
 					}
 				} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -146,8 +149,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			solicitacao.setStatus("Atendida");
 			// ATIVAR DATA PRAZO
 			//solicitacao.setDataLimite(PrazosSolicitacao.gerarPrazoDiaUtilLimite(solicitacao.getDataLimite(), PrazosSolicitacao.prazoResposta(solicitacao.getStatus())));;
-			if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
-				salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
+			try {
+				if(SolicitacaoDAO.saveOrUpdate(solicitacao)) {
+					SolicitacaoDAO.saveOrUpdate(solicitacao);
+					salvarStatus(solicitacao, solicitacao.getStatus(), null, null, 0);
+				}
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar status na manifestação", e.getMessage()));
+				System.out.println("Erro ao salvar status da resposta:" + e.getMessage());
 			}
 			//SolicitacaoBean.addQuantidadeSolicitacaoRespondida();
 			//SolicitacaoBean.rmvQuantidadeSolicitacaoPendente();
@@ -211,7 +220,7 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 			mensagem = new Mensagem();
 		} catch (Exception e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solicitação não enviada.", e.getMessage()));
 		}
 		
 	}
@@ -482,6 +491,14 @@ public class MensagemBean implements Serializable, PermissaoUsuario{
 
 	public void setIdSolicitacao(int idSolicitacao) {
 		this.idSolicitacao = idSolicitacao;
+	}
+
+	public List<Anexo> getAnexoList() {
+		return anexoList;
+	}
+
+	public void setAnexoList(List<Anexo> anexoList) {
+		this.anexoList = anexoList;
 	}
 
 	

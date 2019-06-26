@@ -62,8 +62,8 @@ public class SolicitacaoDAO {
     
 
 	@SuppressWarnings("unchecked")
-	public static List<Solicitacao> list() {
-		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
+	public static List<Solicitacao> list(UsuarioBean usuarioBean) {
+//		UsuarioBean usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		if(usuarioBean != null) 
 		{	
 			if(usuarioBean.getUsuario().getPerfil() == 3 || usuarioBean.getUsuario().getPerfil() == 4 && !usuarioBean.isPerfilAlterarCidadaoResponsavel()) {
@@ -162,11 +162,16 @@ public class SolicitacaoDAO {
 		{	
 			return null;
 		}  
-	}	
+	}
+	
+	public static int lastId() {
+		String HQL = "Select max(idSolicitacao) from Solicitacao";
+		return Consultas.valorSQL(HQL, em);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorStatus(String status) {
-			return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"'",em)); 
+		return (List<Solicitacao>) (Consultas.buscaPersonalizada("FROM Solicitacao as slt WHERE slt.status = '"+status+"'",em)); 
 	}	
 	@SuppressWarnings("unchecked")
 	public static List<Solicitacao> listPorNaoFinalizada() {
@@ -847,7 +852,7 @@ public class SolicitacaoDAO {
 		
 		@SuppressWarnings("unchecked")
 		public static List<Solicitacao> listPorProtocolo(String protocolo) {
-			String HQL = "FROM Solicitacao as slt where replace(replace(slt.protocolo,'-',''),'/','') like replace(replace('%"+ protocolo +"','-',''),'/','') and slt.sigilo = 2";
+			String HQL = "FROM Solicitacao as slt where replace(replace(slt.protocolo,'-',''),'/','') like replace(replace('%"+ protocolo +"','-',''),'/','')";
 			return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL,em);
 		}
 	

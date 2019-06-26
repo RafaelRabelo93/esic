@@ -13,8 +13,7 @@
 		<ui:define name="content">
 
 			<!-- Mensagem de Erro -->
-			<p:growl id="growl" showDetail="true" autoUpdate="true"
-				redisplay="false" life="5000" severity="info,warn,error" />
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error" />
 
 			<h:form id="form">
 
@@ -338,13 +337,11 @@
 
 							<p:column visible="#{solicitacao.list[11]}"
 								style="width:32px; text-align: center" toggleable="false">
-								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
-									actionListener="#{solicitacao.visualizouSolicitacao(slt)}"
-									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-									<p:ajax listener="#{solicitacao.popularMensagens}" />
+								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" actionListener="#{solicitacao.popularMensagens2(slt.idSolicitacao)}"
+								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
+<!-- 									solicitacao.visualizouSolicitacao(slt) -->
 									<i class="fa fa-search" />
-									<f:setPropertyActionListener value="#{slt}"	target="#{solicitacao.solicitacao}" />
-									<f:setPropertyActionListener value="#{slt}"	target="#{mensagem.solicitacao}" />
+									<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.sltDetalhe}" />
 								</p:commandLink>
 							</p:column>
 
@@ -362,7 +359,7 @@
 				fitViewport="true" showEffect="fade" hideEffect="fade"
 				resizable="false" maximizable="false" draggable="false"
 				closeOnEscape="true"
-				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.finalizarSolicitacao()}"
+				onHide="PF('detalheDialog').toggleMaximize(); #{solicitacao.limparDetalheSolicitacao()}"
 				styleClass="solicitacaoDialog">
 
 				<p:outputPanel id="solicitacaoDetalhe"
@@ -374,91 +371,83 @@
 
 								<h:outputText value="Protocolo:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText value="#{solicitacao.solicitacao.protocolo}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.protocolo}" />
 
 								<h:outputText value="Solicitante:"
 									style="color:#1a568c; font-size:18px" />
 								<h:panelGroup styleClass="inline">
 									<h:outputText
-										value="#{solicitacao.solicitacao.cidadao.usuario.nome}" />
+										value="#{solicitacao.sltDetalhe.cidadao.usuario.nome}" />
 									<h:outputText value="(Sigilo)"
-										rendered="#{solicitacao.solicitacao.sigilo eq '1'}"
+										rendered="#{solicitacao.sltDetalhe.sigilo eq '1'}"
 										style="margin-left:.5em; font-weight:bold; color:#c02222" />
 								</h:panelGroup>
 
 								<h:outputText value="Tema:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText value="#{solicitacao.solicitacao.acoes.titulo}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.acoes.titulo}" />
 
 								<h:outputText value="Assunto:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText value="#{solicitacao.solicitacao.titulo}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.titulo}" />
 
 								<h:outputText value="Órgão / Entidade:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText
-									value="#{solicitacao.solicitacao.entidades.sigla} - #{solicitacao.solicitacao.entidades.nome}" />
-
-								<h:outputText value="Forma de Recebimento da resposta:"
-									style="color:#1a568c; font-size:18px"
-									rendered="#{solicitacao.formaRecebimentoString ne '...'}" />
-								<h:outputText value="#{solicitacao.formaRecebimentoString}"
-									rendered="#{solicitacao.formaRecebimentoString ne '...'}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.entidades.sigla} - #{solicitacao.sltDetalhe.entidades.nome}" />
 
 							</p:panelGrid>
 
-							<p:panelGrid columns="2" layout="grid"
-								style="border: none; width: 50%;">
+							<p:panelGrid columns="2" layout="grid" style="border: none; width: 50%;">
 
 								<h:outputText value="Tipo de manifestação:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText value="#{solicitacao.solicitacao.tipo}"
-									rendered="#{!(solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2') and solicitacao.solicitacao.tipo ne 'Informação'}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.tipo}"
+									rendered="#{!(solicitacao.sltDetalhe.tipo eq 'Denúncia' and solicitacao.sltDetalhe.sigilo eq '2') and solicitacao.sltDetalhe.tipo ne 'Informação'}" />
 								<h:outputText value="Informação (e-SIC)"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Informação'}" />
+									rendered="#{solicitacao.sltDetalhe.tipo eq 'Informação'}" />
 								<h:outputText value="Denúncia Sigilosa"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Denúncia' and solicitacao.solicitacao.sigilo eq '2'}" />
+									rendered="#{solicitacao.sltDetalhe.tipo eq 'Denúncia' and solicitacao.sltDetalhe.sigilo eq '2'}" />
 
 
 								<h:outputText value="Status:"
 									style="color:#1a568c; font-size:18px"
-									rendered="#{solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação'}" />
-								<h:outputText value="#{solicitacao.solicitacao.status}" />
+									rendered="#{solicitacao.sltDetalhe.tipo eq 'Informação' or solicitacao.sltDetalhe.tipo eq 'Solicitação'}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.status}" />
 
 								<h:outputText value="Instancia:"
 									style="color:#1a568c; font-size:18px"
-									rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
+									rendered="#{solicitacao.sltDetalhe.tipo ne 'Denúncia' and solicitacao.sltDetalhe.instancia ne '0'}" />
 								<h:outputText
-									value="#{solicitacao.solicitacao.instancia}ª instância"
-									rendered="#{solicitacao.solicitacao.tipo ne 'Denúncia' and solicitacao.solicitacao.instancia ne '0'}" />
+									value="#{solicitacao.sltDetalhe.instancia}ª instância"
+									rendered="#{solicitacao.sltDetalhe.tipo ne 'Denúncia' and solicitacao.sltDetalhe.instancia ne '0'}" />
 
 								<h:outputText value="Data Inicial:"
 									style="color:#1a568c; font-size:18px" />
-								<h:outputText value="#{solicitacao.solicitacao.dataIni}">
+								<h:outputText value="#{solicitacao.sltDetalhe.dataIni}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 
 								<h:outputText value="Data Limite:"
 									style="color:#1a568c; font-size:18px"
-									rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada'}" />
-								<h:outputText value="#{solicitacao.solicitacao.dataLimite}"
-									rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.status ne 'Finalizada'}">
+									rendered="#{(solicitacao.sltDetalhe.tipo eq 'Informação' or solicitacao.sltDetalhe.tipo eq 'Solicitação' or solicitacao.sltDetalhe.tipo eq 'Denúncia') and solicitacao.sltDetalhe.status ne 'Finalizada'}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.dataLimite}"
+									rendered="#{(solicitacao.sltDetalhe.tipo eq 'Informação' or solicitacao.sltDetalhe.tipo eq 'Solicitação' or solicitacao.sltDetalhe.tipo eq 'Denúncia') and solicitacao.sltDetalhe.status ne 'Finalizada'}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 
 								<h:outputText value="Data Fim:"
 									style="color:#1a568c; font-size:18px"
-									rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.datafim ne null}" />
-								<h:outputText value="#{solicitacao.solicitacao.datafim}"
-									rendered="#{(solicitacao.solicitacao.tipo eq 'Informação' or solicitacao.solicitacao.tipo eq 'Solicitação' or solicitacao.solicitacao.tipo eq 'Denúncia') and solicitacao.solicitacao.datafim ne null}">
+									rendered="#{(solicitacao.sltDetalhe.tipo eq 'Informação' or solicitacao.sltDetalhe.tipo eq 'Solicitação' or solicitacao.sltDetalhe.tipo eq 'Denúncia') and solicitacao.sltDetalhe.datafim ne null}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.datafim}"
+									rendered="#{(solicitacao.sltDetalhe.tipo eq 'Informação' or solicitacao.sltDetalhe.tipo eq 'Solicitação' or solicitacao.sltDetalhe.tipo eq 'Denúncia') and solicitacao.sltDetalhe.datafim ne null}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 
 								<h:outputText value="Nota:"
 									style="color:#1a568c; font-size:18px"
-									rendered="#{solicitacao.solicitacao.avaliacao ne '0'}" />
-								<h:outputText value="#{solicitacao.solicitacao.avaliacao}"
-									rendered="#{solicitacao.solicitacao.avaliacao ne '0'}" />
+									rendered="#{solicitacao.sltDetalhe.avaliacao ne '0'}" />
+								<h:outputText value="#{solicitacao.sltDetalhe.avaliacao}"
+									rendered="#{solicitacao.sltDetalhe.avaliacao ne '0'}" />
 
 							</p:panelGrid>
 						</h:panelGroup>
@@ -468,7 +457,7 @@
 						<p:tabView dynamic="true" cache="true">
 							<p:tab title="Mensagens">
 
-								<p:dataList value="#{mensagem.mensagensSolicitacao}" var="msg" type="definition" styleClass="consultaDatalist" rendered="true">
+								<p:dataList value="#{solicitacao.mensagensSolicitacao}" var="msg" type="definition" styleClass="consultaDatalist" rendered="true">
 									<p:outputPanel style="margin-top: 1vw;">
 										<div class="mensagem">
 											<h:outputText value="#{msg.usuario.nome}"
@@ -479,12 +468,29 @@
 										</div>
 
 										<h:outputText value="#{msg.texto}" style="margin-left:1vw; white-space: pre-wrap;" />
-
+										
 										<h:form rendered="#{anexo.temAnexo(msg.idMensagem)}">
-											<p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" disabled="#{!anexo.temAnexo(msg.idMensagem)}">
-										        <p:fileDownload value="#{anexo.download(msg.idMensagem)}"/>
-										    </p:commandButton>
-									    </h:form>
+											<p style="margin-top:.5em;margin-bottom:0;font-weight:bold">Anexos:</p>
+										    <p:dataTable id="anexoTable" var="anx" value="#{anexo.listaAnexos(msg.idMensagem)}" emptyMessage="Não há arquivos anexados" style="width:50%;">
+												<p:column headerText="" width="25">
+													<h:panelGroup rendered="#{anx.tipo eq 'image/jpeg'}">
+														<i class="fa fa-file-image-o" />
+													</h:panelGroup>
+												</p:column>
+												<p:column headerText="Arquivo">
+													<h:outputText value="#{anx.nome}" />
+												</p:column>
+												<p:column headerText="Tamanho" width="150">
+													<h:outputText value="#{anexo.anexoSizeMB(anx.tamanho)} MB" />
+												</p:column>
+												<p:column width="45">
+													<p:commandLink styleClass="botaoLinkIcon" ajax="false">
+												        <p:fileDownload value="#{anexo.download(anx.idAnexo)}"/>
+														<i class="fa fa-download" />
+													</p:commandLink>
+												</p:column>
+											</p:dataTable>
+										</h:form>
 										
 									</p:outputPanel>
 								</p:dataList>
@@ -493,7 +499,7 @@
 
 							<p:tab title="Histórico da Manifestação">
 
-								<p:dataList value="#{mensagem.mensagensHistorico}" var="msg"
+								<p:dataList value="#{solicitacao.mensagensHistorico}" var="msg"
 									type="definition" styleClass="consultaDatalist" rendered="true">
 									<p:outputPanel style="margin-top: 1vw;">
 										<div class="mensagem">
@@ -513,7 +519,7 @@
 							</p:tab>
 							<p:tab title="Trâmite Interno" rendered="#{usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}">
 
-								<p:dataList value="#{mensagem.mensagensTramites}" var="msg"
+								<p:dataList value="#{solicitacao.mensagensTramite}" var="msg"
 									type="definition" styleClass="consultaDatalist" rendered="true">
 									<p:outputPanel style="margin-top: 1vw;">
 										<div class="mensagem">
@@ -545,19 +551,35 @@
 									</p:inputTextarea>
 									<h:outputText id="respCount" />
 
-									<p:fileUpload id="fileUpload" value="#{mensagem.file}" label="Adicionar Anexo" mode="simple" skinSimple="true" style="margin-top: 1em" />
+									<p:dataTable id="anexoTable" var="anx" value="#{mensagem.anexoList}" emptyMessage="Não há arquivos anexados" style="width:100%; margin-top:1em">
+										<p:column headerText="Arquivo">
+											<h:outputText value="#{anx.nome}" />
+										</p:column>
+										<p:column headerText="Tamanho" width="150">
+											<h:outputText value="#{anexo.anexoSizeMB(anx.tamanho)} MB" />
+										</p:column>
+										<p:column width="50">
+											<p:commandLink class="botaoLinkIcon" update="anexoTable" actionListener="#{anexo.removerAnexo(anx)}">
+												<i class="fa fa-trash" />
+											</p:commandLink>
+										</p:column>
+									</p:dataTable>
+									
+									<p:fileUpload label="Adicionar arquivo" value="#{anexo.file}" mode="advanced" auto="true" fileUploadListener="#{anexo.fileUploadListener}" update="anexoTable" onstart="loadProperty()"/>
+									
+									<p:remoteCommand name="loadProperty">
+										<f:setPropertyActionListener for="idLoader" value="#{anexo.anexoList}" target="#{mensagem.anexoList}" />
+									</p:remoteCommand>
 
-									<p:commandLink class="botaoLink" action="#{mensagem.save}"
-										ajax="false" style="margin-top: 5px"
-										update="form:solicitacao_panel ">
+									<p:commandLink class="botaoLink" action="#{mensagem.save}" style="margin-top: 5px" update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
-										<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{mensagem.solicitacao}" />
 									</p:commandLink>
 								</div>
 
 								<div id="SolReformula" class="box aba" style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Pedido de reformulação:" for="solReformula" style="margin-bottom: 5px" />
+									<p:outputLabel value="Justificativa da reformulação:" for="solReformula" style="margin-bottom: 5px" />
 									<p:inputTextarea id="solReformula"
 										value="#{mensagem.mensagem.texto}" rows="10"
 										required="true" counter="solReforCount" maxlength="3000"
@@ -572,7 +594,7 @@
 										style="margin-top: 5px" update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
-										<f:setPropertyActionListener value="#{solicitacao.solicitacao}"	target="#{mensagem.solicitacao}" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{mensagem.solicitacao}" />
 									</p:commandLink>
 								</div>
 
@@ -594,16 +616,17 @@
 										style="margin-top: 5px" update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{solicitacao.solicitacao}" />
 									</p:commandLink>
 								</div>
 
-								<div id="Mudar" class="box aba"
-									style="display: none; padding: 1vh 1vw">
+								<div id="Mudar" class="box aba"	style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Alterar Tipo da Manifestação:" style="font-weight:bold"/>
+									
 									<p:outputLabel for="tipoSlt" value="Selecione o tipo:" />
 									<p:selectOneMenu id="tipoSlt" value="#{solicitacao.tipoMudar}"
 										styleClass="abaField mudarField">
-										<f:selectItem itemLabel="Pedido de Informação"
-											itemValue="Pedido de Informação" />
+										<f:selectItem itemLabel="Pedido de Informação" itemValue="Informação" />
 										<f:selectItem itemLabel="Solicitação" itemValue="Solicitação" />
 										<f:selectItem itemLabel="Sugestão" itemValue="Sugestão" />
 										<f:selectItem itemLabel="Reclamação" itemValue="Reclamação" />
@@ -611,8 +634,7 @@
 										<f:selectItem itemLabel="Denúncia" itemValue="Denúncia" />
 									</p:selectOneMenu>
 
-									<p:outputLabel value="Justificativa:" for="justMuda"
-										style="margin-bottom: 5px" />
+									<p:outputLabel value="Justificativa:" for="justMuda" style="margin-bottom: 5px" />
 									<p:inputTextarea id="justMuda"
 										value="#{solicitacao.mensagem.texto}" rows="10"
 										required="true" counter="mudarCount" maxlength="3000"
@@ -627,12 +649,13 @@
 										style="margin-top: 5px" update="form:solicitacao_panel ">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{solicitacao.solicitacao}" />
 									</p:commandLink>
 								</div>
 
 								<div id="Negar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Justificativa:" for="justNega"
+									<p:outputLabel value="Justificativa da negação:" for="justNega"
 										style="margin-bottom: 5px" />
 									<p:inputTextarea id="justNega"
 										value="#{mensagem.mensagem.texto}" rows="10" required="true"
@@ -648,15 +671,13 @@
 										update="form:solicitacao_panel">
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
-										<f:setPropertyActionListener
-											value="#{solicitacao.solicitacao}"
-											target="#{mensagem.solicitacao}" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}" target="#{mensagem.solicitacao}" />
 									</p:commandLink>
 								</div>
 
 								<div id="Prorrogar" class="box aba"
 									style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Justificativa:" for="descr" />
+									<p:outputLabel value="Justificativa da prorrogação:" for="descr" />
 									<p:inputTextarea id="descr"
 										value="#{solicitacao.mensagem.texto}"
 										styleClass="abaField prorrogarField" cols="100" rows="10"
@@ -672,15 +693,15 @@
 										action="#{solicitacao.prorrogar}"
 										oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
-										<f:setPropertyActionListener value="Prorrogada"
-											target="#{solicitacao.status}" />
+										<f:setPropertyActionListener value="Prorrogada"	target="#{solicitacao.status}" />
 										<i class="fa fa-check" style="padding-left: 3px" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{solicitacao.solicitacao}" />
 									</p:commandLink>
 								</div>
 
 								<div id="Recurso" class="box aba"
 									style="display: none; padding: 1vh 1vw">
-									<p:outputLabel value="Descrição:" for="descr2" />
+									<p:outputLabel value="Mensagem de recurso:" for="descr2" />
 									<p:inputTextarea id="descr2"
 										value="#{solicitacao.mensagem.texto}" cols="100" rows="10"
 										autoResize="false" counter="recCount" maxlength="3000"
@@ -696,24 +717,22 @@
 										action="#{solicitacao.recurso}" update="@all"
 										oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
-										<f:setPropertyActionListener value="Recurso"
-											target="#{mensagem.status}" />
+										<f:setPropertyActionListener value="Recurso" target="#{mensagem.status}" />
 										<i class="fa fa-check" style="padding-left: 3px" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}" target="#{solicitacao.solicitacao}" />
 									</p:commandLink>
 								</div>
 
-								<div id="Encaminhar" class="box aba"
-									style="display: none; padding: 1vh 1vw">
+								<div id="Encaminhar" class="box aba" style="display: none; padding: 1vh 1vw">
+									<p:outputLabel value="Encaminhar Manifestação:" style="font-weight:bold"/>
+									
 									<p:outputLabel value="Órgão/Entidade de destino" for="destino" />
 									<p:selectOneMenu id="destino"
 										value="#{solicitacao.idEntidades}"
 										styleClass="abaField encaminharField">
 										<!-- 										<f:ajax value="#{solicitacao.popularEncaminharEntidade()}"  disabled="#{usuario.usuario.perfil eq '2' or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'}"/> -->
-										<f:selectItem itemLabel="Selecione Orgão Relacionado"
-											noSelectionOption="true" />
-										<f:selectItems value="#{entidades.todasEntidadesAtivas}"
-											var="orgao" itemLabel="#{orgao.nome}"
-											itemValue="#{orgao.idEntidades}" />
+										<f:selectItem itemLabel="Selecione Orgão Relacionado" noSelectionOption="true" />
+										<f:selectItems value="#{entidades.entAtivasComComp}" var="orgao" itemLabel="#{orgao.nome}" itemValue="#{orgao.idEntidades}" />
 									</p:selectOneMenu>
 
 									<p:outputLabel value="Justificativa Cidadão:" for="justCid" />
@@ -743,6 +762,7 @@
 										oncomplete="PF('detalheDialog').hide();">
 										<h:outputText value="Salvar" />
 										<i class="fa fa-check" style="padding-left: 3px" />
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"	target="#{solicitacao.solicitacao}" />
 									</p:commandLink>
 								</div>
 
@@ -770,11 +790,9 @@
 										style="margin-top: 5px"
 										action="#{mensagem.salvarMensagemAvaliacao()}"
 										update="form:solicitacao_panel ">
+										<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}" target="#{avaliacao.solicitacao}" />
 										<f:setPropertyActionListener
-											value="#{solicitacao.solicitacao}"
-											target="#{avaliacao.solicitacao}" />
-										<f:setPropertyActionListener
-											value="#{solicitacao.solicitacao}"
+											value="#{solicitacao.sltDetalhe}"
 											target="#{mensagem.solicitacao}" />
 										<h:outputText value="Enviar" />
 										<i class="fa fa-arrow-up" style="margin-left: 3px" />
@@ -786,7 +804,7 @@
 
 					</h:panelGroup>
 
-					<!-- 				Barra de ações -->
+					<!-- Barra de ações -->
 					<h:panelGroup id="barraBtns">
 
 						<!-- Botão Resposta -->
@@ -797,7 +815,6 @@
 							styleClass="blankSquareBtn">
 							<i class="fa fa-comments fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Responder" />
-							<!-- 							disabled="#{solicitacao.solicitacao.status eq 'Finalizada' or solicitacao.solicitacao.status eq 'Atendida' or solicitacao.solicitacao.status eq 'Negada'}" -->
 						</p:commandLink>
 
 						<!-- Botão Solicitação Reformulação -->
@@ -816,7 +833,7 @@
 						<!-- Botão Reformulação -->
 						<p:commandLink id="ReformulaAba"
 							onclick="abrirAba('Reformula');selecionarAba('ReformulaAba');desativarCampos('ReformulaField')"
-							rendered="#{solicitacao.isCidadao() and solicitacao.solicitacao.status eq 'Reformulação'}"
+							rendered="#{solicitacao.isCidadao() and solicitacao.sltDetalhe.status eq 'Reformulação'}"
 							styleClass="blankSquareBtn">
 							<span class="fa-stack fa-lg"> <i
 								class="fa fa-comment fa-stack-2x" /> <i
@@ -825,14 +842,14 @@
 							<h:outputText value="Reformular Manifestação" />
 						</p:commandLink>
 
-						<!-- Botão Mudar Tipo -->
+						<!-- Botão Alterar Tipo -->
 						<p:commandLink id="MudarAba" class="botaoAba"
 							onclick="abrirAba('Mudar');selecionarAba('MudarAba');desativarCampos('mudarField')"
 							rendered="#{solicitacao.isResponsavel()}"
 							disabled="#{solicitacao.disMudar()}" styleClass="blankSquareBtn">
 							<i class="fa fa-exchange fa-3x" style="margin-bottom: 5px" />
-							<h:outputText value="Mudar Tipo" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+							<h:outputText value="Alterar Tipo" />
+							<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"
 								target="#{entidades.solicitacao}" />
 						</p:commandLink>
 
@@ -853,7 +870,7 @@
 							styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Encaminhar" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
+							<f:setPropertyActionListener value="#{solicitacao.sltDetalhe}"
 								target="#{entidades.solicitacao}" />
 						</p:commandLink>
 
@@ -866,8 +883,6 @@
 							disabled="#{solicitacao.disProrrogar()}">
 							<i class="fa fa-clock-o fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Prorrogar Resposta" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 
 						<!-- Botão Avalia -->
@@ -888,22 +903,17 @@
 							update="form:solicitacao_panel" styleClass="blankSquareBtn">
 							<i class="fa fa-hand-o-up fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Realizar Recurso" />
-							<f:setPropertyActionListener value="Recurso"
-								target="#{solicitacao.status}" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-								target="#{solicitacao.solicitacao}" />
+							<f:setPropertyActionListener value="Recurso" target="#{solicitacao.status}" />
 						</p:commandLink>
 
 						<!-- Botão Liberar Denuncia -->
 						<p:commandLink id="LiberaDenunciaAba"
 							onclick="PF('dlgConfirm').show();"
-							rendered="#{usuario.isResponsavelOGE() and solicitacao.solicitacao.tipo eq 'Denúncia'}"
-							disabled="#{solicitacao.solicitacao.liberaDenuncia}"
+							rendered="#{usuario.isResponsavelOGE() and solicitacao.sltDetalhe.tipo eq 'Denúncia'}"
+							disabled="#{solicitacao.sltDetalhe.liberaDenuncia}"
 							styleClass="blankSquareBtn">
 							<i class="fa fa-eye fa-3x" style="margin-bottom: 5px" />
 							<h:outputText value="Liberar Visualização" />
-							<f:setPropertyActionListener value="#{solicitacao.solicitacao}"
-								target="#{solicitacao.solicitacao}" />
 						</p:commandLink>
 
 					</h:panelGroup>
@@ -915,7 +925,7 @@
 				<h:form>
 					<h:panelGroup styleClass="column">
 						<h:outputText
-							value="Deseja permitir a visualização deste Denúncia por #{solicitacao.solicitacao.entidades.nome} ?" />
+							value="Deseja permitir a visualização deste Denúncia por #{solicitacao.sltDetalhe.entidades.nome} ?" />
 
 						<h:panelGroup styleClass="inline">
 							<p:commandLink class="botaoLink" ajax="false"

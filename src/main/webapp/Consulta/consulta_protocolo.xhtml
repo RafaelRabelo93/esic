@@ -22,11 +22,11 @@
 					<h:panelGroup styleClass="column" style="width:100%; margin-bottom:1.5em">
 						<p:outputLabel value="Consultar protocolo: " for="protocolo" />
 						<h:panelGroup styleClass="inline">
-							<p:inputText id="protocolo" value="#{solicitacao.protocoloBusca}" size="60" maxlength="15" required="false" requiredMessage="">
+							<p:inputText id="protocolo" value="#{solicitacao.protocoloBusca}" size="60" maxlength="30" required="false" requiredMessage="">
 								<p:keyFilter regEx="/^[0-9\/.-]+$/" preventPaste="false"/>
 							</p:inputText>
 							
-							<p:commandLink class="botaoLinkIcon" action="#{solicitacao.buscaPorProtocolo()}" id="buscar" update="solicitacoes" style="margin-left:.5em;padding: 5px 10px 5px 5px;"
+							<p:commandLink class="botaoLinkIcon" action="#{solicitacao.buscaPorProtocolo}" id="buscar" update="@all" ajax="true" style="margin-left:.5em;padding: 5px 10px 5px 5px;"
 							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('buscar').click();}">
 								<i class="fa fa-search" style="color: white; padding-left:3px" />
 							</p:commandLink>
@@ -121,9 +121,8 @@
 							sortOrder="descending" expandableRowGroups="false"
 							resizableColumns="true" liveResize="true"
 							value="#{solicitacao.buscaSolicitacoes}"
-							rowStyleClass="#{slt.status}" style="margin-bottom:1vw;"
-							filteredValue="#{solicitacao.solicitacoesFiltradas}"
-							paginator="true" rows="50" reflow="true"
+							style="margin-bottom:1vw;"
+							reflow="true"
 							styleClass="ui-datatable-hor-scroll"
 							currentPageReportTemplate="(Página {currentPage} de {totalPages})"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -137,13 +136,6 @@
 								<p:columnToggler datasource="solicitacoes" trigger="toggler">
 									<p:ajax event="toggle" listener="#{solicitacao.onToggle}" />
 								</p:columnToggler>
-
-								<p:outputPanel styleClass="searchPanel">
-									<i class="fa fa-search"
-										style="color: white; margin-right: .5em" />
-									<p:inputText id="globalFilter" onkeyup="PF('slt').filter()"
-										style="width:50%" placeholder="Insira campo a ser pesquisado" />
-								</p:outputPanel>
 							</f:facet>
 
 							<f:facet name="filter">
