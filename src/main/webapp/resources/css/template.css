@@ -19,12 +19,10 @@
 }
 
 #content1 {
-/*     min-height: 54.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
 #content2 {
-/*     min-height: 50.5vh; */
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -174,23 +172,12 @@
  	-webkit-flex-flow: row nowrap;
  	flex-flow: row nowrap;
  	
-/*     -moz-align-items: baseline; */
-/*  	-ms-align-items: baseline; */
-/*  	-o-align-items: baseline; */
-/*  	-webkit-align-items: baseline;  */
-/*  	align-items: baseline; */
- 	
     -moz-align-items: center;
  	-ms-align-items: center;
  	-o-align-items: center;
  	-webkit-align-items: center; 
  	align-items: center;
 
-/*  	-moz-justify-content: space-between; */
-/*  	-ms-justify-content: space-between; */
-/*  	-o-justify-content: space-between; */
-/*  	-webkit-justify-content: space-between;  */
-/*  	justify-content: space-between; */
 }
 
 .column {
@@ -275,10 +262,11 @@
 	-ms-flex-item-align: end;
 	align-self: flex-end;
 	
-	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#276eb3));
-	background: -webkit-linear-gradient(top left, #135186, #276eb3);
-	background: -o-linear-gradient(top left, #135186, #276eb3);
-	background: linear-gradient(to bottom right, #135186, #276eb3);
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#2966a3), to(#153565));
+	background: -webkit-linear-gradient(left, #2966a3, #153565);
+	background: -o-linear-gradient(left, #2966a3, #153565);
+	background: linear-gradient(to right, #2966a3, #153565);
 	
 	text-decoration: none; 
 	color: white !important;
@@ -301,10 +289,11 @@
 	-ms-flex-flow: row nowrap;
 	flex-flow: row nowrap;
 	
-	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#276eb3));
-	background: -webkit-linear-gradient(top left, #135186, #276eb3);
-	background: -o-linear-gradient(top left, #135186, #276eb3);
-	background: linear-gradient(to bottom right, #135186, #276eb3);
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#2966a3), to(#153565));
+	background: -webkit-linear-gradient(left, #2966a3, #153565);
+	background: -o-linear-gradient(left, #2966a3, #153565);
+	background: linear-gradient(to right, #2966a3, #153565);
 	
 	text-decoration: none; 
 	color: white !important;
@@ -552,7 +541,7 @@
     width: 90% !important;
     left: 5% !important;
     top: 3vh !important;
-    border: 1px solid #395a8c;
+    border: 1px solid #040c31;
 }
 
 .consultaDialog.ui-dialog .ui-dialog-content {
@@ -571,7 +560,7 @@
     
     left: 5% !important;
     top: 3vh !important;
-    border: 1px solid #395a8c;
+    border: 1px solid #040c31;
 }
 
 .solicitacaoDialog.ui-dialog .ui-dialog-content {
@@ -588,7 +577,7 @@
 }
 
 .ui-dialog .ui-dialog-titlebar {
-    background: linear-gradient(to bottom right, #135186, #3d6ea9);
+    background: linear-gradient(to bottom right, #040c31, #3d6ea9);
     color: white;
     font-weight: bold;
 }
@@ -772,10 +761,10 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 .ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only{
-	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#276eb3));
-	background: -webkit-linear-gradient(top left, #135186, #276eb3);
-	background: -o-linear-gradient(top left, #135186, #276eb3);
-	background: linear-gradient(to bottom right, #135186, #276eb3);
+	background: -webkit-gradient(linear, left top, right bottom, from(#040c31), to(#3179bc));
+	background: -webkit-linear-gradient(top left, #040c31, #3179bc);
+	background: -o-linear-gradient(top left, #040c31, #3179bc);
+	background: linear-gradient(to bottom right, #040c31, #3179bc);
 	
 	color: white;
 	border: none;
@@ -994,21 +983,18 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 
 /* Paginator */
 .ui-paginator {
-/* 	background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd)); */ */
-/*     background: -webkit-linear-gradient(top left, #3d6ea9, #5b87bd); */
-/*     background: -o-linear-gradient(top left, #3d6ea9, #5b87bd); */
-/*     background: linear-gradient(to bottom right, #3d6ea9, #5b87bd); */
-    background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#276eb3));
-    background: -webkit-linear-gradient(top left, #135186, #276eb3);
-    background: -o-linear-gradient(top left, #135186, #276eb3);
-    background: linear-gradient(to bottom right, #135186, #276eb3);
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#3179bc), to(#040c31));
+	background: -webkit-linear-gradient(left, #3179bc, #040c31);
+	background: -o-linear-gradient(left, #3179bc, #040c31);
+	background: linear-gradient(to right, #3179bc, #040c31);
 	
-	border: 1px solid #135186;
+/* 	border: 1px solid #040c31; */
 }
 
 .ui-paginator .ui-paginator-page, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-rpp-options {
-	background-color: #377cbb;
-    border: 1px solid #155288;
+	background-color: #3179bc;
+    border: 1px solid #040c31;
     border-radius: 3px;
     
     color: white;
@@ -1016,11 +1002,11 @@ span.ui-radiobutton-icon.ui-icon.ui-c.ui-icon-bullet {
 }
 
 a.ui-paginator-page.ui-state-default.ui-corner-all.ui-state-active {
-	background: #377cbb;
+	background: #3179bc;
 }
 
 a.ui-paginator-page.ui-state-default.ui-corner-all {
-    background: #155288;
+    background: #153565;
 }
 
 .ui-paginator .ui-paginator-next .ui-icon, .ui-paginator .ui-paginator-prev .ui-icon, .ui-paginator .ui-paginator-first .ui-icon, .ui-paginator .ui-paginator-last .ui-icon{
@@ -1071,23 +1057,24 @@ a.ui-paginator-page.ui-state-default.ui-corner-all {
 }
 
 .ui-datatable-header.ui-widget-header.ui-corner-top {
-	background: #377cbb;
-    background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#377cbb));
-    background: -webkit-linear-gradient(top left, #3d6ea9, #377cbb);
-    background: -o-linear-gradient(top left, #3d6ea9, #377cbb);
-	background: linear-gradient(to bottom right, #3d6ea9, #377cbb);
-    border: 1px solid #135186;
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#3179bc), to(#040c31));
+	background: -webkit-linear-gradient(left, #3179bc, #040c31);
+	background: -o-linear-gradient(left, #3179bc, #040c31);
+	background: linear-gradient(to right, #3179bc, #040c31);
+/*     border: 1px solid #040c31; */
 	color: white;
 	min-height: 35px;
 }
 
 /* Accordion */
 .ui-accordion .ui-accordion-header {
-	background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd));
-	background: -webkit-linear-gradient(top left, #3d6ea9, #5b87bd);
-	background: -o-linear-gradient(top left, #3d6ea9, #5b87bd);
-	background: linear-gradient(to bottom right, #3d6ea9, #5b87bd);
-	border: 1px solid #135186;
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#3179bc), to(#040c31));
+	background: -webkit-linear-gradient(left, #3179bc, #040c31);
+	background: -o-linear-gradient(left, #3179bc, #040c31);
+	background: linear-gradient(to right, #3179bc, #040c31);
+	border: 1px solid #040c31;
 	
 	color: white;
 	text-shadow: none;
@@ -1491,7 +1478,7 @@ i.fa.fa-home {
 }
 
 .btnAnon i {
-	color: #135186;
+	color: #040c31;
 }
 
 .btnAnon > .column {
@@ -1499,7 +1486,7 @@ i.fa.fa-home {
 }
 
 .btnAnon > img {
-    background-color: #135186;
+    background-color: #040c31;
     padding: 15px;
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
@@ -1514,7 +1501,7 @@ i.fa.fa-home {
 }
 
 .tituloAnon {
-    color: #135186;
+    color: #040c31;
     font-size: 35px;
     font-weight: bold;
     font-variant-caps: all-petite-caps;
@@ -1566,11 +1553,11 @@ i.fa.fa-home {
     border: 1px solid #155288;
     border-radius: 2px;
     
-    background: #135186;
+    background: #040c31;
     background: -webkit-gradient(linear, left top, right bottom, from(#3d6ea9), to(#5b87bd));
-    background: -webkit-linear-gradient(top left, #135186, #276eb3);
-    background: -o-linear-gradient(top left, #135186, #276eb3);
-    background: linear-gradient(to bottom right, #135186, #276eb3);
+    background: -webkit-linear-gradient(top left, #040c31, #3179bc);
+    background: -o-linear-gradient(top left, #040c31, #3179bc);
+    background: linear-gradient(to bottom right, #040c31, #3179bc);
 }
 
 .togglerBtn i {
@@ -1585,12 +1572,12 @@ i.fa.fa-home {
 }
 
 .ui-commandlink.ui-widget.togglerBtn.ui-state-focus {
-    background: -webkit-gradient(linear, left top, right bottom, from(#276eb3), to(#135186));
-    background: -webkit-linear-gradient(top left, #276eb3, #135186);
-    background: -o-linear-gradient(top left, #276eb3, #135186);
-    background: linear-gradient(#276eb3, #135186);
+    background: -webkit-gradient(linear, left top, right bottom, from(#3179bc), to(#040c31));
+    background: -webkit-linear-gradient(top left, #3179bc, #040c31);
+    background: -o-linear-gradient(top left, #3179bc, #040c31);
+    background: linear-gradient(#3179bc, #040c31);
     
-    border-color: #135186;
+    border-color: #040c31;
     box-shadow: none !important;
 }
 
@@ -1974,10 +1961,10 @@ h1, h2, h3 {
 
 .btnConsulta2 {
     background-color: #296099;
-    background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
-    background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
-    background: -o-linear-gradient(top left, #135186, #3d6ea9);
-    background: linear-gradient(to bottom right, #135186, #3d6ea9);
+    background: -webkit-gradient(linear, left top, right bottom, from(#040c31), to(#3d6ea9));
+    background: -webkit-linear-gradient(top left, #040c31, #3d6ea9);
+    background: -o-linear-gradient(top left, #040c31, #3d6ea9);
+    background: linear-gradient(to bottom right, #040c31, #3d6ea9);
     
     -webkit-transition: background-position 1s;
     -o-transition: background-position 1s;
@@ -2001,14 +1988,14 @@ h1, h2, h3 {
  	
 .btnConsulta2:hover {
    	background-position: -100% 0;
-   	background: linear-gradient(to bottom right, #135186, #3078cf);
-   	color: #135186 #3078cf;
+   	background: linear-gradient(to bottom right, #040c31, #3078cf);
+   	color: #040c31 #3078cf;
 }
 
 .link {
 	text-decoration: none;
 	font-weight: bold;
-	color: #135186; 
+	color: #040c31; 
 }
 
 .link:hover {

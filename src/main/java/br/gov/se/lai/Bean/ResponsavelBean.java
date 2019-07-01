@@ -75,16 +75,17 @@ public class ResponsavelBean implements Serializable{
 					}else {
 						this.usuario.setPerfil((short)2);
 					}
+					
 					this.responsavel.setUsuario(this.usuario);
 					
-					Set<Responsavel> respSet = this.usuario.getResponsavels();
-					respSet.add(this.responsavel);
-					this.usuario.setResponsavels(respSet);
+//					Set<Responsavel> respSet = this.usuario.getResponsavels();
+//					respSet.add(this.responsavel);
+//					this.usuario.setResponsavels(respSet);
 						
 					if (ResponsavelDAO.saveOrUpdate(this.responsavel) && UsuarioDAO.saveOrUpdate(this.usuario)) {
 						todosResponsaveis.add(responsavel);
 						ResponsavelDAO.saveOrUpdate(this.responsavel);
-						UsuarioDAO.saveOrUpdate(this.usuario);	
+						UsuarioDAO.saveOrUpdate(this.usuario);
 						NotificacaoEmail.enviarEmailCadastroResp(responsavel);
 					}
 

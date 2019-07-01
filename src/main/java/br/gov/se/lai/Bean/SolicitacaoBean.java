@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
@@ -130,6 +131,9 @@ public class SolicitacaoBean implements Serializable {
 	private Solicitacao sltShow;
 	private Solicitacao sltDetalhe;
 	
+	@ManagedProperty(value="#{usuario}")
+	private UsuarioBean usuarioBean;
+	
 	@PostConstruct
 	public void init() {
 		this.solicitacao = new Solicitacao();
@@ -195,20 +199,6 @@ public class SolicitacaoBean implements Serializable {
 		MensagemDAO.saveOrUpdate(mensagem);
 
 		MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
-		
-//		if (!(file.getContents().length == 0)) {
-//			try {
-//				this.anexo.setMensagem(mensagem);
-//				this.anexo.setNome(file.getFileName());
-//				this.anexo.setTamanho(file.getSize());
-//				this.anexo.setTipo(file.getContentType());
-//				this.anexo.setConteudo(file.getContents());
-//				AnexoDAO.saveOrUpdate(anexo);
-//			} catch (Exception e) {
-//				FacesContext.getCurrentInstance().addMessage(null,
-//				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
-//			}
-//		}
 		
 		if (!this.anexoList.isEmpty()) {
 			try {
@@ -807,6 +797,8 @@ public class SolicitacaoBean implements Serializable {
 		
 		return (perfilValido && respValido);
 	}
+	
+	
 	public void visualizouSolicitacao(Solicitacao solicitacao) {
 		if (((userBean.getUsuario().getPerfil() == (short) 2) || (userBean.getUsuario().getPerfil() == (short) 4 && userBean.isPerfilAlterarCidadaoResponsavel()))) {
 			if (!solicitacao.isVisualizada()) {
@@ -1433,7 +1425,7 @@ public class SolicitacaoBean implements Serializable {
 		} else return false;
 	}
 	
-	public static boolean isResponsavelOGE() {
+	public boolean isResponsavelOGE() {
 		UsuarioBean u = (UsuarioBean) (HibernateUtil.RecuperarDaSessao("usuario"));
 		Usuario usuario = u.getUsuario();
 		
@@ -1937,6 +1929,14 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setMensagensTramite(List<Mensagem> mensagensTramite) {
 		this.mensagensTramite = mensagensTramite;
+	}
+
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
+	}
+
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 }

@@ -1,0 +1,26 @@
+diff a/src/main/java/br/gov/se/lai/utils/NotificacaoEmail.java b/src/main/java/br/gov/se/lai/utils/NotificacaoEmail.java	(rejected hunks)
+@@ -529,22 +529,22 @@
+ 		}
+ 		
+ 	}
+ 	
+ 	//+++++++++++++++++++ Email HTML Template
+ 	public static void enviarEmailHTML(String destinatario, String titulo, String mensagem) throws EmailException {
+-		boolean envioAtivo = true;
++		boolean envioAtivo = false;
+ 		
+ 		if (envioAtivo) {
+ 			// Create the email message
+ 			ImageHtmlEmail emailHtml = new ImageHtmlEmail();
+ 			emailHtml.setDebug(true);
+ 			emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
+ 			emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
+ 			emailHtml.addTo(destinatario);
+-			emailHtml.setFrom("no_reply@setc.se.gov.br"); //ser� passado o email que voc� far� a autentica��o
++			emailHtml.setFrom("nao_responder@setc.se.gov.br"); //ser� passado o email que voc� far� a autentica��o
+ 			emailHtml.setSubject(titulo);
+ 			
+ 			StringBuffer msg = new StringBuffer();
+ 			msg.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+ 			msg.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" >");
+ 			msg.append("<head>");

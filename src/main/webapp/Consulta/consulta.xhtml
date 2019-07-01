@@ -251,7 +251,6 @@
 								width="120" sortBy="#{slt.status}" filterBy="#{slt.status}"
 								filterMatchMode="exact" filterable="false" groupRow="false"
 								style="text-align: center">
-								<!-- 								<h:outputText id="statusLabel" value="#{slt.status}" styleClass="statusBox" rendered="#{slt.status ne 'Atendida' and slt.status ne 'Transição'}"/> -->
 								<h:outputText id="statusAberta" value="Aberta"
 									styleClass="statusBox aberta"
 									rendered="#{slt.status eq 'Aberta'}" />
@@ -335,12 +334,12 @@
 
 							</p:column>
 
-							<p:column visible="#{solicitacao.list[11]}"
-								style="width:32px; text-align: center" toggleable="false">
+							<p:column visible="#{solicitacao.list[11]}"	style="width:32px; text-align: center" toggleable="false">
 								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" actionListener="#{solicitacao.popularMensagens2(slt.idSolicitacao)}"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 <!-- 									solicitacao.visualizouSolicitacao(slt) -->
 									<i class="fa fa-search" />
+									<f:actionListener binding="#{solicitacao.visualizouSolicitacao(slt)}"/>
 									<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.sltDetalhe}" />
 								</p:commandLink>
 							</p:column>
@@ -454,7 +453,7 @@
 
 						<!-- Caixa de mensagens -->
 
-						<p:tabView dynamic="true" cache="true">
+						<p:tabView id="msgTab" dynamic="true" cache="true">
 							<p:tab title="Mensagens">
 
 								<p:dataList value="#{solicitacao.mensagensSolicitacao}" var="msg" type="definition" styleClass="consultaDatalist" rendered="true">
@@ -497,9 +496,9 @@
 
 							</p:tab>
 
-							<p:tab title="Histórico da Manifestação">
+							<p:tab title="Histórico da Manifestação" id="historicoTab">
 
-								<p:dataList value="#{solicitacao.mensagensHistorico}" var="msg"
+								<p:dataList id="historicoDataList" value="#{solicitacao.mensagensHistorico}" var="msg"
 									type="definition" styleClass="consultaDatalist" rendered="true">
 									<p:outputPanel style="margin-top: 1vw;">
 										<div class="mensagem">

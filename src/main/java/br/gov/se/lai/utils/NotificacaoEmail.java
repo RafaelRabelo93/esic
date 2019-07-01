@@ -382,7 +382,7 @@ public abstract class NotificacaoEmail implements Job{
 						"<h5 style=\"margin-bottom: 50px\">Aperte o botão abaixo para prosseguir com cadastro de responsável.</h5>" +
 						"<table>" +
 							"<tr>" +
-								"<a href=\"" + link + "\" style=\"color: white; border-radius: 3px; border: 1px solid #1d4a74; padding: 10px; font-size: 20px; background-color: #296099; background: linear-gradient(to bottom right, #135186, #4087dc text-decoration: none;\">" +
+								"<a href=\"" + link + "\" style=\"color: white; border-radius: 3px; border: 1px solid #1d4a74; padding: 10px; font-size: 20px; background-color: #296099; background: linear-gradient(to bottom right, #040c31, #4087dc text-decoration: none;\">" +
 								"Cadastrar" +
 								"</a>" +
 							"</tr>" +
@@ -408,7 +408,7 @@ public abstract class NotificacaoEmail implements Job{
 				"	<table align=\"center\">" + 
 				"		<tr align=\"center\">" + 
 				"		<td>" + 
-				"			<a href=\"" + link + "\" style=\"color: white; border-radius: 3px; border: 1px solid #1d4a74; padding: 10px; font-size: 20px; background-color: #296099; background: linear-gradient(to bottom right, #135186, #4087dc); text-decoration: none;\">" + 
+				"			<a href=\"" + link + "\" style=\"color: white; border-radius: 3px; border: 1px solid #1d4a74; padding: 10px; font-size: 20px; background-color: #296099; background: linear-gradient(to bottom right, #040c31, #4087dc); text-decoration: none;\">" + 
 				"			Nova Senha" + 
 				"			</a>" + 
 				"		</td>" + 
@@ -541,7 +541,7 @@ public abstract class NotificacaoEmail implements Job{
 			emailHtml.setHostName(DadosAutenticacao.getHostNameEmail());
 			emailHtml.setAuthentication(DadosAutenticacao.getUserLoginEmailAuthentication(),DadosAutenticacao.getSenhaUserLoginEmailAuthentication());  
 			emailHtml.addTo(destinatario);
-			emailHtml.setFrom("no_reply@setc.se.gov.br"); //será passado o email que você fará a autenticação
+			emailHtml.setFrom("nao_responder@setc.se.gov.br"); //será passado o email que você fará a autenticação
 			emailHtml.setSubject(titulo);
 			
 			StringBuffer msg = new StringBuffer();

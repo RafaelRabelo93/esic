@@ -28,14 +28,12 @@
     margin: 0;
     
 /*     Cor Produção */
-	background-color: #296099;
-	background: -webkit-gradient(linear, left top, right bottom, from(#135186), to(#3d6ea9));
-	background: -webkit-linear-gradient(top left, #135186, #3d6ea9);
-	background: -o-linear-gradient(top left, #135186, #3d6ea9);
-	background: linear-gradient(to bottom right, #135186, #3d6ea9);
+	background-color: #040c31;
+	background: -webkit-gradient(linear, left top, right top, from(#3179bc), to(#040c31));
+	background: -webkit-linear-gradient(left, #3179bc, #040c31);
+	background: -o-linear-gradient(left, #3179bc, #040c31);
+	background: linear-gradient(to right, #3179bc, #040c31);
 	
-/* 	Cor Homologação */
-/* 	background: #422f6a; */
 }
 
 .footer p, .footer h1, .footer h2, .footer h3 {
