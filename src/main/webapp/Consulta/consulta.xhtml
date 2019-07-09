@@ -337,7 +337,7 @@
 							<p:column visible="#{solicitacao.list[11]}"	style="width:32px; text-align: center" toggleable="false">
 								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" actionListener="#{solicitacao.popularMensagens2(slt.idSolicitacao)}"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-<!-- 									solicitacao.visualizouSolicitacao(slt) -->
+									<f:actionListener binding="#{solicitacao.visualizouSolicitacao(slt)}" />
 									<i class="fa fa-search" />
 									<f:actionListener binding="#{solicitacao.visualizouSolicitacao(slt)}"/>
 									<f:setPropertyActionListener value="#{slt}" target="#{solicitacao.sltDetalhe}" />

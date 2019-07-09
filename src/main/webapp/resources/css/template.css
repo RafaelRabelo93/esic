@@ -2029,6 +2029,21 @@ h1, h2, h3 {
 	display: none;
 }
 
+.ui-button.ui-widget.ui-state-active {
+    background-color: #1b4478;
+/*     background: -webkit-gradient(linear, left top, right bottom, from(#040c31), to(#3d6ea9)); */
+/*     background: -webkit-linear-gradient(top left, #040c31, #3d6ea9); */
+/*     background: -o-linear-gradient(top left, #040c31, #3d6ea9); */
+/*     background: linear-gradient(to bottom right, #040c31, #3d6ea9); */
+    
+    color: white;
+    text-shadow: none
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: .15em 1em;
+}
+
 /* ========================== */
 /* ====  RESPONSIVIDADE  ==== */
 /* ========================== */

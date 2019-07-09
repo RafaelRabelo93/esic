@@ -47,6 +47,7 @@
 					 	
 						 <p:outputLabel value="Órgão / Entidade: " for="orgao" rendered="true"  /> 
 						 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains" style="width: -webkit-fill-available;width: -moz-available;width: fill-available;">
+							 <p:ajax event="change" listener="#{responsavel.verificaIsCadOuv}" update="cad_responsavel:perfil perfil" />
 							 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
 							 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 						</p:selectOneMenu>
@@ -63,13 +64,22 @@
 							</h:panelGroup>
 						</h:panelGroup>
 
-						 <p:outputLabel value="Nível:" for="nivel" /> 
-						 <p:selectOneRadio id="nivel" required="true" value="#{responsavel.responsavel.nivel}">
-							<f:selectItem itemLabel="Ouvidor Setorial" itemValue="1" />
-<!-- 							<f:selectItem itemLabel="Autoridade 1" itemValue="2" /> -->
-							<f:selectItem itemLabel="Gestor" itemValue="3" />
-<!-- 							<f:selectItem itemLabel="Comissão Mista" itemValue="4"  /> -->
-						</p:selectOneRadio> 
+						<h:panelGroup id="perfil" styleClass="column">
+						 <p:outputLabel value="Perfil:" for="perfil1" rendered="#{!responsavel.cadOuv}" /> 
+							 <p:selectOneRadio id="perfil1" required="true" value="#{responsavel.responsavel.nivel}" rendered="#{!responsavel.cadOuv}" disabled="#{responsavel.cadOuv}">
+								<f:selectItem itemLabel="Atendente" itemValue="2" />
+								<f:selectItem itemLabel="Ouvidor Setorial" itemValue="1" />
+	<!-- 							<f:selectItem itemLabel="Gestor" itemValue="3" /> -->
+								<f:selectItem itemLabel="USCI" itemValue="4" />
+							</p:selectOneRadio>
+							
+							 <p:outputLabel value="Perfil:" for="perfil2" rendered="#{responsavel.cadOuv}" /> 
+							 <p:selectOneRadio id="perfil2" required="true" value="#{responsavel.responsavel.nivel}" rendered="#{responsavel.cadOuv}" disabled="#{!responsavel.cadOuv}">
+								<f:selectItem itemLabel="Atendente" itemValue="2" />
+								<f:selectItem itemLabel="Coordenador OGE" itemValue="1" />
+								<f:selectItem itemLabel="Ouvidor Geral" itemValue="3" />
+							</p:selectOneRadio>
+						</h:panelGroup>
 					</h:panelGroup>
 					
 					<p:commandLink  id="novoResponsavel" class="botaoLink" action="#{responsavel.save}" update="cad_responsavel">

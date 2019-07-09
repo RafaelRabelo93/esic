@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body >
+
+	<ui:composition template="/templates/template.xhtml">
+
+		<ui:define name="content">
+		
+			<!-- Mensagem de Erro -->
+			<p:growl id="growl" showDetail="true" autoUpdate="true" redisplay="false" life="5000" severity="info,warn,error"/>
+				
+			<h:form id="solicitacao" styleClass="cad_form" prependId="false" enctype="multipart/form-data" onsubmit="return Validate(this);">
+
+				<div class="ficha">
+					
+					<h:panelGroup styleClass="box" style="margin-top: 1em; max-width:50%">
+						
+						<h:outputText value="Identificação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						<h:panelGroup styleClass="column" style="margin-top: 1em">
+							<p:selectOneRadio id="identifica" value="#{solicitacao.sigilo}" required="true">
+								<p:ajax update="@all" event="change"/>
+								<f:selectItem itemLabel="Identificável" itemValue="0" />
+								<f:selectItem itemLabel="Sigilo" itemValue="1" />
+								<f:selectItem itemLabel="Anônima" itemValue="2" />
+							</p:selectOneRadio>
+						</h:panelGroup>
+						
+						<h:panelGroup id="cidadaoPanel" styleClass="column" style="width:100%" rendered="#{solicitacao.sigilo ne '2'}">
+							<p:separator style="margin: 2em 0 1em 0"/>
+							
+							<h:outputText value="Dados Cidadão" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+						
+								<p:outputLabel value="Tipo Pessoa: " for="tipo" style="color:#1a568c; font-size:25px; margin-top: 0"/>
+								<h:panelGroup styleClass="column" style="margin-top: 1em">
+									<p:selectOneRadio id="tipo" value="#{solicitacao.cidAtendente.tipo}" required="true">
+										<f:selectItem itemLabel="Física" itemValue="true" />
+										<f:selectItem itemLabel="Jurídica" itemValue="false" />
+										<p:ajax update="panel dadosPessoais dadosCadastrais" event="change"/>
+									</p:selectOneRadio>
+								</h:panelGroup>
+								
+								<p:separator style="margin: 2em 0 1em 0"/>
+								
+								<h:outputText id="dadosPessoais" value="Dados Pessoais" style="color:#1a568c; font-size:25px;" rendered="#{solicitacao.cidAtendente.tipo}"/>
+								<h:outputText id="dadosCadastrais" value="Dados Cadastrais" style="color:#1a568c; font-size:25px;" rendered="#{!solicitacao.cidAtendente.tipo}"/>
+		
+								<h:panelGroup id="panel" styleClass="column">
+								
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Nome completo: " for="nome" rendered="#{solicitacao.cidAtendente.tipo}"/>
+										<p:outputLabel value="Razão Social: " for="nome" rendered="#{!solicitacao.cidAtendente.tipo}"/>
+										<p:inputText id="nome" value="#{solicitacao.usrAtendente.nome}" size="80" maxlength="65">
+											<f:validateLength minimum="0" maximum="65" />
+											<p:keyFilter regEx="/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ .'-]+$/" preventPaste="false"/>
+										</p:inputText>
+									</h:panelGroup>
+		
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="inline" style="align-items: flex-start;">
+									<h:panelGroup styleClass="column" >
+										<p:outputLabel value="E-mail: " for="email" />
+										<p:inputText id="email"  value="#{solicitacao.cidAtendente.email}" size="40" maxlength="100">
+											<f:validateLength maximum="100" />
+										</p:inputText>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{!solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="CNPJ:" for="cnpj"/>
+										<p:inputMask id="cnpj" value="#{solicitacao.cidAtendente.cpf}" mask="99.999.999/9999-99" size="30" disabled="#{solicitacao.cidAtendente.tipo}">
+											<f:validator validatorId="StellaCNPJValidator" />
+										</p:inputMask>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="Data de Nascimento: " for="datanasc" />
+										<p:calendar styleClass="date" id="datanasc" yearRange="c-120:c" size="10" disabled="#{!solicitacao.cidAtendente.tipo}"
+											showOn="button" value="#{solicitacao.cidAtendente.datanasc}"
+											locale="pt_BR" effect="slideDown" navigator="true"
+											pattern="dd/MM/yyyy" mask="true" timeInput="false">
+											<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo" />
+										</p:calendar>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="Gênero: " for="sexo" />
+										<p:selectOneRadio id="sexo" value="#{solicitacao.cidAtendente.sexo}"	layout="pageDirection" disabled="#{!solicitacao.cidAtendente.tipo}">
+											<f:selectItem itemLabel="Masculino" itemValue="M" />
+											<f:selectItem itemLabel="Feminino" itemValue="F" />
+											<f:selectItem itemLabel="Outro" itemValue="O" />
+										</p:selectOneRadio>
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline">
+								</h:panelGroup>
+														
+								<h:panelGroup styleClass="inline" style="-webkit-box-align: start;-ms-flex-align: start;align-items: flex-start;">
+									<h:panelGroup styleClass="column" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="CPF:" for="cpf"/>
+										<p:inputMask id="cpf" value="#{solicitacao.cidAtendente.cpf}" mask="999.999.999-99" size="15" disabled="#{!solicitacao.cidAtendente.tipo}" >
+											<f:validator validatorId="StellaCPFValidator" />
+										</p:inputMask>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="RG: " for="rg" />
+										<p:inputMask id="rg" value="#{solicitacao.cidAtendente.rg}" mask="?9999999999999999" disabled="#{!solicitacao.cidAtendente.tipo}" size="15"/>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="Órgão Expedidor: " for="orgao" />
+										<p:inputText id="orgao" value="#{solicitacao.cidAtendente.orgaexp}" size="15" disabled="#{!solicitacao.cidAtendente.tipo}">
+											<f:validateLength maximum="45" />
+										</p:inputText>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw" rendered="#{solicitacao.cidAtendente.tipo}">
+										<p:outputLabel value="Renda:" for="renda" />
+										<p:selectOneMenu id="renda" value="#{solicitacao.cidAtendente.renda}" disabled="#{!solicitacao.cidAtendente.tipo}">
+											<f:selectItem itemLabel="Selecionar" itemValue="" />
+											<f:selectItem itemLabel="Sem renda" itemValue="0" />
+											<f:selectItem itemLabel="Até 2 SM*" itemValue="1" />
+											<f:selectItem itemLabel="De 2 a 4 SM*" itemValue="2" />
+											<f:selectItem itemLabel="De 4 a 10 SM*" itemValue="3" />
+											<f:selectItem itemLabel="De 10 a 20 SM*" itemValue="4" />
+											<f:selectItem itemLabel="Acima de 20 SM*" itemValue="5" />
+										</p:selectOneMenu>
+										<p:outputLabel value="** SM = Salário Mínimo" style="color:gray; font-size:12px; margin: 0" />
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline" style="align-items: flex-start;" rendered="#{solicitacao.cidAtendente.tipo}">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Escolaridade: " for="escolaridade" />
+										<p:selectOneMenu id="escolaridade" value="#{solicitacao.cidAtendente.escolaridade}" style="width:200px" disabled="#{!solicitacao.cidAtendente.tipo}">
+											<f:selectItem itemLabel="Selecionar" itemValue="" />
+											<f:selectItem itemLabel="Analfabeto" itemValue="1" />
+											<f:selectItem itemLabel="Semi-Analfabeto" itemValue="2" />
+											<f:selectItem itemLabel="Fundamental" itemValue="3" />
+											<f:selectItem itemLabel="Ensino Médio Incompleto" itemValue="4" />
+											<f:selectItem itemLabel="Ensino Médio Completo" itemValue="5" />
+											<f:selectItem itemLabel="Ensino Superior Incompleto" itemValue="6" />
+											<f:selectItem itemLabel="Ensino Superior Completo" itemValue="7" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Telefone:" for="tel"/>
+										<p:inputMask id="tel" value="#{solicitacao.cidAtendente.telefone}" mask="(99) 9 9999-9999" size="20" disabled="#{!solicitacao.cidAtendente.tipo}"/>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Celular:" for="cel"/>
+										<p:inputMask id="cel" value="#{solicitacao.cidAtendente.celular}" mask="(99) 9 9999-9999" size="20" disabled="#{!solicitacao.cidAtendente.tipo}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="inline" rendered="#{!solicitacao.cidAtendente.tipo}">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Telefone:" for="tel2"/>
+										<p:inputMask id="tel2" value="#{cidadao.telefone}" mask="(99) 9 9999-9999" size="20" disabled="#{solicitacao.cidAtendente.tipo}"/>
+									</h:panelGroup>
+									
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Celular:" for="cel2"/>
+										<p:inputMask id="cel2" value="#{solicitacao.cidAtendente.celular}" mask="(99) 9 9999-9999" size="20" disabled="#{solicitacao.cidAtendente.tipo}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								</h:panelGroup>
+								
+								<p:separator style="margin: 2em 0 1em 0"/>
+								
+								<h:outputText value="Endereço" style="color:#1a568c; font-size:25px;" />
+		
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="CEP:" />
+										<p:inputMask id="cep" value="#{solicitacao.cidAtendente.cep}" mask="99999-999" />
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Cidade:" />
+										<p:inputText id="cidade" value="#{solicitacao.cidAtendente.cidade}" maxlength="45">
+											<f:validateLength maximum="45"/>
+										</p:inputText>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Estado: " for="uf" />
+										<p:selectOneMenu id="uf" value="#{solicitacao.cidAtendente.estado}" widgetVar="estado">
+											<f:selectItem itemLabel="Selecionar" itemValue="" />
+											<f:selectItem itemLabel="Acre" itemValue="AC" />
+											<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+											<f:selectItem itemLabel="Amapá" itemValue="AP" />
+											<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+											<f:selectItem itemLabel="Bahia" itemValue="BA" />
+											<f:selectItem itemLabel="Ceará" itemValue="CE" />
+											<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+											<f:selectItem itemLabel="Espirito Santo" itemValue="ES" />
+											<f:selectItem itemLabel="Goiás" itemValue="GO" />
+											<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+											<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+											<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+											<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+											<f:selectItem itemLabel="Pará" itemValue="PA" />
+											<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+											<f:selectItem itemLabel="Paraná" itemValue="PR" />
+											<f:selectItem itemLabel="Piauí" itemValue="PI" />
+											<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+											<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+											<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+											<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+											<f:selectItem itemLabel="Roraima" itemValue="RR" />
+											<f:selectItem itemLabel="Santa Catarina" itemValue="SC" />
+											<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+											<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+											<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Logradouro:" />
+										<p:inputText id="rua" value="#{solicitacao.cidAtendente.endereco}" size="40" maxlength="100">
+											<f:validateLength maximum="100" />
+										</p:inputText>
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Bairro:" />
+										<p:inputText id="bairro" value="#{solicitacao.cidAtendente.bairro}" size="29" maxlength="45">
+											<f:validateLength maximum="45"/>
+										</p:inputText>
+									</h:panelGroup>
+								</h:panelGroup>
+		
+								<h:panelGroup styleClass="inline">
+									<h:panelGroup styleClass="column">
+										<p:outputLabel value="Número:" for="numero" />
+										<p:inputText id="numero" value="#{solicitacao.cidAtendente.numero}"
+											size="10" maxlength="5">
+											<f:validateLength maximum="5" />
+										</p:inputText>
+		
+									</h:panelGroup>
+		
+									<h:panelGroup styleClass="column" style="margin-left: 2vw">
+										<p:outputLabel value="Complemento: " for="complemento" />
+										<p:inputText id="complemento" value="#{solicitacao.cidAtendente.complemento}" maxlength="200" size="59">
+											<f:validateLength maximum="200" />
+										</p:inputText>
+									</h:panelGroup>
+								</h:panelGroup>
+		
+						</h:panelGroup>
+						
+						<p:separator styleClass="separator" style="margin-top:4em"/>
+						
+						<h:panelGroup id="solicitacaoPanel" styleClass="column" rendered="true">
+							
+							<h:outputText value="Manifestação" style="color:#1a568c; font-size:25px; padding-bottom: 2vw; -ms-flex-item-align: center; -ms-grid-row-align: center; align-self: center;" />
+							
+							<p:outputLabel value="Canal de entrada:" />
+					        <p:selectOneButton value="#{solicitacao.solicitacao.canalEntrada}" required="true">
+					            <f:selectItem itemLabel="Call-center" itemValue="1" />
+					            <f:selectItem itemLabel="Presencial" itemValue="2" />
+					            <f:selectItem itemLabel="Postal" itemValue="3" />
+					        </p:selectOneButton>
+					        
+							<p:outputLabel value="Tipo de manifestação:" />
+					        <p:selectOneButton value="#{solicitacao.solicitacao.tipo}" required="true">
+					            <f:selectItem itemLabel="Pedido de Informação" itemValue="Informação" />
+					            <f:selectItem itemLabel="Solicitação" itemValue="Solicitação" />
+					            <f:selectItem itemLabel="Sugestão" itemValue="Sugestão" />
+					            <f:selectItem itemLabel="Reclamação" itemValue="Reclamação" />
+					            <f:selectItem itemLabel="Elogio" itemValue="Elogio" />
+					            <f:selectItem itemLabel="Denúncia" itemValue="Denúncia" />
+					        </p:selectOneButton>
+							
+							<p:separator style="margin: 2em 0 1em 0"/>
+							
+							<h:panelGroup id="select_orgao" styleClass="column" style="width: 100%;">
+								<p:outputLabel value="Selecionar Órgão/Entidade:" for="orgao2" />
+	   				            <p:selectOneMenu id="orgao2" value="#{competencias.idEntidade}" styleClass="field selectField" filter="true" filterMatchMode="contains" required="true">
+	                                <p:ajax event="change" listener="#{competencias.filtrarAcoesEntidade2}" update="select_orgao" />
+									<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
+									<f:selectItems value="#{responsavel.entidades}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue="#{ent.idEntidades}"/>
+								</p:selectOneMenu>
+								
+								<p:outputLabel value="Tema:" for="tema2" />
+		        				<p:selectOneMenu id="tema2" value="#{competencias.idAcoes}" styleClass="field buscaField" required="true">
+									<f:selectItem itemLabel="Selecione" itemValue="0"/>
+									<f:selectItems value="#{competencias.listAcoes}" var="acao" itemLabel="#{acao.titulo}" itemValue="#{acao.idAcoes}"/>
+								</p:selectOneMenu>
+								
+							</h:panelGroup>
+							
+							<p:separator style="margin: 2em 0 1em 0"/>
+							
+							<p:outputLabel value="Assunto:" for="titulo" />
+							<p:inputText id="titulo" maxlength="100" style="width:100%" value="#{solicitacao.solicitacao.titulo}" />
+	
+							<p:outputLabel value="Mensagem:" for="mensagem" />
+							<p:inputTextarea id="mensagem" rows="10" style="width:100%" autoResize="true" value="#{solicitacao.mensagem.texto}" required="true" />
+							
+							<p:dataTable id="anexoTable" var="anx" value="#{solicitacao.anexoList}" emptyMessage="Não há arquivos anexados" style="width:100%; margin-top:1em">
+								<p:column headerText="Arquivo">
+									<h:outputText value="#{anx.nome}" />
+								</p:column>
+								<p:column headerText="Tamanho" width="150">
+									<h:outputText value="#{anexo.anexoSizeMB(anx.tamanho)} MB" />
+								</p:column>
+								<p:column width="50">
+									<p:commandLink class="botaoLinkIcon" update="anexoTable" actionListener="#{anexo.removerAnexo(anx)}">
+										<i class="fa fa-trash" />
+									</p:commandLink>
+								</p:column>
+							</p:dataTable>
+							
+							<p:fileUpload label="Adicionar arquivo" value="#{anexo.file}" mode="advanced" auto="true" fileUploadListener="#{anexo.fileUploadListener}" update="anexoTable" onstart="loadProperty()"/>
+							
+							<p:remoteCommand name="loadProperty">
+								<f:setPropertyActionListener for="idLoader" value="#{anexo.anexoList}" target="#{solicitacao.anexoList}" />
+							</p:remoteCommand>
+	
+						</h:panelGroup>
+					
+					</h:panelGroup>
+
+					<p:commandLink class="botaoLink" action="#{solicitacao.saveAtendente()}">
+						<h:outputText value="Enviar" />
+						<i class="fa fa-share-square-o"	style="color: white; padding-left: 3px" />
+						<f:setPropertyActionListener value="#{competencias.idAcoes}" target="#{solicitacao.idAcao}" />
+						<f:setPropertyActionListener value="#{competencias.idEntidade}" target="#{solicitacao.idEntidades}"/>
+					</p:commandLink>
+
+				</div>
+
+			</h:form>
+			
+	<!-- =========================== -->
+	<!-- JAVASCRIPT CEP AUTOCOMPLETE -->
+	<!-- =========================== -->
+
+	<script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#cep").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#rua").val("");
+                PF('estado').selectValue("");
+            }
+            
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#rua").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#rua").val(dados.logradouro);
+                                PF('estado').selectValue(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+
+	</script>
+
+	<!-- =========================== -->
+	<!-- =========================== -->
+	<!-- =========================== -->
+			
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

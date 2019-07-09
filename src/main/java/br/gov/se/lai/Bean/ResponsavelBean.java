@@ -44,7 +44,8 @@ public class ResponsavelBean implements Serializable{
 	private boolean permissao;
 	private List<Responsavel> todosResponsaveis;
 	private List<Responsavel> responsaveisFiltrados;
-
+	private boolean isCadOuv;
+	
 	
 	@PostConstruct
 	public void init() {
@@ -54,6 +55,7 @@ public class ResponsavelBean implements Serializable{
 		pegarParamURL();
 		todosResponsaveis = new ArrayList<>(ResponsavelDAO.list());
 		listRespDaEntidade = new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()));
+		this.isCadOuv = false;
 	}
 	
 	public String save() {
@@ -240,7 +242,7 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
-	public static boolean verificaOGE() {
+	public boolean verificaOGE() {
 		Usuario usuario = usuarioBean.getUsuario();
 		
 		if (usuario.getPerfil() == 2 || (usuario.getPerfil() == 4 && usuarioBean.isPerfilAlterarCidadaoResponsavel())) {
@@ -326,6 +328,21 @@ public class ResponsavelBean implements Serializable{
 		}
 	}
 	
+	
+	public String solicitacaoAtendente() {
+		List<Responsavel> resp = new ArrayList<Responsavel>(usuarioBean.getUsuario().getResponsavels());
+		for (Responsavel r : resp) {
+			if(r.isAtivo()) {
+				popularListaEntidadesParaCadastro(r);
+				return "/Solicitacao/solicitacaoAtendente";
+			}
+		}
+		
+		System.out.println(":: ERRO NO REDIRECIONAMENTO ::");
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado!", null));
+		return null;
+	}
+	
 	public void popularListaEntidadesParaCadastro(Responsavel r) {
 			if(r.getEntidades().isAtiva() ) {
 				if(r.getEntidades().getIdEntidades().equals(1)) {
@@ -383,12 +400,9 @@ public class ResponsavelBean implements Serializable{
 	public static boolean permissaoDeAcessoEntidades(int idOrgao, int idEntidade) {
 		boolean retorno = false;
 		for (Responsavel respo : new ArrayList<>(ResponsavelDAO.findResponsavelUsuarioAtivo(usuarioBean.getUsuario().getIdUsuario()))) {
-			//System.out.println(respo.getUsuario().getNome());
 			if(respo.getEntidades().getIdOrgaos() == idOrgao) {
 				if(respo.getEntidades().getIdEntidades().equals(idEntidade)) {
 					retorno =  true;
-//				}else if(responsavelDisponivel(1, idEntidade) == -1 ){
-//					retorno =  true;
 				}
 			}
 		}
@@ -522,6 +536,19 @@ public class ResponsavelBean implements Serializable{
 		return siglaRetorno;
 	}
 	
+	/**
+	 * Verifica se a ouvidoria foi selecionada como órgão do novo responsável a ser cadastrado
+	 */
+	public void verificaIsCadOuv() {
+		if(EntidadesDAO.find(this.idEntidade).getSigla().equals("OGE")) {
+			this.isCadOuv = true;
+			System.out.println("Ouvidoria selecionada");
+		} else {
+			this.isCadOuv = false;
+			System.out.println("Outro órgão");
+		}
+	}
+	
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
@@ -621,9 +648,13 @@ public class ResponsavelBean implements Serializable{
 	public void setResponsaveisFiltrados(List<Responsavel> responsaveisFiltrados) {
 		this.responsaveisFiltrados = responsaveisFiltrados;
 	}
-	
-	
-	
-	
-	
+
+	public boolean isCadOuv() {
+		return isCadOuv;
+	}
+
+	public void setCadOuv(boolean isCadOuv) {
+		this.isCadOuv = isCadOuv;
+	}
+
 }

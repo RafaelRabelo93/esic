@@ -762,11 +762,20 @@
 				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
 					or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())
 					or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
-
+					
+					<!-- Realizar manifestação (Atendente) -->
+					<h:panelGroup class="botao">
+						<h:commandLink styleClass="link" action="#{responsavel.solicitacaoAtendente}">
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
+							<h:outputText styleClass="tituloMenu" value="Manifestação" />
+							<p>Realizar manifestação como atendente</p>
+							<f:setPropertyActionListener value="#{true}" target="#{solicitacao.cidAtendente.tipo}" />
+						</h:commandLink>
+					</h:panelGroup>
+					
 					<!-- Consulta (Representante) -->
 					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link"
-							action="#{solicitacao.consultarSolicitacao}">
+						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
 							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
 							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
 

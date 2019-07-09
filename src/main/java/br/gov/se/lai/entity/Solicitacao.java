@@ -46,6 +46,7 @@ public class Solicitacao implements java.io.Serializable {
 	private Integer formaRecebimento;
 	private Integer avaliacao;
 	private boolean liberaDenuncia;
+	private short canalEntrada;
 
 	public Solicitacao() {
 	}
@@ -239,7 +240,8 @@ public class Solicitacao implements java.io.Serializable {
 	public void setVisualizada(boolean visualizada) {
 		this.visualizada = visualizada;
 	}
-
+	
+	@Column(name = "avaliacao")
 	public Integer getAvaliacao() {
 		return avaliacao;
 	}
@@ -256,13 +258,23 @@ public class Solicitacao implements java.io.Serializable {
 	public void setSigilo(short sigilo) {
 		this.sigilo = sigilo;
 	}
-
+	
+	@Column(name = "liberaDenuncia", length = 1)
 	public boolean isLiberaDenuncia() {
 		return liberaDenuncia;
 	}
 
 	public void setLiberaDenuncia(boolean liberaDenuncia) {
 		this.liberaDenuncia = liberaDenuncia;
+	}
+	
+	@Column(name = "canalEntrada", length = 1)
+	public short getCanalEntrada() {
+		return canalEntrada;
+	}
+
+	public void setCanalEntrada(short canalEntrada) {
+		this.canalEntrada = canalEntrada;
 	}
 	
 

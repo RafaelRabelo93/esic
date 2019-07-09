@@ -70,9 +70,9 @@
 						
 						<p:column headerText="Tipo" sortBy="#{resp.nivel}" width="50">
 							<h:outputText value="Ouvidor Setorial" rendered="#{resp.nivel eq '1' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
-<!-- 							<h:outputText value="Autoridade 1" rendered="#{resp.nivel eq '2' and (resp.usuario.perfil ne '5' and  resp.usuario.perfil ne '6')}" /> -->
+							<h:outputText value="Atendente" rendered="#{resp.nivel eq '2' and (resp.usuario.perfil ne '5' and  resp.usuario.perfil ne '6')}" />
 							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}"/>
-<!-- 							<h:outputText value="Comissão Mista" rendered="#{resp.nivel eq '4' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" /> -->
+							<h:outputText value="USCI" rendered="#{resp.nivel eq '4' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
 							<h:outputText value="Gestor do Sistema" rendered="#{resp.usuario.perfil eq '5'}" />
 						</p:column>
 

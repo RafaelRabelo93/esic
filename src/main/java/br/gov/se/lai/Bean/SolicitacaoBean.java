@@ -77,13 +77,6 @@ public class SolicitacaoBean implements Serializable {
 	private final static int constanteDeRecurso = 2;
 	private final static String[] tipos = { "Aberta", "Atendida", "Prorrogada", "Recurso", "Finalizada", "Negada", "Sem Resposta", "Transição" };
 	
-//	public static int solicitacaoTotal;
-//	public static int solicitacaoPendente;
-//	public static int solicitacaoNegada;
-//	public static int solicitacaoRespondida;
-//	public static int solicitacaoDenuncia;
-//	public static int solicitacaoFinalizadas;
-	
 	private List<Mensagem> mensagensSolicitacao;
 	private List<Mensagem> mensagensHistorico;
 	private List<Mensagem> mensagensTramite;
@@ -96,7 +89,6 @@ public class SolicitacaoBean implements Serializable {
 	private Solicitacao solicitacao;
 	private Entidades entReencaminhar;
 	private UsuarioBean userBean;
-//	private Anexo anexo;
 	private Cidadao cidadao;
 	private List<Entidades> entidades;
 	private Calendar datainic;
@@ -111,9 +103,6 @@ public class SolicitacaoBean implements Serializable {
 	private Mensagem mensagemEncaminhar;
 	private Acoes acoesTemporaria;
 	public short sigilo;
-//	private boolean modoAnonimo;
-//	private boolean modoSigilo;
-//	private boolean modoIdentificavel;
 	private boolean form = false;
 	private boolean mudarEndereco;
 	private boolean mudarEmail;
@@ -123,13 +112,15 @@ public class SolicitacaoBean implements Serializable {
 	public boolean manifestacaoAnon;
 	private Anexo anexo;
 	private UploadedFile file;
-//	private UploadedFile file2;
-//	private UploadedFile file3;
 	private List<Anexo> anexoList = new ArrayList<Anexo>();
 	private String protocoloBusca;
 	private List<Solicitacao> buscaSolicitacoes;
 	private Solicitacao sltShow;
 	private Solicitacao sltDetalhe;
+	
+	private Cidadao cidAtendente;
+	private Usuario usrAtendente;
+	private int idAcaoAtendente;
 	
 	@ManagedProperty(value="#{usuario}")
 	private UsuarioBean usuarioBean;
@@ -146,6 +137,8 @@ public class SolicitacaoBean implements Serializable {
 		mensagensSolicitacao = new ArrayList<Mensagem>();
 		this.userBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");
 		this.anexo = new Anexo();
+		this.cidAtendente = new Cidadao();
+		this.usrAtendente = new Usuario();
 	}
 
 	/**
@@ -153,6 +146,7 @@ public class SolicitacaoBean implements Serializable {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("finally")
 	public String save() {
 
 		String page = null;
@@ -165,11 +159,11 @@ public class SolicitacaoBean implements Serializable {
 		this.solicitacao.setProtocolo(gerarProtocolo());
 		this.solicitacao.setAvaliacao(0);
 		this.solicitacao.setSigilo(sigilo);
+		this.solicitacao.setCanalEntrada((short) 0);
 		
 		// Setar cidadão por sigilo
 		if (sigilo == 0 || sigilo == 1) {
 			settarCidadao();
-//			this.solicitacao.setCompetencias(CompetenciasDAO.findCompetencias(idCompetencias));
 			this.solicitacao.setAcoes(AcoesDAO.findAcoes(idAcao));
 		} else if (sigilo == 2) {
 			try {
@@ -237,6 +231,123 @@ public class SolicitacaoBean implements Serializable {
 			return page;
 		}
 
+	}
+	
+	/**
+	 * Função salvar a solicitação feita pelo perfil de Atendente
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("finally")
+	public String saveAtendente() {
+
+		String page = null;
+		gerarDataLimite();
+		System.out.println("Entrou em salvar manifestacao");
+		
+		if (this.sigilo != 2) {
+			
+			//Salvar Usuário
+			this.getUsrAtendente().setNick("cidAtendente");
+			this.getUsrAtendente().setSenha("0000");
+			this.getUsrAtendente().setPerfil((short) 3);
+			
+			try {
+				UsuarioDAO.saveOrUpdate(this.getUsrAtendente());
+				System.out.println(":: USUÁRIO SALVO COM SUCESSO ::");
+			} catch (Exception e) {
+				System.out.println(":: ERRO NO CADASTRO DE USUÁRIO ::");
+			}
+			
+			//Salvar Cidadão
+			this.cidAtendente.setUsuario(this.getUsrAtendente());
+			
+			if(this.cidAtendente.getNumero().isEmpty()) {
+				this.cidAtendente.setNumero(null);
+			}
+			
+			try {
+				CidadaoDAO.saveOrUpdate(this.cidAtendente);
+				System.out.println(":: CIDADÃO SALVO COM SUCESSO ::");
+			} catch (Exception e) {
+				System.out.println(":: ERRO NO CADASTRO DE CIDADÃO ::");
+			}
+			
+		}
+		
+		// Salvar Solicitação
+		this.solicitacao.setDataIni(new Date(System.currentTimeMillis()));
+		this.solicitacao.setInstancia((short) 0);
+		this.solicitacao.setProtocolo(gerarProtocolo());
+		this.solicitacao.setAvaliacao(0);
+		this.solicitacao.setSigilo(this.sigilo);
+		
+		this.solicitacao.setAcoes(AcoesDAO.findAcoes(this.idAcao));
+		
+		this.solicitacao.setCidadao(this.cidAtendente);
+		
+		if (this.sigilo == 0 || this.sigilo == 1) {
+			this.solicitacao.setCidadao(this.cidAtendente);
+		} else if (this.sigilo == 2) {
+			try {
+				this.solicitacao.setCidadao(CidadaoDAO.findIdCidadao(0));
+			} catch (Exception e) {
+				this.solicitacao.setCidadao(CidadaoDAO.findCidadaoUsuario(0));
+			}
+		}
+		
+		this.solicitacao.setEntidades(EntidadesDAO.find(idEntidades));
+		
+		try {
+				
+			SolicitacaoDAO.saveOrUpdate(solicitacao);
+	
+			this.mensagem.setUsuario(solicitacao.getCidadao().getUsuario());
+			this.mensagem.setData(new Date(System.currentTimeMillis()));
+			this.mensagem.setSolicitacao(solicitacao);
+			this.mensagem.setTipo((short) 1);
+			MensagemDAO.saveOrUpdate(mensagem);
+	
+			MensagemBean.salvarStatus(solicitacao, "Recebida", null, null, 0);
+			
+			if (!this.anexoList.isEmpty()) {
+				try {
+					
+					for (Anexo anx : this.anexoList) {
+						anx.setMensagem(mensagem);
+						AnexoDAO.saveOrUpdate(anx);
+					}
+					
+				} catch (Exception e) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anexo não pôde ser salvo.", e.getMessage()));
+				}
+			}
+				
+			NotificacaoEmail.enviarEmailNovaSolicitacaoResp(solicitacao);
+			
+			System.out.println("Salvou manifestação " + this.solicitacao.getProtocolo());
+		page = "/index.xhtml?faces-redirect=true";
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Solicitação não enviada."));
+			page = "/index.xhtml?faces-redirect=true";
+
+		} finally {
+			this.solicitacao = new Solicitacao();
+			this.anexoList = new ArrayList<Anexo>();
+			this.cidAtendente = new Cidadao();
+			setManifestacaoAnon(false);
+			finalizarSolicitacao();
+			System.out.println(":: FINALIZOU SALVAR MANIFESTAÇÃO ::");
+			return page;
+		}
+
+	}
+	
+	public void printSigilo() {
+		System.out.println(this.solicitacao.getSigilo());
 	}
 	
 	/**
@@ -1937,6 +2048,30 @@ public class SolicitacaoBean implements Serializable {
 
 	public void setUsuarioBean(UsuarioBean usuarioBean) {
 		this.usuarioBean = usuarioBean;
+	}
+
+	public Cidadao getCidAtendente() {
+		return cidAtendente;
+	}
+
+	public void setCidAtendente(Cidadao cidAtendente) {
+		this.cidAtendente = cidAtendente;
+	}
+
+	public Usuario getUsrAtendente() {
+		return usrAtendente;
+	}
+
+	public void setUsrAtendente(Usuario usrAtendente) {
+		this.usrAtendente = usrAtendente;
+	}
+
+	public int getIdAcaoAtendente() {
+		return idAcaoAtendente;
+	}
+
+	public void setIdAcaoAtendente(int idAcaoAtendente) {
+		this.idAcaoAtendente = idAcaoAtendente;
 	}
 
 }
