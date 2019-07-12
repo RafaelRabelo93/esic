@@ -41,7 +41,7 @@
 						<p:dataTable id="responsaveis" var="resp" widgetVar="respTable"
 						emptyMessage="Não há Responsáveis" 
 						filteredValue="#{responsavel.responsaveisFiltrados}"
-						sortBy="#{resp.entidades.idOrgaos}" expandableRowGroups="false"
+						sortBy="#{resp.entidades.sigla}" expandableRowGroups="false"
 						value="#{responsavel.todosResponsaveis}" resizableColumns="true" liveResize="true"
 						rowStyleClass="#{resp.entidades.nome}" paginator="true"
 						currentPageReportTemplate="(Página {currentPage} de {totalPages})"
@@ -69,9 +69,10 @@
 						</p:column>
 						
 						<p:column headerText="Tipo" sortBy="#{resp.nivel}" width="50">
-							<h:outputText value="Ouvidor Setorial" rendered="#{resp.nivel eq '1' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
+							<h:outputText value="Ouvidor Setorial" rendered="#{resp.nivel eq '1' and resp.entidades.sigla ne 'OGE' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
+							<h:outputText value="Coordernador OGE" rendered="#{resp.nivel eq '1' and resp.entidades.sigla eq 'OGE' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
 							<h:outputText value="Atendente" rendered="#{resp.nivel eq '2' and (resp.usuario.perfil ne '5' and  resp.usuario.perfil ne '6')}" />
-							<h:outputText value="Gestor" rendered="#{resp.nivel eq '3' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}"/>
+							<h:outputText value="Ouvidor Geral" rendered="#{resp.nivel eq '3' and resp.entidades.sigla eq 'OGE' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}"/>
 							<h:outputText value="USCI" rendered="#{resp.nivel eq '4' and (resp.usuario.perfil ne '5' and resp.usuario.perfil ne '6')}" />
 							<h:outputText value="Gestor do Sistema" rendered="#{resp.usuario.perfil eq '5'}" />
 						</p:column>
@@ -97,6 +98,8 @@
 								disabled="#{!((responsavel.possivelEditarResponsavelDasEntidades(resp.entidades.idOrgaos) and responsavel.permissaoDeAcessoEntidades(resp.entidades.idOrgaos, resp.entidades.idEntidades)) or usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE())}">
 								<i class="fa fa-pencil-square-o" />
 								<f:setPropertyActionListener value="#{resp}" target="#{responsavel.responsavel}" />
+								<f:setPropertyActionListener value="#{resp.entidades.idEntidades}" target="#{responsavel.idEntidade}" />
+								<p:ajax event="click" listener="#{responsavel.verificaIsRespOuv(resp)}" update="dialog:perfil" />
 							</p:commandLink>
 						</p:column>
 
@@ -154,10 +157,11 @@
 									<f:validateRegex pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+.[a-zA-Z0-9-]*$" />
 								</p:inputText>
 	
-								<p:outputLabel value="Órgão/Entidade:" for="orgao" rendered="true" />
-								<p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" filter="true" filterMatchMode="contains" >
-									<f:selectItem itemLabel="#{responsavel.responsavel.entidades.sigla} - #{responsavel.responsavel.entidades.nome}" itemValue="#{responsavel.responsavel.entidades.idEntidades}"/>
-									<f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
+								<p:outputLabel value="Órgão / Entidade: " for="orgao" rendered="true"  /> 
+								 <p:selectOneMenu id="orgao" value="#{responsavel.idEntidade}" required="true" filter="true" filterMatchMode="contains" style="width: -webkit-fill-available;width: -moz-available;width: fill-available;">
+									 <p:ajax event="change" listener="#{responsavel.verificaIsCadOuv}" update="perfil" />
+									 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+									 <f:selectItems value="#{responsavel.possivelCadastrarResponsavelDasEntidades()}" var="ent" itemLabel="#{ent.sigla} - #{ent.nome}" itemValue= "#{ent.idEntidades}"/>
 								</p:selectOneMenu>
 								
 								<h:panelGroup styleClass="inline" style="width:100%; -webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;">
@@ -171,14 +175,22 @@
 										<p:inputMask id="telefone2" value="#{responsavel.responsavel.telefone2}" mask="(99) 99999999?9"/>
 									</h:panelGroup>
 								</h:panelGroup>
-	
-								<p:outputLabel value="Nível: "  for="nivel"/>
-								<p:selectOneRadio id="nivel" value="#{responsavel.responsavel.nivel}" >
-									<f:selectItem itemLabel="Ouvidor Setorial" itemValue="1" itemDisabled="#{responsavel.responsavel.nivel ne '1' and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
-<!-- 									<f:selectItem itemLabel="Autoridade 1" itemValue="2" itemDisabled="#{responsavel.responsavel.nivel ne '2'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/> -->
-									<f:selectItem itemLabel="Gestor" itemValue="3" itemDisabled="#{responsavel.responsavel.nivel ne '3' and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/>
-<!-- 									<f:selectItem itemLabel="Comissão Mista" itemValue="4" itemDisabled="#{responsavel.responsavel.nivel ne '4'  and responsavel.bloquearEdicaoPessoalPermissoes(responsavel.responsavel.usuario.idUsuario) }"/> -->
-								</p:selectOneRadio>
+		
+								<h:panelGroup id="perfil" styleClass="column">
+								 <p:outputLabel value="Perfil:" for="perfil1" rendered="#{!responsavel.cadOuv}" /> 
+									 <p:selectOneRadio id="perfil1" required="true" value="#{responsavel.responsavel.nivel}" rendered="#{!responsavel.cadOuv}" disabled="#{responsavel.cadOuv}">
+										<f:selectItem itemLabel="Atendente" itemValue="2" />
+										<f:selectItem itemLabel="Ouvidor Setorial" itemValue="1" />
+										<f:selectItem itemLabel="USCI" itemValue="4" />
+									</p:selectOneRadio>
+									
+									 <p:outputLabel value="Perfil:" for="perfil2" rendered="#{responsavel.cadOuv}" /> 
+									 <p:selectOneRadio id="perfil2" required="true" value="#{responsavel.responsavel.nivel}" rendered="#{responsavel.cadOuv}" disabled="#{!responsavel.cadOuv}">
+										<f:selectItem itemLabel="Atendente" itemValue="2" />
+										<f:selectItem itemLabel="Coordenador OGE" itemValue="1" />
+										<f:selectItem itemLabel="Ouvidor Geral" itemValue="3" />
+									</p:selectOneRadio>
+								</h:panelGroup>
 								
 								<p:outputLabel value="Atividade: " for="ativo" />
 								<p:selectOneRadio id="ativo" value="#{responsavel.responsavel.ativo}" >

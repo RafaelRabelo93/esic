@@ -242,7 +242,7 @@
 								sortBy="#{slt.cidadao.usuario.nome}"
 								filterBy="#{slt.cidadao.usuario.nome}"
 								filterMatchMode="contains" filterable="false"
-								rendered="#{usuario.usuario.perfil ne '3' }">
+								rendered="#{!usuario.usuarioCidadao and !usuario.responsavelUSCI and !usuario.usuarioAdmin}">
 
 								<h:outputText value="#{slt.cidadao.usuario.nome}" />
 							</p:column>
@@ -334,7 +334,7 @@
 
 							</p:column>
 
-							<p:column visible="#{solicitacao.list[11]}"	style="width:32px; text-align: center" toggleable="false">
+							<p:column visible="#{solicitacao.list[11]}"	style="width:32px; text-align: center" toggleable="false" rendered="#{usuario.responsavelOuvidor or usuario.responsavelCoordenadorOGE or usuario.responsavelOuvidorGeral}">
 								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe" actionListener="#{solicitacao.popularMensagens2(slt.idSolicitacao)}"
 								onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
 									<f:actionListener binding="#{solicitacao.visualizouSolicitacao(slt)}" />

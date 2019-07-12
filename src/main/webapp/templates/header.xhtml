@@ -32,7 +32,7 @@
 					
 					<h:panelGroup styleClass="inline">
 						<h:outputLink value="#{usuario.redirecionarIndex()}" style="color: #c3d7ef; text-decoration: none; font-size: 2em; margin-left: 2vw;">
-							<h:graphicImage value="#{resource['img/SE_OUV.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
+							<h:graphicImage value="#{resource['img/SE_Ouv_branco.png']}" height="50" style="margin-top: 5px; opacity: .8;"/>
 						</h:outputLink>
 
 <!-- 						<h:outputText value="Versão 1.0" style="color:  #d1dde8; margin-left: 10px" /> -->
@@ -54,13 +54,12 @@
 						<p:overlayPanel id="imagePanel" for="Login" hideEffect="fade">
 							<h:panelGrid id="loginPanel" columns="1" cellpadding="5">
 								<p:inputText id="usuarioInput" placeholder="usuário" value="#{usuario.nick}" />
-								<p:password id="senhaInput" placeholder="senha" value="#{usuario.senha}" />
-								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}" />
-								<p:commandLink id="login" value="Entrar" type="submit" action="#{usuario.login()}" update="@all growl" styleClass="botaoLink">
+								<p:password id="senhaInput" placeholder="senha" value="#{usuario.senha}"/>
+								<p:commandLink value="Esqueci minha senha" id="redefinirSenha" style="font-size:12px; color: #3d6ea9; text-decoration:none;" action="#{usuario.redirectRedefSenha()}"/>
+								<p:commandLink id="loginBtn" value="Entrar" type="submit" action="#{usuario.login()}" update="@all growl" styleClass="botaoLink" >
 									<h:outputText value="Entrar" />
 									<i class="fa fa-sign-in" style="color: white; padding-left: 5px" />
 								</p:commandLink>
-								<p:defaultCommand target="login"/>
 							</h:panelGrid>
 							
 						</p:overlayPanel>
@@ -70,18 +69,19 @@
 							<p:commandLink id="userInfo" rendered="#{usuario.usuario.perfil ne '0'}" type="button" style="background:none; border:none; color:white; text-shadow:none; padding:0; box-shadow:none; padding-bottom: 0; align-items: center; flex-flow: column;">
 								<h:outputText value="#{usuario.nomeCompleto}" />
 								<br/>
-								<h:outputText value="Cidadão" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and !usuario.perfilAlterarCidadaoResponsavel)}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Ouvidor Setorial" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 1 and !usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Gestor Setorial" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 3 and !usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Ouvidor OGE" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 1 and usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Gestor OGE" rendered="#{(usuario.usuario.perfil eq '2' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel)) and usuario.responsavel.nivel eq 3 and usuario.responsavelOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
-								<h:outputText value="Gestor do Sistema" rendered="#{usuario.usuario.perfil eq '5'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Cidadão" rendered="#{usuario.usuarioCidadao}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Atendente" rendered="#{usuario.responsavelAtendente}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Ouvidor Setorial" rendered="#{usuario.responsavelOuvidor}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="USCI" rendered="#{usuario.responsavelUSCI}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Atendente" rendered="#{usuario.responsavelAtendenteOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Coordenador Ouvidoria" rendered="#{usuario.responsavelCoordenadorOGE}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
+								<h:outputText value="Ouvidor Geral" rendered="#{usuario.responsavelOuvidorGeral}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 								<h:outputText value="Administrador" rendered="#{usuario.usuario.perfil eq '6'}" style="font-size:12px; color: #d2dee9; margin-top: -5px;"/>
 							</p:commandLink>
 						</li>
 						
 						<li>
-							<p:commandLink id="sairBtn" styleClass="botaoLink hide-mobile" style="background: none" rendered="#{usuario.usuario.perfil ne '0'}" ajax="true" action="#{usuario.logout}" update="@all" type="button" >
+							<p:commandLink id="sairBtn" rendered="#{usuario.usuario.perfil ne '0'}" action="#{usuario.logout}" update="@all" styleClass="botaoLink" style="background:none">
 								<h:outputText value="Sair" />
 								<i class="fa fa-sign-out" style="color: white; padding-left: 5px" />
 							</p:commandLink>	
@@ -89,7 +89,7 @@
 							<p:blockUI block=":pageFull" trigger="sairBtn">
 								<h:graphicImage value="#{resource['img/loading.gif']}" height="150" />
 							</p:blockUI>
-							<p:blockUI block=":pageFull" trigger="login">
+							<p:blockUI block=":pageFull" trigger="loginBtn">
 								<h:graphicImage value="#{resource['img/loading.gif']}" height="150" />
 							</p:blockUI>
 						</li>
@@ -228,6 +228,14 @@
 	        code.parentNode.insertBefore(ga, s);
 	    };
 
+	    var input = document.getElementById("formHeader:senhaInput");
+	    input.addEventListener("keyup", function(event) {
+	      if (event.keyCode === 13) {
+	       event.preventDefault();
+	       document.getElementById("formHeader:loginBtn").click();
+	      }
+	    });
+		
 	</script>
 	
 	</ui:composition>

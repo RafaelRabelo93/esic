@@ -46,7 +46,6 @@ public class ResponsavelBean implements Serializable{
 	private List<Responsavel> responsaveisFiltrados;
 	private boolean isCadOuv;
 	
-	
 	@PostConstruct
 	public void init() {
 		usuarioBean = (UsuarioBean) HibernateUtil.RecuperarDaSessao("usuario");	
@@ -345,7 +344,7 @@ public class ResponsavelBean implements Serializable{
 	
 	public void popularListaEntidadesParaCadastro(Responsavel r) {
 			if(r.getEntidades().isAtiva() ) {
-				if(r.getEntidades().getIdEntidades().equals(1)) {
+				if(r.getEntidades().getSigla().equals("OGE")) {
 					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 				}else if(!(r.getEntidades().isOrgao())) {
 					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listPersonalizada(r.getEntidades().getIdEntidades()));
@@ -365,7 +364,7 @@ public class ResponsavelBean implements Serializable{
 			this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 		}else{
 			try {
-				if(usuarioBean.getUsuario().getPerfil() == 5) {
+				if(usuarioBean.getUsuario().getPerfil() == 5 || usuarioBean.isResponsavelOGE2()) {
 					this.entidades = new ArrayList<Entidades>(EntidadesDAO.listAtivas());
 					permissao = true;
 				}else {
@@ -542,13 +541,22 @@ public class ResponsavelBean implements Serializable{
 	public void verificaIsCadOuv() {
 		if(EntidadesDAO.find(this.idEntidade).getSigla().equals("OGE")) {
 			this.isCadOuv = true;
-			System.out.println("Ouvidoria selecionada");
+//			System.out.println("Ouvidoria selecionada");
 		} else {
 			this.isCadOuv = false;
-			System.out.println("Outro órgão");
+//			System.out.println("Outro órgão");
 		}
 	}
 	
+	public void verificaIsRespOuv(Responsavel resp) {
+		if(resp.getEntidades().getSigla().equals("OGE")) {
+			this.isCadOuv = true;
+//			System.out.println("Ouvidoria selecionada");
+		} else {
+			this.isCadOuv = false;
+//			System.out.println("Outro órgão");
+		}
+	}
 	
 //GETTERS E SETTERS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 

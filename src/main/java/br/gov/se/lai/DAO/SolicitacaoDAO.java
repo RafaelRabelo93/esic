@@ -862,5 +862,11 @@ public class SolicitacaoDAO {
       String HQL = "FROM Solicitacao as slt where replace(replace(slt.protocolo,'-',''),'/','') like replace(replace('%"+ protocolo +"','-',''),'/','')";
       return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL,em);
     }
+    
+    @SuppressWarnings("unchecked")
+    public static List<Solicitacao> listPorProtocoloEntidade(String protocolo, int idEntidade) {
+      String HQL = "FROM Solicitacao as slt where replace(replace(slt.protocolo,'-',''),'/','') like replace(replace('%"+ protocolo +"','-',''),'/','') and entidades.idEntidades = " + idEntidade + "";
+      return (List<Solicitacao>) Consultas.buscaPersonalizada(HQL,em);
+    }
   
 }

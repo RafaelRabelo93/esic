@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -80,8 +82,7 @@ public class UsuarioBean implements Serializable {
 	private String codigoRedefSenha;
 	private String codigoURLTemporaria;
 	public List<Usuario> filteredGestores;
-	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator"
-			, "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
+	private String[] palavrasReservadas = {"admin", "administrador", "sistema", "gestor", "gestorsistema", "gestor.sistema", "anonimo", "teste", "administrator", "sistema.gestor","sistemagestor", "usuario", "sudo", "sudo.admin"};
 	private boolean acessoMigrado;
 
 	/*
@@ -459,20 +460,17 @@ public class UsuarioBean implements Serializable {
 		// this.logout();
 		this.usuario = UsuarioDAO.buscarUsuario(this.nick);
 		if (this.usuario == null) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 			logout();
 			return null;
 		} else {
 			if (!Criptografia.Comparar(Criptografia.Criptografar(senha), usuario.getSenha())) {
-				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Senha Incorretos.", "Tente novamente."));
 				logout();
 				return null;
 			} else {
 				if(usuarioInativo()) {
-					FacesContext.getCurrentInstance().addMessage(null, 
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário inativo.", "Solicite ativação ao gestor da sua entidade."));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário inativo.", "Solicite ativação ao gestor da sua entidade."));
 					logout();
 					return null;
 					
@@ -481,8 +479,7 @@ public class UsuarioBean implements Serializable {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login executado com sucesso."));
 					if((usuario.getLastLogged() == null || Criptografia.Comparar("8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92", usuario.getSenha())) && usuario.isMigrado()) {
 						acessoMigrado = true;
-//						FacesContext.getCurrentInstance().addMessage(null,
-//								new FacesMessage(FacesMessage.SEVERITY_INFO, "Primeiro login", "Esse é seu primeiro login!"));
+//						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Primeiro login", "Esse é seu primeiro login!"));
 					} else acessoMigrado = false;
 					acessoUsuario(this.usuario);
 //					SolicitacaoBean.calcularQuantitativoSolicitacao();
@@ -1011,6 +1008,174 @@ public class UsuarioBean implements Serializable {
 		}  else return false;
 		
 	}
+
+//	==============================
+//	VERIFICAÇÃO DOS PERFIS LOGADOS
+//	==============================
+
+	public void executaVerificaPerfil() {
+		System.out.println("======================");
+		System.out.println("= Cidadão: "+ isUsuarioCidadao());
+		System.out.println("= Atendente Setorial: "+ isResponsavelAtendente());
+		System.out.println("= USCI: "+ isResponsavelUSCI());
+		System.out.println("= Ouvidor Setorial: " + isResponsavelOuvidor());
+		System.out.println("= Atendente OGE: " + isResponsavelAtendenteOGE());
+		System.out.println("= Coordenador OGE: " + isResponsavelCoordenadorOGE());
+		System.out.println("= Ouvidor Geral: " + isResponsavelOuvidorGeral());
+		System.out.println("====================");
+	}
+	
+	public boolean isUsuarioCidadao() {
+		if(this.usuario.getPerfil() == 3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isUsuarioAdmin() {
+		if(this.usuario.getPerfil() == 6) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	
+//		ATENDENTE SETORIAL
+	
+	public boolean isResponsavelAtendente() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que Atendente
+		if (this.usuario.getPerfil() == 2 && !isResponsavelOuvidor() && !isResponsavelOGE2()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 2){
+					return true;
+				}
+			}
+		}
+		
+		Instant finish = Instant.now();
+		return false;
+	}
+	
+	
+//		USCI
+	
+	public boolean isResponsavelUSCI() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que USCI
+		if (this.usuario.getPerfil() == 2 && !isResponsavelOuvidor()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 4){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	
+//		OUVIDOR SETORIAL
+	
+	public boolean isResponsavelOuvidor() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que Ouvidor Setorial
+		if (this.usuario.getPerfil() == 2 && !isResponsavelOGE2()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 1){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+
+	
+//		RESPONSAVEL OUVIDORIA
+	
+	public boolean isResponsavelOGE2() {
+		
+		if (this.usuario.getPerfil() == 2) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getEntidades().getSigla().equals("OGE")){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	
+//		ATENDENTE OUVIDORIA
+	
+	public boolean isResponsavelAtendenteOGE() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que Atendente
+		if (this.usuario.getPerfil() == 2 && isResponsavelOGE2() && !isResponsavelCoordenadorOGE()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 2){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	
+//		COORDENADOR OUVIDORIA
+	
+	public boolean isResponsavelCoordenadorOGE() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que Ouvidor Setorial
+		if (this.usuario.getPerfil() == 2 && isResponsavelOGE2() && !isResponsavelOuvidorGeral()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 1){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	
+//		OUVIDOR GERAL
+	
+	public boolean isResponsavelOuvidorGeral() {
+		
+		// Verifica se usuário tem perfil de responsável e não possui nível maior que Ouvidor Setorial
+		if (this.usuario.getPerfil() == 2 && isResponsavelOGE2()) {
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(this.usuario.getIdUsuario());
+			
+			for(Responsavel resp : respList) {
+				if(resp.getNivel() == 3){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	
 
 	// GETTERS E SETTERS

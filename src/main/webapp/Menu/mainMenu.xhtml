@@ -16,9 +16,7 @@
 			
 			<h:panelGroup class="mainMenu">
 			
-			<h:panelGroup rendered="#{usuario.acessoMigrado}" styleClass="box column" 
-			style="-webkit-box-align: center!important;-ms-flex-align: center!important;align-items: center!important; width:75%; background-color: #30659e; border-radius:10px;
-			background: linear-gradient(to bottom right, #040c31, #3179bc);"> 
+			<h:panelGroup rendered="#{usuario.acessoMigrado}" styleClass="box column" style="-webkit-box-align: center!important;-ms-flex-align: center!important;align-items: center!important; width:75%; background-color: #30659e; border-radius:10px;background: linear-gradient(to bottom right, #040c31, #3179bc);"> 
 			
 				<h1 style="color:#a6d0f6!important"> Bem vindo ao SE-Ouv!</h1>
 				<p style="color:white!important">Lembre-se de alterar sua senha para continuar usando o sistema de forma segura</p>
@@ -30,12 +28,77 @@
 			
 			 </h:panelGroup>
 
-
+			<h:commandButton actionListener="#{usuario.executaVerificaPerfil()}" value="VERIFICA PERFIL" rendered="false"/>
+			
 			<p id="title" style="max-width: 700px;">Sistema de Ouvidorias do Estado de Sergipe</p>
 			
-				<!-- ====== MENU CIDADÃO ====== -->
-					<!-- Consulta (Cidadão) -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+			
+			<!-- =================================== -->
+			<!-- =========== MENU LOGOFF =========== -->
+			<!-- =================================== -->
+			<h:panelGroup rendered="#{!usuario.usuarioLogado()}">
+				<h:panelGroup  class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+
+					<!-- Cadastro de usuário -->
+					<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
+						<h:commandLink action="/Cadastro/cad_usuario">
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/clipboard.png']}" width="150px" />
+
+							<h:outputText styleClass="tituloMenu" value="Cadastro" />
+
+							<p>Registrar usuário para realizar manifestações.</p>
+						</h:commandLink>
+					</h:panelGroup>
+
+					<!-- Continuar Cadastro Cidadão -->
+					<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
+						<h:commandLink styleClass="link" action="#{cidadao.loadUsuario}">
+							<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
+							<p:graphicImage styleClass="icone"
+								value="#{resource['img/icon/contract.png']}" width="150px" />
+
+							<h:outputText styleClass="tituloMenu" value="Primeiro Acesso" />
+
+							<p>Continuar cadastro como cidadão para realizar manifestações.</p>
+						</h:commandLink>
+					</h:panelGroup>
+
+					<!-- Manifestação -->
+					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
+						<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
+
+							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
+
+							<h:outputText styleClass="tituloMenu" value="Manifestação" />
+
+							<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
+
+						</h:commandLink>
+					</h:panelGroup>
+					
+					</h:panelGroup>
+					
+					<!-- Manifestação Anônima -->
+					<h:commandLink styleClass="btnAnon inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
+						<f:setPropertyActionListener value="#{true}" target="#{solicitacao.manifestacaoAnon}" />
+						<f:setPropertyActionListener value="2" target="#{solicitacao.sigilo}" />
+						<i class="fa fa-user-secret fa-3x"/>
+						
+						<h:panelGroup styleClass="column">
+							<h:outputText styleClass="tituloAnon" value="Manifestação Anônima" style="font-size:35px; padding: 2% 0; color:"/>
+						</h:panelGroup>
+					</h:commandLink>
+				</h:panelGroup> <!--  FIM DO MENU LOGOFF -->
+			
+			
+			<!-- =================================== -->
+			<!-- ========== MENU CIDADÃO =========== -->
+			<!-- =================================== -->
+			<h:panelGroup rendered="#{usuario.usuarioCidadao}" >	
+				
+				<!-- DASHBOARD -->
+				<h:panelGroup styleClass="menuDashboard column" >
 					<h:panelGroup styleClass="dashboard inline">
 						<h:panelGroup styleClass="panel column">
 							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalDoCidadao()}" />
@@ -71,7 +134,7 @@
 				</h:panelGroup>
 				
 				<!-- Nova solicitação -->
-				<h:panelGroup class="menuBtn" rendered="#{usuario.usuario.perfil eq '3' or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel eq false)}">
+				<h:panelGroup class="menuBtn">
 					
 					<h:panelGroup class="container">
 						<h:commandLink id="btnInfo" styleClass="link card" action="#{solicitacao.iniciarSolicitacao()}">
@@ -202,149 +265,54 @@
 					</p:dialog>
 					
 				</h:panelGroup>
-
-
-				<!-- ====== MENU LOGOFF ====== -->
-				<h:panelGroup  class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-
-					<!-- LAI -->
-<!-- 					<h:panelGroup class="botao"> -->
-<!-- 						<a class="link" href="http://lai.se.gov.br/"> <p:graphicImage -->
-<!-- 								styleClass="icone" value="#{resource['img/icon/ESIC.png']}" -->
-<!-- 								width="150px" /> <h:outputText styleClass="tituloMenu" value="LAI" /> -->
-<!-- 							<p>Acesso ao Portal da Lei de Acesso à Informação do Estado	de Sergipe</p> -->
-<!-- 						</a> -->
-<!-- 					</h:panelGroup> -->
-
-					<!-- Cadastro de usuário -->
-							<h:panelGroup class="botao" rendered="#{usuario.usuario.perfil eq '0'}">
-								<h:commandLink action="/Cadastro/cad_usuario">
-									<p:graphicImage styleClass="icone"
-										value="#{resource['img/icon/clipboard.png']}" width="150px" />
-		
-									<h:outputText styleClass="tituloMenu" value="Cadastro" />
-		
-									<p>Registrar usuário para realizar manifestações.</p>
-								</h:commandLink>
-							</h:panelGroup>
-		
-							<!-- Continuar Cadastro Cidadão -->
-							<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}">
-								<h:commandLink styleClass="link" action="#{cidadao.loadUsuario}">
-									<f:setPropertyActionListener value="#{usuario.usuario}"	target="#{cidadao.usuario}" />
-									<p:graphicImage styleClass="icone"
-										value="#{resource['img/icon/contract.png']}" width="150px" />
-		
-									<h:outputText styleClass="tituloMenu" value="Primeiro Acesso" />
-		
-									<p>Continuar cadastro como cidadão para realizar manifestações.</p>
-								</h:commandLink>
-							</h:panelGroup>
-		
-							<!-- Continuar Cadastro Responsável -->
-							<!-- 				<h:panelGroup class="botao" layout="block" rendered="#{usuario.usuario.perfil eq '1'}"> -->
-							<!-- 					<h:commandLink styleClass="link" action="Cadastro/cad_solResponsavel"> -->
-							<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/manager.png']}"	width="150px" /> -->
-		
-							<!-- 						<h:outputText styleClass="tituloMenu" value="Cadastro Responsável" /> -->
-		
-							<!-- 						<p>Continuar cadastro como responsável para solicitar autorização ao órgão competente.</p> -->
-							<!-- 					</h:commandLink> -->
-							<!-- 				</h:panelGroup> -->
-		
-							<!-- Manifestação -->
-							<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '0' or usuario.usuario.perfil eq '1'}">
-								<h:commandLink action="#{solicitacao.verificaCidadaoSolicitacao}">
-		
-									<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
-		
-									<h:outputText styleClass="tituloMenu" value="Manifestação" />
-		
-									<p>Realizar pedido de informação, solicitação, denúncia, elogio, sugestão ou reclamação aos orgãos e entidades do Governo do Estado de Sergipe</p>
-		
-								</h:commandLink>
-							</h:panelGroup>
-							
-							<!-- Consulta por protocolo -->
-							<h:panelGroup class="botao" rendered="false">
-								<h:commandLink styleClass="link" action="/Consulta/consulta_protocolo">
-									<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
-		
-									<h:outputText styleClass="tituloMenu" value="Consulta" />
-									<p>Acompanhamento de manifestações por número de protocolo</p>
-								</h:commandLink>
-							</h:panelGroup>
-							
-	
-					</h:panelGroup>
-					
-					<!-- Manifestação Anônima -->
-					<h:commandLink styleClass="btnAnon inline" action="#{solicitacao.iniciarSolicitacao()}" rendered="#{usuario.usuario.perfil eq '0'}">
-						<f:setPropertyActionListener value="#{true}" target="#{solicitacao.manifestacaoAnon}" />
-						<f:setPropertyActionListener value="2" target="#{solicitacao.sigilo}" />
-<!-- 						<p:graphicImage styleClass="icone" value="#{resource['img/icon/megaphone2.png']}" width="100px"/> -->
-						<i class="fa fa-user-secret fa-3x"/>
-						
-						<h:panelGroup styleClass="column">
-							<h:outputText styleClass="tituloAnon" value="Manifestação Anônima" style="font-size:35px; padding: 2% 0; color:"/>
-<!-- 							<h:outputText styleClass="subTitulo" value="Realizar manifestação anônima" /> -->
-						</h:panelGroup>
-					</h:commandLink>
 				
-<!-- 				====== MENU LOGOFF ====== -->
-<!-- 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}"> -->
-<!-- 					<i class="fa fa-times-circle" style="font-size: 7em; color: #cd0a0a;"/> -->
-<!-- 				</h:panelGroup> -->
-<!-- 				<h:panelGroup class="menuBtn" rendered="#{ usuario.usuario.perfil eq '0'}"> -->
-
-<!-- 					<h:outputText value="Sistema em construção" styleClass="tituloBox" style="margin: 0 0 0 15px"/> -->
-					
-<!-- 				</h:panelGroup> -->
-
-
-				<!-- ====== MENU RESPONSÁVEL ====== -->
-				<h:panelGroup styleClass="menuDashboard column" rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and !usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}" >
-					<h:panelGroup styleClass="dashboard inline">
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
-							<p:separator />
-							<h:outputText value="Total" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasPorResponsavel()}" />
-							<p:separator />
-							<h:outputText value="Atendidas" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaPorResponsavel()}" />
-							<p:separator />
-							<h:outputText value="Sem Resposta" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramitePorResponsavel()}" />
-							<p:separator />
-							<h:outputText value="Em Trâmite" />
-						</h:panelGroup>
-						<h:panelGroup styleClass="panel column">
-							<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasPorResponsavel()}" />
-							<p:separator />
-							<h:outputText value="Não Visualizadas" />
-						</h:panelGroup>
+			</h:panelGroup> <!--  FIM DO MENU CIDADÃO -->
+			
+			
+			<!-- ======================================== -->
+			<!-- ====== DASHBOARD OUVIDOR SETORIAL ====== -->
+			<!-- ======================================== -->
+			<h:panelGroup styleClass="menuDashboard column" rendered="#{usuario.responsavelOuvidor}" >
+				<h:panelGroup styleClass="dashboard inline">
+					<h:panelGroup styleClass="panel column">
+						<h:outputText style="font-size: 3em" value="#{solicitacao.contarTotalPorResponsavel()}" />
+						<p:separator />
+						<h:outputText value="Total" />
 					</h:panelGroup>
-					
-					<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
-						<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
-						<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
-					</h:commandLink>
+					<h:panelGroup styleClass="panel column">
+						<h:outputText style="font-size: 3em" value="#{solicitacao.contarAtendidasPorResponsavel()}" />
+						<p:separator />
+						<h:outputText value="Atendidas" />
+					</h:panelGroup>
+					<h:panelGroup styleClass="panel column">
+						<h:outputText style="font-size: 3em" value="#{solicitacao.contarSemRespostaPorResponsavel()}" />
+						<p:separator />
+						<h:outputText value="Sem Resposta" />
+					</h:panelGroup>
+					<h:panelGroup styleClass="panel column">
+						<h:outputText style="font-size: 3em" value="#{solicitacao.contarEmTramitePorResponsavel()}" />
+						<p:separator />
+						<h:outputText value="Em Trâmite" />
+					</h:panelGroup>
+					<h:panelGroup styleClass="panel column">
+						<h:outputText style="font-size: 3em" value="#{solicitacao.contarNaoVisualizadasPorResponsavel()}" />
+						<p:separator />
+						<h:outputText value="Não Visualizadas" />
+					</h:panelGroup>
 				</h:panelGroup>
 				
-<!-- 				(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3') -->
-<!-- 				or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.responsavel.nivel eq '3')  -->
-				
-				
-				<!-- ====== MENU ADMINISTRADOR ====== -->
-				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"  rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
+				<h:commandLink styleClass="btnConsulta2 inline" action="#{solicitacao.consultarSolicitacao}">
+					<p:graphicImage value="#{resource['img/icon/search.png']}" width="30px" />
+					<p style="margin: 0; margin-left: .5em">Acompanhar Manifestações</p>
+				</h:commandLink>
+			</h:panelGroup> <!--  FIM DO DASHBOARD OUVIDOR SETORIAL -->
+			
+
+			<!-- =========================================== -->
+			<!-- ====== DASHBOARD OGE / ADMINISTRADOR ====== -->
+			<!-- =========================================== -->
+			<h:panelGroup rendered="#{usuario.usuarioAdmin or usuario.responsavelCoordenadorOGE or usuario.responsavelOuvidorGeral}">
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;" >
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(17)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					
@@ -541,13 +509,15 @@
 						</h:panelGroup>
 							
 					</h:panelGroup>
-				
 				</h:panelGroup>
 				
-				<!-- ====== MENU GESTOR ====== -->
-				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;"
-				rendered="#{((usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo() and usuario.gestorAtivo())
-						or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo() and usuario.gestorAtivo())) and !usuario.isResponsavelOGE()}">
+			</h:panelGroup> <!--  FIM DO DASHBOARD OGE / ADMINISTRADOR -->
+				
+			<!-- ============================ -->
+			<!-- ====== DASHBOARD USCI ====== -->
+			<!-- ============================ -->
+			<h:panelGroup rendered="#{usuario.responsavelUSCI}">
+				<h:panelGroup styleClass="inline" style="width: 100%; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center;">
 				
 					<p:chart type="pie" model="#{relatorios.desenharBigPieChart(18)}" widgetVar="chartTipo" responsive="true" styleClass="bigChart" style="min-width: 300px; max-width: 500px; width: 100%; height: 100%"/>
 					 
@@ -746,95 +716,79 @@
 					</h:panelGroup>
 				
 				</h:panelGroup>
-				
-				<h:commandLink styleClass="btnConsulta inline" action="#{solicitacao.consultarSolicitacao}" rendered="false">
-					<p:graphicImage styleClass="icone"
-						value="#{resource['img/icon/search.png']}" width="100px" />
-
-					<h:panelGroup styleClass="column">
-						<h:outputText styleClass="titulo" value="Consulta" />
-						<h:outputText styleClass="subTitulo"
-							value="Acompanhar andamento das manifestações" />
-					</h:panelGroup>
-				</h:commandLink>
-				
-				<h:panelGroup class="menuBtn"
-				rendered="#{(usuario.usuario.perfil eq '2' and responsavel.temPerfilAtivo()) 
-					or (usuario.usuario.perfil eq '4' and usuario.perfilAlterarCidadaoResponsavel and responsavel.temPerfilAtivo())
-					or (usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6')}">
-					
-					<!-- Realizar manifestação (Atendente) -->
-					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link" action="#{responsavel.solicitacaoAtendente}">
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
-							<h:outputText styleClass="tituloMenu" value="Manifestação" />
-							<p>Realizar manifestação como atendente</p>
-							<f:setPropertyActionListener value="#{true}" target="#{solicitacao.cidAtendente.tipo}" />
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Consulta (Representante) -->
-					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
-							<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
-							<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Consulta" />
-							<p>Acompanhamento das manifestações</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Consulta órgão/entidade -->
-					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/office.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Entidades" />
-							<p>Gerir entidades ou ógrãos</p>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<!-- Gerir responsável -->
-					<h:panelGroup class="botao">
-						<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/businessman.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Responsáveis" />
-
-							<p>Gerir responsável</p>
-						</h:commandLink>
-					</h:panelGroup>
-
-					<!-- Gerir de ação -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6' or usuario.isResponsavelOGE()}">
-						<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/checklist.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Temas" />
-
-							<p>Gerir lista de temas tratados nas manifestações</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
-					<!-- Cadastro de usuário -->
-					<h:panelGroup class="botao"	rendered="#{usuario.usuario.perfil eq '5' or usuario.usuario.perfil eq '6'  or usuario.isResponsavelOGE()}">
-						<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
-							<p:graphicImage styleClass="icone"
-								value="#{resource['img/icon/clipboard.png']}" width="150px" />
-
-							<h:outputText styleClass="tituloMenu" value="Cadastro" />
-
-							<p>Registrar usuário</p>
-						</h:commandLink>
-					</h:panelGroup>
-					
+			</h:panelGroup> <!--  FIM DO DASHBOARD USCI -->
+			
+			<!-- ============================ -->
+			<!-- ======= MENU BOTÕES ======== -->
+			<!-- ============================ -->
+			<h:panelGroup styleClass="inline">			
+				<!-- CONSULTAR MANIFESTAÇÕES -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelOuvidor or usuario.responsavelUSCI or usuario.usuarioAdmin}">
+					<h:commandLink styleClass="link" action="#{solicitacao.consultarSolicitacao}">
+						<f:setPropertyActionListener value="0" target="#{solicitacao.idEntidades}" />
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Consulta" />
+						<p>Acompanhamento das manifestações</p>
+					</h:commandLink>
 				</h:panelGroup>
 				
+				<!-- REALIZAR MANIFESTAÇÃO (ATENDENTE) -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelAtendente or usuario.responsavelAtendenteOGE or usuario.responsavelOuvidor or usuario.responsavelCoordenadorOGE}">
+					<h:commandLink styleClass="link" action="#{responsavel.solicitacaoAtendente}">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/hand.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Manifestação" />
+						<p>Realizar manifestação como atendente</p>
+						<f:setPropertyActionListener value="#{true}" target="#{solicitacao.cidAtendente.tipo}" />
+					</h:commandLink>
+				</h:panelGroup>
 				
-		    </h:panelGroup>
+				<!-- BUSCAR MANIFESTAÇÕES POR PROTOCOLO -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelAtendente or usuario.responsavelAtendenteOGE}">
+					<h:commandLink styleClass="link" action="/Consulta/consulta_protocolo">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/monitor.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Consulta" />
+						<p>Consultar manifestação por protocolo</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- CONSULTAR ÓRGÃO/ENTIDADE -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelOuvidor or usuario.responsavelCoordenadorOGE or usuario.responsavelOuvidorGeral or usuario.usuarioAdmin}">
+					<h:commandLink styleClass="link" action="#{entidades.consultarEntidades}">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/office.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Entidades" />
+						<p>Gerir entidades ou ógrãos</p>
+					</h:commandLink>
+				</h:panelGroup>
+	
+				<!-- GERIR RESPONSÁVEL -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelCoordenadorOGE or usuario.responsavelOuvidorGeral or usuario.usuarioAdmin}">
+					<h:commandLink styleClass="link" action="/Consulta/consulta_responsavel">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/businessman.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Responsáveis" />
+						<p>Gerir responsável</p>
+					</h:commandLink>
+				</h:panelGroup>
+	
+				<!-- GERIR TEMAS -->
+				<h:panelGroup class="botao" rendered="#{usuario.responsavelCoordenadorOGE or usuario.responsavelOuvidorGeral or usuario.usuarioAdmin}">
+					<h:commandLink styleClass="link" action="#{acoes.redirecionarConsultaAcoes()}">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/checklist.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Temas" />
+						<p>Gerir lista de temas tratados nas manifestações</p>
+					</h:commandLink>
+				</h:panelGroup>
+				
+				<!-- CADASTRAR USUARIO -->
+				<h:panelGroup class="botao" rendered="false">
+					<h:commandLink styleClass="link" action="/Cadastro/cad_usuario">
+						<p:graphicImage styleClass="icone" value="#{resource['img/icon/clipboard.png']}" width="150px" />
+						<h:outputText styleClass="tituloMenu" value="Cadastro" />
+						<p>Registrar usuário</p>
+					</h:commandLink>
+				</h:panelGroup>
+			</h:panelGroup> <!-- FIM DO MENU -->
+				
+		    </h:panelGroup> <!-- FIM DO MENU -->
 			
 			<h:panelGroup styleClass="legendaPanel">
 			

@@ -17,7 +17,7 @@
 
 			<h:form id="form">
 
-				<h:panelGroup styleClass="ficha">
+				<h:panelGroup styleClass="ficha" rendered="#{usuario.responsavelAtendente or usuario.responsavelAtendenteOGE}">
 
 					<h:panelGroup styleClass="column" style="width:100%; margin-bottom:1.5em">
 						<p:outputLabel value="Consultar protocolo: " for="protocolo" />
@@ -26,8 +26,7 @@
 								<p:keyFilter regEx="/^[0-9\/.-]+$/" preventPaste="false"/>
 							</p:inputText>
 							
-							<p:commandLink class="botaoLinkIcon" action="#{solicitacao.buscaPorProtocolo}" id="buscar" update="@all" ajax="true" style="margin-left:.5em;padding: 5px 10px 5px 5px;"
-							onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('buscar').click();}">
+							<p:commandLink class="botaoLinkIcon" action="#{solicitacao.buscaPorProtocolo}" id="buscar" update="@all" ajax="true" style="margin-left:.5em;padding: 5px 10px 5px 5px;" onkeyup="if((event.keyCode==13)||(window.event.keyCode==13)){document.getElementById('buscar').click();}">
 								<i class="fa fa-search" style="color: white; padding-left:3px" />
 							</p:commandLink>
 						</h:panelGroup>
@@ -329,20 +328,6 @@
 										aberto para atendimento.</p>
 								</p:tooltip>
 
-							</p:column>
-
-							<p:column visible="#{solicitacao.list[11]}"
-								style="width:32px; text-align: center" toggleable="false">
-								<p:commandLink class="botaoLinkIcon" update="solicitacaoDetalhe"
-									actionListener="#{solicitacao.visualizouSolicitacao(slt)}"
-									onclick="PF('detalheDialog').show(); PF('detalheDialog').toggleMaximize();">
-									<p:ajax listener="#{solicitacao.popularMensagens}" />
-									<i class="fa fa-search" />
-									<f:setPropertyActionListener value="#{slt}"
-										target="#{solicitacao.solicitacao}" />
-									<f:setPropertyActionListener value="#{slt}"
-										target="#{mensagem.solicitacao}" />
-								</p:commandLink>
 							</p:column>
 
 						</p:dataTable>

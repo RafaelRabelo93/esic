@@ -139,6 +139,7 @@ public class SolicitacaoBean implements Serializable {
 		this.anexo = new Anexo();
 		this.cidAtendente = new Cidadao();
 		this.usrAtendente = new Usuario();
+		this.buscaSolicitacoes = new ArrayList<Solicitacao>();
 	}
 
 	/**
@@ -1642,7 +1643,27 @@ public class SolicitacaoBean implements Serializable {
 	}
 	
 	public void buscaPorProtocolo() {
-		this.buscaSolicitacoes = SolicitacaoDAO.listPorProtocolo(this.protocoloBusca);
+		Usuario usuario = usuarioBean.getUsuario();
+		this.buscaSolicitacoes = new ArrayList<Solicitacao>();
+		
+		if (this.usuarioBean.isResponsavelAtendente()) {
+			System.out.println(":: Buscou como Atendente Setorial");
+			
+			List<Responsavel> respList = ResponsavelDAO.findResponsavelUsuarioAtivo(usuario.getIdUsuario());
+			
+			for (Responsavel resp : respList) {
+				
+				if (this.buscaSolicitacoes.isEmpty()) 
+					this.buscaSolicitacoes = SolicitacaoDAO.listPorProtocoloEntidade(this.protocoloBusca, resp.getEntidades().getIdEntidades());
+				else 
+					this.buscaSolicitacoes.addAll(SolicitacaoDAO.listPorProtocoloEntidade(this.protocoloBusca, resp.getEntidades().getIdEntidades()));
+				
+			}
+			
+		} else if (this.usuarioBean.isResponsavelAtendenteOGE()) {
+			System.out.println(":: Buscou como Atendente OGE");
+			this.buscaSolicitacoes = SolicitacaoDAO.listPorProtocolo(this.protocoloBusca);
+		}
 	}
 	
 	

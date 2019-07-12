@@ -122,7 +122,7 @@ public class ChartExport {
 	      String line1 = "Acesso à Informação Pública - Transparência Passiva";
 	      String line2 = "Estatística Mensal de Atendimento - Art. 30 , III, da Lei nº 12.527/2011";
 	      String line3 = "Relatório Geral - " + getMesFinal() + " de " + FiltrarDadosRelatorioEstatico.anoFinal;
-	      String fonte = "Fonte: esic.se.gov.br";
+	      String fonte = "Fonte: se-ouv.se.gov.br/esic";
 	      String data = "Gerado em " + getDataAtual() ;
 	      
 	      if(tipo == 2) {
